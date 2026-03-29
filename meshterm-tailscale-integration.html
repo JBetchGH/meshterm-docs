@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>meshTerm — Tailscale Setup Guide</title>
+<style>
+  :root {
+    --blue: #0A84FF;
+    --blue-dark: #0060DF;
+    --green: #30D158;
+    --orange: #FF9F0A;
+    --text: #1C1C1E;
+    --text-sec: #636366;
+    --text-tert: #AEAEB2;
+    --surface: #F2F2F7;
+    --surface2: #E5E5EA;
+    --border: #D1D1D6;
+    --tailscale: #2563EB;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text",
+                 "Helvetica Neue", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: #fff;
+  }
+
+  header {
+    background: linear-gradient(135deg, #0A84FF 0%, #2563EB 100%);
+    color: white;
+    padding: 48px 24px 40px;
+    text-align: center;
+  }
+
+  header .app-name {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    opacity: .8;
+    margin-bottom: 10px;
+  }
+
+  header h1 {
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
+
+  header .sub {
+    font-size: 16px;
+    opacity: .8;
+    max-width: 560px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+
+  .nav-links {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+    padding: 12px 24px;
+    font-size: 14px;
+  }
+
+  .nav-links a {
+    color: var(--blue);
+    text-decoration: none;
+    margin: 0 14px;
+  }
+
+  .nav-links a:hover { text-decoration: underline; }
+
+  main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 40px 24px 60px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 40px 0 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--blue);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    background: var(--blue);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-header h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    margin: 24px 0 8px;
+  }
+
+  p {
+    font-size: 15px;
+    margin-bottom: 12px;
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  .callout {
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .callout-title {
+    font-weight: 700;
+    margin-bottom: 4px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+  }
+
+  .callout.info {
+    background: #EBF4FF;
+    border: 1px solid #B8D8FA;
+    color: var(--blue-dark);
+  }
+
+  .callout.tip {
+    background: #E8F9EE;
+    border: 1px solid #A8E8BC;
+    color: #1A7A35;
+  }
+
+  .callout.warn {
+    background: #FFF5E5;
+    border: 1px solid #FFD69A;
+    color: #8C4400;
+  }
+
+  .callout.security {
+    background: #F0E8FF;
+    border: 1px solid #D4AAFF;
+    color: #5C00C7;
+  }
+
+  .steps {
+    list-style: none;
+    margin: 16px 0 24px;
+  }
+
+  .steps li {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    align-items: flex-start;
+  }
+
+  .step-num {
+    width: 32px;
+    height: 32px;
+    background: var(--blue);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .step-content {
+    flex: 1;
+  }
+
+  .step-content strong {
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--text);
+  }
+
+  .step-content p {
+    font-size: 14px;
+    color: var(--text-sec);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  .step-content .step-note {
+    display: inline-block;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 13px;
+    color: var(--text-sec);
+    margin-top: 6px;
+    font-family: -apple-system, sans-serif;
+  }
+
+  .step-content code {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-family: "SF Mono", "Menlo", "Monaco", monospace;
+    font-size: 13px;
+    color: var(--blue-dark);
+  }
+
+  pre {
+    background: #1C1C1E;
+    color: #E5E5EA;
+    border-radius: 10px;
+    padding: 16px 18px;
+    font-family: "SF Mono", "Menlo", "Monaco", Courier, monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    overflow-x: auto;
+    margin: 12px 0 16px;
+  }
+
+  pre .comment { color: #636366; }
+  pre .cmd { color: #0A84FF; }
+  pre .flag { color: #FF9F0A; }
+  pre .val { color: #30D158; }
+
+  .path-display {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 14px;
+    color: var(--text-sec);
+    margin: 8px 0 16px;
+    flex-wrap: wrap;
+  }
+
+  .path-display .arrow {
+    color: var(--text-tert);
+    font-size: 12px;
+  }
+
+  .path-display .item {
+    color: var(--blue);
+    font-weight: 500;
+  }
+
+  .security-list {
+    list-style: none;
+    margin: 12px 0;
+  }
+
+  .security-list li {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 14px;
+    margin-bottom: 10px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  .security-list li::before {
+    content: "🔒";
+    flex-shrink: 0;
+    font-size: 14px;
+    margin-top: 1px;
+  }
+
+  .distro-tabs {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 16px 0 24px;
+  }
+
+  .distro-tab-header {
+    display: flex;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+  }
+
+  .distro-tab-btn {
+    padding: 10px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-sec);
+    cursor: pointer;
+    border: none;
+    background: none;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: color .15s, border-color .15s;
+  }
+
+  .distro-tab-btn.active {
+    color: var(--blue);
+    border-bottom-color: var(--blue);
+    background: white;
+  }
+
+  .distro-tab-content {
+    padding: 16px 18px;
+    display: none;
+  }
+
+  .distro-tab-content.active {
+    display: block;
+  }
+
+  .distro-tab-content p {
+    font-size: 14px;
+    color: var(--text-sec);
+    margin-bottom: 8px;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 16px 0;
+  }
+
+  .info-card {
+    background: var(--surface);
+    border-radius: 10px;
+    padding: 16px;
+    font-size: 14px;
+  }
+
+  .info-card .card-title {
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--text-sec);
+    margin-bottom: 8px;
+  }
+
+  .info-card ul {
+    padding-left: 16px;
+  }
+
+  .info-card li {
+    font-size: 14px;
+    margin-bottom: 4px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  footer {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    text-align: center;
+    padding: 24px;
+    font-size: 13px;
+    color: var(--text-sec);
+  }
+
+  footer a { color: var(--blue); text-decoration: none; }
+
+  @media (max-width: 600px) {
+    header { padding: 32px 16px 28px; }
+    header h1 { font-size: 24px; }
+    main { padding: 24px 16px 48px; }
+    .two-col { grid-template-columns: 1fr; }
+    .section-header h2 { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="app-name">meshTerm · iOS SSH Client</div>
+  <h1>Tailscale Setup Guide</h1>
+  <div class="sub">Everything you need to connect meshTerm to your Tailnet and enable passwordless SSH access.</div>
+</header>
+
+<div class="nav-links">
+  <a href="index.html">Privacy Policy</a>
+  <a href="eula.html">EULA</a>
+  <a href="tailscale.html">Tailscale Setup</a>
+</div>
+
+<main>
+
+  <div class="callout info">
+    <div class="callout-title">ℹ️ Overview</div>
+    meshTerm integrates with Tailscale at two levels. A <strong>Tailscale API Token</strong>
+    lets meshTerm browse your Tailnet and list your devices when adding hosts — this is optional
+    but recommended. <strong>Tailscale SSH</strong> enables passwordless authentication when
+    connecting to remote hosts — this requires a small one-time configuration on each server
+    you want to connect to without a password or key.
+  </div>
+
+  <div class="section-header">
+    <div class="section-icon">🔑</div>
+    <h2>Part 1 — API Token for Host Discovery</h2>
+  </div>
+
+  <p>meshTerm uses a read-only Tailscale API token to browse your Tailnet when adding hosts.
+  It allows meshTerm to list your devices by name rather than requiring you to type IP addresses
+  manually. <strong>Tailscale SSH connections work without it</strong> — you can skip this part
+  and still connect to hosts if you know their Tailscale IP or hostname.</p>
+
+  <ol class="steps">
+    <li>
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>Go to the Tailscale admin console</strong>
+        <p>Open your browser and go to tailscale.com, then sign in to your account.</p>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>Navigate to API Keys</strong>
+        <p>Go to Settings &rarr; Personal Settings &rarr; Keys. Scroll down to the API Access Tokens section.</p>
+        <div class="path-display">
+          <span class="item">tailscale.com</span>
+          <span class="arrow">›</span>
+          <span class="item">Settings</span>
+          <span class="arrow">›</span>
+          <span class="item">Personal Settings</span>
+          <span class="arrow">›</span>
+          <span class="item">Keys</span>
+          <span class="arrow">›</span>
+          <span class="item">API Access Tokens</span>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>Click Generate token</strong>
+        <p>Give the token a label so you can identify it later.</p>
+        <span class="step-note">💡 Suggested label: <strong>meshTerm</strong></span>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <strong>Set an expiry</strong>
+        <p>90 days is a sensible default. You can regenerate the token at any time in the same location.</p>
+        <span class="step-note">⏱ Recommended: 90 days</span>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <strong>Leave permissions as read-only</strong>
+        <p>meshTerm only needs to list the devices in your Tailnet. No write access is required or requested.</p>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">6</div>
+      <div class="step-content">
+        <strong>Copy the token</strong>
+        <p>Copy the token immediately — Tailscale will only show it once. If you lose it, generate a new one.</p>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">7</div>
+      <div class="step-content">
+        <strong>Paste it into meshTerm</strong>
+        <p>Open meshTerm and navigate to the API token setting.</p>
+        <div class="path-display">
+          <span class="item">meshTerm</span>
+          <span class="arrow">›</span>
+          <span class="item">Settings</span>
+          <span class="arrow">›</span>
+          <span class="item">Tailscale</span>
+          <span class="arrow">›</span>
+          <span class="item">API Token</span>
+        </div>
+      </div>
+    </li>
+  </ol>
+
+  <div class="callout security">
+    <div class="callout-title">🔒 Security — How Your Token Is Stored</div>
+    <ul class="security-list" style="margin: 4px 0 0;">
+      <li>Your token is stored securely in the iOS Keychain — it is never stored in plain text</li>
+      <li>It is used only to list the devices in your Tailnet — no changes are made to your Tailscale account</li>
+      <li>meshTerm requests read-only scope only — the token cannot modify your network or settings</li>
+      <li>The token is never transmitted to any meshTerm or third-party server — all Tailscale API calls are made directly from your device to Tailscale</li>
+    </ul>
+  </div>
+
+  <div class="section-header">
+    <div class="section-icon">⚡</div>
+    <h2>Part 2 — Enabling Tailscale SSH on Remote Hosts</h2>
+  </div>
+
+  <p>Tailscale SSH enables passwordless, keyless authentication when connecting from meshTerm
+  to a remote host. Instead of a password or SSH key, authentication is handled by Tailscale's
+  identity layer — if your device is on the Tailnet and authorised, you're in.</p>
+
+  <div class="two-col">
+    <div class="info-card">
+      <div class="card-title">Without Tailscale SSH</div>
+      <ul>
+        <li>Standard SSH authentication</li>
+        <li>Requires SSH key or password</li>
+        <li>Works on any Tailscale peer</li>
+        <li>No server-side setup needed</li>
+      </ul>
+    </div>
+    <div class="info-card">
+      <div class="card-title">With Tailscale SSH</div>
+      <ul>
+        <li>Passwordless, keyless auth</li>
+        <li>Identity from Tailscale network</li>
+        <li>One-time setup per server</li>
+        <li>Select "Tailscale SSH" in meshTerm auth method</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Requirements</h3>
+  <p>Tailscale SSH is supported on Linux servers running Tailscale v1.30 or later. The host
+  must be running the Tailscale daemon and be a member of the same Tailnet as your iPhone.</p>
+
+  <div class="callout warn">
+    <div class="callout-title">⚠️ Important</div>
+    Tailscale SSH replaces the normal SSH authentication for connections coming from your Tailnet.
+    Standard SSH (via password or key) continues to work for connections from outside your Tailnet.
+    Your existing SSH configuration is not removed.
+  </div>
+
+  <h3>Step 1 — Enable Tailscale SSH on the server</h3>
+  <p>Run this command on each Linux server you want to connect to without a password:</p>
+
+  <pre><span class="comment"># Enable Tailscale SSH on the remote host</span>
+<span class="cmd">sudo tailscale up</span> <span class="flag">--ssh</span></pre>
+
+  <p>Or if Tailscale is already running and you want to add SSH without changing other settings:</p>
+
+  <pre><span class="comment"># Add SSH to existing Tailscale configuration</span>
+<span class="cmd">sudo tailscale set</span> <span class="flag">--ssh</span></pre>
+
+  <p>Verify it's enabled:</p>
+
+  <pre><span class="comment"># Check Tailscale SSH status</span>
+<span class="cmd">tailscale status</span>
+
+<span class="comment"># You should see something like:</span>
+<span class="comment"># 100.x.x.x   your-server  yourname@  linux   active; offers SSH</span></pre>
+
+  <h3>Step 2 — Enable Tailscale SSH in your ACL policy (if required)</h3>
+  <p>Depending on your Tailscale plan and ACL configuration, you may need to explicitly
+  permit SSH in your network's access control policy. For personal Tailscale accounts
+  the default policy permits this automatically — you can skip this step.</p>
+
+  <p>If you manage a Tailnet with custom ACLs, add the following to your
+  <code>tailscale.com/admin/acls</code> policy:</p>
+
+  <pre><span class="comment">// Add to your ACL policy at tailscale.com/admin/acls</span>
+<span class="val">"ssh"</span>: [
+  {
+    <span class="val">"action"</span>: <span class="val">"accept"</span>,
+    <span class="val">"src"</span>:    [<span class="val">"autogroup:member"</span>],
+    <span class="val">"dst"</span>:    [<span class="val">"autogroup:self"</span>],
+    <span class="val">"users"</span>:  [<span class="val">"autogroup:nonroot"</span>, <span class="val">"root"</span>]
+  }
+]</pre>
+
+  <div class="callout tip">
+    <div class="callout-title">✓ Personal Tailscale accounts</div>
+    If you are on the free Tailscale plan managing your own devices, the default ACL policy
+    already permits Tailscale SSH between your own devices. You do not need to modify the ACL.
+    Just run <code>tailscale up --ssh</code> on the server and you are done.
+  </div>
+
+  <h3>Step 3 — Connect from meshTerm</h3>
+  <p>Once Tailscale SSH is enabled on your server, select <strong>Tailscale SSH</strong> as
+  the authentication method when adding or connecting to a host in meshTerm.</p>
+
+  <ol class="steps">
+    <li>
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>Open meshTerm and go to Hosts</strong>
+        <p>Your Tailscale peers are listed automatically if you have set up your API token. If not, add the host manually using its Tailscale IP (e.g. 100.x.x.x) or MagicDNS name (e.g. my-server.tail1234.ts.net).</p>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>Set Authentication to Tailscale SSH</strong>
+        <p>When adding or editing a host, select <strong>Tailscale SSH</strong> as the authentication method. No password or SSH key is needed.</p>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>Tap to connect</strong>
+        <p>meshTerm connects using your Tailscale identity — no password or SSH key required.</p>
+      </div>
+    </li>
+  </ol>
+
+  <div class="section-header">
+    <div class="section-icon">🔧</div>
+    <h2>Troubleshooting</h2>
+  </div>
+
+  <h3>Tailscale SSH connection fails</h3>
+  <ul style="padding-left: 20px; margin-bottom: 16px;">
+    <li style="font-size: 15px; margin-bottom: 8px;">Confirm <code>tailscale up --ssh</code> was run on the server</li>
+    <li style="font-size: 15px; margin-bottom: 8px;">Run <code>tailscale status</code> on the server and check it says <em>offers SSH</em></li>
+    <li style="font-size: 15px; margin-bottom: 8px;">Make sure both devices are on the same Tailnet and showing as connected</li>
+    <li style="font-size: 15px; margin-bottom: 8px;">Confirm <strong>Tailscale SSH</strong> is selected as the authentication method in meshTerm</li>
+  </ul>
+
+  <h3>Connection refused or permission denied</h3>
+  <ul style="padding-left: 20px; margin-bottom: 16px;">
+    <li style="font-size: 15px; margin-bottom: 8px;">Check your Tailscale ACL policy permits SSH between your devices</li>
+    <li style="font-size: 15px; margin-bottom: 8px;">Verify the username you are connecting as exists on the remote host</li>
+    <li style="font-size: 15px; margin-bottom: 8px;">Check <code>journalctl -u tailscaled</code> on the server for connection logs</li>
+  </ul>
+
+  <h3>API token expired</h3>
+  <p>Generate a new token at tailscale.com &rarr; Settings &rarr; Personal Settings &rarr; Keys and update it in
+  meshTerm &rarr; Settings &rarr; Tailscale &rarr; API Token.</p>
+
+  <h3>Enabling Tailscale SSH by Linux distribution</h3>
+
+  <div class="distro-tabs">
+    <div class="distro-tab-header">
+      <button class="distro-tab-btn active" onclick="showTab('ubuntu')">Ubuntu / Debian</button>
+      <button class="distro-tab-btn" onclick="showTab('arch')">Arch Linux</button>
+      <button class="distro-tab-btn" onclick="showTab('fedora')">Fedora / RHEL</button>
+      <button class="distro-tab-btn" onclick="showTab('alpine')">Alpine</button>
+    </div>
+
+    <div id="tab-ubuntu" class="distro-tab-content active">
+      <p>Install Tailscale if not already installed, then enable SSH:</p>
+      <pre><span class="comment"># Install Tailscale (if not already installed)</span>
+<span class="cmd">curl -fsSL https://tailscale.com/install.sh | sh</span>
+
+<span class="comment"># Enable Tailscale SSH</span>
+<span class="cmd">sudo tailscale up</span> <span class="flag">--ssh</span>
+
+<span class="comment"># Verify</span>
+<span class="cmd">tailscale status</span></pre>
+    </div>
+
+    <div id="tab-arch" class="distro-tab-content">
+      <p>Install from the official repos and enable via systemd:</p>
+      <pre><span class="comment"># Install Tailscale</span>
+<span class="cmd">sudo pacman -S tailscale</span>
+<span class="cmd">sudo systemctl enable --now tailscaled</span>
+
+<span class="comment"># Authenticate and enable SSH</span>
+<span class="cmd">sudo tailscale up</span> <span class="flag">--ssh</span>
+
+<span class="comment"># Verify</span>
+<span class="cmd">tailscale status</span></pre>
+    </div>
+
+    <div id="tab-fedora" class="distro-tab-content">
+      <p>Install via the Tailscale repo and enable SSH:</p>
+      <pre><span class="comment"># Install Tailscale</span>
+<span class="cmd">curl -fsSL https://tailscale.com/install.sh | sh</span>
+<span class="cmd">sudo systemctl enable --now tailscaled</span>
+
+<span class="comment"># Enable Tailscale SSH</span>
+<span class="cmd">sudo tailscale up</span> <span class="flag">--ssh</span>
+
+<span class="comment"># If using SELinux, you may need:</span>
+<span class="cmd">sudo setsebool -P tailscale_enabled 1</span>
+
+<span class="comment"># Verify</span>
+<span class="cmd">tailscale status</span></pre>
+    </div>
+
+    <div id="tab-alpine" class="distro-tab-content">
+      <p>Alpine uses OpenRC rather than systemd:</p>
+      <pre><span class="comment"># Install Tailscale</span>
+<span class="cmd">apk add tailscale</span>
+<span class="cmd">rc-update add tailscale</span>
+<span class="cmd">rc-service tailscale start</span>
+
+<span class="comment"># Enable Tailscale SSH</span>
+<span class="cmd">tailscale up</span> <span class="flag">--ssh</span>
+
+<span class="comment"># Verify</span>
+<span class="cmd">tailscale status</span></pre>
+    </div>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-title">✓ Further Reading</div>
+    Full Tailscale SSH documentation is available at
+    <a href="https://tailscale.com/kb/1193/tailscale-ssh" target="_blank">tailscale.com/kb/1193/tailscale-ssh</a>.
+    For ACL configuration see
+    <a href="https://tailscale.com/kb/1018/acls" target="_blank">tailscale.com/kb/1018/acls</a>.
+  </div>
+
+</main>
+
+<div class="nav-links">
+  <a href="index.html">Privacy Policy</a>
+  <a href="eula.html">EULA</a>
+  <a href="tailscale.html">Tailscale Setup</a>
+</div>
+
+<footer>
+  <p>meshTerm &nbsp;·&nbsp; iOS SSH Client &nbsp;·&nbsp; <a href="mailto:betchers@me.com">betchers@me.com</a></p>
+  <p style="margin-top: 6px; font-size: 12px;">
+    meshTerm is not affiliated with, endorsed by, or in partnership with Tailscale Inc.
+  </p>
+</footer>
+
+<script>
+  function showTab(name) {
+    document.querySelectorAll('.distro-tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.distro-tab-btn').forEach(el => el.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    event.target.classList.add('active');
+  }
+</script>
+
+</body>
+</html>
