@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>meshTerm User Guide</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --text-main: #1f2937;
+            --text-light: #6b7280;
+            --bg-body: #f9fafb;
+            --bg-card: #ffffff;
+            --border: #e5e7eb;
+            --code-bg: #f3f4f6;
+            --pro-color: #8b5cf6;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-main);
+            background-color: var(--bg-body);
+            margin: 0;
+            display: flex;
+        }
+
+        /* Sidebar Navigation */
+        nav {
+            width: 280px;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            background: var(--bg-card);
+            border-right: 1px solid var(--border);
+            padding: 2rem 1.5rem;
+            overflow-y: auto;
+        }
+
+        nav h1 { font-size: 1.25rem; margin-bottom: 2rem; color: var(--primary); }
+        nav ul { list-style: none; padding: 0; }
+        nav li { margin-bottom: 0.75rem; }
+        nav a { 
+            text-decoration: none; 
+            color: var(--text-light); 
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+        nav a:hover { color: var(--primary); }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            max-width: 900px;
+            padding: 3rem 4rem;
+            margin: 0 auto;
+        }
+
+        section { margin-bottom: 4rem; scroll-margin-top: 2rem; }
+        h2 { border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; margin-top: 3rem; }
+        h3 { margin-top: 2rem; color: var(--text-main); }
+
+        /* Components */
+        .badge-pro {
+            background: var(--pro-color);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            font-weight: bold;
+            vertical-align: middle;
+            margin-left: 8px;
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+            background: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background: #1e293b;
+            color: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        pre code { background: transparent; color: inherit; padding: 0; }
+
+        blockquote {
+            border-left: 4px solid var(--primary);
+            background: #eff6ff;
+            margin: 1.5rem 0;
+            padding: 1rem 1.5rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: var(--bg-card);
+        }
+
+        th, td {
+            text-align: left;
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th { background: var(--bg-body); }
+
+        .warning {
+            background: #fff7ed;
+            border-left: 4px solid #f97316;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        footer {
+            margin-top: 5rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-light);
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            nav { width: 100%; height: auto; position: relative; }
+            main { padding: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <h1>meshTerm</h1>
+    <ul>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#getting-started">Getting Started</a></li>
+        <li><a href="#managing-hosts">Managing SSH Hosts</a></li>
+        <li><a href="#authentication">Authentication</a></li>
+        <li><a href="#ssh-keys">Key Management <span class="badge-pro">Pro</span></a></li>
+        <li><a href="#tailscale">Tailscale <span class="badge-pro">Pro</span></a></li>
+        <li><a href="#snippets">Snippet Vault <span class="badge-pro">Pro</span></a></li>
+        <li><a href="#terminal">Terminal Controls</a></li>
+        <li><a href="#security">Security & Privacy</a></li>
+        <li><a href="#pro">meshTerm Pro</a></li>
+        <li><a href="#troubleshooting">Troubleshooting</a></li>
+    </ul>
+</nav>
+
+<main>
+    <section id="overview">
+        <h1>meshTerm User Guide</h1>
+        <p>meshTerm is a powerful SSH terminal client specifically designed for iPhone and iPad. It bridges the gap between mobile productivity and remote server management with native Tailscale integration.</p>
+    </section>
+
+    <section id="prerequisites">
+        <h2>Prerequisites</h2>
+        <h3>For all connections</h3>
+        <ul>
+            <li>SSH-enabled server reachable via network.</li>
+            <li>Hostname/IP, Port (default 22), and Username.</li>
+        </ul>
+        <h3>For Pro Features <span class="badge-pro">Pro</span></h3>
+        <ul>
+            <li><strong>Tailscale App:</strong> Must be installed and connected for Tailscale SSH and device browsing.</li>
+            <li><strong>Ed25519 Keys:</strong> Required for SSH key authentication.</li>
+        </ul>
+    </section>
+
+    <section id="getting-started">
+        <h2>Getting Started</h2>
+        <p>Adding a host is the first step to managing your infrastructure from your pocket.</p>
+        <ol>
+            <li>Tap <strong>+</strong> in the top-right corner.</li>
+            <li>Enter your <strong>Label, Hostname, and Username</strong>.</li>
+            <li>Choose your <strong>Authentication Method</strong>.</li>
+            <li>Tap <strong>Add</strong> and then tap the host in your list to connect.</li>
+        </ol>
+    </section>
+
+    <section id="managing-hosts">
+        <h2>Managing SSH Hosts</h2>
+        <p>Control your list with simple gestures:</p>
+        <ul>
+            <li><strong>Edit:</strong> Swipe right or long-press on a host.</li>
+            <li><strong>Delete:</strong> Swipe left and tap Delete.</li>
+            <li><strong>Limits:</strong> Free accounts are limited to 1 host. <a href="#pro">Upgrade to Pro</a> for unlimited hosts.</li>
+        </ul>
+    </section>
+
+    <section id="authentication">
+        <h2>Authentication Methods</h2>
+        <h3>Password</h3>
+        <p>Stored securely in the <strong>iOS Keychain</strong>. It is never written to disk in plain text.</p>
+        
+        <h3>SSH Key <span class="badge-pro">Pro</span></h3>
+        <p>Uses local signing. Your private key never leaves the device's Secure Enclave.</p>
+
+        <h3>Tailscale SSH <span class="badge-pro">Pro</span></h3>
+        <blockquote>
+            Tailscale SSH authentication is handled entirely by the Tailscale app — meshTerm does not send any credentials for these connections.
+        </blockquote>
+    </section>
+
+    <section id="ssh-keys">
+        <h2>SSH Key Management <span class="badge-pro">Pro</span></h2>
+        <p>Manage your keys in <code>Settings → SSH Keys</code>.</p>
+        <h3>Generating Keys</h3>
+        <p>meshTerm generates modern <strong>Ed25519</strong> key pairs. Tap <strong>Generate</strong> to create one and copy the public key to your server's <code>~/.ssh/authorized_keys</code>.</p>
+        <h3>Importing Keys</h3>
+        <p>Paste your <strong>unencrypted</strong> OpenSSH private key. Note that meshTerm does not support passphrases for keys currently.</p>
+        <pre><code>ssh-keygen -p -N "" -f ~/.ssh/id_ed25519</code></pre>
+    </section>
+
+    <section id="tailscale">
+        <h2>Tailscale Integration <span class="badge-pro">Pro</span></h2>
+        <p>Browse your entire Tailnet by tapping the <strong>globe icon</strong> in the host list.</p>
+        <div class="warning">
+            <strong>API Token Required:</strong> You must generate a read-only API token in your Tailscale admin console to enable device browsing.
+        </div>
+        <ol>
+            <li>Generate token at <code>tailscale.com</code>.</li>
+            <li>Set permissions to <strong>read-only</strong>.</li>
+            <li>Paste into <code>Settings → Tailscale → API Token</code>.</li>
+        </ol>
+    </section>
+
+    <section id="snippets">
+        <h2>Snippet Vault <span class="badge-pro">Pro</span></h2>
+        <p>Stop typing complex commands on a mobile keyboard. Access your vault via the <strong>snippets</strong> button in the terminal toolbar.</p>
+        <ul>
+            <li><strong>Linux Essentials:</strong> Common admin commands included.</li>
+            <li><strong>OpenClaw:</strong> Specialized commands for OpenClaw users.</li>
+            <li><strong>Searchable:</strong> Quickly find commands by title or tags.</li>
+        </ul>
+    </section>
+
+    <section id="terminal">
+        <h2>Terminal Controls</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Key</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Ctrl</strong></td><td>One-shot modifier for sequences like Ctrl+C.</td></tr>
+                <tr><td><strong>Esc</strong></td><td>Exit insert mode or cancel prompts.</td></tr>
+                <tr><td><strong>Tab</strong></td><td>Shell autocompletion.</td></tr>
+                <tr><td><strong>Alt</strong></td><td>Meta modifier for word-jumping (Alt+F/B).</td></tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section id="security">
+        <h2>Security</h2>
+        <h3>Trust On First Use (TOFU)</h3>
+        <p>meshTerm verifies server identity via fingerprints. If a host key changes, meshTerm blocks the connection to prevent MITM attacks.</p>
+        <h3>App Lock</h3>
+        <p>Secure the app using <strong>Face ID, Touch ID, or Passcode</strong> via <code>Settings → App Lock</code>.</p>
+    </section>
+
+    <section id="pro">
+        <h2>meshTerm Pro</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Feature</th>
+                    <th>Free</th>
+                    <th>Pro</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Saved Hosts</td><td>1</td><td>Unlimited</td></tr>
+                <tr><td>SSH Key Auth</td><td>No</td><td>Yes</td></tr>
+                <tr><td>Tailscale Integration</td><td>No</td><td>Yes</td></tr>
+                <tr><td>Snippet Vault</td><td>No</td><td>Yes</td></tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section id="troubleshooting">
+        <h2>Troubleshooting</h2>
+        <h3>Host Key Mismatch</h3>
+        <div class="warning">
+            If you see a mismatch warning, only delete the entry from <code>Settings → Known Hosts</code> if you are 100% sure the server was rebuilt.
+        </div>
+        <h3>Tailscale Issues</h3>
+        <ul>
+            <li>Ensure the Tailscale app is connected.</li>
+            <li>Verify "Tailscale SSH" is enabled on the destination server (<code>sudo tailscale up --ssh</code>).</li>
+        </ul>
+    </section>
+
+    <footer>
+        <p>meshTerm developed by James Betchley. &copy; 2026.</p>
+        <p><a href="https://github.com/JBetchGH/meshTerm">View on GitHub</a></p>
+    </footer>
+</main>
+
+<script>
+    // Smooth scrolling for navigation
+    document.querySelectorAll('nav a').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
