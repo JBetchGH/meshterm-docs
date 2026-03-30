@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>meshTerm User Guide</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --pro-accent: #8b5cf6;
+            --text-main: #1f2937;
+            --text-muted: #64748b;
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --border: #e2e8f0;
+            --code-bg: #f1f5f9;
+            --sidebar-width: 280px;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-main);
+            background-color: var(--bg-body);
+            margin: 0;
+            display: flex;
+        }
+
+        /* Navigation Sidebar */
+        nav {
+            width: var(--sidebar-width);
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            background: var(--bg-card);
+            border-right: 1px solid var(--border);
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+
+        .nav-header {
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Home Link Added Here */
+        .home-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .home-link:hover {
+            text-decoration: underline;
+        }
+
+        nav ul { list-style: none; padding: 0; margin: 0; }
+        nav li { margin-bottom: 0.5rem; }
+        nav a:not(.home-link) {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            display: block;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        nav a:not(.home-link):hover, nav .active {
+            background: #eff6ff;
+            color: var(--primary);
+        }
+
+        /* Content Area */
+        main {
+            flex: 1;
+            padding: 4rem;
+            max-width: 1100px;
+        }
+
+        section { margin-bottom: 5rem; scroll-margin-top: 2rem; }
+        h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+        h2 { font-size: 1.75rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; margin-top: 3rem; }
+        h3 { font-size: 1.25rem; margin-top: 2rem; color: #111827; }
+        h4 { font-size: 1.1rem; margin-top: 1.5rem; color: #374151; }
+
+        /* Pro Badge */
+        .pro-badge {
+            background: var(--pro-accent);
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-left: 6px;
+            vertical-align: middle;
+        }
+
+        /* Image Display Cards */
+        .image-container {
+            display: flex;
+            gap: 20px;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .img-card {
+            background: var(--bg-card);
+            padding: 10px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            max-width: 280px;
+        }
+
+        .img-card img {
+            width: 100%;
+            border-radius: 8px;
+            display: block;
+        }
+
+        .img-caption {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+            background: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: #e11d48;
+        }
+
+        pre {
+            background: #0f172a;
+            color: #f8fafc;
+            padding: 1.25rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        blockquote {
+            border-left: 4px solid var(--primary);
+            background: #eff6ff;
+            margin: 2rem 0;
+            padding: 1.25rem 1.5rem;
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 12px;
+            border: 1px solid var(--border);
+        }
+        
+        th {
+            background: var(--code-bg);
+        }
+
+        @media (max-width: 900px) {
+            body { flex-direction: column; }
+            nav { width: 100%; height: auto; position: relative; }
+            main { padding: 2rem; }
+            .img-card { max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-header">meshTerm</div>
+    <a href="index.html" class="home-link">← Back to Home</a>
+    <ul>
+        <li><a href="#overview">1. Overview</a></li>
+        <li><a href="#prerequisites">2. Prerequisites</a></li>
+        <li><a href="#getting-started">3. Getting Started</a></li>
+        <li><a href="#managing-ssh-hosts">4. Managing SSH Hosts</a></li>
+        <li><a href="#connecting-to-a-host">5. Connecting to a Host</a></li>
+        <li><a href="#authentication-methods">6. Authentication Methods</a></li>
+        <li><a href="#ssh-key-management">7. SSH Key Management</a></li>
+        <li><a href="#tailscale-integration">8. Tailscale Integration</a></li>
+        <li><a href="#snippet-vault">9. Snippet Vault</a></li>
+        <li><a href="#terminal-controls">10. Terminal Controls</a></li>
+        <li><a href="#security">11. Security</a></li>
+        <li><a href="#settings">12. Settings</a></li>
+        <li><a href="#meshterm-pro">13. meshTerm Pro</a></li>
+        <li><a href="#troubleshooting">14. Troubleshooting</a></li>
+    </ul>
+</nav>
+
+<main>
+    <h1>meshTerm User Guide</h1>
+
+    <section id="overview">
+        <h2>Overview</h2>
+        <p>meshTerm is an SSH terminal client for iPhone and iPad. It lets you connect to remote servers using password or SSH key authentication, and integrates with Tailscale to browse and connect to your Tailnet devices directly from the app.</p>
+        
+        <div class="image-container">
+            <div class="img-card">
+                <img src="images/IMG_4861.PNG" alt="meshTerm Host List">
+                <div class="img-caption">The main host list dashboard.</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="prerequisites">
+        <h2>Prerequisites</h2>
+        
+        <h3>For all connections</h3>
+        <ul>
+            <li>A server with SSH enabled and accessible from your device</li>
+            <li>Your server's hostname or IP address, port, and a valid username</li>
+        </ul>
+
+        <h3>For password authentication</h3>
+        <ul>
+            <li>The password for your server account</li>
+        </ul>
+
+        <h3>For SSH key authentication <span class="pro-badge">Pro</span></h3>
+        <ul>
+            <li>An Ed25519 SSH key pair. You can generate one inside meshTerm, or bring your own unencrypted OpenSSH key.</li>
+            <li>The corresponding public key added to <code>~/.ssh/authorized_keys</code> on the server</li>
+        </ul>
+
+        <h3>For Tailscale SSH <span class="pro-badge">Pro</span></h3>
+        <ul>
+            <li><strong>Tailscale app installed on your iPhone/iPad</strong> — meshTerm routes connections through the Tailscale VPN tunnel, which requires the Tailscale app to be running and connected</li>
+            <li>Both your iPhone and the target server must be on the same Tailnet</li>
+            <li>The server must have <a href="https://tailscale.com/kb/1193/tailscale-ssh">Tailscale SSH</a> enabled in your Tailnet ACLs</li>
+        </ul>
+
+        <h3>For Tailscale device browsing <span class="pro-badge">Pro</span></h3>
+        <ul>
+            <li>A Tailscale API token (read-only) — see <a href="#getting-a-tailscale-api-token">Getting a Tailscale API Token</a></li>
+            <li>The Tailscale app installed and connected to your Tailnet</li>
+        </ul>
+    </section>
+
+    <section id="getting-started">
+        <h2>Getting Started</h2>
+        
+        <h3>Adding your first host</h3>
+        <ol>
+            <li>Open meshTerm. You will see the host list (empty on first launch).</li>
+            <li>Tap <strong>+</strong> in the top-right corner.</li>
+            <li>Fill in the connection details:
+                <ul>
+                    <li><strong>Label</strong> — a friendly name for this connection (e.g. "My Server")</li>
+                    <li><strong>Hostname or IP</strong> — the address of your server</li>
+                    <li><strong>Port</strong> — defaults to 22</li>
+                    <li><strong>Username</strong> — your account name on the server</li>
+                </ul>
+            </li>
+            <li>Under <strong>Authentication</strong>, choose a method and enter your credentials.</li>
+            <li>Tap <strong>Add</strong> to save.</li>
+        </ol>
+
+        <div class="image-container">
+            <div class="img-card">
+                <img src="images/IMG_4886.PNG" alt="Add Host Screen">
+                <div class="img-caption">Adding a new SSH host.</div>
+            </div>
+            <div class="img-card">
+                <img src="images/IMG_4876.PNG" alt="Edit Host Screen">
+                <div class="img-caption">Editing existing host details.</div>
+            </div>
+        </div>
+
+        <h3>Connecting</h3>
+        <p>Tap any host in the list to open a terminal session. meshTerm connects immediately — you will see a "Connecting…" indicator while the session is being established.</p>
+    </section>
+
+    <section id="managing-ssh-hosts">
+        <h2>Managing SSH Hosts</h2>
+        
+        <h3>Editing a host</h3>
+        <p>Swipe right on a host and tap <strong>Edit</strong>, or long-press the row to reveal options.</p>
+
+        <h3>Deleting a host</h3>
+        <p>Swipe left on a host and tap <strong>Delete</strong>.</p>
+
+        <h3>Host limit</h3>
+        <p>Free accounts can save <strong>1 host</strong>. <a href="#meshterm-pro">meshTerm Pro</a> removes this limit.</p>
+    </section>
+
+    <section id="connecting-to-a-host">
+        <h2>Connecting to a Host</h2>
+        <p>When you tap a host, meshTerm:</p>
+        <ol>
+            <li>Resolves the hostname and opens a TCP connection to the server.</li>
+            <li>Verifies the server's host key against your saved known hosts (see <a href="#known-hosts-tofu">Known Hosts</a>).</li>
+            <li>Authenticates using the method configured for that host.</li>
+            <li>Requests a PTY and launches a shell session.</li>
+        </ol>
+        <p>The terminal becomes interactive as soon as the shell is ready.</p>
+
+        <h3>Environment variables</h3>
+        <p>You can attach custom environment variables to any host. These are sent to the shell session on connect. To add them, edit the host and use the <strong>Environment Variables</strong> section.</p>
+
+        <h3>Disconnecting</h3>
+        <p>Close the terminal view or terminate the shell session from the server side (e.g. <code>exit</code>, <code>logout</code>, or Ctrl+D).</p>
+    </section>
+
+    <section id="authentication-methods">
+        <h2>Authentication Methods</h2>
+        
+        <h3>Password</h3>
+        <p>Enter your password when adding or editing the host. Passwords are stored securely in the iOS Keychain and never written to disk in plain text.</p>
+
+        <h3>SSH Key <span class="pro-badge">Pro</span></h3>
+        <p>Select one of your saved SSH keys when adding or editing the host. The private key never leaves your device — meshTerm signs the authentication challenge locally and sends only the public key to the server.</p>
+        <p>To use SSH key authentication:</p>
+        <ol>
+            <li>Generate or import a key in <strong>Settings → SSH Keys</strong> (see <a href="#ssh-key-management">SSH Key Management</a>).</li>
+            <li>Copy the public key and add it to <code>~/.ssh/authorized_keys</code> on your server.</li>
+            <li>When adding or editing a host, set the auth method to <strong>SSH Key</strong> and select the key.</li>
+        </ol>
+
+        <h3>Tailscale SSH <span class="pro-badge">Pro</span></h3>
+        <p>For servers on your Tailnet with Tailscale SSH enabled, no password or key is required. Tailscale authenticates the connection at the network layer using your device's Tailscale identity.</p>
+        <p>Requirements:</p>
+        <ul>
+            <li>Tailscale app installed and connected on your iPhone/iPad</li>
+            <li>Server enrolled in the same Tailnet with Tailscale SSH enabled in ACLs</li>
+            <li>On the remote host: <code>sudo tailscale up --ssh</code></li>
+        </ul>
+        <blockquote>Tailscale SSH authentication is handled entirely by the Tailscale app — meshTerm does not send any credentials for these connections.</blockquote>
+    </section>
+
+    <section id="ssh-key-management">
+        <h2>SSH Key Management</h2>
+        <p>Access SSH keys via <strong>Settings → SSH Keys</strong>.</p>
+        
+        <h3>Generating a new key</h3>
+        <ol>
+            <li>Tap <strong>Add Key</strong>.</li>
+            <li>Enter a label (e.g. "Work iPhone").</li>
+            <li>Tap <strong>Generate</strong>. meshTerm creates a new Ed25519 key pair and saves it securely in the iOS Keychain.</li>
+        </ol>
+        <p>The public key is shown in the key list in OpenSSH format:</p>
+        <pre><code>ssh-ed25519 AAAA... Work iPhone</code></pre>
+        <p>The comment at the end reflects the label you gave the key.</p>
+
+        <h3>Importing an existing key</h3>
+        <ol>
+            <li>Tap <strong>Add Key → Import</strong>.</li>
+            <li>Paste your unencrypted OpenSSH private key (the full contents of the file, including the <code>-----BEGIN OPENSSH PRIVATE KEY-----</code> and <code>-----END OPENSSH PRIVATE KEY-----</code> lines).</li>
+            <li>Tap <strong>Import</strong>.</li>
+        </ol>
+
+        <div class="image-container">
+            <div class="img-card">
+                <img src="images/IMG_4873.PNG" alt="Import SSH Key">
+                <div class="img-caption">Importing keys.</div>
+            </div>
+        </div>
+
+        <p><strong>Requirements for import:</strong></p>
+        <ul>
+            <li>Ed25519 keys only</li>
+            <li>Unencrypted (no passphrase). To strip a passphrase: <code>ssh-keygen -p -N "" -f ~/.ssh/id_ed25519</code></li>
+        </ul>
+
+        <h3>Copying a public key</h3>
+        <p>Tap the copy icon next to a key to copy the full OpenSSH public key to your clipboard. Paste this into <code>~/.ssh/authorized_keys</code> on your server.</p>
+
+        <h3>Deleting a key</h3>
+        <p>Swipe left on a key and tap <strong>Delete</strong>. The private key is permanently removed from the Keychain.</p>
+        <blockquote>If you delete a key that is assigned to a host, that host will fail to connect until you edit it and assign a different key.</blockquote>
+
+        <h3>Key storage</h3>
+        <ul>
+            <li>Private keys are stored as 32-byte Ed25519 seeds in the <strong>iOS Keychain</strong>, protected at rest by the device's secure enclave.</li>
+            <li>Private keys are marked <code>WhenUnlockedThisDeviceOnly</code> — they cannot be backed up to iCloud or moved to another device.</li>
+            <li>Public keys are stored in UserDefaults for display purposes only.</li>
+        </ul>
+    </section>
+
+    <section id="tailscale-integration">
+        <h2>Tailscale Integration</h2>
+        <p>meshTerm integrates with the <a href="https://tailscale.com">Tailscale</a> VPN to let you browse your Tailnet and add devices directly as SSH hosts.</p>
+        
+        <h3>Prerequisites</h3>
+        <ul>
+            <li>meshTerm Pro</li>
+            <li>Tailscale app installed and connected to your Tailnet</li>
+            <li>A read-only Tailscale API token (see below)</li>
+        </ul>
+
+        <h3 id="getting-a-tailscale-api-token">Getting a Tailscale API Token</h3>
+        <p>In meshTerm, tap <strong>Settings → Tailscale → How to get an API token</strong> for in-app instructions. The steps are:</p>
+        <ol>
+            <li>Go to <a href="https://tailscale.com">tailscale.com</a> and sign in.</li>
+            <li>Navigate to <strong>Settings → Personal Settings → Keys</strong>.</li>
+            <li>Under <strong>API Access Tokens</strong>, click <strong>Generate token</strong>.</li>
+            <li>Give the token a label (e.g. "meshTerm").</li>
+            <li>Set an expiry — 90 days is recommended.</li>
+            <li>Leave permissions as <strong>read-only</strong> (meshTerm does not need write access).</li>
+            <li>Copy the token.</li>
+            <li>In meshTerm, go to <strong>Settings → Tailscale → API Token</strong> and paste it in.</li>
+        </ol>
+        <blockquote>Your API token is stored securely in the iOS Keychain. meshTerm uses it only to fetch your device list and never modifies your Tailnet configuration.</blockquote>
+
+        <h3>Browsing your Tailnet</h3>
+        <ol>
+            <li>Tap the <strong>globe</strong> icon in the host list toolbar.</li>
+            <li>Your Tailnet devices are listed with their hostname, IP address, and operating system.</li>
+            <li>Enter a <strong>username</strong> (applied to all devices added in this session).</li>
+            <li>Tap <strong>+</strong> next to a device to add it as an SSH host.</li>
+        </ol>
+        <p>Devices added from the Tailnet browser are automatically configured to use <strong>Tailscale SSH</strong> auth (if you are on Pro).</p>
+
+        <div class="image-container">
+            <div class="img-card">
+                <img src="images/IMG_4875.PNG" alt="Tailnet Device Browser">
+                <div class="img-caption">Browsing active devices on your Tailnet.</div>
+            </div>
+        </div>
+
+        <h3>API token expiry</h3>
+        <p>Tailscale API tokens expire. When your token expires, the Tailnet browser will show an error. Return to <strong>Settings → Tailscale</strong> and generate a new token using the steps above.</p>
+    </section>
+
+    <section id="snippet-vault">
+        <h2>Snippet Vault</h2>
+        <p>The Snippet Vault (Pro) is a searchable library of terminal commands you can send to the active session with a single tap.</p>
+        <p>Access it from the <strong>snippets</strong> button in the terminal toolbar.</p>
+        
+        <div class="image-container">
+            <div class="img-card">
+                <img src="images/IMG_4879.PNG" alt="Snippet Vault">
+                <div class="img-caption">Searchable command library with folders.</div>
+            </div>
+        </div>
+
+        <h3>Default snippets</h3>
+        <p>meshTerm ships with two folders of pre-loaded snippets:</p>
+        <p><strong>Linux</strong> — common admin commands including <code>ls -lah</code>, <code>df -h</code>, <code>ps aux</code>, <code>ss -tuln</code>, <code>tail -f /var/log/syslog</code>, <code>systemctl status</code>, and more.</p>
+        <p><strong>OpenClaw</strong> — commands for <a href="https://openclaw.ai">OpenClaw</a> including <code>openclaw update</code>, <code>openclaw doctor</code>, <code>openclaw models list</code>, <code>openclaw gateway status</code>, and <code>openclaw memory index --force</code>.</p>
+
+        <h3>Using a snippet</h3>
+        <p>Tap any snippet to send the command text directly to the terminal. The Vault closes automatically and the command is typed into your active session.</p>
+
+        <h3>Adding snippets</h3>
+        <ol>
+            <li>Tap <strong>+</strong> in the Snippet Vault toolbar.</li>
+            <li>Enter a title and the command text.</li>
+            <li>Optionally assign it to a folder and add tags.</li>
+            <li>Tap <strong>Save</strong>.</li>
+        </ol>
+
+        <h3>Searching</h3>
+        <p>Use the search bar at the top of the Vault. meshTerm searches across snippet titles, command text, and tags.</p>
+
+        <h3>Folders</h3>
+        <p>Tap <strong>New Folder</strong> to organise snippets. Tap a folder to view only its snippets. Deleting a folder does not delete its snippets — they move to the root level.</p>
+    </section>
+
+    <section id="terminal-controls">
+        <h2>Terminal Controls</h2>
+        
+        <div class="image-container">
+            <div class="img-card">
+                <img src="images/IMG_4882.PNG" alt="Terminal UI">
+                <div class="img-caption">Active shell with modifier row.</div>
+            </div>
+            <div class="img-card">
+                <img src="images/IMG_4883.PNG" alt="Symbol Strip">
+                <div class="img-caption">The extended symbol strip.</div>
+            </div>
+            <div class="img-card">
+                <img src="images/IMG_4884.PNG" alt="Function Keys">
+                <div class="img-caption">F1-F12 and navigation keys.</div>
+            </div>
+        </div>
+
+        <h3>Modifier keys</h3>
+        <table>
+            <thead>
+                <tr><th>Key</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Ctrl</strong></td><td>One-shot Ctrl modifier. Tap once, then press a key (e.g. C, D, Z, L). Releases automatically after one keystroke.</td></tr>
+                <tr><td><strong>Esc</strong></td><td>Sends the Escape character. Use to exit insert mode in vim or cancel prompts.</td></tr>
+                <tr><td><strong>Alt</strong></td><td>One-shot Alt/Meta modifier. Use for word navigation: Alt+F (forward word), Alt+B (back word).</td></tr>
+                <tr><td><strong>Tab</strong></td><td>Sends Tab for shell autocompletion.</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Common Ctrl sequences</h3>
+        <table>
+            <thead>
+                <tr><th>Sequence</th><th>Action</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Ctrl + C</td><td>Interrupt — stop the running command</td></tr>
+                <tr><td>Ctrl + D</td><td>End of input — log out or close session</td></tr>
+                <tr><td>Ctrl + Z</td><td>Suspend — background the current process</td></tr>
+                <tr><td>Ctrl + L</td><td>Clear — redraw the screen</td></tr>
+                <tr><td>Ctrl + A</td><td>Move cursor to beginning of line</td></tr>
+                <tr><td>Ctrl + E</td><td>Move cursor to end of line</td></tr>
+                <tr><td>Ctrl + R</td><td>Reverse history search</td></tr>
+                <tr><td>Ctrl + W</td><td>Delete the word before the cursor</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Arrow keys</h3>
+        <ul>
+            <li><strong>↑ / ↓</strong> — Navigate command history; move cursor in full-screen apps (vim, htop)</li>
+            <li><strong>← / →</strong> — Move cursor; scroll through menus in full-screen apps</li>
+        </ul>
+
+        <h3>Extended keys</h3>
+        <p>Tap the keyboard dismiss button to reveal the full extended key row:</p>
+        <ul>
+            <li><strong>F1–F12</strong> — Function keys</li>
+            <li><strong>Home / End</strong> — Jump to start/end of line</li>
+            <li><strong>Page Up / Page Down</strong> — Scroll one screen at a time</li>
+        </ul>
+
+        <h3>Symbol strip</h3>
+        <p>The symbol strip provides quick access to commonly used characters:</p>
+        <p><code>|</code> <code>`</code> <code>~</code> <code>$</code> <code>/</code> <code>\</code> <code>{</code> <code>}</code> <code>[</code> <code>]</code></p>
+    </section>
+
+    <section id="security">
+        <h2>Security</h2>
+        
+        <h3 id="known-hosts-tofu">Known Hosts (TOFU)</h3>
+        <p>meshTerm uses <strong>Trust On First Use (TOFU)</strong> to verify server identity. The first time you connect to a host, meshTerm presents the server's host key fingerprint and asks you to confirm before proceeding.</p>
+        <ul>
+            <li>Tap <strong>Trust & Connect</strong> to accept the fingerprint and save it.</li>
+            <li>Tap <strong>Cancel</strong> to abort the connection.</li>
+        </ul>
+        <p>On subsequent connections, meshTerm checks the fingerprint automatically. If it has changed, the connection is blocked with a security warning (see <a href="#host-key-mismatch">Host key mismatch</a>).</p>
+
+        <h3>Viewing and managing known hosts</h3>
+        <p>Go to <strong>Settings → Known Hosts</strong> to see all trusted hosts. Swipe left on an entry to delete it.</p>
+        <p>If a server's host key legitimately changes (e.g. after a rebuild), delete the old entry from Known Hosts and reconnect to accept the new fingerprint.</p>
+
+        <h3>Credential storage</h3>
+        <p>All sensitive data is stored in the <strong>iOS Keychain</strong>:</p>
+        <ul>
+            <li>SSH private keys</li>
+            <li>SSH passwords</li>
+            <li>Tailscale API tokens</li>
+        </ul>
+        <p>Nothing sensitive is written to iCloud backup, UserDefaults, or the filesystem.</p>
+
+        <h3>App Lock</h3>
+        <p>meshTerm can be locked with Face ID, Touch ID, or your device passcode. When enabled, the app locks automatically when it moves to the background and requires biometric or passcode authentication to reopen.</p>
+        <p>Enable app lock in <strong>Settings → App Lock</strong>.</p>
+        <blockquote>App Lock requires a device passcode to be set. If no passcode is configured, you will be prompted to set one in iOS Settings → Face ID & Passcode.</blockquote>
+    </section>
+
+    <section id="settings">
+        <h2>Settings</h2>
+        
+        <h3>SSH Keys</h3>
+        <p>Manage your SSH key pairs. See <a href="#ssh-key-management">SSH Key Management</a>.</p>
+
+        <h3>Security → Known Hosts</h3>
+        <p>View and delete trusted host fingerprints. See <a href="#known-hosts-tofu">Known Hosts</a>.</p>
+
+        <h3>Tailscale → API Token</h3>
+        <p>Enter your read-only Tailscale API token to enable Tailnet device browsing. See <a href="#tailscale-integration">Tailscale Integration</a>.</p>
+
+        <h3>About</h3>
+        <p>Shows the current app version and links to the Privacy Policy and Terms of Use.</p>
+    </section>
+
+    <section id="meshterm-pro">
+        <h2>meshTerm Pro</h2>
+        <p>meshTerm Pro unlocks the following features:</p>
+        
+        <table>
+            <thead>
+                <tr><th>Feature</th><th>Free</th><th>Pro</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Saved hosts</td><td>1</td><td>Unlimited</td></tr>
+                <tr><td>Password authentication</td><td>Yes</td><td>Yes</td></tr>
+                <tr><td>SSH key authentication</td><td>—</td><td>Yes</td></tr>
+                <tr><td>Generate / import SSH keys</td><td>—</td><td>Yes</td></tr>
+                <tr><td>Tailscale SSH</td><td>—</td><td>Yes</td></tr>
+                <tr><td>Tailscale device browsing</td><td>—</td><td>Yes</td></tr>
+                <tr><td>Snippet Vault</td><td>—</td><td>Yes</td></tr>
+                <tr><td>Known hosts management</td><td>Yes</td><td>Yes</td></tr>
+                <tr><td>Terminal emulation</td><td>Yes</td><td>Yes</td></tr>
+                <tr><td>App Lock</td><td>Yes</td><td>Yes</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Subscribing</h3>
+        <p>Tap <strong>Upgrade</strong> in Settings or the paywall prompt. Pro is available as a monthly or annual subscription — the annual plan is the best value.</p>
+
+        <h3>Restoring purchases</h3>
+        <p>Tap <strong>Restore Purchases</strong> in Settings if you reinstall the app or switch devices.</p>
+    </section>
+
+    <section id="troubleshooting">
+        <h2>Troubleshooting</h2>
+        
+        <h3>Connection issues</h3>
+        <h4>"Could not resolve '[hostname]'"</h4>
+        <p>The device cannot look up the hostname via DNS.</p>
+        <ul>
+            <li>Check the hostname is spelled correctly.</li>
+            <li>Check your device has a working internet connection.</li>
+            <li>If using a local hostname (e.g. <code>myserver.local</code>), ensure you are on the same local network.</li>
+        </ul>
+
+        <h4>"Could not connect to [host]:[port]"</h4>
+        <p>The TCP connection was refused or timed out.</p>
+        <ul>
+            <li>Verify the server is online and accessible.</li>
+            <li>Check the port number is correct (default SSH is 22).</li>
+            <li>Confirm SSH is running on the server: <code>sudo systemctl status ssh</code>.</li>
+            <li>If connecting to a local network address, ensure meshTerm has <strong>Local Network</strong> permission: go to <strong>iOS Settings → Privacy & Security → Local Network</strong> and enable meshTerm.</li>
+        </ul>
+
+        <h4>"The connection was closed"</h4>
+        <p>The server terminated the session.</p>
+        <ul>
+            <li>The server may have timed out an idle connection. Reconnect and consider setting <code>ClientAliveInterval</code> on the server.</li>
+            <li>The shell may have exited normally (e.g. you typed <code>exit</code>).</li>
+        </ul>
+
+        <h4>Connection hangs at "Connecting…"</h4>
+        <ul>
+            <li>Check your network connection.</li>
+            <li>If connecting via Tailscale, ensure the Tailscale app is open and connected to your Tailnet.</li>
+            <li>Try toggling Tailscale off and on.</li>
+        </ul>
+
+        <h3>Authentication issues</h3>
+        <h4>"No SSH key selected. Edit the host and choose a key."</h4>
+        <p>The host is set to SSH key authentication but no key has been assigned.</p>
+        <ul>
+            <li>Go to the host list, swipe left on the host, and tap <strong>Edit</strong>.</li>
+            <li>Under <strong>Authentication</strong>, select a key from the <strong>Key</strong> picker.</li>
+            <li>If no keys are listed, go to <strong>Settings → SSH Keys</strong> and generate or import one first.</li>
+        </ul>
+
+        <h4>SSH key auth fails silently or server rejects key</h4>
+        <ul>
+            <li>Confirm the public key is in <code>~/.ssh/authorized_keys</code> on the server.</li>
+            <li>Ensure the <code>~/.ssh</code> directory has permissions <code>700</code> and <code>~/.ssh/authorized_keys</code> has permissions <code>600</code> on the server.</li>
+            <li>Check <code>sshd_config</code> on the server has <code>PubkeyAuthentication yes</code>.</li>
+        </ul>
+
+        <h4>Password auth fails</h4>
+        <ul>
+            <li>Double-check the username and password.</li>
+            <li>The server may require key-based auth only. Check <code>/etc/ssh/sshd_config</code> for <code>PasswordAuthentication no</code>.</li>
+        </ul>
+
+        <h3>Tailscale issues</h3>
+        <h4>"Enter your Tailscale API token in Settings first."</h4>
+        <p>You opened the Tailnet browser without an API token configured.</p>
+        <ul>
+            <li>Go to <strong>Settings → Tailscale → API Token</strong> and paste in a valid token.</li>
+            <li>See <a href="#getting-a-tailscale-api-token">Getting a Tailscale API Token</a> for how to generate one.</li>
+        </ul>
+
+        <h4>"Invalid or expired token."</h4>
+        <p>Your API token has expired or is invalid.</p>
+        <ul>
+            <li>Go to <a href="https://login.tailscale.com/admin/settings/keys">tailscale.com → Settings → Personal Settings → Keys</a> and generate a new token.</li>
+            <li>Paste the new token into <strong>Settings → Tailscale → API Token</strong>.</li>
+        </ul>
+
+        <h4>Tailnet devices are missing from the browser</h4>
+        <ul>
+            <li>Only <strong>authorised</strong> devices appear in the browser. Check your Tailnet's device authorisation settings.</li>
+            <li>Confirm the API token was generated for the correct Tailnet account.</li>
+            <li>Try pulling to refresh the device list.</li>
+        </ul>
+
+        <h4>Tailscale SSH connection fails</h4>
+        <ul>
+            <li>Confirm the Tailscale app is installed, open, and connected to your Tailnet.</li>
+            <li>Confirm the target device is online in your Tailnet (visible in the Tailscale admin console).</li>
+            <li>Confirm Tailscale SSH is enabled in your Tailnet ACLs for the target device. See <a href="https://tailscale.com/kb/1193/tailscale-ssh">Tailscale SSH docs</a>.</li>
+            <li>Both your iPhone and the server must be on the <strong>same Tailnet</strong>.</li>
+        </ul>
+
+        <h3 id="host-key-mismatch">Security warnings</h3>
+        <h4>Host key mismatch</h4>
+        <pre><code>⚠ Host key mismatch for [hostname]!
+Stored: [expected fingerprint]
+Received: [actual fingerprint]</code></pre>
+        <p>The server's host key has changed since you last connected. This can indicate:</p>
+        <ul>
+            <li><strong>Legitimate change</strong>: the server was rebuilt or its SSH keys were regenerated.</li>
+            <li><strong>Security issue</strong>: a man-in-the-middle attack.</li>
+        </ul>
+        <p>If you are confident the key change is legitimate:</p>
+        <ol>
+            <li>Go to <strong>Settings → Known Hosts</strong>.</li>
+            <li>Find the entry for the affected host and swipe left to delete it.</li>
+            <li>Reconnect — you will be prompted to trust the new fingerprint.</li>
+        </ol>
+        <p>If you are not sure, do not connect and investigate the server directly.</p>
+
+        <h3>SSH key import errors</h3>
+        <h4>"The key format is not recognised."</h4>
+        <ul>
+            <li>Ensure you are pasting the <strong>entire</strong> private key file, including the <code>-----BEGIN OPENSSH PRIVATE KEY-----</code> and <code>-----END OPENSSH PRIVATE KEY-----</code> header and footer lines.</li>
+            <li>The key must be in OpenSSH format, not PEM/PKCS8. To convert: <code>ssh-keygen -t ed25519 -m OpenSSH</code>.</li>
+        </ul>
+
+        <h4>"Encrypted (passphrase-protected) keys are not supported."</h4>
+        <p>meshTerm does not support passphrase-protected keys. To remove the passphrase from an existing key:</p>
+        <pre><code>ssh-keygen -p -N "" -f ~/.ssh/id_ed25519</code></pre>
+
+        <h4>"Unsupported key type. Only Ed25519 keys are supported."</h4>
+        <p>meshTerm supports Ed25519 keys only. To generate a compatible key:</p>
+        <pre><code>ssh-keygen -t ed25519 -C "your label"</code></pre>
+
+        <h3>App Lock issues</h3>
+        <h4>"meshTerm requires a device passcode to protect your SSH credentials."</h4>
+        <p>App Lock requires a device passcode to be set before it can be enabled.</p>
+        <ul>
+            <li>Go to <strong>iOS Settings → Face ID & Passcode</strong> and set up a passcode.</li>
+            <li>Return to meshTerm and enable App Lock in Settings.</li>
+        </ul>
+
+        <h3>Snippet Vault</h3>
+        <h4>Snippets are not sent to the terminal</h4>
+        <ul>
+            <li>Ensure you have an active terminal session open before opening the Snippet Vault.</li>
+            <li>If the session was disconnected, reconnect and try again.</li>
+        </ul>
+
+        <h3>Purchases</h3>
+        <h4>"Purchase could not be verified."</h4>
+        <p>There was a problem verifying your purchase with the App Store.</p>
+        <ul>
+            <li>Ensure your device has a working internet connection.</li>
+            <li>Try <strong>Restore Purchases</strong> in Settings.</li>
+            <li>If the issue persists, contact Apple Support via the App Store.</li>
+        </ul>
+        
+        <hr style="margin-top: 3rem; border: none; border-top: 1px solid var(--border);">
+        <p style="font-style: italic; color: var(--text-muted); font-size: 0.9rem;">meshTerm is developed by James Betchley. For support or feedback, please open an issue on <a href="https://github.com/JBetchGH/meshTerm">GitHub</a>.</p>
+    </section>
+</main>
+
+<script>
+    // Smooth scroll spy for the sidebar
+    window.addEventListener('scroll', () => {
+        let current = "";
+        const sections = document.querySelectorAll("section");
+        sections.forEach((section) => {
+            const sectionTop = section.offsetTop;
+            if (pageYOffset >= sectionTop - 100) {
+                current = section.getAttribute("id");
+            }
+        });
+        document.querySelectorAll("nav a").forEach((a) => {
+            a.classList.remove("active");
+            if (current && a.getAttribute("href") === `#${current}`) {
+                a.classList.add("active");
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
