@@ -3,15 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>meshTerm Privacy Policy</title>
+<title>meshTerm — iOS SSH Client</title>
 <style>
   :root {
     --blue: #0A84FF;
     --blue-dark: #0060DF;
+    --green: #30D158;
+    --orange: #FF9F0A;
     --text: #1C1C1E;
     --text-sec: #636366;
+    --text-tert: #AEAEB2;
     --surface: #F2F2F7;
+    --surface2: #E5E5EA;
     --border: #D1D1D6;
+    --pro-accent: #8b5cf6;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -23,439 +28,234 @@
     line-height: 1.7;
     color: var(--text);
     background: #fff;
-    padding: 0;
   }
 
   header {
-    background: var(--blue);
+    background: linear-gradient(135deg, #0A84FF 0%, #2563EB 100%);
     color: white;
-    padding: 40px 24px 32px;
+    padding: 60px 24px 50px;
     text-align: center;
   }
 
   header .app-name {
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: .12em;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: .15em;
     text-transform: uppercase;
-    opacity: .8;
-    margin-bottom: 8px;
+    opacity: .9;
+    margin-bottom: 12px;
   }
 
   header h1 {
-    font-size: 32px;
-    font-weight: 700;
-    margin-bottom: 8px;
+    font-size: 38px;
+    font-weight: 800;
+    margin-bottom: 16px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
   }
 
-  header .meta {
+  header .sub {
+    font-size: 18px;
+    opacity: .9;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+
+  .nav-links {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+    padding: 14px 24px;
     font-size: 14px;
-    opacity: .75;
-  }
-
-  .summary-bar {
-    background: #E8F9EE;
-    border-left: 4px solid #30D158;
-    margin: 32px auto;
-    max-width: 760px;
-    padding: 16px 24px;
-    border-radius: 0 8px 8px 0;
-    font-size: 15px;
-    color: #1A7A35;
     font-weight: 500;
   }
 
-  main {
-    max-width: 760px;
-    margin: 0 auto;
-    padding: 0 24px 60px;
-  }
-
-  .toc {
-    background: var(--surface);
-    border-radius: 12px;
-    padding: 20px 24px;
-    margin: 24px 0 40px;
-  }
-
-  .toc h2 {
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .1em;
-    color: var(--text-sec);
-    margin-bottom: 12px;
-    border: none;
-    padding: 0;
-  }
-
-  .toc ol {
-    padding-left: 20px;
-    margin: 0;
-  }
-
-  .toc li {
-    font-size: 14px;
-    margin-bottom: 4px;
-  }
-
-  .toc a {
+  .nav-links a {
     color: var(--blue);
     text-decoration: none;
+    margin: 0 16px;
+    display: inline-block;
   }
 
-  .toc a:hover { text-decoration: underline; }
+  .nav-links a:hover { text-decoration: underline; }
 
-  section {
-    margin-bottom: 40px;
+  main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 24px 80px;
   }
 
-  h2 {
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 12px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid var(--blue);
+  .intro {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 48px;
+    font-size: 17px;
+    color: var(--text-sec);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+  }
+
+  .doc-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
     display: flex;
-    align-items: center;
-    gap: 10px;
+    flex-direction: column;
   }
 
-  h2 .num {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
-    background: var(--blue);
-    color: white;
-    border-radius: 6px;
-    font-size: 13px;
-    font-weight: 700;
-    flex-shrink: 0;
+  .doc-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    border-color: var(--blue);
   }
 
-  h3 {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--text);
-    margin: 20px 0 8px;
-  }
-
-  p {
-    font-size: 15px;
-    margin-bottom: 12px;
-    color: var(--text);
-  }
-
-  ul {
-    padding-left: 20px;
-    margin-bottom: 14px;
-  }
-
-  li {
-    font-size: 15px;
-    margin-bottom: 6px;
-    color: var(--text);
-  }
-
-  .highlight {
-    background: #EBF4FF;
-    border: 1px solid #B8D8FA;
-    border-radius: 8px;
-    padding: 14px 18px;
-    margin: 14px 0;
-    font-size: 14px;
-    color: var(--blue-dark);
-  }
-
-  .contact-card {
+  .doc-card .icon {
+    width: 48px;
+    height: 48px;
     background: var(--surface);
     border-radius: 12px;
-    padding: 20px 24px;
-    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin-bottom: 16px;
+    color: var(--blue);
   }
 
-  .contact-card p {
-    margin-bottom: 4px;
+  .doc-card.tailscale .icon {
+    background: #EFF6FF;
+    color: #2563EB;
   }
 
-  .contact-card .name {
+  .doc-card.legal .icon {
+    background: #F3F4F6;
+    color: #4B5563;
+  }
+
+  .doc-card h2 {
+    font-size: 20px;
     font-weight: 700;
-    font-size: 16px;
     margin-bottom: 8px;
+    color: var(--text);
+  }
+
+  .doc-card p {
+    font-size: 15px;
+    color: var(--text-sec);
+    line-height: 1.6;
+    margin-bottom: 0;
+    flex-grow: 1;
+  }
+
+  .doc-card .action {
+    margin-top: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--blue);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .doc-card .action::after {
+    content: "→";
+    transition: transform 0.2s;
+  }
+
+  .doc-card:hover .action::after {
+    transform: translateX(4px);
   }
 
   footer {
     background: var(--surface);
     border-top: 1px solid var(--border);
     text-align: center;
-    padding: 24px;
-    font-size: 13px;
+    padding: 32px 24px;
+    font-size: 14px;
     color: var(--text-sec);
   }
 
-  footer a {
-    color: var(--blue);
-    text-decoration: none;
-  }
+  footer a { color: var(--blue); text-decoration: none; font-weight: 500;}
+  footer a:hover { text-decoration: underline; }
 
   @media (max-width: 600px) {
-    header { padding: 28px 16px 24px; }
-    header h1 { font-size: 26px; }
-    main { padding: 0 16px 48px; }
-    h2 { font-size: 18px; }
+    header { padding: 40px 16px 32px; }
+    header h1 { font-size: 28px; }
+    header .sub { font-size: 16px; }
+    main { padding: 40px 16px 60px; }
+    .grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="app-name">meshTerm · iOS SSH Client</div>
-  <h1>Privacy Policy</h1>
-  <div class="meta">James Betchley &nbsp;·&nbsp; Effective March 2026 &nbsp;·&nbsp; Version 1.0</div>
+  <div class="app-name">meshTerm</div>
+  <h1>Documentation & Support</h1>
+  <div class="sub">The professional SSH terminal client for iOS and iPadOS with native Tailscale integration.</div>
 </header>
 
+<div class="nav-links">
+  <a href="index.html">Home</a>
+  <a href="meshterm.html">User Guide</a>
+  <a href="meshterm-tailscale-integration.html">Tailscale Setup</a>
+  <a href="privacy.html">Privacy</a>
+  <a href="eula.html">EULA</a>
+</div>
+
 <main>
-
-  <div class="summary-bar">
-    Short version: meshTerm does not collect your terminal content, SSH credentials, or personal data. We do not sell your data. We do not display advertisements.
+  <div class="intro">
+    Welcome to the meshTerm documentation hub. Whether you are setting up your first server connection, configuring passwordless authentication, or reviewing our privacy practices, you will find everything you need below.
   </div>
 
-  <div class="toc">
-    <h2>Contents</h2>
-    <ol>
-      <li><a href="#s1">Information We Do Not Collect</a></li>
-      <li><a href="#s2">Information We Do Collect</a></li>
-      <li><a href="#s3">How Information Is Stored on Your Device</a></li>
-      <li><a href="#s4">Tailscale</a></li>
-      <li><a href="#s5">Third-Party Services</a></li>
-      <li><a href="#s6">Apple App Store and Apple Services</a></li>
-      <li><a href="#s7">Children's Privacy</a></li>
-      <li><a href="#s8">Your Rights</a></li>
-      <li><a href="#s9">Data Retention</a></li>
-      <li><a href="#s10">Security</a></li>
-      <li><a href="#s11">Changes to This Privacy Policy</a></li>
-      <li><a href="#s12">Contact Us</a></li>
-    </ol>
+  <div class="grid">
+    <a href="meshterm.html" class="doc-card">
+      <div class="icon">📖</div>
+      <h2>User Guide</h2>
+      <p>The comprehensive manual for meshTerm. Learn how to manage hosts, import Ed25519 SSH keys, configure environment variables, and utilize the Snippet Vault.</p>
+      <div class="action">Read the Guide</div>
+    </a>
+
+    <a href="meshterm-tailscale-integration.html" class="doc-card tailscale">
+      <div class="icon">⚡</div>
+      <h2>Tailscale Setup</h2>
+      <p>Everything you need to connect meshTerm to your Tailnet and enable passwordless, keyless SSH access using your Tailscale identity.</p>
+      <div class="action">Configure Tailscale</div>
+    </a>
+
+    <a href="privacy.html" class="doc-card legal">
+      <div class="icon">🛡️</div>
+      <h2>Privacy Policy</h2>
+      <p>meshTerm does not collect your terminal content, SSH credentials, or personal data. We do not sell your data, and we do not display advertisements.</p>
+      <div class="action">Review Privacy Policy</div>
+    </a>
+
+    <a href="eula.html" class="doc-card legal">
+      <div class="icon">⚖️</div>
+      <h2>End User Licence Agreement</h2>
+      <p>The legal agreement governing your use of the meshTerm mobile software application for Apple iOS and iPadOS devices.</p>
+      <div class="action">Read EULA</div>
+    </a>
   </div>
-
-  <p>Your privacy is important to us. This Privacy Policy explains how James Betchley
-  ("Developer", "we", "us", or "our") collects, uses, and protects information when
-  you use meshTerm (the "Application"). We have designed meshTerm with privacy as a
-  core principle — the Application is built to handle sensitive SSH credentials and
-  terminal sessions, and we take that responsibility seriously.</p>
-
-  <!-- S1 -->
-  <section id="s1">
-    <h2><span class="num">1</span> Information We Do Not Collect</h2>
-    <p>meshTerm is designed so that the following sensitive information never leaves your
-    device and is never transmitted to the Developer or any third party:</p>
-    <ul>
-      <li>Terminal session content — everything you type and everything displayed in the terminal</li>
-      <li>SSH private keys and passwords — stored exclusively in the iOS Keychain on your device</li>
-      <li>SSH host details and connection logs</li>
-      <li>Command history</li>
-      <li>Snippet vault contents</li>
-      <li>Tailscale authentication credentials</li>
-      <li>Contents of any file accessed through the Application</li>
-    </ul>
-    <p>We do not use advertising identifiers (IDFA) or any equivalent tracking technologies.
-    meshTerm does not contain advertising SDKs or analytics SDKs that transmit personal
-    data to third parties.</p>
-  </section>
-
-  <!-- S2 -->
-  <section id="s2">
-    <h2><span class="num">2</span> Information We Do Collect</h2>
-
-    <h3>2.1 Crash Reports</h3>
-    <p>If the Application crashes, anonymised crash data may be collected through Apple's
-    standard crash reporting infrastructure (if you have opted in to sharing diagnostic
-    data with app developers in your iOS Settings). This data includes:</p>
-    <ul>
-      <li>Stack traces showing which code was executing at the time of the crash</li>
-      <li>Device model and iOS version</li>
-      <li>Application version</li>
-      <li>Date and time of the crash</li>
-    </ul>
-    <p>Crash reports explicitly exclude terminal content, SSH credentials, command history,
-    and any other user data. We configure our crash reporting to prevent any such data
-    from appearing in crash logs.</p>
-
-    <h3>2.2 Subscription Information</h3>
-    <p>When you purchase a meshTerm Pro subscription, Apple processes your payment and
-    provides the Application with a transaction receipt. We receive:</p>
-    <ul>
-      <li>Confirmation that a valid subscription exists</li>
-      <li>The subscription product identifier (monthly or annual)</li>
-      <li>Subscription expiry date</li>
-    </ul>
-    <p>We do not receive your payment card details, billing address, or Apple ID. All
-    payment processing is handled entirely by Apple Inc.</p>
-
-    <h3>2.3 iCloud Sync Data</h3>
-    <p>If you use iCloud sync for your snippet vault, host configurations, and settings,
-    this data is stored in your personal iCloud account using Apple's CloudKit framework.
-    This data is:</p>
-    <ul>
-      <li>Stored in your iCloud account, not on Developer-operated servers</li>
-      <li>Encrypted in transit and at rest by Apple</li>
-      <li>Subject to Apple's iCloud privacy policy</li>
-      <li>Accessible only to you and to the Application running on your devices</li>
-    </ul>
-    <p>We do not have access to the contents of your iCloud data.</p>
-  </section>
-
-  <!-- S3 -->
-  <section id="s3">
-    <h2><span class="num">3</span> How Information Is Stored on Your Device</h2>
-
-    <h3>3.1 SSH Credentials</h3>
-    <p>SSH private keys and passwords are stored in the iOS Keychain with the following protections:</p>
-    <ul>
-      <li><strong>Private keys:</strong> kSecAttrAccessibleWhenUnlockedThisDeviceOnly — requires device to be unlocked, never backed up to iCloud or transferred to other devices</li>
-      <li><strong>Passwords:</strong> kSecAttrAccessibleWhenUnlocked — protected by your device passcode</li>
-      <li>Biometric authentication (Face ID / Touch ID) is required each time a private key is used</li>
-    </ul>
-
-    <h3>3.2 Application Data</h3>
-    <p>All application data stored on your device (host configurations, snippets, themes,
-    known SSH host keys) is protected by iOS Data Protection with NSFileProtectionComplete,
-    meaning data is encrypted when the device is locked.</p>
-
-    <h3>3.3 SSH Host Keys</h3>
-    <p>SSH host key fingerprints are stored locally on your device only and are not
-    synchronised to iCloud. This is intentional — known host key trust is device-specific
-    for security reasons.</p>
-  </section>
-
-  <!-- S4 -->
-  <section id="s4">
-    <h2><span class="num">4</span> Tailscale</h2>
-    <p>The Application integrates with Tailscale networking. When you use Tailscale features:</p>
-    <ul>
-      <li>You authenticate directly with Tailscale using your Tailscale account — your Tailscale credentials are never seen by the Developer</li>
-      <li>The Application creates an independent Tailscale node associated with your Tailnet</li>
-      <li>Network traffic flows directly between your device and your Tailscale nodes, or via Tailscale DERP relay servers — it does not pass through Developer-operated infrastructure</li>
-      <li>Tailscale's own privacy policy governs data processed by Tailscale infrastructure</li>
-    </ul>
-    <div class="highlight">
-      Tailscale's privacy policy is available at:
-      <a href="https://tailscale.com/privacy-policy" target="_blank">tailscale.com/privacy-policy</a>
-    </div>
-  </section>
-
-  <!-- S5 -->
-  <section id="s5">
-    <h2><span class="num">5</span> Third-Party Services</h2>
-    <p>The Application uses the following third-party open source components. These run
-    entirely on your device and do not transmit data to third-party servers:</p>
-    <ul>
-      <li>Tailscale iOS SDK — BSD-3-Clause licence — tailscale.com</li>
-      <li>SwiftNIO SSH — Apache 2.0 licence — Apple Inc.</li>
-      <li>SwiftTerm — MIT licence — Miguel de Icaza</li>
-    </ul>
-    <p>The Application does not integrate any advertising networks, social media SDKs,
-    or data broker services.</p>
-  </section>
-
-  <!-- S6 -->
-  <section id="s6">
-    <h2><span class="num">6</span> Apple App Store and Apple Services</h2>
-    <p>The Application is distributed through the Apple App Store. Apple may collect
-    certain information in connection with your download and use of the Application,
-    including your Apple ID and device identifiers, subject to Apple's own Privacy
-    Policy available at <a href="https://apple.com/legal/privacy" target="_blank">apple.com/legal/privacy</a>.</p>
-    <p>In-app subscription purchases are processed by Apple. Apple's privacy policy
-    governs the data collected in connection with those transactions.</p>
-  </section>
-
-  <!-- S7 -->
-  <section id="s7">
-    <h2><span class="num">7</span> Children's Privacy</h2>
-    <p>meshTerm is not directed at children under the age of 13 (or 16 in the European
-    Economic Area). We do not knowingly collect personal information from children.
-    The Application is intended for use by developers, system administrators, and
-    technical users who manage remote Linux infrastructure.</p>
-  </section>
-
-  <!-- S8 -->
-  <section id="s8">
-    <h2><span class="num">8</span> Your Rights</h2>
-    <p>Under the UK General Data Protection Regulation (UK GDPR) and applicable data
-    protection legislation, you have the following rights:</p>
-    <ul>
-      <li><strong>Right of access</strong> — to request information about personal data we hold about you</li>
-      <li><strong>Right to rectification</strong> — to correct inaccurate personal data</li>
-      <li><strong>Right to erasure</strong> — to request deletion of personal data we hold</li>
-      <li><strong>Right to restriction</strong> — to restrict processing of your personal data</li>
-      <li><strong>Right to data portability</strong> — to receive your personal data in a portable format</li>
-      <li><strong>Right to object</strong> — to object to processing of your personal data</li>
-    </ul>
-    <p>Given the privacy-by-design nature of meshTerm, we hold minimal personal data
-    about you. Most data is stored exclusively on your device and in your iCloud account,
-    both of which you control directly. To exercise any of these rights or for any
-    privacy-related enquiry, please contact us at the address below.</p>
-  </section>
-
-  <!-- S9 -->
-  <section id="s9">
-    <h2><span class="num">9</span> Data Retention</h2>
-    <p>We retain crash report data (if collected through Apple's crash reporting) for
-    a period of up to 12 months, after which it is deleted. This data is anonymised
-    and cannot be linked back to you individually.</p>
-    <p>Subscription transaction data is retained for the period required by applicable
-    tax and financial regulations, typically 7 years in the United Kingdom.</p>
-    <p>All other data (SSH credentials, snippets, host configurations) is stored
-    exclusively on your device and in your iCloud account. Deleting the Application
-    removes all locally stored data. You can manage iCloud data through your device
-    Settings &rarr; Apple ID &rarr; iCloud &rarr; Manage Storage.</p>
-  </section>
-
-  <!-- S10 -->
-  <section id="s10">
-    <h2><span class="num">10</span> Security</h2>
-    <p>We implement appropriate technical and organisational measures to protect the
-    limited data we handle. The Application itself employs multiple layers of security
-    including iOS Keychain storage, Data Protection, biometric authentication, and
-    SSHv2 with modern cipher suites.</p>
-    <p>However, no method of transmission over the internet or method of electronic
-    storage is 100% secure. While we strive to use commercially acceptable means to
-    protect your information, we cannot guarantee its absolute security.</p>
-  </section>
-
-  <!-- S11 -->
-  <section id="s11">
-    <h2><span class="num">11</span> Changes to This Privacy Policy</h2>
-    <p>We may update this Privacy Policy from time to time. We will notify you of any
-    material changes by updating the effective date at the top of this document and,
-    where appropriate, providing notice within the Application. We encourage you to
-    review this Privacy Policy periodically.</p>
-    <p>Your continued use of the Application after any changes to this Privacy Policy
-    constitutes your acceptance of the updated policy.</p>
-  </section>
-
-  <!-- S12 -->
-  <section id="s12">
-    <h2><span class="num">12</span> Contact Us</h2>
-    <p>If you have any questions, concerns, or requests regarding this Privacy Policy
-    or our data practices, please contact us:</p>
-    <div class="contact-card">
-      <p class="name">James Betchley</p>
-      <p>Email: <a href="mailto:meshterm@gmail.com">meshterm@gmail.com</a></p>
-      <p>Application: meshTerm on the Apple App Store</p>
-    </div>
-    <p style="margin-top: 14px;">We will respond to all privacy enquiries within 30 days.</p>
-  </section>
-
 </main>
 
 <footer>
-  <p>meshTerm Privacy Policy &nbsp;·&nbsp; Version 1.0 &nbsp;·&nbsp; Effective March 2026</p>
-  <p style="margin-top: 6px;">
+  <p>meshTerm is developed by James Betchley.</p>
+  <p style="margin-top: 8px;">
     <a href="mailto:meshterm@gmail.com">meshterm@gmail.com</a>
+  </p>
+  <p style="margin-top: 16px; font-size: 12px; opacity: 0.8;">
+    meshTerm is not affiliated with, endorsed by, or in partnership with Tailscale Inc.
   </p>
 </footer>
 
