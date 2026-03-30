@@ -45,25 +45,12 @@
             font-weight: 800;
             font-size: 1.4rem;
             color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
-
-        /* Home Link Added Here */
-        .home-link {
-            display: inline-block;
             margin-bottom: 2rem;
-            color: var(--primary);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-        .home-link:hover {
-            text-decoration: underline;
         }
 
         nav ul { list-style: none; padding: 0; margin: 0; }
         nav li { margin-bottom: 0.5rem; }
-        nav a:not(.home-link) {
+        nav a {
             text-decoration: none;
             color: var(--text-muted);
             font-size: 0.95rem;
@@ -72,7 +59,7 @@
             border-radius: 6px;
             transition: all 0.2s;
         }
-        nav a:not(.home-link):hover, nav .active {
+        nav a:hover, nav .active {
             background: #eff6ff;
             color: var(--primary);
         }
@@ -194,7 +181,6 @@
 
 <nav>
     <div class="nav-header">meshTerm</div>
-    <a href="index.html" class="home-link">← Back to Home</a>
     <ul>
         <li><a href="#overview">1. Overview</a></li>
         <li><a href="#prerequisites">2. Prerequisites</a></li>

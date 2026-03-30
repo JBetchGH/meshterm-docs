@@ -53,25 +53,6 @@
     opacity: .75;
   }
 
-  /* Standardised Nav Links */
-  .nav-links {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    text-align: center;
-    padding: 14px 24px;
-    font-size: 14px;
-    font-weight: 500;
-  }
-
-  .nav-links a {
-    color: var(--blue);
-    text-decoration: none;
-    margin: 0 16px;
-    display: inline-block;
-  }
-
-  .nav-links a:hover { text-decoration: underline; }
-
   .important-bar {
     background: #FFE8E7;
     border-left: 4px solid var(--red);
@@ -231,6 +212,20 @@
     margin-bottom: 8px;
   }
 
+  .nav-links {
+    text-align: center;
+    padding: 16px 24px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    font-size: 14px;
+  }
+
+  .nav-links a {
+    color: var(--blue);
+    text-decoration: none;
+    margin: 0 12px;
+  }
+
   footer {
     background: var(--surface);
     border-top: 1px solid var(--border);
@@ -261,14 +256,6 @@
   <h1>End User Licence Agreement</h1>
   <div class="meta">James Betchley &nbsp;·&nbsp; Effective March 2026 &nbsp;·&nbsp; Version 1.0</div>
 </header>
-
-<div class="nav-links">
-  <a href="index.html">Home</a>
-  <a href="meshterm.html">User Guide</a>
-  <a href="meshterm-tailscale-integration.html">Tailscale Setup</a>
-  <a href="privacy.html">Privacy Policy</a>
-  <a href="eula.html">EULA</a>
-</div>
 
 <main>
 
@@ -305,6 +292,7 @@
     </ol>
   </div>
 
+  <!-- S1 -->
   <section id="s1">
     <h2><span class="num">1</span> Licence Grant</h2>
     <p>Subject to the terms and conditions of this Agreement, the Developer grants you
@@ -338,6 +326,7 @@
     </ul>
   </section>
 
+  <!-- S2 -->
   <section id="s2">
     <h2><span class="num">2</span> Subscriptions and Billing</h2>
 
@@ -373,6 +362,7 @@
     or at <a href="https://reportaproblem.apple.com" target="_blank">reportaproblem.apple.com</a>.</p>
   </section>
 
+  <!-- S3 -->
   <section id="s3">
     <h2><span class="num">3</span> Tailscale Integration</h2>
     <p>The Application integrates with Tailscale networking services. Use of Tailscale
@@ -390,6 +380,7 @@
     </ul>
   </section>
 
+  <!-- S4 -->
   <section id="s4">
     <h2><span class="num">4</span> SSH Functionality and Security</h2>
     <p>The Application enables SSH connections to remote servers. You acknowledge and agree that:</p>
@@ -405,6 +396,7 @@
     The Developer makes no warranty regarding the absolute security of any SSH connection.</p>
   </section>
 
+  <!-- S5 -->
   <section id="s5">
     <h2><span class="num">5</span> Intellectual Property</h2>
     <p>The Application and all content, features, and functionality thereof are owned by
@@ -416,10 +408,11 @@
     Settings &rarr; Acknowledgements.</p>
   </section>
 
+  <!-- S6 -->
   <section id="s6">
     <h2><span class="num">6</span> Privacy</h2>
     <p>Your use of the Application is also governed by our
-    <a href="privacy.html" target="_blank">Privacy Policy</a>,
+    <a href="https://jbetchgh.github.io/meshterm-legal/" target="_blank">Privacy Policy</a>,
     which is incorporated into this Agreement by reference. Please read the Privacy Policy
     carefully. By using the Application, you agree to the collection and use of information
     as described in the Privacy Policy.</p>
@@ -432,6 +425,7 @@
     </ul>
   </section>
 
+  <!-- S7 -->
   <section id="s7">
     <h2><span class="num">7</span> Disclaimer of Warranties</h2>
     <p class="caps">THE APPLICATION IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS WITHOUT
@@ -444,6 +438,7 @@
     (d) the results of using the Application will meet your requirements.</p>
   </section>
 
+  <!-- S8 -->
   <section id="s8">
     <h2><span class="num">8</span> Limitation of Liability</h2>
     <p class="caps">TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL THE
@@ -459,6 +454,7 @@
     other liability that cannot be excluded or limited under applicable law.</p>
   </section>
 
+  <!-- S9 -->
   <section id="s9">
     <h2><span class="num">9</span> Apple App Store Additional Terms</h2>
 
@@ -502,6 +498,7 @@
     beneficiary thereof.</p>
   </section>
 
+  <!-- S10 -->
   <section id="s10">
     <h2><span class="num">10</span> Legal Compliance</h2>
     <p>By downloading, installing, or using the Application, you represent and warrant that:</p>
@@ -520,6 +517,7 @@
     of Service.</p>
   </section>
 
+  <!-- S11 -->
   <section id="s11">
     <h2><span class="num">11</span> Governing Law and Disputes</h2>
     <p>This Agreement shall be governed by and construed in accordance with the laws of
@@ -528,6 +526,7 @@
     the exclusive jurisdiction of the courts of England and Wales.</p>
   </section>
 
+  <!-- S12 -->
   <section id="s12">
     <h2><span class="num">12</span> Changes to This Agreement</h2>
     <p>The Developer reserves the right to modify this Agreement at any time. We will
@@ -537,6 +536,7 @@
     any modification constitutes your acceptance of the updated Agreement.</p>
   </section>
 
+  <!-- S13 -->
   <section id="s13">
     <h2><span class="num">13</span> Termination</h2>
     <p>This Agreement is effective until terminated. Your rights under this Agreement will
@@ -547,6 +547,7 @@
     Agreement or is harmful to other users, the Developer, or third parties.</p>
   </section>
 
+  <!-- S14 -->
   <section id="s14">
     <h2><span class="num">14</span> Contact Information</h2>
     <p>If you have any questions about this Agreement, please contact:</p>
@@ -564,6 +565,11 @@
   </div>
 
 </main>
+
+<div class="nav-links">
+  <a href="https://jbetchgh.github.io/meshterm-legal/">Privacy Policy</a>
+  <a href="mailto:meshterm@gmail.com">Contact</a>
+</div>
 
 <footer>
   <p>meshTerm End User Licence Agreement &nbsp;·&nbsp; Version 1.0 &nbsp;·&nbsp; March 2026</p>

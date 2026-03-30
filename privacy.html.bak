@@ -53,25 +53,6 @@
     opacity: .75;
   }
 
-  /* Standardised Nav Links */
-  .nav-links {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    text-align: center;
-    padding: 14px 24px;
-    font-size: 14px;
-    font-weight: 500;
-  }
-
-  .nav-links a {
-    color: var(--blue);
-    text-decoration: none;
-    margin: 0 16px;
-    display: inline-block;
-  }
-
-  .nav-links a:hover { text-decoration: underline; }
-
   .summary-bar {
     background: #E8F9EE;
     border-left: 4px solid #30D158;
@@ -236,14 +217,6 @@
   <div class="meta">James Betchley &nbsp;·&nbsp; Effective March 2026 &nbsp;·&nbsp; Version 1.0</div>
 </header>
 
-<div class="nav-links">
-  <a href="index.html">Home</a>
-  <a href="meshterm.html">User Guide</a>
-  <a href="meshterm-tailscale-integration.html">Tailscale Setup</a>
-  <a href="privacy.html">Privacy Policy</a>
-  <a href="eula.html">EULA</a>
-</div>
-
 <main>
 
   <div class="summary-bar">
@@ -274,6 +247,7 @@
   core principle — the Application is built to handle sensitive SSH credentials and
   terminal sessions, and we take that responsibility seriously.</p>
 
+  <!-- S1 -->
   <section id="s1">
     <h2><span class="num">1</span> Information We Do Not Collect</h2>
     <p>meshTerm is designed so that the following sensitive information never leaves your
@@ -292,6 +266,7 @@
     data to third parties.</p>
   </section>
 
+  <!-- S2 -->
   <section id="s2">
     <h2><span class="num">2</span> Information We Do Collect</h2>
 
@@ -333,6 +308,7 @@
     <p>We do not have access to the contents of your iCloud data.</p>
   </section>
 
+  <!-- S3 -->
   <section id="s3">
     <h2><span class="num">3</span> How Information Is Stored on Your Device</h2>
 
@@ -355,6 +331,7 @@
     for security reasons.</p>
   </section>
 
+  <!-- S4 -->
   <section id="s4">
     <h2><span class="num">4</span> Tailscale</h2>
     <p>The Application integrates with Tailscale networking. When you use Tailscale features:</p>
@@ -370,6 +347,7 @@
     </div>
   </section>
 
+  <!-- S5 -->
   <section id="s5">
     <h2><span class="num">5</span> Third-Party Services</h2>
     <p>The Application uses the following third-party open source components. These run
@@ -383,6 +361,7 @@
     or data broker services.</p>
   </section>
 
+  <!-- S6 -->
   <section id="s6">
     <h2><span class="num">6</span> Apple App Store and Apple Services</h2>
     <p>The Application is distributed through the Apple App Store. Apple may collect
@@ -393,6 +372,7 @@
     governs the data collected in connection with those transactions.</p>
   </section>
 
+  <!-- S7 -->
   <section id="s7">
     <h2><span class="num">7</span> Children's Privacy</h2>
     <p>meshTerm is not directed at children under the age of 13 (or 16 in the European
@@ -401,6 +381,7 @@
     technical users who manage remote Linux infrastructure.</p>
   </section>
 
+  <!-- S8 -->
   <section id="s8">
     <h2><span class="num">8</span> Your Rights</h2>
     <p>Under the UK General Data Protection Regulation (UK GDPR) and applicable data
@@ -419,6 +400,7 @@
     privacy-related enquiry, please contact us at the address below.</p>
   </section>
 
+  <!-- S9 -->
   <section id="s9">
     <h2><span class="num">9</span> Data Retention</h2>
     <p>We retain crash report data (if collected through Apple's crash reporting) for
@@ -432,6 +414,7 @@
     Settings &rarr; Apple ID &rarr; iCloud &rarr; Manage Storage.</p>
   </section>
 
+  <!-- S10 -->
   <section id="s10">
     <h2><span class="num">10</span> Security</h2>
     <p>We implement appropriate technical and organisational measures to protect the
@@ -443,6 +426,7 @@
     protect your information, we cannot guarantee its absolute security.</p>
   </section>
 
+  <!-- S11 -->
   <section id="s11">
     <h2><span class="num">11</span> Changes to This Privacy Policy</h2>
     <p>We may update this Privacy Policy from time to time. We will notify you of any
@@ -453,6 +437,7 @@
     constitutes your acceptance of the updated policy.</p>
   </section>
 
+  <!-- S12 -->
   <section id="s12">
     <h2><span class="num">12</span> Contact Us</h2>
     <p>If you have any questions, concerns, or requests regarding this Privacy Policy

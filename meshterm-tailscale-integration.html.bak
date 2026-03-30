@@ -61,21 +61,18 @@
     line-height: 1.5;
   }
 
-  /* Standardised Nav Links */
   .nav-links {
     background: var(--surface);
     border-bottom: 1px solid var(--border);
     text-align: center;
-    padding: 14px 24px;
+    padding: 12px 24px;
     font-size: 14px;
-    font-weight: 500;
   }
 
   .nav-links a {
     color: var(--blue);
     text-decoration: none;
-    margin: 0 16px;
-    display: inline-block;
+    margin: 0 14px;
   }
 
   .nav-links a:hover { text-decoration: underline; }
@@ -410,11 +407,9 @@
 </header>
 
 <div class="nav-links">
-  <a href="index.html">Home</a>
-  <a href="meshterm.html">User Guide</a>
-  <a href="meshterm-tailscale-integration.html">Tailscale Setup</a>
-  <a href="privacy.html">Privacy Policy</a>
+  <a href="index.html">Privacy Policy</a>
   <a href="eula.html">EULA</a>
+  <a href="tailscale.html">Tailscale Setup</a>
 </div>
 
 <main>
@@ -734,6 +729,12 @@
   </div>
 
 </main>
+
+<div class="nav-links">
+  <a href="index.html">Privacy Policy</a>
+  <a href="eula.html">EULA</a>
+  <a href="tailscale.html">Tailscale Setup</a>
+</div>
 
 <footer>
   <p>meshTerm &nbsp;·&nbsp; iOS SSH Client &nbsp;·&nbsp; <a href="mailto:betchers@me.com">betchers@me.com</a></p>
