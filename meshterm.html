@@ -369,27 +369,31 @@
       <li><a href="#getting-started">3. Getting Started</a></li>
       <li><a href="#managing-ssh-hosts">4. Managing SSH Hosts</a></li>
       <li><a href="#connecting-to-a-host">5. Connecting to a Host</a></li>
-      <li><a href="#authentication-methods">6. Authentication Methods</a></li>
-      <li><a href="#ssh-key-management">7. SSH Key Management</a></li>
+      <li><a href="#multi-session-tabs">6. Multi-Session Tabs</a></li>
+      <li><a href="#authentication-methods">7. Authentication Methods</a></li>
+      <li><a href="#ssh-key-management">8. SSH Key Management</a></li>
       <li><a href="#install-on-host" style="padding-left: 22px; font-size: 13px;">↳ Install on a Host</a></li>
-      <li><a href="#tailscale-integration">8. Tailscale Integration</a></li>
-      <li><a href="#snippet-vault">9. Snippet Vault</a></li>
-      <li><a href="#terminal-controls">10. Terminal Controls</a></li>
-      <li><a href="#security">11. Security</a></li>
-      <li><a href="#settings">12. Settings</a></li>
-      <li><a href="#meshterm-pro">13. meshTerm Pro</a></li>
-      <li><a href="#troubleshooting">14. Troubleshooting</a></li>
+      <li><a href="#tailscale-integration">9. Tailscale Integration</a></li>
+      <li><a href="#snippet-vault">10. Snippet Vault</a></li>
+      <li><a href="#macro-bar">11. Terminal Macro Bar</a></li>
+      <li><a href="#sftp-browser">12. SFTP File Browser</a></li>
+      <li><a href="#terminal-controls">13. Terminal Controls</a></li>
+      <li><a href="#security">14. Security</a></li>
+      <li><a href="#settings">15. Settings</a></li>
+      <li><a href="#meshterm-pro">16. meshTerm Pro</a></li>
+      <li><a href="#troubleshooting">17. Troubleshooting</a></li>
     </ul>
   </aside>
 
   <!-- Main content -->
   <main>
     <div class="page-title">meshTerm User Guide</div>
-    <div class="page-subtitle">Version 1.0 · iOS &amp; iPadOS</div>
+    <div class="page-subtitle">Version 1.1 · iOS &amp; iPadOS</div>
 
     <section id="overview">
       <h2>Overview</h2>
       <p>meshTerm is an SSH terminal client for iPhone and iPad. It lets you connect to remote servers using password or SSH key authentication, and integrates with Tailscale to browse and connect to your Tailnet devices directly from the app.</p>
+      <p>Beyond the terminal, meshTerm includes multi-session tabs with keyboard shortcuts, an <a href="#sftp-browser">SFTP file browser</a> that integrates with the iOS Files app, a <a href="#macro-bar">terminal macro bar</a> for one-tap commands, and automatic <code>tmux</code> attachment so sessions survive dropped connections.</p>
 
       <div class="image-container">
         <div class="img-card">
@@ -488,14 +492,56 @@
         <li>Verifies the server's host key against your saved known hosts (see <a href="#known-hosts-tofu">Known Hosts</a>).</li>
         <li>Authenticates using the method configured for that host.</li>
         <li>Requests a PTY and launches a shell session.</li>
+        <li>Attempts to attach to a <code>tmux</code> session on the server (see <a href="#tmux-attach">tmux attach</a>).</li>
       </ol>
       <p>The terminal becomes interactive as soon as the shell is ready.</p>
+
+      <h3 id="tmux-attach">tmux attach</h3>
+      <p>New hosts attach to <code>tmux</code> by default. When you reconnect, meshTerm re-attaches to the same session so your work survives dropped connections, backgrounded apps, and closed tabs.</p>
+      <ul>
+        <li>If <code>tmux</code> is not installed on the server, meshTerm falls back gracefully to a standard shell — no configuration required.</li>
+        <li>You can disable automatic <code>tmux</code> attach per host from the edit screen if you prefer a plain shell.</li>
+      </ul>
+
+      <h3 id="auto-reconnect">Automatic reconnection</h3>
+      <p>meshTerm watches the network path and your app's foreground state. If the connection drops — Wi-Fi in a lift, cellular-to-Wi-Fi handoff, backgrounding the app — the session reconnects automatically when the network returns or you bring the app back to the foreground.</p>
+      <p>A dim <code>-- reconnected --</code> marker is drawn into the terminal so you can see exactly when the reattach happened. With <code>tmux</code> attach, you pick up where you left off.</p>
 
       <h3>Environment variables</h3>
       <p>You can attach custom environment variables to any host. These are sent to the shell session on connect. To add them, edit the host and use the <strong>Environment Variables</strong> section.</p>
 
       <h3>Disconnecting</h3>
       <p>Close the terminal view or terminate the shell session from the server side (e.g. <code>exit</code>, <code>logout</code>, or Ctrl+D).</p>
+    </section>
+
+    <section id="multi-session-tabs">
+      <h2>Multi-Session Tabs</h2>
+      <p>meshTerm supports multiple concurrent SSH sessions. A session bar sits above the terminal showing each open connection; tap a tab to switch, or swipe to dismiss it. Each session runs independently — run a build on one host while you tail logs on another, and switch between them in a single tap.</p>
+
+      <h3>Opening and closing sessions</h3>
+      <ul>
+        <li>Tap a host in the host list to open it in a new tab.</li>
+        <li>Tap another host to add a second tab — the existing session stays alive in the background.</li>
+        <li>Swipe a tab down in the session bar, or close the terminal view, to end that session.</li>
+      </ul>
+
+      <h3>Keyboard shortcuts</h3>
+      <p>With a hardware keyboard (Magic Keyboard, Smart Folio, or any Bluetooth keyboard) attached:</p>
+      <table>
+        <thead>
+          <tr><th>Shortcut</th><th>Action</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>⌘ T</td><td>Open a new session (returns to host list to pick a host)</td></tr>
+          <tr><td>⌘ K</td><td>Close the current session</td></tr>
+          <tr><td>⌘ 1 – ⌘ 9</td><td>Jump directly to the tab at that position</td></tr>
+          <tr><td>⌘ [</td><td>Switch to the previous tab</td></tr>
+          <tr><td>⌘ ]</td><td>Switch to the next tab</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Session persistence</h3>
+      <p>Each tab is a live SSH connection. When paired with <a href="#tmux-attach">tmux attach</a> and <a href="#auto-reconnect">automatic reconnection</a>, tabs survive the app going to the background or losing the network — they reconnect silently when you return.</p>
     </section>
 
     <section id="authentication-methods">
@@ -664,6 +710,70 @@
       <p>Tap <strong>New Folder</strong> to organise snippets. Tap a folder to view only its snippets. Deleting a folder does not delete its snippets — they move to the root level.</p>
     </section>
 
+    <section id="macro-bar">
+      <h2>Terminal Macro Bar <span class="pro-badge">Pro</span></h2>
+      <p>The Terminal Macro Bar is a scrollable row of one-tap commands that sits directly above the keyboard accessory, ready in every session. Put your most-used commands — <code>git status</code>, <code>docker ps</code>, <code>tail</code> a log, restart a service — on standby and fire them with a single tap.</p>
+
+      <h3>Using macros</h3>
+      <p>Scroll the macro row horizontally above the keyboard and tap a macro to send its command to the active terminal. Each tap sends the text followed by <strong>Return</strong>, so the command runs immediately.</p>
+
+      <h3>The Macro Editor</h3>
+      <p>Open <strong>Settings → Keyboard → Macros</strong> to manage your macro list. From the editor you can:</p>
+      <ul>
+        <li><strong>Add</strong> a macro — give it a short label (what appears on the bar) and the command text.</li>
+        <li><strong>Edit</strong> an existing macro — tap a row to change its label or command.</li>
+        <li><strong>Reorder</strong> macros by dragging rows. The order in the editor matches the order on the bar.</li>
+        <li><strong>Delete</strong> a macro by swiping its row.</li>
+        <li><strong>Restore defaults</strong> to bring back meshTerm's built-in macro set.</li>
+      </ul>
+
+      <h3>Default macros</h3>
+      <p>meshTerm ships with a small starter set you can keep, edit, or replace entirely — use <strong>Restore defaults</strong> at any time to bring them back.</p>
+    </section>
+
+    <section id="sftp-browser">
+      <h2>SFTP File Browser <span class="pro-badge">Pro</span></h2>
+      <p>The SFTP browser lets you move files on and off your servers without leaving meshTerm. It runs over the same SSH transport as your terminal sessions — no additional credentials, no extra apps, no third-party cloud in the middle.</p>
+
+      <h3>Opening the browser</h3>
+      <ol>
+        <li>From the host list, tap the <strong>folder</strong> icon next to a host, or open the host's detail screen and tap <strong>Browse files</strong>.</li>
+        <li>meshTerm opens an SFTP channel over the existing SSH connection and shows the contents of the home directory.</li>
+      </ol>
+      <blockquote>SFTP requires the server to support the SFTP subsystem (enabled by default in OpenSSH). Tailscale SSH nodes are supported the same way as any other host.</blockquote>
+
+      <h3>Navigating</h3>
+      <ul>
+        <li>Tap a folder to enter it. Tap <strong>Back</strong> in the navigation bar to go up a level.</li>
+        <li>Pull down to refresh the current directory listing.</li>
+        <li>The current path is shown in the title bar.</li>
+      </ul>
+
+      <h3>Downloading files</h3>
+      <ol>
+        <li>Tap a file to start a download. A progress indicator shows bytes transferred.</li>
+        <li>When the download completes, meshTerm offers to save the file via the iOS Files sheet — pick iCloud Drive, On My iPhone, or any Files-compatible location.</li>
+        <li>A <strong>Saved to Files</strong> confirmation appears once the file is written.</li>
+      </ol>
+
+      <h3>Uploading files</h3>
+      <ol>
+        <li>Tap <strong>Upload</strong> in the browser toolbar.</li>
+        <li>Pick one or more files from the iOS Files sheet — iCloud Drive, Dropbox, On My iPhone, or any provider.</li>
+        <li>meshTerm uploads the files to the current remote directory and shows progress per file.</li>
+      </ol>
+
+      <h3>File operations</h3>
+      <p>Long-press a file or folder for options:</p>
+      <ul>
+        <li><strong>Rename</strong> — enter a new name; the server-side rename is atomic where supported.</li>
+        <li><strong>Delete</strong> — confirm and meshTerm removes the file or folder. Non-empty folders are not deleted in one pass — empty them first.</li>
+        <li><strong>New Folder</strong> (toolbar) — create a new directory in the current path.</li>
+      </ul>
+
+      <blockquote>All SFTP operations run over the active SSH session's encrypted channel. Credentials never leave your device, and nothing is routed through a third-party server.</blockquote>
+    </section>
+
     <section id="terminal-controls">
       <h2>Terminal Controls</h2>
 
@@ -729,6 +839,13 @@
       <h3>Symbol strip</h3>
       <p>The symbol strip provides quick access to commonly used characters:</p>
       <p><code>|</code> <code>`</code> <code>~</code> <code>$</code> <code>/</code> <code>\</code> <code>{</code> <code>}</code> <code>[</code> <code>]</code></p>
+
+      <h3>Hide Keyboard button</h3>
+      <p>Tap the <strong>keyboard-dismiss</strong> button in the terminal toolbar to drop the on-screen keyboard entirely. Useful for reading long output (logs, <code>man</code> pages, build output) without an accessory row eating half the screen. Tap the terminal to bring the keyboard back.</p>
+
+      <h3>Hardware keyboard auto-hide</h3>
+      <p>Connect a Magic Keyboard, Smart Folio, or any Bluetooth keyboard and meshTerm's on-screen accessory bar disappears automatically, giving you a full-screen terminal. Disconnect and it reappears. There is no setting to toggle — meshTerm observes the connected keyboard and hides the accessory for you.</p>
+      <p>While a hardware keyboard is attached, the <a href="#multi-session-tabs">multi-session keyboard shortcuts</a> (⌘T, ⌘K, ⌘1–9, ⌘[, ⌘]) are also available.</p>
     </section>
 
     <section id="security">
@@ -755,7 +872,7 @@
       </ul>
       <p>Nothing sensitive is written to iCloud backup, UserDefaults, or the filesystem.</p>
 
-      <h3>App Lock</h3>
+      <h3 id="app-lock">App Lock</h3>
       <p>meshTerm can be locked with Face ID, Touch ID, or your device passcode. When enabled, the app locks automatically when it moves to the background and requires biometric or passcode authentication to reopen.</p>
       <p>Enable app lock in <strong>Settings → App Lock</strong>.</p>
       <blockquote>App Lock requires a device passcode to be set. If no passcode is configured, you will be prompted to set one in iOS Settings → Face ID &amp; Passcode.</blockquote>
@@ -766,6 +883,12 @@
 
       <h3>SSH Keys</h3>
       <p>Manage your SSH key pairs. See <a href="#ssh-key-management">SSH Key Management</a>.</p>
+
+      <h3>Keyboard → Macros</h3>
+      <p>Add, edit, reorder, or delete the macros shown on the <a href="#macro-bar">Terminal Macro Bar</a>. Use <strong>Restore defaults</strong> to bring back the built-in starter set.</p>
+
+      <h3>App Lock</h3>
+      <p>Require Face ID, Touch ID, or the device passcode to open meshTerm. See <a href="#app-lock">App Lock</a>. Requires an iOS passcode to be set on the device.</p>
 
       <h3>Security → Known Hosts</h3>
       <p>View and delete trusted host fingerprints. See <a href="#known-hosts-tofu">Known Hosts</a>.</p>
@@ -790,9 +913,14 @@
           <tr><td>Password authentication</td><td>Yes</td><td>Yes</td></tr>
           <tr><td>SSH key authentication</td><td>—</td><td>Yes</td></tr>
           <tr><td>Generate / import SSH keys</td><td>—</td><td>Yes</td></tr>
+          <tr><td>Install key on a host</td><td>—</td><td>Yes</td></tr>
           <tr><td>Tailscale SSH</td><td>—</td><td>Yes</td></tr>
           <tr><td>Tailscale device browsing</td><td>—</td><td>Yes</td></tr>
           <tr><td>Snippet Vault</td><td>—</td><td>Yes</td></tr>
+          <tr><td>Terminal Macro Bar</td><td>—</td><td>Yes</td></tr>
+          <tr><td>SFTP file browser</td><td>—</td><td>Yes</td></tr>
+          <tr><td>Multi-session tabs</td><td>Yes</td><td>Yes</td></tr>
+          <tr><td>Automatic tmux attach &amp; reconnect</td><td>Yes</td><td>Yes</td></tr>
           <tr><td>Known hosts management</td><td>Yes</td><td>Yes</td></tr>
           <tr><td>Terminal emulation</td><td>Yes</td><td>Yes</td></tr>
           <tr><td>App Lock</td><td>Yes</td><td>Yes</td></tr>
@@ -969,6 +1097,34 @@ Received: [actual fingerprint]</code></pre>
       <ul>
         <li>Ensure you have an active terminal session open before opening the Snippet Vault.</li>
         <li>If the session was disconnected, reconnect and try again.</li>
+      </ul>
+
+      <h3>SFTP File Browser</h3>
+
+      <h4>"SFTP subsystem not available" or the browser fails to open</h4>
+      <ul>
+        <li>The server does not have the SFTP subsystem enabled. In OpenSSH, ensure <code>/etc/ssh/sshd_config</code> contains <code>Subsystem sftp /usr/lib/openssh/sftp-server</code> (the exact path varies by distro) and restart <code>sshd</code>.</li>
+        <li>The user's login shell may be restricted (e.g. <code>/usr/sbin/nologin</code>, rbash). SFTP needs a shell the SSH server can invoke.</li>
+      </ul>
+
+      <h4>Permission denied when renaming, deleting, or creating folders</h4>
+      <ul>
+        <li>Your account needs write permission on the target directory. Check with <code>ls -la</code> on the server.</li>
+        <li>Some SFTP servers deny <code>rename</code> across filesystems — keep the rename target in the same directory.</li>
+      </ul>
+
+      <h4>Uploads or downloads stall mid-transfer</h4>
+      <ul>
+        <li>If the SSH session itself drops, the transfer is cancelled. Check your connection and retry — <a href="#auto-reconnect">automatic reconnection</a> will restore the session and you can start the transfer again.</li>
+        <li>Very large transfers (multi-GB) are supported but depend on the stability of both endpoints and any firewall/NAT idle timeouts in between.</li>
+      </ul>
+
+      <h3>Terminal Macro Bar</h3>
+
+      <h4>Tapping a macro does nothing</h4>
+      <ul>
+        <li>You need an active terminal session — the macro bar sends text to the focused tab.</li>
+        <li>Confirm the macro's command text is not empty in <strong>Settings → Keyboard → Macros</strong>.</li>
       </ul>
 
       <h3>Purchases</h3>
