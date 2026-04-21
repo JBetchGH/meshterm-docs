@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contrato de Licencia de Usuario Final de meshTerm</title>
+<link rel="alternate" hreflang="en" href="eula.html">
+<link rel="alternate" hreflang="es" href="eula.es.html">
+<style>
+  :root {
+    --blue: #0A84FF;
+    --blue-dark: #0060DF;
+    --text: #1C1C1E;
+    --text-sec: #636366;
+    --surface: #F2F2F7;
+    --border: #D1D1D6;
+    --red: #FF453A;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text",
+                 "Helvetica Neue", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: #fff;
+  }
+
+  header {
+    background: var(--blue);
+    color: white;
+    padding: 40px 24px 32px;
+    text-align: center;
+  }
+
+  header .app-name {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    opacity: .8;
+    margin-bottom: 8px;
+  }
+
+  header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  header .meta {
+    font-size: 14px;
+    opacity: .75;
+  }
+
+  .nav-links {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+    padding: 14px 24px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .nav-links a {
+    color: var(--blue);
+    text-decoration: none;
+    margin: 0 16px;
+    display: inline-block;
+  }
+
+  .nav-links a:hover { text-decoration: underline; }
+
+  .nav-links .lang {
+    color: var(--text-sec);
+    font-weight: 600;
+    border-left: 1px solid var(--border);
+    padding-left: 16px;
+    margin-left: 4px;
+  }
+
+  .important-bar {
+    background: #FFE8E7;
+    border-left: 4px solid var(--red);
+    margin: 32px auto;
+    max-width: 760px;
+    padding: 16px 24px;
+    border-radius: 0 8px 8px 0;
+    font-size: 14px;
+    color: #8C0000;
+    font-weight: 500;
+    line-height: 1.6;
+  }
+
+  .translation-note {
+    background: #FFF8E7;
+    border-left: 4px solid #FF9F0A;
+    margin: 0 auto;
+    max-width: 760px;
+    padding: 12px 20px;
+    border-radius: 0 8px 8px 0;
+    font-size: 13px;
+    color: #7A5A00;
+    margin-top: 24px;
+  }
+
+  .translation-note a {
+    color: var(--blue);
+    font-weight: 600;
+  }
+
+  main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 24px 60px;
+  }
+
+  .toc {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 24px 0 40px;
+  }
+
+  .toc h2 {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--text-sec);
+    margin-bottom: 12px;
+    border: none;
+    padding: 0;
+  }
+
+  .toc ol {
+    padding-left: 20px;
+    margin: 0;
+    columns: 2;
+    column-gap: 24px;
+  }
+
+  .toc li {
+    font-size: 14px;
+    margin-bottom: 4px;
+    break-inside: avoid;
+  }
+
+  .toc a {
+    color: var(--blue);
+    text-decoration: none;
+  }
+
+  .toc a:hover { text-decoration: underline; }
+
+  section { margin-bottom: 40px; }
+
+  h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--blue);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  h2 .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: var(--blue);
+    color: white;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    margin: 20px 0 8px;
+  }
+
+  p {
+    font-size: 15px;
+    margin-bottom: 12px;
+    color: var(--text);
+  }
+
+  p.caps {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  ul {
+    padding-left: 20px;
+    margin-bottom: 14px;
+  }
+
+  li {
+    font-size: 15px;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+
+  .highlight {
+    background: #EBF4FF;
+    border: 1px solid #B8D8FA;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 14px 0;
+    font-size: 14px;
+    color: var(--blue-dark);
+    line-height: 1.6;
+  }
+
+  .acceptance-bar {
+    background: #E8F9EE;
+    border: 1px solid #A8E8BC;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 32px 0 16px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #1A7A35;
+    text-align: center;
+    line-height: 1.6;
+  }
+
+  .contact-card {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-top: 12px;
+  }
+
+  .contact-card p { margin-bottom: 4px; }
+
+  .contact-card .name {
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  footer {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    text-align: center;
+    padding: 24px;
+    font-size: 13px;
+    color: var(--text-sec);
+  }
+
+  footer a {
+    color: var(--blue);
+    text-decoration: none;
+  }
+
+  @media (max-width: 600px) {
+    header { padding: 28px 16px 24px; }
+    header h1 { font-size: 24px; }
+    main { padding: 0 16px 48px; }
+    h2 { font-size: 17px; }
+    .toc ol { columns: 1; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="app-name">meshTerm · Cliente SSH para iOS</div>
+  <h1>Contrato de Licencia de Usuario Final</h1>
+  <div class="meta">James Betchley &nbsp;·&nbsp; En vigor desde marzo de 2026 &nbsp;·&nbsp; Versión 1.0</div>
+</header>
+
+<div class="nav-links">
+  <a href="index.es.html">Inicio</a>
+  <a href="meshterm.html">Guía del usuario (EN)</a>
+  <a href="meshterm-tailscale-integration.html">Configuración de Tailscale (EN)</a>
+  <a href="privacy.es.html">Privacidad</a>
+  <a href="eula.es.html">EULA</a>
+  <a href="eula.html" class="lang" hreflang="en">English</a>
+</div>
+
+<div class="translation-note">
+  Esta es una traducción al español del Contrato de Licencia de Usuario Final. En caso de discrepancia o conflicto de interpretación, prevalecerá la <a href="eula.html">versión en inglés</a>, que es el documento vinculante.
+</div>
+
+<main>
+
+  <div class="important-bar">
+    LEA ATENTAMENTE ESTE CONTRATO DE LICENCIA DE USUARIO FINAL ANTES DE DESCARGAR, INSTALAR O
+    UTILIZAR meshTerm. AL DESCARGAR, INSTALAR O UTILIZAR LA APLICACIÓN, USTED ACEPTA QUEDAR
+    VINCULADO POR LOS TÉRMINOS DE ESTE CONTRATO. SI NO LOS ACEPTA, NO DESCARGUE, INSTALE NI
+    UTILICE LA APLICACIÓN.
+  </div>
+
+  <p>Este Contrato de Licencia de Usuario Final ("Contrato") es un acuerdo legal entre usted
+  ("Usuario" o "usted") y James Betchley ("el Desarrollador", "nosotros") para el uso de
+  meshTerm (la "Aplicación"), una aplicación móvil para dispositivos Apple iOS e iPadOS.
+  Este Contrato incorpora por referencia los términos estándar del contrato de licencia de
+  usuario final de Apple Inc. exigidos por las Directrices de Revisión del App Store.</p>
+
+  <div class="toc">
+    <h2>Índice</h2>
+    <ol>
+      <li><a href="#s1">Concesión de licencia</a></li>
+      <li><a href="#s2">Suscripciones y facturación</a></li>
+      <li><a href="#s3">Integración con Tailscale</a></li>
+      <li><a href="#s4">Funcionalidad SSH y seguridad</a></li>
+      <li><a href="#s5">Propiedad intelectual</a></li>
+      <li><a href="#s6">Privacidad</a></li>
+      <li><a href="#s7">Exclusión de garantías</a></li>
+      <li><a href="#s8">Limitación de responsabilidad</a></li>
+      <li><a href="#s9">Condiciones adicionales del App Store</a></li>
+      <li><a href="#s10">Cumplimiento legal</a></li>
+      <li><a href="#s11">Ley aplicable y disputas</a></li>
+      <li><a href="#s12">Modificaciones del Contrato</a></li>
+      <li><a href="#s13">Resolución</a></li>
+      <li><a href="#s14">Información de contacto</a></li>
+    </ol>
+  </div>
+
+  <section id="s1">
+    <h2><span class="num">1</span> Concesión de licencia</h2>
+    <p>Con sujeción a los términos y condiciones del presente Contrato, el Desarrollador le
+    concede una licencia limitada, no exclusiva, no transferible y revocable para descargar,
+    instalar y utilizar la Aplicación con fines personales y no comerciales en cualquier
+    dispositivo de marca Apple de su propiedad o bajo su control, conforme a las Normas de
+    Uso establecidas en los Términos y Condiciones de los Servicios Multimedia de Apple.
+    Esta licencia permite que otras cuentas asociadas a usted accedan a la Aplicación a
+    través de la función "En familia" o la compra por volumen, cuando corresponda y en la
+    medida permitida por Apple.</p>
+
+    <h3>1.1 Licencia de suscripción</h3>
+    <p>Determinadas funciones de la Aplicación solo están disponibles mediante una suscripción
+    de pago ("meshTerm Pro"). Tras la adquisición de una suscripción válida, la licencia
+    concedida anteriormente se amplía para incluir el acceso a dichas funciones premium
+    durante el período de suscripción activo. Están disponibles las siguientes modalidades
+    de suscripción:</p>
+    <ul>
+      <li>meshTerm Pro Mensual: renovación automática mensual</li>
+      <li>meshTerm Pro Anual: renovación automática anual</li>
+    </ul>
+
+    <h3>1.2 Restricciones</h3>
+    <p>Usted se compromete a no:</p>
+    <ul>
+      <li>Copiar, modificar ni distribuir la Aplicación o su contenido</li>
+      <li>Realizar ingeniería inversa, desensamblar, descompilar ni intentar obtener el código fuente de la Aplicación</li>
+      <li>Alquilar, arrendar, prestar, vender, sublicenciar ni transferir de otro modo la Aplicación a terceros</li>
+      <li>Eliminar, alterar u ocultar cualquier aviso de propiedad intelectual presente en la Aplicación</li>
+      <li>Utilizar la Aplicación con fines ilícitos o infringiendo las leyes o normativas aplicables</li>
+      <li>Utilizar la Aplicación para obtener acceso no autorizado a cualquier sistema informático, red o dato</li>
+      <li>Intentar eludir, desactivar o interferir con cualquier elemento de seguridad o control de acceso de la Aplicación</li>
+    </ul>
+  </section>
+
+  <section id="s2">
+    <h2><span class="num">2</span> Suscripciones y facturación</h2>
+
+    <h3>2.1 Condiciones de suscripción</h3>
+    <p>Las suscripciones se facturan a través de su cuenta de Apple ID mediante Apple App Store.
+    El cargo se aplica a su cuenta de Apple ID al confirmar la compra. Las suscripciones se
+    renuevan automáticamente salvo que desactive la renovación automática al menos 24 horas
+    antes del final del período de suscripción en curso.</p>
+
+    <h3>2.2 Renovación y cancelación</h3>
+    <p>Su cuenta será cargada por la renovación dentro de las 24 horas previas al final del
+    período de suscripción en curso al precio de renovación aplicable. Puede gestionar su
+    suscripción y desactivar la renovación automática en cualquier momento desde los Ajustes
+    de su cuenta de Apple ID tras la compra. No se efectuarán reembolsos por el tiempo no
+    utilizado de ningún período de suscripción, salvo cuando lo exija la legislación aplicable
+    o las políticas de reembolso estándar de Apple.</p>
+
+    <h3>2.3 Versión gratuita</h3>
+    <p>La Aplicación puede descargarse y utilizarse de forma gratuita con ciertas limitaciones
+    de funciones. El Desarrollador se reserva el derecho a modificar las funciones disponibles
+    en la versión gratuita en cualquier momento, previa notificación razonable a los usuarios.</p>
+
+    <h3>2.4 Cambios de precio</h3>
+    <p>El Desarrollador se reserva el derecho a modificar los precios de las suscripciones con
+    un aviso previo razonable. El uso continuado de la Aplicación tras un cambio de precio
+    constituye su aceptación del nuevo precio. Siempre recibirá notificación de los cambios
+    de precio antes de que entren en vigor.</p>
+
+    <h3>2.5 Apple como procesador de pagos</h3>
+    <p>Todos los cargos por suscripción son procesados por Apple Inc. a través de Apple App
+    Store. El Desarrollador no recopila, almacena ni procesa los datos de su tarjeta de pago.
+    Las disputas de facturación deben dirigirse a Apple a través de los ajustes de su cuenta
+    de Apple ID o en <a href="https://reportaproblem.apple.com" target="_blank">reportaproblem.apple.com</a>.</p>
+  </section>
+
+  <section id="s3">
+    <h2><span class="num">3</span> Integración con Tailscale</h2>
+    <p>La Aplicación se integra con los servicios de red de Tailscale. El uso de las funciones
+    de Tailscale dentro de la Aplicación está sujeto a los Términos de Servicio y a la
+    Política de Privacidad de Tailscale, disponibles en
+    <a href="https://tailscale.com" target="_blank">tailscale.com</a>. El Desarrollador no
+    está afiliado, respaldado ni asociado con Tailscale Inc.</p>
+    <p>Al utilizar las funciones de Tailscale dentro de la Aplicación:</p>
+    <ul>
+      <li>Se le solicitará autenticarse con su cuenta de Tailscale de forma independiente dentro de la Aplicación</li>
+      <li>La Aplicación aparecerá como un dispositivo independiente en su consola de administración de Tailscale</li>
+      <li>La Aplicación solo accede a nodos y recursos de su propia red de Tailscale</li>
+      <li>Ningún tráfico SSH se enruta a través de un servidor operado por el Desarrollador</li>
+      <li>Todas las conexiones son peer-to-peer o se realizan a través de la infraestructura de reenvío DERP de Tailscale</li>
+      <li>Usted debe cumplir los Términos de Servicio de Tailscale cuando utilice las funciones de Tailscale dentro de la Aplicación</li>
+    </ul>
+  </section>
+
+  <section id="s4">
+    <h2><span class="num">4</span> Funcionalidad SSH y seguridad</h2>
+    <p>La Aplicación permite realizar conexiones SSH a servidores remotos. Usted reconoce y acepta que:</p>
+    <ul>
+      <li>Usted es el único responsable de la seguridad de las credenciales SSH almacenadas en la Aplicación</li>
+      <li>Las claves privadas SSH se almacenan en el Llavero de iOS y están protegidas por la autenticación del dispositivo</li>
+      <li>El Desarrollador no es responsable de ningún acceso no autorizado a sistemas remotos facilitado a través de la Aplicación</li>
+      <li>Usted utilizará la Aplicación únicamente para conectarse a sistemas de los que sea propietario o para los que cuente con autorización explícita de acceso</li>
+      <li>El uso de la Aplicación para obtener acceso no autorizado a sistemas informáticos está estrictamente prohibido y puede ser ilícito</li>
+    </ul>
+    <p>La Aplicación emplea prácticas de seguridad estándar del sector, incluidas la verificación
+    de claves de host basada en Trust On First Use (TOFU), el almacenamiento cifrado de
+    credenciales y el uso exclusivo del protocolo SSHv2. El Desarrollador no ofrece garantía
+    alguna sobre la seguridad absoluta de cualquier conexión SSH.</p>
+  </section>
+
+  <section id="s5">
+    <h2><span class="num">5</span> Propiedad intelectual</h2>
+    <p>La Aplicación y todo su contenido, funciones y funcionalidades son propiedad del
+    Desarrollador y están protegidos por las leyes de propiedad intelectual, marcas
+    registradas y demás normativa aplicable del Reino Unido e internacional.</p>
+    <p>La Aplicación incorpora componentes de software de código abierto, entre ellos el
+    Tailscale SDK (licencia BSD-3-Clause), SwiftNIO SSH (licencia Apache 2.0) y SwiftTerm
+    (licencia MIT). Los avisos de licencia correspondientes están disponibles dentro de la
+    Aplicación en Ajustes &rarr; Agradecimientos.</p>
+  </section>
+
+  <section id="s6">
+    <h2><span class="num">6</span> Privacidad</h2>
+    <p>El uso que usted haga de la Aplicación también se rige por nuestra
+    <a href="privacy.es.html" target="_blank">Política de Privacidad</a>, que se incorpora al
+    presente Contrato por referencia. Le rogamos leer la Política de Privacidad con
+    detenimiento. Al utilizar la Aplicación, usted acepta la recopilación y el uso de
+    información según lo descrito en dicha Política.</p>
+    <p>Compromisos clave en materia de privacidad:</p>
+    <ul>
+      <li>El contenido de la terminal nunca se transmite al Desarrollador ni a terceros</li>
+      <li>Las credenciales SSH se almacenan exclusivamente en su dispositivo, en el Llavero de iOS</li>
+      <li>La Aplicación no muestra anuncios</li>
+      <li>No se recopilan ni utilizan identificadores publicitarios</li>
+    </ul>
+  </section>
+
+  <section id="s7">
+    <h2><span class="num">7</span> Exclusión de garantías</h2>
+    <p class="caps">LA APLICACIÓN SE PROPORCIONA "TAL CUAL" Y "SEGÚN DISPONIBILIDAD", SIN
+    GARANTÍAS DE NINGÚN TIPO, YA SEAN EXPRESAS O IMPLÍCITAS, INCLUIDAS, ENTRE OTRAS, LAS
+    GARANTÍAS IMPLÍCITAS DE COMERCIABILIDAD, IDONEIDAD PARA UN PROPÓSITO DETERMINADO, NO
+    INFRACCIÓN O DESEMPEÑO EN EL CURSO DEL TIEMPO.</p>
+    <p>El Desarrollador no garantiza que: (a) la Aplicación funcionará de forma ininterrumpida,
+    segura o disponible en un momento o lugar concretos; (b) se corregirán los errores o
+    defectos; (c) la Aplicación esté libre de virus u otros componentes dañinos; o (d) los
+    resultados del uso de la Aplicación cumplirán con sus requisitos.</p>
+  </section>
+
+  <section id="s8">
+    <h2><span class="num">8</span> Limitación de responsabilidad</h2>
+    <p class="caps">EN LA MÁXIMA MEDIDA PERMITIDA POR LA LEGISLACIÓN APLICABLE, EN NINGÚN CASO
+    EL DESARROLLADOR SERÁ RESPONSABLE DE DAÑOS INDIRECTOS, INCIDENTALES, ESPECIALES,
+    CONSECUENTES O PUNITIVOS, INCLUIDOS, A MODO ENUNCIATIVO, LA PÉRDIDA DE BENEFICIOS, DE
+    DATOS, DE USO, DE FONDO DE COMERCIO U OTRAS PÉRDIDAS INTANGIBLES DERIVADAS DEL USO O DE
+    LA IMPOSIBILIDAD DE USAR LA APLICACIÓN.</p>
+    <p>En ningún caso la responsabilidad total del Desarrollador frente a usted por cualquier
+    reclamación derivada o relacionada con el presente Contrato o con la Aplicación superará
+    el importe abonado por usted por la Aplicación durante los doce meses anteriores a la
+    reclamación, o 10,00 £ si no se hubieran realizado tales pagos.</p>
+    <p>Nada de lo dispuesto en el presente Contrato limitará ni excluirá la responsabilidad del
+    Desarrollador por fallecimiento o lesiones personales causadas por negligencia, por fraude
+    o tergiversación fraudulenta, ni por cualquier otra responsabilidad que no pueda ser
+    excluida o limitada conforme a la legislación aplicable.</p>
+  </section>
+
+  <section id="s9">
+    <h2><span class="num">9</span> Condiciones adicionales del App Store</h2>
+
+    <h3>9.1 Reconocimiento</h3>
+    <p>Usted y el Desarrollador reconocen que el presente Contrato se celebra únicamente entre
+    usted y el Desarrollador, y no con Apple Inc. El Desarrollador, no Apple, es el único
+    responsable de la Aplicación y de su contenido.</p>
+
+    <h3>9.2 Alcance de la licencia</h3>
+    <p>La licencia que se le concede sobre la Aplicación se limita a una licencia no
+    transferible para utilizar la Aplicación en cualquier producto de marca Apple de su
+    propiedad o bajo su control, con sujeción a los Términos del Servicio del App Store.</p>
+
+    <h3>9.3 Mantenimiento y soporte</h3>
+    <p>El Desarrollador es el único responsable de proporcionar los servicios de mantenimiento
+    y soporte relativos a la Aplicación. Apple no tiene obligación alguna de proporcionar
+    servicios de mantenimiento o soporte respecto de la Aplicación.</p>
+
+    <h3>9.4 Garantía</h3>
+    <p>En caso de que la Aplicación no se ajuste a alguna garantía aplicable, usted podrá
+    notificarlo a Apple, y Apple le reembolsará el precio de compra de la Aplicación. En la
+    máxima medida permitida por la legislación aplicable, Apple no tendrá ninguna otra
+    obligación de garantía respecto de la Aplicación.</p>
+
+    <h3>9.5 Reclamaciones sobre el producto</h3>
+    <p>El Desarrollador, no Apple, es responsable de atender cualquier reclamación que usted
+    tenga en relación con la Aplicación, incluidas: (a) reclamaciones por responsabilidad
+    sobre el producto; (b) cualquier reclamación por el hecho de que la Aplicación no cumpla
+    algún requisito legal o reglamentario aplicable; y (c) reclamaciones derivadas de la
+    normativa sobre protección al consumidor, privacidad o similar.</p>
+
+    <h3>9.6 Derechos de propiedad intelectual</h3>
+    <p>En caso de cualquier reclamación de un tercero de que la Aplicación o la posesión y el
+    uso que usted haga de ella infringe los derechos de propiedad intelectual de dicho tercero,
+    el Desarrollador, no Apple, será el único responsable de la investigación, defensa,
+    transacción y resolución de dicha reclamación por infracción de propiedad intelectual.</p>
+
+    <h3>9.7 Beneficiarios terceros</h3>
+    <p>Apple y sus filiales son beneficiarios terceros del presente Contrato y, tras la
+    aceptación del mismo por su parte, Apple tendrá derecho (y se considerará que ha aceptado
+    ese derecho) a exigir el cumplimiento del Contrato frente a usted como beneficiario
+    tercero.</p>
+  </section>
+
+  <section id="s10">
+    <h2><span class="num">10</span> Cumplimiento legal</h2>
+    <p>Al descargar, instalar o utilizar la Aplicación, usted declara y garantiza que:</p>
+    <ul>
+      <li>No se encuentra en un país sujeto a un embargo del Gobierno de los Estados Unidos o
+      designado por dicho Gobierno como país que apoya el terrorismo</li>
+      <li>No figura en ninguna lista del Gobierno de los Estados Unidos de partes prohibidas
+      o restringidas, incluida la lista de Nacionales Especialmente Designados del
+      Departamento del Tesoro, o las listas del Departamento de Comercio de Personas o
+      Entidades Denegadas</li>
+    </ul>
+    <p>Asimismo, usted se compromete a cumplir todas las leyes y normativas aplicables en su
+    jurisdicción relativas a la descarga, instalación y uso de la Aplicación, incluidos los
+    términos de servicio de terceros aplicables. Al utilizar las funciones de Tailscale dentro
+    de la Aplicación, usted no podrá infringir su contrato de servicio de datos inalámbricos
+    ni los Términos de Servicio de Tailscale.</p>
+  </section>
+
+  <section id="s11">
+    <h2><span class="num">11</span> Ley aplicable y disputas</h2>
+    <p>El presente Contrato se regirá e interpretará conforme a las leyes de Inglaterra y Gales,
+    sin consideración de sus principios sobre conflictos de leyes. Cualquier disputa derivada
+    o relacionada con el presente Contrato o con la Aplicación quedará sometida a la
+    jurisdicción exclusiva de los tribunales de Inglaterra y Gales.</p>
+  </section>
+
+  <section id="s12">
+    <h2><span class="num">12</span> Modificaciones del Contrato</h2>
+    <p>El Desarrollador se reserva el derecho a modificar el presente Contrato en cualquier
+    momento. Le notificaremos las modificaciones relevantes actualizando la fecha de entrada
+    en vigor que figura al principio del Contrato y, cuando proceda, presentando dentro de
+    la Aplicación el Contrato actualizado para su aceptación. El uso continuado de la
+    Aplicación tras cualquier modificación constituye su aceptación del Contrato actualizado.</p>
+  </section>
+
+  <section id="s13">
+    <h2><span class="num">13</span> Resolución</h2>
+    <p>El presente Contrato estará en vigor hasta su resolución. Sus derechos en virtud del
+    presente Contrato se extinguirán automáticamente si usted incumple cualquiera de sus
+    términos. Tras la resolución, deberá cesar todo uso de la Aplicación y destruir todas
+    las copias que obren en su poder.</p>
+    <p>El Desarrollador se reserva el derecho a resolver o suspender su acceso a la Aplicación
+    en cualquier momento, sin previo aviso, por cualquier conducta que el Desarrollador
+    considere que infringe el presente Contrato o que es perjudicial para otros usuarios,
+    para el Desarrollador o para terceros.</p>
+  </section>
+
+  <section id="s14">
+    <h2><span class="num">14</span> Información de contacto</h2>
+    <p>Si tiene cualquier duda sobre el presente Contrato, póngase en contacto con:</p>
+    <div class="contact-card">
+      <p class="name">James Betchley</p>
+      <p>Correo electrónico: <a href="mailto:meshterm@gmail.com">meshterm@gmail.com</a></p>
+      <p>Aplicación: meshTerm en Apple App Store</p>
+    </div>
+    <p style="margin-top: 14px;">Nuestro objetivo es responder a todas las consultas en un plazo de 5 días laborables.</p>
+  </section>
+
+  <div class="acceptance-bar">
+    Al descargar, instalar o utilizar meshTerm, usted reconoce haber leído y comprendido el
+    presente Contrato, y acepta quedar vinculado por sus términos y condiciones.
+  </div>
+
+</main>
+
+<footer>
+  <p>Contrato de Licencia de Usuario Final de meshTerm &nbsp;·&nbsp; Versión 1.0 &nbsp;·&nbsp; Marzo de 2026</p>
+  <p style="margin-top: 6px;">
+    <a href="mailto:meshterm@gmail.com">meshterm@gmail.com</a>
+  </p>
+</footer>
+
+</body>
+</html>

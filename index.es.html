@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>meshTerm — iOS SSH Client</title>
+<title>meshTerm — Cliente SSH para iOS</title>
 <link rel="alternate" hreflang="en" href="index.html">
 <link rel="alternate" hreflang="es" href="index.es.html">
 <style>
@@ -159,6 +159,19 @@
     color: var(--text);
   }
 
+  .doc-card .lang-note {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-sec);
+    background: var(--surface);
+    padding: 2px 7px;
+    border-radius: 4px;
+    margin-left: 6px;
+    vertical-align: middle;
+    letter-spacing: .04em;
+  }
+
   .doc-card p {
     font-size: 15px;
     color: var(--text-sec);
@@ -211,62 +224,62 @@
 
 <header>
   <div class="app-name">meshTerm</div>
-  <h1>Documentation & Support</h1>
-  <div class="sub">The professional SSH client for iOS and iPadOS. Multi-session tabs, SFTP file browser, terminal macros, and native Tailscale integration.</div>
+  <h1>Documentación y soporte</h1>
+  <div class="sub">El cliente SSH profesional para iOS e iPadOS. Pestañas multisesión, explorador de archivos SFTP, macros de terminal e integración nativa con Tailscale.</div>
 </header>
 
 <div class="nav-links">
-  <a href="index.html">Home</a>
-  <a href="meshterm.html">User Guide</a>
-  <a href="meshterm-tailscale-integration.html">Tailscale Setup</a>
-  <a href="privacy.html">Privacy</a>
-  <a href="eula.html">EULA</a>
-  <a href="index.es.html" class="lang" hreflang="es">Español</a>
+  <a href="index.es.html">Inicio</a>
+  <a href="meshterm.html">Guía del usuario (EN)</a>
+  <a href="meshterm-tailscale-integration.html">Configuración de Tailscale (EN)</a>
+  <a href="privacy.es.html">Privacidad</a>
+  <a href="eula.es.html">EULA</a>
+  <a href="index.html" class="lang" hreflang="en">English</a>
 </div>
 
 <main>
   <div class="intro">
-    Welcome to the meshTerm documentation hub. Whether you are setting up your first server connection, configuring passwordless authentication, or reviewing our privacy practices, you will find everything you need below.
+    Bienvenido al centro de documentación de meshTerm. Aquí encontrará todo lo necesario para configurar sus primeras conexiones, activar la autenticación sin contraseña y revisar nuestras prácticas de privacidad.
   </div>
 
   <div class="grid">
     <a href="meshterm.html" class="doc-card">
       <div class="icon">📖</div>
-      <h2>User Guide</h2>
-      <p>The complete manual for meshTerm 1.1. Multi-session tabs, SFTP file browser, terminal macro bar, automatic tmux attach, SSH key management, and the Snippet Vault.</p>
-      <div class="action">Read the Guide</div>
+      <h2>Guía del usuario <span class="lang-note">EN</span></h2>
+      <p>El manual completo de meshTerm 1.1: pestañas multisesión, explorador SFTP, macros de terminal, acoplamiento automático a tmux, gestión de claves SSH y Snippet Vault. Disponible actualmente solo en inglés.</p>
+      <div class="action">Leer la guía</div>
     </a>
 
     <a href="meshterm-tailscale-integration.html" class="doc-card tailscale">
       <div class="icon">⚡</div>
-      <h2>Tailscale Setup</h2>
-      <p>Everything you need to connect meshTerm to your Tailnet and enable passwordless, keyless SSH access using your Tailscale identity.</p>
-      <div class="action">Configure Tailscale</div>
+      <h2>Configuración de Tailscale <span class="lang-note">EN</span></h2>
+      <p>Todo lo necesario para conectar meshTerm a su Tailnet y habilitar el acceso SSH sin contraseñas ni claves usando su identidad Tailscale. Disponible actualmente solo en inglés.</p>
+      <div class="action">Configurar Tailscale</div>
     </a>
 
-    <a href="privacy.html" class="doc-card legal">
+    <a href="privacy.es.html" class="doc-card legal">
       <div class="icon">🛡️</div>
-      <h2>Privacy Policy</h2>
-      <p>meshTerm does not collect your terminal content, SSH credentials, or personal data. We do not sell your data, and we do not display advertisements.</p>
-      <div class="action">Review Privacy Policy</div>
+      <h2>Política de privacidad</h2>
+      <p>meshTerm no recopila el contenido de su terminal, credenciales SSH ni datos personales. No vendemos sus datos y no mostramos anuncios.</p>
+      <div class="action">Ver política de privacidad</div>
     </a>
 
-    <a href="eula.html" class="doc-card legal">
+    <a href="eula.es.html" class="doc-card legal">
       <div class="icon">⚖️</div>
-      <h2>End User Licence Agreement</h2>
-      <p>The legal agreement governing your use of the meshTerm mobile software application for Apple iOS and iPadOS devices.</p>
-      <div class="action">Read EULA</div>
+      <h2>Contrato de licencia (EULA)</h2>
+      <p>El acuerdo legal que regula el uso de la aplicación móvil meshTerm para dispositivos Apple iOS e iPadOS.</p>
+      <div class="action">Leer el EULA</div>
     </a>
   </div>
 </main>
 
 <footer>
-  <p>meshTerm is developed by James Betchley.</p>
+  <p>meshTerm es desarrollado por James Betchley.</p>
   <p style="margin-top: 8px;">
     <a href="mailto:meshterm@gmail.com">meshterm@gmail.com</a>
   </p>
   <p style="margin-top: 16px; font-size: 12px; opacity: 0.8;">
-    meshTerm is not affiliated with, endorsed by, or in partnership with Tailscale Inc.
+    meshTerm no está afiliado, respaldado ni asociado con Tailscale Inc.
   </p>
 </footer>
 

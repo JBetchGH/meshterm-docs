@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Política de Privacidad de meshTerm</title>
+<link rel="alternate" hreflang="en" href="privacy.html">
+<link rel="alternate" hreflang="es" href="privacy.es.html">
+<style>
+  :root {
+    --blue: #0A84FF;
+    --blue-dark: #0060DF;
+    --text: #1C1C1E;
+    --text-sec: #636366;
+    --surface: #F2F2F7;
+    --border: #D1D1D6;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text",
+                 "Helvetica Neue", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: #fff;
+    padding: 0;
+  }
+
+  header {
+    background: var(--blue);
+    color: white;
+    padding: 40px 24px 32px;
+    text-align: center;
+  }
+
+  header .app-name {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    opacity: .8;
+    margin-bottom: 8px;
+  }
+
+  header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  header .meta {
+    font-size: 14px;
+    opacity: .75;
+  }
+
+  .nav-links {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+    padding: 14px 24px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .nav-links a {
+    color: var(--blue);
+    text-decoration: none;
+    margin: 0 16px;
+    display: inline-block;
+  }
+
+  .nav-links a:hover { text-decoration: underline; }
+
+  .nav-links .lang {
+    color: var(--text-sec);
+    font-weight: 600;
+    border-left: 1px solid var(--border);
+    padding-left: 16px;
+    margin-left: 4px;
+  }
+
+  .summary-bar {
+    background: #E8F9EE;
+    border-left: 4px solid #30D158;
+    margin: 32px auto;
+    max-width: 760px;
+    padding: 16px 24px;
+    border-radius: 0 8px 8px 0;
+    font-size: 15px;
+    color: #1A7A35;
+    font-weight: 500;
+  }
+
+  .translation-note {
+    background: #FFF8E7;
+    border-left: 4px solid #FF9F0A;
+    margin: 0 auto;
+    max-width: 760px;
+    padding: 12px 20px;
+    border-radius: 0 8px 8px 0;
+    font-size: 13px;
+    color: #7A5A00;
+    margin-top: 24px;
+  }
+
+  .translation-note a {
+    color: var(--blue);
+    font-weight: 600;
+  }
+
+  main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 24px 60px;
+  }
+
+  .toc {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 24px 0 40px;
+  }
+
+  .toc h2 {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--text-sec);
+    margin-bottom: 12px;
+    border: none;
+    padding: 0;
+  }
+
+  .toc ol {
+    padding-left: 20px;
+    margin: 0;
+  }
+
+  .toc li {
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+
+  .toc a {
+    color: var(--blue);
+    text-decoration: none;
+  }
+
+  .toc a:hover { text-decoration: underline; }
+
+  section { margin-bottom: 40px; }
+
+  h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--blue);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  h2 .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: var(--blue);
+    color: white;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    margin: 20px 0 8px;
+  }
+
+  p {
+    font-size: 15px;
+    margin-bottom: 12px;
+    color: var(--text);
+  }
+
+  ul {
+    padding-left: 20px;
+    margin-bottom: 14px;
+  }
+
+  li {
+    font-size: 15px;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+
+  .highlight {
+    background: #EBF4FF;
+    border: 1px solid #B8D8FA;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 14px 0;
+    font-size: 14px;
+    color: var(--blue-dark);
+  }
+
+  .contact-card {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-top: 12px;
+  }
+
+  .contact-card p { margin-bottom: 4px; }
+
+  .contact-card .name {
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  footer {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    text-align: center;
+    padding: 24px;
+    font-size: 13px;
+    color: var(--text-sec);
+  }
+
+  footer a {
+    color: var(--blue);
+    text-decoration: none;
+  }
+
+  @media (max-width: 600px) {
+    header { padding: 28px 16px 24px; }
+    header h1 { font-size: 26px; }
+    main { padding: 0 16px 48px; }
+    h2 { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="app-name">meshTerm · Cliente SSH para iOS</div>
+  <h1>Política de Privacidad</h1>
+  <div class="meta">James Betchley &nbsp;·&nbsp; En vigor desde marzo de 2026 &nbsp;·&nbsp; Versión 1.0</div>
+</header>
+
+<div class="nav-links">
+  <a href="index.es.html">Inicio</a>
+  <a href="meshterm.html">Guía del usuario (EN)</a>
+  <a href="meshterm-tailscale-integration.html">Configuración de Tailscale (EN)</a>
+  <a href="privacy.es.html">Privacidad</a>
+  <a href="eula.es.html">EULA</a>
+  <a href="privacy.html" class="lang" hreflang="en">English</a>
+</div>
+
+<div class="translation-note">
+  Esta es una traducción al español de la Política de Privacidad. En caso de discrepancia o conflicto de interpretación, prevalecerá la <a href="privacy.html">versión en inglés</a>.
+</div>
+
+<main>
+
+  <div class="summary-bar">
+    Versión breve: meshTerm no recopila el contenido de su terminal, credenciales SSH ni datos personales. No vendemos sus datos. No mostramos anuncios.
+  </div>
+
+  <div class="toc">
+    <h2>Índice</h2>
+    <ol>
+      <li><a href="#s1">Información que no recopilamos</a></li>
+      <li><a href="#s2">Información que sí recopilamos</a></li>
+      <li><a href="#s3">Cómo se almacena la información en su dispositivo</a></li>
+      <li><a href="#s4">Tailscale</a></li>
+      <li><a href="#s5">Servicios de terceros</a></li>
+      <li><a href="#s6">App Store y servicios de Apple</a></li>
+      <li><a href="#s7">Privacidad de los menores</a></li>
+      <li><a href="#s8">Sus derechos</a></li>
+      <li><a href="#s9">Conservación de datos</a></li>
+      <li><a href="#s10">Seguridad</a></li>
+      <li><a href="#s11">Modificaciones de esta Política</a></li>
+      <li><a href="#s12">Contacto</a></li>
+    </ol>
+  </div>
+
+  <p>Su privacidad es importante para nosotros. Esta Política de Privacidad explica cómo
+  James Betchley ("el Desarrollador", "nosotros") recopila, utiliza y protege la información
+  cuando usted utiliza meshTerm (la "Aplicación"). Hemos diseñado meshTerm con la privacidad
+  como principio fundamental: la Aplicación está creada para manejar credenciales SSH
+  sensibles y sesiones de terminal, y asumimos esa responsabilidad con seriedad.</p>
+
+  <section id="s1">
+    <h2><span class="num">1</span> Información que no recopilamos</h2>
+    <p>meshTerm está diseñado de forma que la siguiente información sensible nunca abandona
+    su dispositivo y nunca se transmite al Desarrollador ni a terceros:</p>
+    <ul>
+      <li>El contenido de las sesiones de terminal: todo lo que usted escribe y todo lo que aparece en la terminal</li>
+      <li>Claves privadas SSH y contraseñas: almacenadas exclusivamente en el Llavero de iOS de su dispositivo</li>
+      <li>Los datos de los hosts SSH y los registros de conexión</li>
+      <li>El historial de comandos</li>
+      <li>El contenido de su Snippet Vault</li>
+      <li>Las credenciales de autenticación de Tailscale</li>
+      <li>El contenido de cualquier archivo al que se acceda a través de la Aplicación</li>
+    </ul>
+    <p>No utilizamos identificadores publicitarios (IDFA) ni ninguna tecnología equivalente de
+    seguimiento. meshTerm no incluye SDK publicitarios ni SDK de analítica que transmitan
+    datos personales a terceros.</p>
+  </section>
+
+  <section id="s2">
+    <h2><span class="num">2</span> Información que sí recopilamos</h2>
+
+    <h3>2.1 Informes de fallos</h3>
+    <p>Si la Aplicación falla, los datos anónimos del fallo pueden recopilarse a través de la
+    infraestructura estándar de informes de fallos de Apple (siempre que usted haya aceptado
+    compartir datos de diagnóstico con los desarrolladores en los Ajustes de iOS). Estos datos incluyen:</p>
+    <ul>
+      <li>Trazas de pila que muestran qué código se estaba ejecutando en el momento del fallo</li>
+      <li>Modelo del dispositivo y versión de iOS</li>
+      <li>Versión de la Aplicación</li>
+      <li>Fecha y hora del fallo</li>
+    </ul>
+    <p>Los informes de fallos excluyen expresamente el contenido de la terminal, las credenciales
+    SSH, el historial de comandos y cualquier otro dato del usuario. Configuramos nuestros
+    informes de fallos para impedir que dichos datos aparezcan en los registros.</p>
+
+    <h3>2.2 Información sobre suscripciones</h3>
+    <p>Cuando usted adquiere una suscripción a meshTerm Pro, Apple procesa el pago y proporciona
+    a la Aplicación un recibo de transacción. Nosotros recibimos:</p>
+    <ul>
+      <li>La confirmación de que existe una suscripción válida</li>
+      <li>El identificador del producto suscrito (mensual o anual)</li>
+      <li>La fecha de caducidad de la suscripción</li>
+    </ul>
+    <p>No recibimos los datos de su tarjeta de pago, su dirección de facturación ni su Apple ID.
+    Apple Inc. gestiona íntegramente el procesamiento del pago.</p>
+
+    <h3>2.3 Datos de sincronización con iCloud</h3>
+    <p>Si utiliza la sincronización con iCloud para su Snippet Vault, sus configuraciones de host
+    y sus ajustes, estos datos se almacenan en su cuenta personal de iCloud mediante el marco
+    CloudKit de Apple. Estos datos:</p>
+    <ul>
+      <li>Se almacenan en su cuenta de iCloud, no en servidores operados por el Desarrollador</li>
+      <li>Apple los cifra en tránsito y en reposo</li>
+      <li>Están sujetos a la política de privacidad de iCloud de Apple</li>
+      <li>Son accesibles únicamente por usted y por la Aplicación ejecutándose en sus dispositivos</li>
+    </ul>
+    <p>No tenemos acceso al contenido de sus datos en iCloud.</p>
+  </section>
+
+  <section id="s3">
+    <h2><span class="num">3</span> Cómo se almacena la información en su dispositivo</h2>
+
+    <h3>3.1 Credenciales SSH</h3>
+    <p>Las claves privadas SSH y las contraseñas se almacenan en el Llavero de iOS con las siguientes protecciones:</p>
+    <ul>
+      <li><strong>Claves privadas:</strong> kSecAttrAccessibleWhenUnlockedThisDeviceOnly — requieren que el dispositivo esté desbloqueado y nunca se respaldan en iCloud ni se transfieren a otros dispositivos</li>
+      <li><strong>Contraseñas:</strong> kSecAttrAccessibleWhenUnlocked — protegidas por el código de su dispositivo</li>
+      <li>Se requiere autenticación biométrica (Face ID / Touch ID) cada vez que se utiliza una clave privada</li>
+    </ul>
+
+    <h3>3.2 Datos de la Aplicación</h3>
+    <p>Todos los datos de la Aplicación almacenados en su dispositivo (configuraciones de host,
+    snippets, temas, claves de host SSH conocidas) están protegidos por la Protección de Datos
+    de iOS con NSFileProtectionComplete, lo que significa que los datos se cifran cuando el
+    dispositivo está bloqueado.</p>
+
+    <h3>3.3 Claves de host SSH</h3>
+    <p>Las huellas digitales de las claves de host SSH se almacenan únicamente de forma local en
+    su dispositivo y no se sincronizan con iCloud. Es una decisión deliberada: la confianza en
+    las claves de host debe ser específica de cada dispositivo por razones de seguridad.</p>
+  </section>
+
+  <section id="s4">
+    <h2><span class="num">4</span> Tailscale</h2>
+    <p>La Aplicación se integra con la red de Tailscale. Al utilizar las funciones de Tailscale:</p>
+    <ul>
+      <li>Usted se autentica directamente con Tailscale mediante su cuenta de Tailscale; el Desarrollador nunca ve sus credenciales de Tailscale</li>
+      <li>La Aplicación crea un nodo Tailscale independiente asociado a su Tailnet</li>
+      <li>El tráfico de red fluye directamente entre su dispositivo y sus nodos de Tailscale, o mediante los servidores de reenvío DERP de Tailscale; no pasa por infraestructura operada por el Desarrollador</li>
+      <li>La propia política de privacidad de Tailscale regula los datos procesados por la infraestructura de Tailscale</li>
+    </ul>
+    <div class="highlight">
+      La política de privacidad de Tailscale está disponible en:
+      <a href="https://tailscale.com/privacy-policy" target="_blank">tailscale.com/privacy-policy</a>
+    </div>
+  </section>
+
+  <section id="s5">
+    <h2><span class="num">5</span> Servicios de terceros</h2>
+    <p>La Aplicación utiliza los siguientes componentes de software libre de terceros. Estos se
+    ejecutan íntegramente en su dispositivo y no transmiten datos a servidores externos:</p>
+    <ul>
+      <li>Tailscale iOS SDK — licencia BSD-3-Clause — tailscale.com</li>
+      <li>SwiftNIO SSH — licencia Apache 2.0 — Apple Inc.</li>
+      <li>SwiftTerm — licencia MIT — Miguel de Icaza</li>
+    </ul>
+    <p>La Aplicación no integra redes publicitarias, SDK de redes sociales ni servicios
+    de intermediarios de datos.</p>
+  </section>
+
+  <section id="s6">
+    <h2><span class="num">6</span> App Store y servicios de Apple</h2>
+    <p>La Aplicación se distribuye a través de Apple App Store. Apple puede recopilar cierta
+    información en relación con la descarga y el uso de la Aplicación, incluidos su Apple ID
+    e identificadores de dispositivo, con sujeción a la propia Política de Privacidad de Apple,
+    disponible en <a href="https://apple.com/legal/privacy" target="_blank">apple.com/legal/privacy</a>.</p>
+    <p>Las compras dentro de la aplicación y las suscripciones son procesadas por Apple. La
+    política de privacidad de Apple regula los datos recopilados en relación con esas
+    transacciones.</p>
+  </section>
+
+  <section id="s7">
+    <h2><span class="num">7</span> Privacidad de los menores</h2>
+    <p>meshTerm no está dirigido a menores de 13 años (o de 16 años en el Espacio Económico
+    Europeo). No recopilamos conscientemente información personal de menores. La Aplicación
+    está destinada a desarrolladores, administradores de sistemas y usuarios técnicos que
+    gestionan infraestructuras Linux remotas.</p>
+  </section>
+
+  <section id="s8">
+    <h2><span class="num">8</span> Sus derechos</h2>
+    <p>Con arreglo al Reglamento General de Protección de Datos del Reino Unido (UK GDPR) y a
+    la normativa de protección de datos aplicable, usted dispone de los siguientes derechos:</p>
+    <ul>
+      <li><strong>Derecho de acceso</strong> — a solicitar información sobre los datos personales que tengamos sobre usted</li>
+      <li><strong>Derecho de rectificación</strong> — a corregir datos personales inexactos</li>
+      <li><strong>Derecho de supresión</strong> — a solicitar la eliminación de los datos personales que conservemos</li>
+      <li><strong>Derecho a la limitación del tratamiento</strong> — a restringir el tratamiento de sus datos personales</li>
+      <li><strong>Derecho a la portabilidad de los datos</strong> — a recibir sus datos personales en un formato portátil</li>
+      <li><strong>Derecho de oposición</strong> — a oponerse al tratamiento de sus datos personales</li>
+    </ul>
+    <p>Dado el diseño de meshTerm orientado a la privacidad, conservamos muy pocos datos
+    personales sobre usted. La mayoría de los datos se almacenan exclusivamente en su
+    dispositivo y en su cuenta de iCloud, ambos bajo su control directo. Para ejercer
+    cualquiera de estos derechos o realizar una consulta relacionada con la privacidad,
+    póngase en contacto con nosotros en la dirección indicada más abajo.</p>
+  </section>
+
+  <section id="s9">
+    <h2><span class="num">9</span> Conservación de datos</h2>
+    <p>Los informes de fallos (si se recopilan a través del sistema de informes de fallos de
+    Apple) se conservan durante un máximo de 12 meses, tras lo cual se eliminan. Estos datos
+    son anónimos y no pueden vincularse con usted de forma individual.</p>
+    <p>Los datos de transacciones de suscripción se conservan durante el período exigido por la
+    normativa fiscal y financiera aplicable, normalmente 7 años en el Reino Unido.</p>
+    <p>El resto de los datos (credenciales SSH, snippets, configuraciones de host) se almacenan
+    exclusivamente en su dispositivo y en su cuenta de iCloud. Al eliminar la Aplicación se
+    eliminan todos los datos almacenados localmente. Puede gestionar los datos de iCloud
+    desde los Ajustes de su dispositivo &rarr; Apple ID &rarr; iCloud &rarr; Gestionar
+    almacenamiento.</p>
+  </section>
+
+  <section id="s10">
+    <h2><span class="num">10</span> Seguridad</h2>
+    <p>Aplicamos medidas técnicas y organizativas apropiadas para proteger los datos limitados
+    que manejamos. La propia Aplicación emplea varias capas de seguridad, incluidos el
+    almacenamiento en el Llavero de iOS, la Protección de Datos, la autenticación biométrica
+    y el uso exclusivo del protocolo SSHv2 con suites de cifrado modernas.</p>
+    <p>No obstante, ningún método de transmisión por Internet ni de almacenamiento electrónico
+    es 100 % seguro. Aunque nos esforzamos por emplear medios comercialmente aceptables para
+    proteger su información, no podemos garantizar su seguridad absoluta.</p>
+  </section>
+
+  <section id="s11">
+    <h2><span class="num">11</span> Modificaciones de esta Política</h2>
+    <p>Podemos actualizar esta Política de Privacidad ocasionalmente. Le notificaremos cualquier
+    cambio relevante actualizando la fecha de entrada en vigor que figura en la parte superior
+    de este documento y, cuando proceda, mediante un aviso en la propia Aplicación. Le
+    recomendamos revisar esta Política periódicamente.</p>
+    <p>El uso continuado de la Aplicación tras cualquier modificación de esta Política de
+    Privacidad constituye su aceptación de la política actualizada.</p>
+  </section>
+
+  <section id="s12">
+    <h2><span class="num">12</span> Contacto</h2>
+    <p>Si tiene alguna pregunta, preocupación o solicitud relacionada con esta Política de
+    Privacidad o con nuestras prácticas de datos, póngase en contacto con nosotros:</p>
+    <div class="contact-card">
+      <p class="name">James Betchley</p>
+      <p>Correo electrónico: <a href="mailto:meshterm@gmail.com">meshterm@gmail.com</a></p>
+      <p>Aplicación: meshTerm en Apple App Store</p>
+    </div>
+    <p style="margin-top: 14px;">Responderemos a todas las consultas sobre privacidad en un plazo de 30 días.</p>
+  </section>
+
+</main>
+
+<footer>
+  <p>Política de Privacidad de meshTerm &nbsp;·&nbsp; Versión 1.0 &nbsp;·&nbsp; En vigor desde marzo de 2026</p>
+  <p style="margin-top: 6px;">
+    <a href="mailto:meshterm@gmail.com">meshterm@gmail.com</a>
+  </p>
+</footer>
+
+</body>
+</html>
