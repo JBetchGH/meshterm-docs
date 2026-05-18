@@ -1,0 +1,485 @@
+/* ───────────────────────────────────────────────────────────────────
+   meshTerm docs — shared stylesheet
+   Design tokens come from the v1.x landing page; v2.0 adds the
+   placeholder-figure system (.screenshot-placeholder) so capture
+   specs are visible inline until a real screenshot lands.
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  --blue: #0A84FF;
+  --blue-dark: #0060DF;
+  --green: #30D158;
+  --orange: #FF9F0A;
+  --text: #1C1C1E;
+  --text-sec: #636366;
+  --text-tert: #AEAEB2;
+  --surface: #F2F2F7;
+  --surface2: #E5E5EA;
+  --border: #D1D1D6;
+  --pro-accent: #8b5cf6;
+  --code-bg: #F2F2F7;
+  --sidebar-width: 260px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text",
+               "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--text);
+  background: #fff;
+}
+
+/* ── Site header ── */
+header.site-header {
+  background: linear-gradient(135deg, #0A84FF 0%, #2563EB 100%);
+  color: white;
+  padding: 56px 24px 44px;
+  text-align: center;
+}
+
+header.site-header .app-name {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  opacity: .9;
+  margin-bottom: 10px;
+}
+
+header.site-header h1 {
+  font-size: 34px;
+  font-weight: 800;
+  margin-bottom: 14px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+header.site-header .sub {
+  font-size: 17px;
+  opacity: .9;
+  max-width: 620px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+/* ── Top nav ── */
+.nav-links {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+  padding: 14px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-links a {
+  color: var(--blue);
+  text-decoration: none;
+  margin: 0 14px;
+  display: inline-block;
+}
+
+.nav-links a:hover { text-decoration: underline; }
+.nav-links a.current { color: var(--text); font-weight: 700; }
+
+.nav-links .lang {
+  color: var(--text-sec);
+  font-weight: 600;
+  border-left: 1px solid var(--border);
+  padding-left: 16px;
+  margin-left: 4px;
+}
+
+/* ── Page layout (user guide) ── */
+.page-body {
+  display: flex;
+  max-width: 1200px;
+  margin: 0 auto;
+  background: white;
+}
+
+.sidebar {
+  width: var(--sidebar-width);
+  flex-shrink: 0;
+  position: sticky;
+  top: 48px;
+  height: calc(100vh - 48px);
+  overflow-y: auto;
+  background: white;
+  border-right: 1px solid var(--border);
+  padding: 28px 20px;
+}
+
+.sidebar-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--text-tert);
+  margin-bottom: 14px;
+  padding: 0 8px;
+}
+
+.sidebar ul { list-style: none; }
+.sidebar li { margin-bottom: 2px; }
+.sidebar a {
+  text-decoration: none;
+  color: var(--text-sec);
+  font-size: 14px;
+  display: block;
+  padding: 7px 10px;
+  border-radius: 8px;
+  transition: all 0.15s;
+  line-height: 1.4;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+  background: #EFF6FF;
+  color: var(--blue);
+}
+
+main {
+  flex: 1;
+  padding: 48px 52px 80px;
+  min-width: 0;
+  background: white;
+}
+
+main.single-column {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+}
+
+.page-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+
+.page-subtitle {
+  font-size: 16px;
+  color: var(--text-sec);
+  margin-bottom: 40px;
+}
+
+section { margin-bottom: 56px; scroll-margin-top: 72px; }
+
+h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 10px;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+h3 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+  margin-top: 28px;
+  margin-bottom: 8px;
+}
+
+h4 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-sec);
+  margin-top: 20px;
+  margin-bottom: 6px;
+}
+
+p { margin-bottom: 12px; color: var(--text); }
+
+ul, ol {
+  padding-left: 22px;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+
+li { margin-bottom: 4px; }
+li ul, li ol { margin-top: 4px; margin-bottom: 4px; }
+
+a { color: var(--blue); }
+
+/* ── Pro Badge ── */
+.pro-badge {
+  background: var(--pro-accent);
+  color: white;
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-left: 6px;
+  vertical-align: middle;
+  letter-spacing: .05em;
+}
+
+.new-badge {
+  background: var(--green);
+  color: white;
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-left: 6px;
+  vertical-align: middle;
+  letter-spacing: .05em;
+}
+
+/* ── Callouts ── */
+.callout {
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin: 16px 0;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.callout.info {
+  background: #EBF4FF;
+  border-left: 4px solid var(--blue);
+  color: var(--blue-dark);
+}
+
+.callout.tip {
+  background: #E8F9EE;
+  border-left: 4px solid var(--green);
+  color: #1A7A35;
+}
+
+.callout.warn {
+  background: #FFF5E5;
+  border-left: 4px solid var(--orange);
+  color: #8C4400;
+}
+
+blockquote {
+  border-left: 3px solid var(--blue);
+  background: #EFF6FF;
+  margin: 20px 0;
+  padding: 14px 18px;
+  border-radius: 0 10px 10px 0;
+  color: var(--text-sec);
+  font-size: 15px;
+}
+
+/* ── Inline code (kept for v1 carry-over examples; rarely used) ── */
+code {
+  font-family: "SF Mono", ui-monospace, "Fira Code", monospace;
+  background: var(--code-bg);
+  padding: 0.15rem 0.4rem;
+  border-radius: 5px;
+  font-size: 0.875em;
+  color: #c0355a;
+  border: 1px solid var(--border);
+}
+
+/* ── Tables ── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 15px;
+}
+
+th, td {
+  text-align: left;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+}
+
+th {
+  background: var(--surface);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: .02em;
+  color: var(--text-sec);
+}
+
+tr:hover td { background: #FAFAFA; }
+
+/* ──────────────────────────────────────────────────────────────────
+   Screenshot placeholder system
+
+   Pattern (per the docs rewrite brief):
+
+     <figure class="screenshot-placeholder">
+       <img src="images/foo.png" alt="..."
+            onload="this.closest('figure').classList.add('has-image')"
+            onerror="this.style.display='none'">
+       <div class="placeholder-box" aria-hidden="true">
+         <span class="ph-camera">📷</span>
+         <span class="ph-filename">images/foo.png</span>
+         <span class="ph-status">placeholder · upload to replace</span>
+       </div>
+       <figcaption class="capture-spec">
+         <strong>Capture spec:</strong> …
+       </figcaption>
+     </figure>
+
+   - Until the image loads, .placeholder-box is the prominent block
+     and .capture-spec is visible below it.
+   - Once the image loads, the figure gains .has-image (via the
+     onload attribute on the <img>). The placeholder-box is hidden
+     and the capture-spec collapses to a small caption.
+   - If the image file doesn't exist, onerror hides the <img>; the
+     placeholder + capture-spec stay visible.
+
+   Plain CSS + 2 inline event handlers. No framework, no build step.
+   ────────────────────────────────────────────────────────────────── */
+
+.screenshot-placeholder {
+  margin: 24px 0;
+  background: var(--surface);
+  border-radius: 14px;
+  padding: 12px;
+  border: 1px solid var(--border);
+}
+
+.screenshot-placeholder img {
+  display: none;
+  width: 100%;
+  max-width: 320px;
+  border-radius: 10px;
+  margin: 0 auto 10px;
+}
+
+.screenshot-placeholder.has-image img {
+  display: block;
+}
+
+.screenshot-placeholder .placeholder-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 36px 24px;
+  border: 2px dashed #B0B0B8;
+  border-radius: 10px;
+  background: #FAFAFC;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.screenshot-placeholder.has-image .placeholder-box {
+  display: none;
+}
+
+.screenshot-placeholder .ph-camera {
+  font-size: 32px;
+  line-height: 1;
+}
+
+.screenshot-placeholder .ph-filename {
+  font-family: "SF Mono", ui-monospace, "Fira Code", monospace;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  background: white;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  word-break: break-all;
+}
+
+.screenshot-placeholder .ph-status {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--text-tert);
+  font-weight: 600;
+}
+
+.screenshot-placeholder .capture-spec {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-sec);
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+
+.screenshot-placeholder.has-image .capture-spec {
+  background: transparent;
+  border: none;
+  padding: 6px 4px 2px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-tert);
+}
+
+.screenshot-placeholder .capture-spec strong {
+  color: var(--text);
+  display: inline-block;
+  margin-right: 4px;
+}
+
+.screenshot-placeholder.has-image .capture-spec strong {
+  display: none;
+}
+
+.screenshot-placeholder .capture-spec code {
+  font-size: 11px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 1px 5px;
+}
+
+/* Side-by-side row of placeholders. */
+.screenshot-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.screenshot-row .screenshot-placeholder {
+  flex: 1 1 280px;
+  margin: 0;
+}
+
+/* ── Footer ── */
+footer {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  text-align: center;
+  padding: 32px 24px;
+  font-size: 14px;
+  color: var(--text-sec);
+}
+
+footer a { color: var(--blue); text-decoration: none; font-weight: 500; }
+footer a:hover { text-decoration: underline; }
+
+/* ── Responsive ── */
+@media (max-width: 860px) {
+  .page-body { flex-direction: column; }
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    top: 0;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding: 16px 20px;
+  }
+  main { padding: 32px 20px 60px; }
+  header.site-header h1 { font-size: 26px; }
+  .screenshot-placeholder .placeholder-box { padding: 28px 16px; }
+}

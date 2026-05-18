@@ -281,7 +281,7 @@
 <header>
   <div class="app-name">meshTerm · Cliente SSH para iOS</div>
   <h1>Contrato de Licencia de Usuario Final</h1>
-  <div class="meta">James Betchley &nbsp;·&nbsp; En vigor desde marzo de 2026 &nbsp;·&nbsp; Versión 1.0</div>
+  <div class="meta">James Betchley &nbsp;·&nbsp; En vigor desde mayo de 2026 &nbsp;·&nbsp; Versión 2.0</div>
 </header>
 
 <div class="nav-links">
@@ -434,6 +434,25 @@
     de claves de host basada en Trust On First Use (TOFU), el almacenamiento cifrado de
     credenciales y el uso exclusivo del protocolo SSHv2. El Desarrollador no ofrece garantía
     alguna sobre la seguridad absoluta de cualquier conexión SSH.</p>
+
+    <h3>4.1 Software auxiliar opcional en sus hosts remotos (Roam)</h3>
+    <p>Si decide habilitar la función opcional "Roam" para un host, la Aplicación instalará un
+    programa auxiliar de código abierto (el "daemon meshtermd") en ese host. Al utilizar Roam,
+    usted declara y garantiza que:</p>
+    <ul>
+      <li>Es propietario del host remoto o cuenta con autorización explícita del propietario
+      para instalar y ejecutar software en él.</li>
+      <li>Entiende que el daemon es software de código abierto y se ejecuta íntegramente en
+      infraestructura bajo su control. Su código fuente es auditable públicamente.</li>
+      <li>Acepta la responsabilidad del funcionamiento del daemon en su host, incluida su
+      supervisión continua de servicio, la salida de registros y cualquier dato que almacene
+      dentro de su directorio personal (consulte la Política de Privacidad para los detalles
+      sobre qué se almacena y dónde).</li>
+    </ul>
+    <p>La Aplicación verifica las versiones firmadas del daemon en su dispositivo iOS antes de
+    cargarlas, mediante firmas criptográficas y sumas de comprobación SHA-256. El Desarrollador
+    no será responsable de las consecuencias de ejecutar el daemon en un host remoto del que
+    usted no sea propietario o sobre el que no tenga autorización de modificación.</p>
   </section>
 
   <section id="s5">
@@ -602,7 +621,7 @@
 </main>
 
 <footer>
-  <p>Contrato de Licencia de Usuario Final de meshTerm &nbsp;·&nbsp; Versión 1.0 &nbsp;·&nbsp; Marzo de 2026</p>
+  <p>Contrato de Licencia de Usuario Final de meshTerm &nbsp;·&nbsp; Versión 2.0 &nbsp;·&nbsp; Mayo de 2026</p>
   <p style="margin-top: 6px;">
     <a href="mailto:meshterm@gmail.com">meshterm@gmail.com</a>
   </p>

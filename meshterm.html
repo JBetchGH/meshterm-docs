@@ -3,353 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>meshTerm — User Guide</title>
-<style>
-  :root {
-    --blue: #0A84FF;
-    --blue-dark: #0060DF;
-    --green: #30D158;
-    --orange: #FF9F0A;
-    --text: #1C1C1E;
-    --text-sec: #636366;
-    --text-tert: #AEAEB2;
-    --surface: #F2F2F7;
-    --surface2: #E5E5EA;
-    --border: #D1D1D6;
-    --pro-accent: #8b5cf6;
-    --code-bg: #F2F2F7;
-    --sidebar-width: 260px;
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text",
-                 "Helvetica Neue", Arial, sans-serif;
-    font-size: 16px;
-    line-height: 1.7;
-    color: var(--text);
-    background: var(--surface);
-  }
-
-  /* ── Site header ── */
-  header {
-    background: linear-gradient(135deg, #0A84FF 0%, #2563EB 100%);
-    color: white;
-    padding: 48px 24px 40px;
-    text-align: center;
-  }
-
-  header .app-name {
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: .15em;
-    text-transform: uppercase;
-    opacity: .9;
-    margin-bottom: 10px;
-  }
-
-  header h1 {
-    font-size: 34px;
-    font-weight: 800;
-    margin-bottom: 12px;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
-  }
-
-  header .sub {
-    font-size: 17px;
-    opacity: .9;
-    max-width: 580px;
-    margin: 0 auto;
-    line-height: 1.5;
-  }
-
-  /* ── Site nav bar ── */
-  .site-nav {
-    background: white;
-    border-bottom: 1px solid var(--border);
-    text-align: center;
-    padding: 13px 24px;
-    font-size: 14px;
-    font-weight: 500;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-
-  .site-nav a {
-    color: var(--blue);
-    text-decoration: none;
-    margin: 0 14px;
-    display: inline-block;
-  }
-
-  .site-nav a:hover { text-decoration: underline; }
-  .site-nav a.current { color: var(--text); font-weight: 700; }
-
-  /* ── Page layout ── */
-  .page-body {
-    display: flex;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  /* ── Sidebar ── */
-  .sidebar {
-    width: var(--sidebar-width);
-    flex-shrink: 0;
-    position: sticky;
-    top: 48px; /* height of site-nav */
-    height: calc(100vh - 48px);
-    overflow-y: auto;
-    background: white;
-    border-right: 1px solid var(--border);
-    padding: 28px 20px;
-  }
-
-  .sidebar-title {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: var(--text-tert);
-    margin-bottom: 14px;
-    padding: 0 8px;
-  }
-
-  .sidebar ul { list-style: none; }
-  .sidebar li { margin-bottom: 2px; }
-  .sidebar a {
-    text-decoration: none;
-    color: var(--text-sec);
-    font-size: 14px;
-    display: block;
-    padding: 7px 10px;
-    border-radius: 8px;
-    transition: all 0.15s;
-    line-height: 1.4;
-  }
-
-  .sidebar a:hover,
-  .sidebar a.active {
-    background: #EFF6FF;
-    color: var(--blue);
-  }
-
-  /* ── Main content ── */
-  main {
-    flex: 1;
-    padding: 48px 52px 80px;
-    min-width: 0;
-    background: white;
-  }
-
-  .page-title {
-    font-size: 28px;
-    font-weight: 800;
-    color: var(--text);
-    margin-bottom: 8px;
-    letter-spacing: -0.02em;
-  }
-
-  .page-subtitle {
-    font-size: 16px;
-    color: var(--text-sec);
-    margin-bottom: 48px;
-  }
-
-  section { margin-bottom: 56px; scroll-margin-top: 72px; }
-
-  h2 {
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--text);
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 10px;
-    margin-top: 0;
-    margin-bottom: 20px;
-  }
-
-  h3 {
-    font-size: 17px;
-    font-weight: 700;
-    color: var(--text);
-    margin-top: 28px;
-    margin-bottom: 8px;
-  }
-
-  h4 {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--text-sec);
-    margin-top: 20px;
-    margin-bottom: 6px;
-  }
-
-  p { margin-bottom: 12px; color: var(--text); }
-
-  ul, ol {
-    padding-left: 22px;
-    margin-bottom: 12px;
-    color: var(--text);
-  }
-
-  li { margin-bottom: 4px; }
-  li ul, li ol { margin-top: 4px; margin-bottom: 4px; }
-
-  /* ── Pro Badge ── */
-  .pro-badge {
-    background: var(--pro-accent);
-    color: white;
-    font-size: 10px;
-    padding: 2px 7px;
-    border-radius: 4px;
-    font-weight: 700;
-    text-transform: uppercase;
-    margin-left: 6px;
-    vertical-align: middle;
-    letter-spacing: .05em;
-  }
-
-  /* ── Image cards ── */
-  .image-container {
-    display: flex;
-    gap: 16px;
-    margin: 24px 0;
-    flex-wrap: wrap;
-  }
-
-  .img-card {
-    background: var(--surface);
-    padding: 10px;
-    border-radius: 14px;
-    border: 1px solid var(--border);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-    max-width: 260px;
-  }
-
-  .img-card img {
-    width: 100%;
-    border-radius: 8px;
-    display: block;
-  }
-
-  .img-caption {
-    font-size: 12px;
-    color: var(--text-tert);
-    margin-top: 8px;
-    text-align: center;
-  }
-
-  /* ── Code ── */
-  code {
-    font-family: "SF Mono", ui-monospace, "Fira Code", monospace;
-    background: var(--code-bg);
-    padding: 0.15rem 0.4rem;
-    border-radius: 5px;
-    font-size: 0.875em;
-    color: #c0355a;
-    border: 1px solid var(--border);
-  }
-
-  pre {
-    background: #1C1C1E;
-    color: #F2F2F7;
-    padding: 18px 20px;
-    border-radius: 10px;
-    overflow-x: auto;
-    margin: 20px 0;
-    font-size: 14px;
-    line-height: 1.6;
-  }
-
-  pre code {
-    background: transparent;
-    color: inherit;
-    padding: 0;
-    border: none;
-    font-size: inherit;
-  }
-
-  /* ── Blockquote ── */
-  blockquote {
-    border-left: 3px solid var(--blue);
-    background: #EFF6FF;
-    margin: 20px 0;
-    padding: 14px 18px;
-    border-radius: 0 10px 10px 0;
-    font-style: normal;
-    color: var(--text-sec);
-    font-size: 15px;
-  }
-
-  /* ── Tables ── */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-    font-size: 15px;
-  }
-
-  th, td {
-    text-align: left;
-    padding: 10px 14px;
-    border: 1px solid var(--border);
-  }
-
-  th {
-    background: var(--surface);
-    font-weight: 600;
-    font-size: 13px;
-    letter-spacing: .02em;
-    color: var(--text-sec);
-  }
-
-  tr:hover td { background: #FAFAFA; }
-
-  /* ── Footer ── */
-  footer {
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    text-align: center;
-    padding: 32px 24px;
-    font-size: 14px;
-    color: var(--text-sec);
-  }
-
-  footer a { color: var(--blue); text-decoration: none; font-weight: 500; }
-  footer a:hover { text-decoration: underline; }
-
-  /* ── Responsive ── */
-  @media (max-width: 860px) {
-    .page-body { flex-direction: column; }
-    .sidebar {
-      width: 100%;
-      height: auto;
-      position: relative;
-      top: 0;
-      border-right: none;
-      border-bottom: 1px solid var(--border);
-      padding: 16px 20px;
-    }
-    main { padding: 32px 20px 60px; }
-    .img-card { max-width: 100%; }
-    header h1 { font-size: 26px; }
-  }
-</style>
+<title>meshTerm 2.0 — User Guide</title>
+<link rel="stylesheet" href="assets/site.css">
 </head>
 <body>
 
-<!-- Site header -->
-<header>
-  <div class="app-name">meshTerm</div>
+<header class="site-header">
+  <div class="app-name">meshTerm 2.0</div>
   <h1>User Guide</h1>
-  <div class="sub">Everything you need to connect, authenticate, and work in the terminal from your iPhone or iPad.</div>
+  <div class="sub">Connecting, pairing the Roam daemon, named sessions, keyboard modes, snippets, SFTP, and everything in between.</div>
 </header>
 
-<!-- Site navigation -->
-<nav class="site-nav">
+<nav class="nav-links">
   <a href="index.html">Home</a>
   <a href="meshterm.html" class="current">User Guide</a>
   <a href="meshterm-tailscale-integration.html">Tailscale Setup</a>
@@ -357,794 +22,968 @@
   <a href="eula.html">EULA</a>
 </nav>
 
-<!-- Page body: sidebar + content -->
 <div class="page-body">
 
-  <!-- In-page sidebar -->
   <aside class="sidebar">
     <div class="sidebar-title">Contents</div>
     <ul>
       <li><a href="#overview">1. Overview</a></li>
-      <li><a href="#prerequisites">2. Prerequisites</a></li>
-      <li><a href="#getting-started">3. Getting Started</a></li>
-      <li><a href="#managing-ssh-hosts">4. Managing SSH Hosts</a></li>
-      <li><a href="#connecting-to-a-host">5. Connecting to a Host</a></li>
-      <li><a href="#multi-session-tabs">6. Multi-Session Tabs</a></li>
-      <li><a href="#authentication-methods">7. Authentication Methods</a></li>
-      <li><a href="#ssh-key-management">8. SSH Key Management</a></li>
-      <li><a href="#install-on-host" style="padding-left: 22px; font-size: 13px;">↳ Install on a Host</a></li>
-      <li><a href="#tailscale-integration">9. Tailscale Integration</a></li>
-      <li><a href="#snippet-vault">10. Snippet Vault</a></li>
-      <li><a href="#macro-bar">11. Terminal Macro Bar</a></li>
-      <li><a href="#sftp-browser">12. SFTP File Browser</a></li>
-      <li><a href="#terminal-controls">13. Terminal Controls</a></li>
-      <li><a href="#security">14. Security</a></li>
-      <li><a href="#settings">15. Settings</a></li>
-      <li><a href="#meshterm-pro">16. meshTerm Pro</a></li>
-      <li><a href="#troubleshooting">17. Troubleshooting</a></li>
+      <li><a href="#whats-new">2. What's new in 2.0</a></li>
+      <li><a href="#getting-started">3. Getting started</a></li>
+      <li><a href="#hosts">4. Managing hosts</a></li>
+      <li><a href="#connecting">5. Connecting to a host</a></li>
+      <li><a href="#roam">6. Roam: persistent sessions</a></li>
+      <li><a href="#roam-install" style="padding-left: 22px; font-size: 13px;">↳ Installing the daemon</a></li>
+      <li><a href="#roam-sessions" style="padding-left: 22px; font-size: 13px;">↳ Multiple named sessions</a></li>
+      <li><a href="#roam-attach" style="padding-left: 22px; font-size: 13px;">↳ Attach modes</a></li>
+      <li><a href="#mtctl" style="padding-left: 22px; font-size: 13px;">↳ Desktop CLI (mtctl)</a></li>
+      <li><a href="#auth">7. Authentication</a></li>
+      <li><a href="#ssh-keys">8. SSH keys</a></li>
+      <li><a href="#tailscale">9. Tailscale</a></li>
+      <li><a href="#keyboard">10. Keyboard</a></li>
+      <li><a href="#predictions">11. Predictions &amp; history</a></li>
+      <li><a href="#tui-pill">12. TUI return-to-prompt pill</a></li>
+      <li><a href="#wedge">13. Wedge recovery</a></li>
+      <li><a href="#snippets">14. Snippet Vault</a></li>
+      <li><a href="#macros">15. Macro bar</a></li>
+      <li><a href="#sftp">16. SFTP file browser</a></li>
+      <li><a href="#search">17. Scrollback search</a></li>
+      <li><a href="#themes">18. Themes</a></li>
+      <li><a href="#security">19. Security &amp; App Lock</a></li>
+      <li><a href="#settings">20. Settings reference</a></li>
+      <li><a href="#pro">21. meshTerm Pro</a></li>
+      <li><a href="#troubleshooting">22. Troubleshooting</a></li>
     </ul>
   </aside>
 
-  <!-- Main content -->
   <main>
-    <div class="page-title">meshTerm User Guide</div>
-    <div class="page-subtitle">Version 1.1 · iOS &amp; iPadOS</div>
+    <div class="page-title">meshTerm 2.0 — User Guide</div>
+    <div class="page-subtitle">For iPhone and iPad.</div>
 
+    <!-- ============================================ -->
     <section id="overview">
-      <h2>Overview</h2>
-      <p>meshTerm is an SSH terminal client for iPhone and iPad. It lets you connect to remote servers using password or SSH key authentication, and integrates with Tailscale to browse and connect to your Tailnet devices directly from the app.</p>
-      <p>Beyond the terminal, meshTerm includes multi-session tabs with keyboard shortcuts, an <a href="#sftp-browser">SFTP file browser</a> that integrates with the iOS Files app, a <a href="#macro-bar">terminal macro bar</a> for one-tap commands, and automatic <code>tmux</code> attachment so sessions survive dropped connections.</p>
+      <h2>1. Overview</h2>
+      <p>meshTerm is an SSH client for iOS and iPadOS. It connects to remote servers over standard SSH and offers an optional persistent-session mode called <strong>Roam</strong> that keeps your shell alive on the server even when your phone reconnects, backgrounds, or switches networks.</p>
+      <p>Beyond the terminal, meshTerm includes:</p>
+      <ul>
+        <li>Multiple concurrent sessions per host, with attach modes for sharing or watching.</li>
+        <li>A predictive-echo overlay that makes typing feel native on slow links.</li>
+        <li>A browseable view of the host's shell history, plus a chip strip of inline suggestions.</li>
+        <li>An SFTP file browser that integrates with the iOS Files app.</li>
+        <li>A customisable macro bar and a searchable Snippet Vault.</li>
+        <li>Native Tailscale integration for keyless SSH on your Tailnet.</li>
+      </ul>
 
-      <div class="image-container">
-        <div class="img-card">
-          <img src="images/IMG_4861.PNG" alt="meshTerm Host List">
-          <div class="img-caption">The main host list dashboard.</div>
+      <figure class="screenshot-placeholder">
+        <img src="images/host-list-overview.png" alt="meshTerm host list"
+             onload="this.closest('figure').classList.add('has-image')"
+             onerror="this.style.display='none'">
+        <div class="placeholder-box" aria-hidden="true">
+          <span class="ph-camera">📷</span>
+          <span class="ph-filename">images/host-list-overview.png</span>
+          <span class="ph-status">placeholder · upload to replace</span>
         </div>
-      </div>
+        <figcaption class="capture-spec">
+          <strong>Capture spec:</strong>
+          Device: iPhone 15 Pro, portrait.
+          Screen: the Hosts tab with 3–4 demo hosts visible — e.g. a host called <code>demo</code> (Linux),
+          <code>home-server</code> (macOS, showing the apple.logo icon), and <code>mac-mini</code> (macOS).
+          Frame: full status bar through to the bottom tab bar. The distro/OS badges should be clearly visible on each host card.
+          Setup: add hosts with the labels above and don't connect — we just want the list.
+          Drop into <code>images/host-list-overview.png</code>.
+        </figcaption>
+      </figure>
     </section>
 
-    <section id="prerequisites">
-      <h2>Prerequisites</h2>
-
-      <h3>For all connections</h3>
+    <!-- ============================================ -->
+    <section id="whats-new">
+      <h2>2. What's new in 2.0</h2>
+      <p>If you're upgrading from meshTerm 1.x, here's what changed:</p>
       <ul>
-        <li>A server with SSH enabled and accessible from your device</li>
-        <li>Your server's hostname or IP address, port, and a valid username</li>
-      </ul>
-
-      <h3>For password authentication</h3>
-      <ul>
-        <li>The password for your server account</li>
-      </ul>
-
-      <h3>For SSH key authentication <span class="pro-badge">Pro</span></h3>
-      <ul>
-        <li>An Ed25519 SSH key pair. You can generate one inside meshTerm, or bring your own unencrypted OpenSSH key.</li>
-        <li>The corresponding public key added to <code>~/.ssh/authorized_keys</code> on the server</li>
-      </ul>
-
-      <h3>For Tailscale SSH <span class="pro-badge">Pro</span></h3>
-      <ul>
-        <li><strong>Tailscale app installed on your iPhone/iPad</strong> — meshTerm routes connections through the Tailscale VPN tunnel, which requires the Tailscale app to be running and connected</li>
-        <li>Both your iPhone and the target server must be on the same Tailnet</li>
-        <li>The server must have <a href="https://tailscale.com/kb/1193/tailscale-ssh">Tailscale SSH</a> enabled in your Tailnet ACLs</li>
-      </ul>
-
-      <h3>For Tailscale device browsing <span class="pro-badge">Pro</span></h3>
-      <ul>
-        <li>A Tailscale API token (read-only) — see <a href="#getting-a-tailscale-api-token">Getting a Tailscale API Token</a></li>
-        <li>The Tailscale app installed and connected to your Tailnet</li>
+        <li><strong>Roam mode</strong> — opt-in per host. Pair a small open-source daemon on your server and your shell becomes durable across reconnects, app suspension, and device switches.</li>
+        <li><strong>Named multi-attach sessions</strong> — open <code>dev</code>, <code>logs</code>, <code>tests</code> on the same host and switch between them in one tap. Attach exclusively, read-only watch, or passively tail.</li>
+        <li><strong>Predictive echo</strong> — keystrokes mirror locally as you type, then reconcile with the daemon's actual echo. Adapts to the network latency.</li>
+        <li><strong>History browse</strong> — pull up a sheet of the host's shell history, search and send a command in one tap.</li>
+        <li><strong>TUI return-to-prompt pill</strong> — a floating pill that recognises Claude Code or Codex CLI and offers a one-tap jump back to the live prompt.</li>
+        <li><strong>Wedge recovery banner</strong> — detects a stuck Claude Code render after a resize and offers Save &amp; Restart.</li>
+        <li><strong>More key types</strong> — Ed25519, ECDSA P-256, P-384, P-521.</li>
+        <li><strong>Hardware buttons</strong> — bind Volume Up/Down (short and long press) to terminal actions.</li>
+        <li><strong>⌘F scrollback search</strong>, host import/export from <code>~/.ssh/config</code>, host tags and filter chips, eight curated themes.</li>
+        <li><strong>Pro tier simplified</strong> — every feature is free; Pro only lifts the 1-host / 1-session cap to unlimited.</li>
       </ul>
     </section>
 
+    <!-- ============================================ -->
     <section id="getting-started">
-      <h2>Getting Started</h2>
+      <h2>3. Getting started</h2>
 
       <h3>Adding your first host</h3>
       <ol>
-        <li>Open meshTerm. You will see the host list (empty on first launch).</li>
-        <li>Tap <strong>+</strong> in the top-right corner.</li>
+        <li>Open meshTerm. On first launch you'll see the Hosts tab, empty.</li>
+        <li>Tap <strong>+</strong> in the top right.</li>
         <li>Fill in the connection details:
           <ul>
-            <li><strong>Label</strong> — a friendly name for this connection (e.g. "My Server")</li>
-            <li><strong>Hostname or IP</strong> — the address of your server</li>
-            <li><strong>Port</strong> — defaults to 22</li>
-            <li><strong>Username</strong> — your account name on the server</li>
+            <li><strong>Label</strong> — a friendly name (e.g. <code>demo</code>).</li>
+            <li><strong>Hostname or IP</strong> — the address of your server.</li>
+            <li><strong>Port</strong> — defaults to 22.</li>
+            <li><strong>Username</strong> — your account on the server.</li>
           </ul>
         </li>
-        <li>Under <strong>Authentication</strong>, choose a method and enter your credentials.</li>
-        <li>Tap <strong>Add</strong> to save.</li>
+        <li>Pick an <strong>authentication method</strong> — password, SSH key, or (if the server runs Tailscale SSH) Tailscale.</li>
+        <li>Optionally pick a <strong>Connection method</strong> — plain SSH or Roam. You can toggle this later from Edit Host.</li>
+        <li>Tap <strong>Save</strong>.</li>
       </ol>
 
-      <div class="image-container">
-        <div class="img-card">
-          <img src="images/IMG_4886.PNG" alt="Add Host Screen">
-          <div class="img-caption">Adding a new SSH host.</div>
+      <figure class="screenshot-placeholder">
+        <img src="images/add-host.png" alt="Add Host"
+             onload="this.closest('figure').classList.add('has-image')"
+             onerror="this.style.display='none'">
+        <div class="placeholder-box" aria-hidden="true">
+          <span class="ph-camera">📷</span>
+          <span class="ph-filename">images/add-host.png</span>
+          <span class="ph-status">placeholder · upload to replace</span>
         </div>
-        <div class="img-card">
-          <img src="images/IMG_4876.PNG" alt="Edit Host Screen">
-          <div class="img-caption">Editing existing host details.</div>
-        </div>
-      </div>
+        <figcaption class="capture-spec">
+          <strong>Capture spec:</strong>
+          Device: iPhone 15 Pro, portrait.
+          Screen: Add Host sheet, fully filled in. Label <code>demo</code>, hostname <code>192.0.2.10</code> (or any RFC-5737 documentation IP),
+          port <code>22</code>, username <code>alice</code>. Authentication set to Password.
+          Frame: full sheet from top to the Save button.
+          Drop into <code>images/add-host.png</code>.
+        </figcaption>
+      </figure>
 
       <h3>Connecting</h3>
-      <p>Tap any host in the list to open a terminal session. meshTerm connects immediately — you will see a "Connecting…" indicator while the session is being established.</p>
+      <p>Tap any host in the list to open a terminal session. On first connect to a new host, meshTerm asks you to verify its host-key fingerprint (see <a href="#security">Known Hosts</a>) — tap <strong>Trust &amp; Connect</strong> to proceed.</p>
     </section>
 
-    <section id="managing-ssh-hosts">
-      <h2>Managing SSH Hosts</h2>
+    <!-- ============================================ -->
+    <section id="hosts">
+      <h2>4. Managing hosts</h2>
 
       <h3>Editing a host</h3>
-      <p>Swipe right on a host and tap <strong>Edit</strong>, or long-press the row to reveal options.</p>
+      <p>Long-press a host card or open its detail screen, then tap <strong>Edit</strong>. The editor groups settings into Connection, Authentication, Protocol (plain SSH or Roam), Session, TUI Detection, Tags, Operating System, and Environment Variables.</p>
 
       <h3>Deleting a host</h3>
-      <p>Swipe left on a host and tap <strong>Delete</strong>.</p>
+      <p>Swipe a host card left and tap <strong>Delete</strong>.</p>
+
+      <h3>Tags &amp; filter chips</h3>
+      <p>Tag hosts in the editor's <strong>Tags</strong> section (comma-separated, e.g. <code>prod, web</code>). A chip row at the top of the Hosts tab lets you filter by tag.</p>
+
+      <h3>Host import / export</h3>
+      <p>Settings → Hosts gives you two buttons:</p>
+      <ul>
+        <li><strong>Import from .ssh/config</strong> — pick a host you can already SSH to. meshTerm reads its <code>~/.ssh/config</code> over SSH and shows a checklist of entries to mirror. Imported hosts start in password mode with an empty password — set credentials in the editor before connecting.</li>
+        <li><strong>Export to ssh_config</strong> — emits a standard OpenSSH config file you can drop into your dotfiles or AirDrop to a laptop. Roam-enabled hosts are exported as plain SSH (the Roam protocol is meshTerm-specific).</li>
+      </ul>
+
+      <h3>Distro / OS icons</h3>
+      <p>Each host card shows a small icon for its operating system — Ubuntu, Debian, Fedora, CentOS / Rocky / Alma, Arch, openSUSE, NixOS, Linux Mint, Gentoo, elementary OS, Void, Solus, Zorin, deepin, macOS (Apple logo), FreeBSD, Android, AIX, and GNU/Hurd. The icon is tinted with the host's per-card hue. Choose the OS in <strong>Edit Host → Operating System</strong>; <strong>Unknown</strong> falls back to the generic Linux icon and shows the host's initials as a monogram.</p>
 
       <h3>Host limit</h3>
-      <p>Free accounts can save <strong>1 host</strong>. <a href="#meshterm-pro">meshTerm Pro</a> removes this limit.</p>
+      <p>The free tier allows <strong>1 saved host</strong>. <a href="#pro">meshTerm Pro</a> lifts this to unlimited.</p>
     </section>
 
-    <section id="connecting-to-a-host">
-      <h2>Connecting to a Host</h2>
-      <p>When you tap a host, meshTerm:</p>
-      <ol>
-        <li>Resolves the hostname and opens a TCP connection to the server.</li>
-        <li>Verifies the server's host key against your saved known hosts (see <a href="#known-hosts-tofu">Known Hosts</a>).</li>
-        <li>Authenticates using the method configured for that host.</li>
-        <li>Requests a PTY and launches a shell session.</li>
-        <li>Attempts to attach to a <code>tmux</code> session on the server (see <a href="#tmux-attach">tmux attach</a>).</li>
-      </ol>
-      <p>The terminal becomes interactive as soon as the shell is ready.</p>
+    <!-- ============================================ -->
+    <section id="connecting">
+      <h2>5. Connecting to a host</h2>
+      <p>Tap a host to open it. meshTerm resolves the address, verifies the host key against your stored known hosts, authenticates with the method configured for that host, and opens a shell.</p>
 
-      <h3 id="tmux-attach">tmux attach</h3>
-      <p>New hosts attach to <code>tmux</code> by default. When you reconnect, meshTerm re-attaches to the same session so your work survives dropped connections, backgrounded apps, and closed tabs.</p>
+      <h3>Plain SSH vs Roam</h3>
+      <p>Each host can use one of two connection methods, picked in Edit Host → Protocol:</p>
       <ul>
-        <li>If <code>tmux</code> is not installed on the server, meshTerm falls back gracefully to a standard shell — no configuration required.</li>
-        <li>You can disable automatic <code>tmux</code> attach per host from the edit screen if you prefer a plain shell.</li>
+        <li><strong>Plain SSH</strong> — a regular SSH session. The shell runs inside the app. If the network drops, meshTerm reconnects automatically and you can optionally attach a <code>tmux</code> session so your work survives.</li>
+        <li><strong>Roam</strong> — the shell runs inside the meshtermd daemon on your server. Drop the connection, switch devices, come back hours later: same scrollback, same prompt. See <a href="#roam">Roam: persistent sessions</a>.</li>
       </ul>
 
-      <h3 id="auto-reconnect">Automatic reconnection</h3>
-      <p>meshTerm watches the network path and your app's foreground state. If the connection drops — Wi-Fi in a lift, cellular-to-Wi-Fi handoff, backgrounding the app — the session reconnects automatically when the network returns or you bring the app back to the foreground.</p>
-      <p>A dim <code>-- reconnected --</code> marker is drawn into the terminal so you can see exactly when the reattach happened. With <code>tmux</code> attach, you pick up where you left off.</p>
+      <h3>Multiple concurrent sessions</h3>
+      <p>Tap a second host to open it alongside the first. A session bar appears above the terminal showing each open tab — tap to switch, swipe down to dismiss. Each session runs independently.</p>
+
+      <h3>Automatic reconnection</h3>
+      <p>meshTerm watches the network and your app's foreground state. If the connection drops — Wi-Fi handoff, backgrounded app, cellular blip — the session reconnects when conditions return. A dim "reconnected" marker is drawn into the terminal where the reattach happened.</p>
 
       <h3>Environment variables</h3>
-      <p>You can attach custom environment variables to any host. These are sent to the shell session on connect. To add them, edit the host and use the <strong>Environment Variables</strong> section.</p>
+      <p>Edit Host → Environment Variables lets you attach custom variables that are sent to the shell on connect.</p>
 
       <h3>Disconnecting</h3>
-      <p>Close the terminal view or terminate the shell session from the server side (e.g. <code>exit</code>, <code>logout</code>, or Ctrl+D).</p>
+      <p>Type <code>exit</code> in the shell, or close the terminal tab. For Roam hosts, closing the tab leaves the session running on the server — see <a href="#roam">Roam</a>.</p>
     </section>
 
-    <section id="multi-session-tabs">
-      <h2>Multi-Session Tabs</h2>
-      <p>meshTerm supports multiple concurrent SSH sessions. A session bar sits above the terminal showing each open connection; tap a tab to switch, or swipe to dismiss it. Each session runs independently — run a build on one host while you tail logs on another, and switch between them in a single tap.</p>
+    <!-- ============================================ -->
+    <section id="roam">
+      <h2>6. Roam: persistent sessions <span class="new-badge">2.0</span></h2>
+      <p>Roam is the headline change in 2.0. A small open-source helper, the <strong>meshtermd</strong> daemon, runs on your server and holds your shell open. meshTerm talks to it over a fast reconnect-friendly transport. The shell is no longer tied to the app — it lives on the host until you kill it.</p>
 
-      <h3>Opening and closing sessions</h3>
+      <p>Why use Roam:</p>
       <ul>
-        <li>Tap a host in the host list to open it in a new tab.</li>
-        <li>Tap another host to add a second tab — the existing session stays alive in the background.</li>
-        <li>Swipe a tab down in the session bar, or close the terminal view, to end that session.</li>
+        <li>Start a long-running task from your phone over cellular, pick it up from another device hours later — exactly where you left it.</li>
+        <li>Background the app, switch networks, lock the device. None of that kills the session.</li>
+        <li>Open the same session from your phone and your laptop, with one client driving and the other read-only watching.</li>
+        <li>Named sessions per host — keep <code>dev</code>, <code>logs</code>, and <code>tests</code> open in parallel.</li>
       </ul>
 
-      <h3>Keyboard shortcuts</h3>
-      <p>With a hardware keyboard (Magic Keyboard, Smart Folio, or any Bluetooth keyboard) attached:</p>
-      <table>
-        <thead>
-          <tr><th>Shortcut</th><th>Action</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>⌘ T</td><td>Open a new session (returns to host list to pick a host)</td></tr>
-          <tr><td>⌘ K</td><td>Close the current session</td></tr>
-          <tr><td>⌘ 1 – ⌘ 9</td><td>Jump directly to the tab at that position</td></tr>
-          <tr><td>⌘ [</td><td>Switch to the previous tab</td></tr>
-          <tr><td>⌘ ]</td><td>Switch to the next tab</td></tr>
-        </tbody>
-      </table>
+      <p>Supported platforms: Linux on amd64 / arm64 / armv7, macOS on Intel and Apple Silicon, FreeBSD on amd64 / arm64.</p>
 
-      <h3>Session persistence</h3>
-      <p>Each tab is a live SSH connection. When paired with <a href="#tmux-attach">tmux attach</a> and <a href="#auto-reconnect">automatic reconnection</a>, tabs survive the app going to the background or losing the network — they reconnect silently when you return.</p>
+      <figure class="screenshot-placeholder">
+        <img src="images/roam-overview.png" alt="Roam session bar"
+             onload="this.closest('figure').classList.add('has-image')"
+             onerror="this.style.display='none'">
+        <div class="placeholder-box" aria-hidden="true">
+          <span class="ph-camera">📷</span>
+          <span class="ph-filename">images/roam-overview.png</span>
+          <span class="ph-status">placeholder · upload to replace</span>
+        </div>
+        <figcaption class="capture-spec">
+          <strong>Capture spec:</strong>
+          Device: iPhone 15 Pro, portrait.
+          Screen: a Roam session attached to a host called <code>demo</code>. Run a visible command in advance
+          (e.g. <code>top</code> or <code>htop</code>) so the screen shows live output. The session bar at the top
+          should show the named session label (e.g. <code>dev</code>).
+          Drop into <code>images/roam-overview.png</code>.
+        </figcaption>
+      </figure>
+
+      <h3 id="roam-install">Installing the daemon on a host</h3>
+      <p>The first time you tap Connect on a Roam-enabled host that doesn't already have the daemon, a <strong>Set Up Roam</strong> sheet appears. The sheet runs a six-stage install pipeline:</p>
+      <ol>
+        <li><strong>Probing</strong> — meshTerm runs a few read-only commands over SSH to detect the platform (Linux distro family, macOS, BSD), the architecture, and where to install the binary.</li>
+        <li><strong>Downloading</strong> — fetches the signed daemon binary and the companion mtctl CLI from the project's GitHub Releases. Progress is shown as a single bar covering both files.</li>
+        <li><strong>Verifying</strong> — verifies the release's minisign signature against keys built into the app, then checks each binary's SHA-256 against the signed checksum file. If anything fails, the install aborts with a clear error and the binaries are never uploaded.</li>
+        <li><strong>Uploading</strong> — SFTPs the verified binaries into <code>~/.local/bin/</code> on your host and marks them executable.</li>
+        <li><strong>Installing service</strong> — sets up the right supervisor for the platform:
+          <ul>
+            <li>Linux with systemd → a user-level systemd unit, optionally with linger enabled so the daemon survives a logout.</li>
+            <li>macOS → a per-user launchd agent.</li>
+            <li>Hosts where neither is available → a <code>nohup</code>-supervised fallback. The sheet tells you the system is on the fallback path.</li>
+          </ul>
+          A PATH entry is appended to your login shell's rc file so you can run <code>meshtermd</code> and <code>mtctl</code> from any SSH session.
+        </li>
+        <li><strong>Smoke test</strong> — a four-check verification: the binary runs, the daemon responds, your login shell can find it on PATH, and the mtctl CLI is in place. Each check is shown as a row in the sheet. If a check fails, you get an inline <strong>Retry Checks</strong> button (cheap re-run) and a <strong>Full Reinstall</strong> button (escalation).</li>
+      </ol>
+
+      <p>On success, the sheet shows the supervisor that was set up. On Linux hosts, you'll also see a distro-tailored firewall instruction for the UDP port the daemon uses — copy the one line and run it in a shell to open the port for inbound connections.</p>
+
+      <figure class="screenshot-placeholder">
+        <img src="images/roam-install-sheet.png" alt="Roam install sheet"
+             onload="this.closest('figure').classList.add('has-image')"
+             onerror="this.style.display='none'">
+        <div class="placeholder-box" aria-hidden="true">
+          <span class="ph-camera">📷</span>
+          <span class="ph-filename">images/roam-install-sheet.png</span>
+          <span class="ph-status">placeholder · upload to replace</span>
+        </div>
+        <figcaption class="capture-spec">
+          <strong>Capture spec:</strong>
+          Device: iPhone 15 Pro, portrait.
+          Screen: the Set Up Roam sheet mid-flow — ideally just after the verification stage so the
+          "Probing", "Downloading" and "Verifying" rows are ticked and "Uploading" is in progress with a percentage.
+          Setup: have a fresh Linux host called <code>demo</code> with no daemon installed; tap Connect on it and screenshot the install sheet.
+          Drop into <code>images/roam-install-sheet.png</code>.
+        </figcaption>
+      </figure>
+
+      <h4>Updating the daemon</h4>
+      <p>When meshTerm needs a newer daemon than the one on the host, the host's editor shows a <strong>Daemon update available</strong> banner with the installed and available versions. Tap <strong>Update now</strong> and the sheet drives a self-update — the daemon swaps itself out via atomic rename so the running process isn't interrupted, then restarts via its supervisor.</p>
+
+      <h4>Reinstalling or recovering</h4>
+      <p>Open the host's detail screen for a <strong>Reinstall</strong> button. Reinstall stops the running daemon, removes the binary, re-runs the full install pipeline, and brings the supervisor back. Your pairing state and cert are preserved, so reinstall doesn't require re-trusting the host.</p>
+
+      <div class="callout warn">
+        <strong>Reinstall ends active sessions.</strong> Self-update preserves them; reinstall does not. Save anything important first.
+      </div>
+
+      <h4>If the install fails</h4>
+      <p>Each stage has its own failure message and a copyable manual command you can paste into a shell to run the same step yourself. Common causes:</p>
+      <ul>
+        <li><strong>Probing failed</strong> — the SSH connection itself isn't working, or the user account doesn't have a writable home directory.</li>
+        <li><strong>Verification failed</strong> — extremely rare; means the downloaded files didn't match the signed checksum. Re-run; if it persists, file a report.</li>
+        <li><strong>Service install failed</strong> — most often systemd-user can't talk to its bus because the user isn't lingering. The sheet surfaces the exact next step.</li>
+      </ul>
+
+      <h3 id="roam-sessions">Multiple named sessions per host</h3>
+      <p>Each Roam host can hold any number of named sessions: <code>dev</code>, <code>logs</code>, <code>tests</code>, whatever you want. Tap the host and a picker appears showing the existing sessions plus a <strong>+ New</strong> entry. Tap a session to attach; tap + New to start a fresh one.</p>
+
+      <p>Manage sessions from the picker:</p>
+      <ul>
+        <li><strong>Rename</strong> — long-press a row.</li>
+        <li><strong>Kill</strong> — swipe a row left and tap Kill. Confirmation required.</li>
+      </ul>
+
+      <p>If a host only has one session, meshTerm skips the picker and attaches directly. If it has none, a fresh session is spawned and you connect to it.</p>
+
+      <h4>Default session and pinning</h4>
+      <p>In Edit Host → Roam Persistence:</p>
+      <ul>
+        <li><strong>Default Session</strong> — pick which named session the host opens by default. <em>None</em> uses your most recently attached one.</li>
+        <li><strong>Always open this session</strong> — pins the host directly to the default session, skipping the picker. The picker is still available via long-press → Sessions….</li>
+        <li><strong>Persist across daemon restarts</strong> — when on, the session's scrollback is snapshotted to disk so it survives if the daemon restarts (e.g. after a self-update or host reboot).</li>
+      </ul>
+
+      <h4>Keep-alive (idle timeout)</h4>
+      <p>Pick how long the daemon should hold a Roam session when no client is attached. Options: <strong>1 hour</strong>, <strong>1 day</strong>, <strong>7 days</strong>, <strong>30 days</strong>, or <strong>Never</strong> (kept until the daemon restarts or you kill it). The default is the daemon's own default (30 days).</p>
+
+      <figure class="screenshot-placeholder">
+        <img src="images/roam-sessions-picker.png" alt="Roam sessions picker"
+             onload="this.closest('figure').classList.add('has-image')"
+             onerror="this.style.display='none'">
+        <div class="placeholder-box" aria-hidden="true">
+          <span class="ph-camera">📷</span>
+          <span class="ph-filename">images/roam-sessions-picker.png</span>
+          <span class="ph-status">placeholder · upload to replace</span>
+        </div>
+        <figcaption class="capture-spec">
+          <strong>Capture spec:</strong>
+          Device: iPhone 15 Pro, portrait.
+          Screen: the Roam Sessions picker for a host called <code>demo</code>, showing three sessions named
+          <code>dev</code>, <code>logs</code> and <code>tests</code>, plus the "+ New session" row.
+          Setup: open three Roam sessions to a host (with those names) before triggering the picker.
+          Drop into <code>images/roam-sessions-picker.png</code>.
+        </figcaption>
+      </figure>
+
+      <h3 id="roam-attach">Attach modes</h3>
+      <p>When you join a Roam session, meshTerm uses one of three roles:</p>
+      <ul>
+        <li><strong>Exclusive</strong> (default) — you receive output, you send keystrokes, you own the terminal size. If someone else attaches exclusively, you're handed off to read-only.</li>
+        <li><strong>Read-only</strong> — you see everything but your keystrokes are dropped at the daemon. Useful for watching a colleague drive, or for a second device tailing along.</li>
+        <li><strong>Passive</strong> — a quiet tail. Same as read-only but invisible to the other clients' "who else is attached" indicators. Used by the <code>mtctl tail</code> command.</li>
+      </ul>
+      <p>Any number of read-only watchers can coexist with a single exclusive driver. The session label in the bar shows your role.</p>
+
+      <h3 id="mtctl">Desktop CLI: mtctl <span class="new-badge">2.0</span></h3>
+      <p>The Roam daemon ships with a small companion command-line tool called <strong>mtctl</strong>, installed on your host as part of Set Up Roam. Use it from any SSH session on the host (or from a laptop with <code>ssh user@host mtctl …</code>) to manage sessions without opening the iOS app.</p>
+      <p>Subcommands:</p>
+      <ul>
+        <li><code>mtctl list</code> — enumerate sessions on this host (id, name, idle time, attached clients).</li>
+        <li><code>mtctl session-info &lt;name&gt;</code> — detail for one session, including geometry and idle state.</li>
+        <li><code>mtctl status</code> — daemon health snapshot.</li>
+        <li><code>mtctl search &lt;regex&gt; &lt;session&gt;</code> — grep a session's scrollback.</li>
+        <li><code>mtctl doctor</code> — diagnostic checks for daemon, supervisor unit, and lingering.</li>
+        <li><code>mtctl tail &lt;session&gt;</code> — passively attach to live output. No input, no replay; just a tail.</li>
+        <li><code>mtctl new --name &lt;name&gt;</code> — create a new named session without attaching to it. Useful for pre-creating a session before opening the app, or for cron jobs.</li>
+        <li><code>mtctl attach &lt;session&gt;</code> — attach to a session as the local terminal. Detach with <code>~.</code> on a fresh line.</li>
+        <li><code>mtctl kill &lt;session&gt;</code> — reap a session.</li>
+        <li><code>mtctl rename &lt;session&gt; &lt;new-name&gt;</code> — rename a session. Buffer and active attaches are unaffected.</li>
+        <li><code>mtctl update</code> — check for and apply a signed self-update from the project's GitHub Releases.</li>
+        <li><code>mtctl restart</code> — cycle the daemon via its supervisor. In-flight sessions survive the restart.</li>
+        <li><code>mtctl uninstall</code> — remove the mtctl binary.</li>
+      </ul>
+      <p>Authentication uses your normal SSH config — <code>~/.ssh/config</code>, ssh-agent and keys all work. mtctl invokes the system <code>ssh</code> binary, so anything that works for <code>ssh user@host</code> works here too.</p>
+
+      <div class="callout info">
+        Each mtctl invocation accepts <code>--host user@host</code> to pick a target, or reads <code>$MTCTL_HOST</code>, or falls back to <code>~/.config/mtctl/host</code>.
+      </div>
     </section>
 
-    <section id="authentication-methods">
-      <h2>Authentication Methods</h2>
+    <!-- ============================================ -->
+    <section id="auth">
+      <h2>7. Authentication</h2>
 
       <h3>Password</h3>
-      <p>Enter your password when adding or editing the host. Passwords are stored securely in the iOS Keychain and never written to disk in plain text.</p>
+      <p>Enter the password when adding or editing the host. Passwords are stored in the iOS Keychain.</p>
 
-      <h3>SSH Key <span class="pro-badge">Pro</span></h3>
-      <p>Select one of your saved SSH keys when adding or editing the host. The private key never leaves your device — meshTerm signs the authentication challenge locally and sends only the public key to the server.</p>
-      <p>To use SSH key authentication:</p>
-      <ol>
-        <li>Generate or import a key in <strong>Settings → SSH Keys</strong> (see <a href="#ssh-key-management">SSH Key Management</a>).</li>
-        <li>Copy the public key and add it to <code>~/.ssh/authorized_keys</code> on your server.</li>
-        <li>When adding or editing a host, set the auth method to <strong>SSH Key</strong> and select the key.</li>
-      </ol>
+      <h3>SSH key</h3>
+      <p>Pick a saved SSH key from the host editor. The private key never leaves your device — meshTerm signs the authentication challenge locally and sends only the public key to the server. See <a href="#ssh-keys">SSH keys</a>.</p>
 
-      <h3>Tailscale SSH <span class="pro-badge">Pro</span></h3>
-      <p>For servers on your Tailnet with Tailscale SSH enabled, no password or key is required. Tailscale authenticates the connection at the network layer using your device's Tailscale identity.</p>
-      <p>Requirements:</p>
-      <ul>
-        <li>Tailscale app installed and connected on your iPhone/iPad</li>
-        <li>Server enrolled in the same Tailnet with Tailscale SSH enabled in ACLs</li>
-        <li>On the remote host: <code>sudo tailscale up --ssh</code></li>
-      </ul>
-      <blockquote>Tailscale SSH authentication is handled entirely by the Tailscale app — meshTerm does not send any credentials for these connections.</blockquote>
+      <h3>Tailscale SSH</h3>
+      <p>For servers on your Tailnet with Tailscale SSH enabled, no password or key is required. Tailscale authenticates the connection at the network layer using your device's identity. See the <a href="meshterm-tailscale-integration.html">Tailscale Setup Guide</a>.</p>
     </section>
 
-    <section id="ssh-key-management">
-      <h2>SSH Key Management</h2>
-      <p>Access SSH keys via <strong>Settings → SSH Keys</strong>.</p>
+    <!-- ============================================ -->
+    <section id="ssh-keys">
+      <h2>8. SSH keys</h2>
+      <p>Manage keys in Settings → SSH Keys.</p>
+
+      <h3>Supported key types</h3>
+      <ul>
+        <li><strong>Ed25519</strong> (recommended default).</li>
+        <li><strong>ECDSA</strong> on NIST curves P-256, P-384, P-521.</li>
+      </ul>
+      <p>RSA keys aren't supported in 2.0; the importer will tell you if you paste one.</p>
 
       <h3>Generating a new key</h3>
-      <p>Generating a key is a two-step process. First, the key is created and saved; then you have the option to install it on a host without leaving the sheet.</p>
       <ol>
-        <li>Tap <strong>Add Key</strong>.</li>
-        <li>Enter a label (e.g. "Work iPhone").</li>
-        <li>Tap <strong>Generate</strong>. meshTerm creates a new Ed25519 key pair, saves it securely in the iOS Keychain, and keeps the sheet open.</li>
+        <li>Settings → SSH Keys → <strong>Add Key</strong>.</li>
+        <li>Pick a type and enter a label (e.g. "Work iPhone").</li>
+        <li>Tap <strong>Generate</strong>. meshTerm creates the key pair, saves the private half in the iOS Keychain, and shows the public key in OpenSSH format.</li>
+        <li>If you have saved hosts, an <strong>Install on a Host</strong> section appears immediately. Pick a host, tap <strong>Install Key</strong>, and meshTerm appends the public key to <code>~/.ssh/authorized_keys</code> on that server.</li>
       </ol>
-      <p>The public key is shown in the key list in OpenSSH format:</p>
-      <pre><code>ssh-ed25519 AAAA... Work iPhone</code></pre>
-      <p>The comment at the end reflects the label you gave the key. Tap <strong>Done</strong> to close the sheet at any time.</p>
 
-      <h3 id="install-on-host">Installing a key on a host</h3>
-      <p>If you have any saved hosts, an <strong>Install on a Host</strong> section appears on the sheet immediately after the key is generated. This lets you push the public key to a host in one step — no manual copy-and-paste into <code>authorized_keys</code> required.</p>
-      <ol>
-        <li>In the <strong>Install on a Host</strong> section, select a host from the picker.</li>
-        <li>Tap <strong>Install Key</strong>.</li>
-      </ol>
-      <p>meshTerm opens a non-interactive exec channel to the selected host (no PTY or shell session is started) and appends the public key to <code>~/.ssh/authorized_keys</code> on the server. The connection uses the credentials already stored for that host.</p>
-      <blockquote><strong>Known host required.</strong> Installation uses strict host key verification — TOFU prompting is not shown during this flow. If the host's key is not yet trusted, a message in the footer will tell you to connect to that host via the terminal first, then return to install the key.</blockquote>
-      <p>Once the key is installed successfully, the status updates in the sheet. Tap <strong>Done</strong> to dismiss.</p>
+      <div class="callout info">
+        <strong>Install on a Host uses strict host-key verification.</strong> If you haven't already trusted the target host, the section asks you to connect via the terminal first to accept the fingerprint, then return and install.
+      </div>
 
       <h3>Importing an existing key</h3>
       <ol>
-        <li>Tap <strong>Add Key → Import</strong>.</li>
-        <li>Paste your unencrypted OpenSSH private key (the full contents of the file, including the <code>-----BEGIN OPENSSH PRIVATE KEY-----</code> and <code>-----END OPENSSH PRIVATE KEY-----</code> lines).</li>
+        <li>Settings → SSH Keys → <strong>Add Key</strong> → <strong>Import</strong>.</li>
+        <li>Paste the full OpenSSH-format private key (including the BEGIN and END lines).</li>
+        <li>If the key is passphrase-protected, enter the passphrase. meshTerm decrypts it on import and stores the seed in the Keychain — there's no second prompt at connect time.</li>
         <li>Tap <strong>Import</strong>.</li>
       </ol>
 
-      <div class="image-container">
-        <div class="img-card">
-          <img src="images/IMG_4873.PNG" alt="Import SSH Key">
-          <div class="img-caption">Importing keys.</div>
-        </div>
-      </div>
-
-      <p><strong>Requirements for import:</strong></p>
-      <ul>
-        <li>Ed25519 keys only</li>
-        <li>Unencrypted (no passphrase). To strip a passphrase: <code>ssh-keygen -p -N "" -f ~/.ssh/id_ed25519</code></li>
-      </ul>
-
       <h3>Copying a public key</h3>
-      <p>Tap the copy icon next to a key to copy the full OpenSSH public key to your clipboard. Paste this into <code>~/.ssh/authorized_keys</code> on your server.</p>
+      <p>Tap the copy icon next to a key to copy the OpenSSH public key to your clipboard. Paste it into <code>~/.ssh/authorized_keys</code> on any server you want passwordless access to.</p>
 
       <h3>Deleting a key</h3>
-      <p>Swipe left on a key and tap <strong>Delete</strong>. The private key is permanently removed from the Keychain.</p>
-      <blockquote>If you delete a key that is assigned to a host, that host will fail to connect until you edit it and assign a different key.</blockquote>
+      <p>Swipe a key left and tap <strong>Delete</strong>. The private key is permanently removed from the Keychain. Hosts using that key will fail to authenticate until you reassign one.</p>
 
-      <h3>Key storage</h3>
+      <h3>Where keys live</h3>
       <ul>
-        <li>Private keys are stored as 32-byte Ed25519 seeds in the <strong>iOS Keychain</strong>, protected at rest by the device's secure enclave.</li>
-        <li>Private keys are marked <code>WhenUnlockedThisDeviceOnly</code> — they cannot be backed up to iCloud or moved to another device.</li>
-        <li>Public keys are stored in UserDefaults for display purposes only.</li>
+        <li>Private keys are stored in the <strong>iOS Keychain</strong>, marked <code>WhenUnlockedThisDeviceOnly</code> — they don't back up to iCloud or transfer to other devices.</li>
+        <li>Public keys are stored alongside the host record for display purposes.</li>
       </ul>
     </section>
 
-    <section id="tailscale-integration">
-      <h2>Tailscale Integration</h2>
-      <p>meshTerm integrates with the <a href="https://tailscale.com">Tailscale</a> VPN to let you browse your Tailnet and add devices directly as SSH hosts.</p>
-
-      <h3>Prerequisites</h3>
-      <ul>
-        <li>meshTerm Pro</li>
-        <li>Tailscale app installed and connected to your Tailnet</li>
-        <li>A read-only Tailscale API token (see below)</li>
-      </ul>
-
-      <h3 id="getting-a-tailscale-api-token">Getting a Tailscale API Token</h3>
-      <p>In meshTerm, tap <strong>Settings → Tailscale → How to get an API token</strong> for in-app instructions. The steps are:</p>
+    <!-- ============================================ -->
+    <section id="tailscale">
+      <h2>9. Tailscale</h2>
+      <p>meshTerm integrates with Tailscale to browse your Tailnet and add devices as SSH hosts in a tap. Tailscale SSH–enabled devices connect without passwords or keys.</p>
+      <p>Setup is covered in detail in the <a href="meshterm-tailscale-integration.html">Tailscale Setup Guide</a>. In short:</p>
       <ol>
-        <li>Go to <a href="https://tailscale.com">tailscale.com</a> and sign in.</li>
-        <li>Navigate to <strong>Settings → Personal Settings → Keys</strong>.</li>
-        <li>Under <strong>API Access Tokens</strong>, click <strong>Generate token</strong>.</li>
-        <li>Give the token a label (e.g. "meshTerm").</li>
-        <li>Set an expiry — 90 days is recommended.</li>
-        <li>Leave permissions as <strong>read-only</strong> (meshTerm does not need write access).</li>
-        <li>Copy the token.</li>
-        <li>In meshTerm, go to <strong>Settings → Tailscale → API Token</strong> and paste it in.</li>
+        <li>Install and sign into the Tailscale app on your iPhone or iPad.</li>
+        <li>Generate a read-only Tailscale API token at <a href="https://login.tailscale.com/admin/settings/keys">login.tailscale.com</a>.</li>
+        <li>Paste it into Settings → Tailscale → API Token.</li>
+        <li>Tap the globe icon in the host list to browse your Tailnet and add devices.</li>
       </ol>
-      <blockquote>Your API token is stored securely in the iOS Keychain. meshTerm uses it only to fetch your device list and never modifies your Tailnet configuration.</blockquote>
-
-      <h3>Browsing your Tailnet</h3>
-      <ol>
-        <li>Tap the <strong>globe</strong> icon in the host list toolbar.</li>
-        <li>Your Tailnet devices are listed with their hostname, IP address, and operating system.</li>
-        <li>Enter a <strong>username</strong> (applied to all devices added in this session).</li>
-        <li>Tap <strong>+</strong> next to a device to add it as an SSH host.</li>
-      </ol>
-      <p>Devices added from the Tailnet browser are automatically configured to use <strong>Tailscale SSH</strong> auth (if you are on Pro).</p>
-
-      <div class="image-container">
-        <div class="img-card">
-          <img src="images/IMG_4875.PNG" alt="Tailnet Device Browser">
-          <div class="img-caption">Browsing active devices on your Tailnet.</div>
-        </div>
-      </div>
-
-      <h3>API token expiry</h3>
-      <p>Tailscale API tokens expire. When your token expires, the Tailnet browser will show an error. Return to <strong>Settings → Tailscale</strong> and generate a new token using the steps above.</p>
     </section>
 
-    <section id="snippet-vault">
-      <h2>Snippet Vault</h2>
-      <p>The Snippet Vault (Pro) is a searchable library of terminal commands you can send to the active session with a single tap.</p>
-      <p>Access it from the <strong>snippets</strong> button in the terminal toolbar.</p>
+    <!-- ============================================ -->
+    <section id="keyboard">
+      <h2>10. Keyboard</h2>
+      <p>meshTerm has three on-screen keyboard modes. Switch between them with the toggle on the accessory row, or swipe between them.</p>
 
-      <div class="image-container">
-        <div class="img-card">
-          <img src="images/IMG_4879.PNG" alt="Snippet Vault">
-          <div class="img-caption">Searchable command library with folders.</div>
+      <h3>iOS keyboard</h3>
+      <p>The standard iOS keyboard with a meshTerm accessory bar above it. Use this for plain text input, especially when iOS features like autocorrect or text-replacement come in handy.</p>
+
+      <h3>Secondary keyboard</h3>
+      <p>A full custom keyboard tailored to the terminal. Two function rows give you direct access to F-keys, navigation, modifiers, and a customisable top row of your most-used keys.</p>
+
+      <h3>Minimised</h3>
+      <p>A slim bar at the bottom edge of the screen. Hands the rest of the screen back to the terminal for reading long output (logs, <code>man</code> pages, build output). Tap the bar to expand back to one of the full modes; tap a single key on the bar to send it.</p>
+
+      <figure class="screenshot-placeholder">
+        <img src="images/keyboard-three-modes.png" alt="Three keyboard modes"
+             onload="this.closest('figure').classList.add('has-image')"
+             onerror="this.style.display='none'">
+        <div class="placeholder-box" aria-hidden="true">
+          <span class="ph-camera">📷</span>
+          <span class="ph-filename">images/keyboard-three-modes.png</span>
+          <span class="ph-status">placeholder · upload to replace</span>
         </div>
+        <figcaption class="capture-spec">
+          <strong>Capture spec:</strong>
+          Three vertical screenshots side by side, each iPhone 15 Pro portrait, then composited into one image.
+          Left: iOS keyboard mode with accessory bar.
+          Middle: Secondary keyboard with both function rows visible.
+          Right: Minimised mode with just the slim bottom bar; the terminal fills most of the screen.
+          Setup: connect to a host called <code>demo</code> and switch through the three modes for each shot.
+          Drop into <code>images/keyboard-three-modes.png</code>.
+        </figcaption>
+      </figure>
+
+      <h3>Customising the layouts</h3>
+      <ul>
+        <li><strong>Settings → Keyboard → Keyboard Layout</strong> — reorder the secondary keyboard's top row and move keys to or from a drawer.</li>
+        <li><strong>Settings → Keyboard → Minimized Row</strong> — pick which keys appear on the minimised bar.</li>
+        <li><strong>Left-Handed Chrome</strong> — mirrors every bottom-edge control to the leading side of the screen.</li>
+        <li><strong>Open Sessions Minimised</strong> — sessions start in minimised mode by default.</li>
+        <li><strong>Button Size</strong> — Stepper to scale the secondary keyboard's button height.</li>
+      </ul>
+
+      <h3>Hardware buttons</h3>
+      <p>Settings → Keyboard → Hardware Buttons lets you bind the device's <strong>Volume Up</strong> and <strong>Volume Down</strong> to terminal actions, with separate short-press and long-press slots. Available actions: nothing, the four arrow keys, Backspace, Tab, Escape, Ctrl-C, and show/hide keyboard.</p>
+      <p>When enabled, the volume rocker fires the bound action instead of changing system volume. The intercept pauses automatically when an external keyboard is attached or the app is in the background.</p>
+      <div class="callout warn">
+        While iOS dictation, Siri, or Voice Control is active, the volume rocker reverts to system volume — iOS gives those services audio-session priority. Bindings resume when the speech surface closes.
       </div>
+
+      <h3>External keyboards</h3>
+      <p>Connect a Magic Keyboard, Smart Folio, or any Bluetooth keyboard and the on-screen accessory bar hides automatically. Disconnect and it returns. While an external keyboard is attached, the following shortcuts are available:</p>
+      <table>
+        <thead><tr><th>Shortcut</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td>⌘ T</td><td>New session</td></tr>
+          <tr><td>⌘ K</td><td>Close current session</td></tr>
+          <tr><td>⌘ 1 – ⌘ 9</td><td>Jump to tab N</td></tr>
+          <tr><td>⌘ [ / ⌘ ]</td><td>Previous / next tab</td></tr>
+          <tr><td>⌘ F</td><td>Open scrollback search</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ============================================ -->
+    <section id="predictions">
+      <h2>11. Predictions &amp; history <span class="new-badge">2.0</span></h2>
+
+      <h3>Predictive echo overlay</h3>
+      <p>When you're typing at a shell prompt, meshTerm mirrors your keystrokes on screen immediately and then reconciles them with the echo that comes back from the server. On a slow link, typing feels native — you see the letters appear as you type, not after a 200 ms round-trip.</p>
+      <p>The overlay arms itself when meshTerm sees a shell prompt (recognised by the trailing prompt character: <code>$</code>, <code>#</code>, <code>&gt;</code>, or <code>%</code>) and disarms when an alt-screen TUI like <code>vim</code>, <code>htop</code>, or <code>less</code> takes the screen. On Roam hosts, the daemon also reports the live state of the shell's echo flag so meshTerm knows authoritatively whether predictions are safe.</p>
+      <p>If a prediction doesn't match what the shell actually echoed, the overlay rolls back automatically — you'll see a brief flicker as the mirrored characters are erased and the real ones drawn.</p>
+
+      <h3>History browse</h3>
+      <p>Pull up the keyboard's history panel to see the host's recent shell history in a sheet. Search across commands and tap one to send it to the active session — the panel closes and the command runs.</p>
+      <p>The history is fetched live from the host's own <code>~/.bash_history</code> or <code>~/.zsh_history</code> over the SSH connection. Nothing is stored locally; what you see is what the shell actually ran.</p>
+
+      <h3>Prediction chip strip</h3>
+      <p>As you type, a strip of matching commands from the host's shell history appears above the keyboard. Tap a chip to commit the rest of that command without finishing the keystrokes. The chip strip is purely a fast path on top of the history sheet — it doesn't surface snippets, macros, or anything else.</p>
+
+      <figure class="screenshot-placeholder">
+        <img src="images/predictions-chip-strip.png" alt="Prediction chip strip"
+             onload="this.closest('figure').classList.add('has-image')"
+             onerror="this.style.display='none'">
+        <div class="placeholder-box" aria-hidden="true">
+          <span class="ph-camera">📷</span>
+          <span class="ph-filename">images/predictions-chip-strip.png</span>
+          <span class="ph-status">placeholder · upload to replace</span>
+        </div>
+        <figcaption class="capture-spec">
+          <strong>Capture spec:</strong>
+          Device: iPhone 15 Pro, portrait.
+          Screen: an active Roam session to <code>demo</code> at a shell prompt. The user has typed
+          <code>git st</code> (just two characters); the chip strip above the keyboard should show
+          history matches like <code>git status</code>, <code>git stash</code>, etc.
+          Setup: ensure ~/.bash_history on the host has a few git commands in it; type the partial command in the app.
+          Drop into <code>images/predictions-chip-strip.png</code>.
+        </figcaption>
+      </figure>
+
+      <!-- TODO: verify against source — exact UI affordance for opening the history browse sheet
+           wasn't confirmed in the read-through (the HistoryBrowseView exists in
+           Sources/meshTerm/Views/HistoryBrowseView.swift but the discoverability point — long-press
+           the chip strip? a button on the accessory bar? — needs a screenshot or another read). -->
+    </section>
+
+    <!-- ============================================ -->
+    <section id="tui-pill">
+      <h2>12. TUI return-to-prompt pill <span class="new-badge">2.0</span></h2>
+      <p>When a full-screen terminal app (TUI) like Claude Code or Codex CLI is running, scrolling up to look at earlier output normally means the prompt scrolls off the bottom of the screen. The TUI return-to-prompt pill is a small floating button that surfaces in those situations and jumps you straight back to the live prompt with one tap.</p>
+
+      <p>Three styles, picked automatically by what's running:</p>
+      <ul>
+        <li><strong>Claude Code</strong> — brand-orange pill with a white icon. Sends Ctrl+End to jump back to Claude's live prompt.</li>
+        <li><strong>Codex CLI</strong> — white pill with a black icon. Sends Ctrl+T to toggle the Codex transcript pager.</li>
+        <li><strong>Generic TUI</strong> — blue pill. Sends Ctrl+End, which works in most alt-screen TUIs and pagers.</li>
+      </ul>
+
+      <p>Detection runs off the terminal title set by the app, so it's lightweight and accurate. There's no process inspection or byte-stream fingerprinting.</p>
+
+      <h3>Per-host override</h3>
+      <p>Edit Host → TUI Detection lets you change the behaviour per host:</p>
+      <ul>
+        <li><strong>Auto</strong> — detect from the title (default).</li>
+        <li><strong>Claude Code</strong> — force the Claude pill on this host even if the title detection fails (some custom zsh prompts overwrite the title).</li>
+        <li><strong>Codex CLI</strong> — force the Codex pill.</li>
+        <li><strong>Off</strong> — suppress the pill on this host entirely.</li>
+      </ul>
+
+      <h3>Master kill switch</h3>
+      <p>Settings → Terminal has a master toggle that disables the TUI pill across every host. The pill is on by default.</p>
+
+      <figure class="screenshot-placeholder">
+        <img src="images/tui-pill-claude.png" alt="TUI pill in Claude Code"
+             onload="this.closest('figure').classList.add('has-image')"
+             onerror="this.style.display='none'">
+        <div class="placeholder-box" aria-hidden="true">
+          <span class="ph-camera">📷</span>
+          <span class="ph-filename">images/tui-pill-claude.png</span>
+          <span class="ph-status">placeholder · upload to replace</span>
+        </div>
+        <figcaption class="capture-spec">
+          <strong>Capture spec:</strong>
+          Device: iPhone 15 Pro, portrait.
+          Screen: Claude Code running in a session to <code>demo</code>. Scroll the terminal up so the live prompt is off-screen;
+          the orange Claude pill should be visible as a floating button.
+          Setup: run <code>claude</code> on the host, send a couple of prompts to build up scrollback, then scroll up in meshTerm.
+          Drop into <code>images/tui-pill-claude.png</code>.
+        </figcaption>
+      </figure>
+    </section>
+
+    <!-- ============================================ -->
+    <section id="wedge">
+      <h2>13. Wedge recovery <span class="new-badge">2.0</span></h2>
+      <p>Some terminal UIs have a rendering bug where, after a window-size change (rotating the device, toggling the keyboard), the prompt ends up drawn below the visible area and won't redraw without intervention. Claude Code is the most visible example — there's an upstream tracker at <a href="https://github.com/anthropics/claude-code/issues/60069">anthropics/claude-code#60069</a>.</p>
+
+      <p>The Roam daemon watches each session's output for the signature of this kind of wedge. When it detects one, meshTerm shows a banner at the top of the terminal:</p>
+
+      <figure class="screenshot-placeholder">
+        <img src="images/wedge-banner.png" alt="Wedge recovery banner"
+             onload="this.closest('figure').classList.add('has-image')"
+             onerror="this.style.display='none'">
+        <div class="placeholder-box" aria-hidden="true">
+          <span class="ph-camera">📷</span>
+          <span class="ph-filename">images/wedge-banner.png</span>
+          <span class="ph-status">placeholder · upload to replace</span>
+        </div>
+        <figcaption class="capture-spec">
+          <strong>Capture spec:</strong>
+          Device: iPhone 15 Pro, portrait.
+          Screen: a Roam session where the wedge recovery banner is showing across the top of the terminal.
+          The banner reads "Claude may be wedged" with Save &amp; Restart / Dismiss buttons on a row below.
+          Setup: this is hard to reproduce on demand; if needed, take the screenshot once and reuse it.
+          Drop into <code>images/wedge-banner.png</code>.
+        </figcaption>
+      </figure>
+
+      <p>Tap <strong>Save &amp; Restart</strong> and the daemon walks Claude through:</p>
+      <ol>
+        <li>A natural-language instruction to save in-flight context to memory.</li>
+        <li>An orderly <code>/exit</code> of the wedged Claude process.</li>
+        <li>A <code>claude --resume</code> to bring the session back with the saved context.</li>
+      </ol>
+      <p>The banner reflects each phase as it runs ("Saving context…", "Exiting Claude…", "Restarting Claude…"). When the session is back, the banner shows "Restart complete" and dismisses itself.</p>
+
+      <p>If you'd rather handle it yourself, tap <strong>Dismiss</strong> instead. The banner won't reappear for a short cooldown so a transient redraw doesn't immediately re-pop it.</p>
+    </section>
+
+    <!-- ============================================ -->
+    <section id="snippets">
+      <h2>14. Snippet Vault</h2>
+      <p>The Snippet Vault is a searchable library of terminal commands you can send to the active session in one tap. Open it from the terminal toolbar.</p>
 
       <h3>Default snippets</h3>
       <p>meshTerm ships with two folders of pre-loaded snippets:</p>
-      <p><strong>Linux</strong> — common admin commands including <code>ls -lah</code>, <code>df -h</code>, <code>ps aux</code>, <code>ss -tuln</code>, <code>tail -f /var/log/syslog</code>, <code>systemctl status</code>, and more.</p>
-      <p><strong>OpenClaw</strong> — commands for <a href="https://openclaw.ai">OpenClaw</a> including <code>openclaw update</code>, <code>openclaw doctor</code>, <code>openclaw models list</code>, <code>openclaw gateway status</code>, and <code>openclaw memory index --force</code>.</p>
+      <ul>
+        <li><strong>Linux</strong> — common admin commands like <code>ls -lah</code>, <code>df -h</code>, <code>ss -tuln</code>, <code>systemctl status</code>.</li>
+        <li><strong>OpenClaw</strong> — commands for the <a href="https://openclaw.ai">OpenClaw</a> toolkit.</li>
+      </ul>
 
       <h3>Using a snippet</h3>
-      <p>Tap any snippet to send the command text directly to the terminal. The Vault closes automatically and the command is typed into your active session.</p>
+      <p>Tap any snippet to send the command text to the terminal. The Vault closes automatically.</p>
 
       <h3>Adding snippets</h3>
       <ol>
         <li>Tap <strong>+</strong> in the Snippet Vault toolbar.</li>
         <li>Enter a title and the command text.</li>
-        <li>Optionally assign it to a folder and add tags.</li>
+        <li>Optionally pick a folder.</li>
         <li>Tap <strong>Save</strong>.</li>
       </ol>
 
-      <h3>Searching</h3>
-      <p>Use the search bar at the top of the Vault. meshTerm searches across snippet titles, command text, and tags.</p>
+      <h3>Secret snippets</h3>
+      <p>When adding a snippet, mark it as <strong>Secret</strong> to back its command text with the iOS Keychain instead of plain storage. Optionally require Face ID, Touch ID, or your device passcode each time the snippet fires — useful for sudo passwords, API tokens, or anything you don't want appearing in a list of commands.</p>
 
-      <h3>Folders</h3>
-      <p>Tap <strong>New Folder</strong> to organise snippets. Tap a folder to view only its snippets. Deleting a folder does not delete its snippets — they move to the root level.</p>
+      <h3>Folders &amp; search</h3>
+      <p>Tap <strong>New Folder</strong> to organise. The search bar at the top of the Vault searches across titles, command text, and tags.</p>
     </section>
 
-    <section id="macro-bar">
-      <h2>Terminal Macro Bar <span class="pro-badge">Pro</span></h2>
-      <p>The Terminal Macro Bar is a scrollable row of one-tap commands that sits directly above the keyboard accessory, ready in every session. Put your most-used commands — <code>git status</code>, <code>docker ps</code>, <code>tail</code> a log, restart a service — on standby and fire them with a single tap.</p>
+    <!-- ============================================ -->
+    <section id="macros">
+      <h2>15. Macro bar</h2>
+      <p>The macro bar is a scrollable row of one-tap commands above the keyboard, available in every session. Tap a macro to send its command followed by Return.</p>
 
-      <h3>Using macros</h3>
-      <p>Scroll the macro row horizontally above the keyboard and tap a macro to send its command to the active terminal. Each tap sends the text followed by <strong>Return</strong>, so the command runs immediately.</p>
-
-      <h3>The Macro Editor</h3>
-      <p>Open <strong>Settings → Keyboard → Macros</strong> to manage your macro list. From the editor you can:</p>
+      <h3>Editing macros</h3>
+      <p>Open <strong>Settings → Keyboard → Macros</strong>:</p>
       <ul>
-        <li><strong>Add</strong> a macro — give it a short label (what appears on the bar) and the command text.</li>
-        <li><strong>Edit</strong> an existing macro — tap a row to change its label or command.</li>
-        <li><strong>Reorder</strong> macros by dragging rows. The order in the editor matches the order on the bar.</li>
-        <li><strong>Delete</strong> a macro by swiping its row.</li>
-        <li><strong>Restore defaults</strong> to bring back meshTerm's built-in macro set.</li>
+        <li><strong>Add</strong> a macro — a short label (what shows on the bar) and the command text.</li>
+        <li><strong>Edit</strong> by tapping a row.</li>
+        <li><strong>Reorder</strong> by dragging.</li>
+        <li><strong>Delete</strong> by swiping.</li>
+        <li><strong>Restore defaults</strong> to bring back the built-in starter set.</li>
       </ul>
 
-      <h3>Default macros</h3>
-      <p>meshTerm ships with a small starter set you can keep, edit, or replace entirely — use <strong>Restore defaults</strong> at any time to bring them back.</p>
+      <h3>Hiding the macro bar</h3>
+      <p><strong>Settings → Keyboard → Show Macros</strong> turns the row off entirely if you'd rather have the screen real estate back.</p>
+
+      <h3>Secret macros</h3>
+      <p>Like secret snippets, macros can be marked secret and gated by Face ID. Useful for fast-fire credentials without the macro text appearing in the bar.</p>
     </section>
 
-    <section id="sftp-browser">
-      <h2>SFTP File Browser <span class="pro-badge">Pro</span></h2>
-      <p>The SFTP browser lets you move files on and off your servers without leaving meshTerm. It runs over the same SSH transport as your terminal sessions — no additional credentials, no extra apps, no third-party cloud in the middle.</p>
+    <!-- ============================================ -->
+    <section id="sftp">
+      <h2>16. SFTP file browser</h2>
+      <p>The SFTP browser moves files on and off your servers without leaving meshTerm. It runs over the same SSH transport as your terminal sessions — no additional credentials, no third-party cloud.</p>
 
       <h3>Opening the browser</h3>
       <ol>
-        <li>From the host list, tap the <strong>folder</strong> icon next to a host, or open the host's detail screen and tap <strong>Browse files</strong>.</li>
-        <li>meshTerm opens an SFTP channel over the existing SSH connection and shows the contents of the home directory.</li>
+        <li>From the host detail screen, tap <strong>Browse files</strong>.</li>
+        <li>meshTerm opens an SFTP channel over the existing SSH connection and shows the home directory.</li>
       </ol>
-      <blockquote>SFTP requires the server to support the SFTP subsystem (enabled by default in OpenSSH). Tailscale SSH nodes are supported the same way as any other host.</blockquote>
 
       <h3>Navigating</h3>
       <ul>
-        <li>Tap a folder to enter it. Tap <strong>Back</strong> in the navigation bar to go up a level.</li>
-        <li>Pull down to refresh the current directory listing.</li>
+        <li>Tap a folder to enter it; tap <strong>Back</strong> in the navigation bar to go up.</li>
+        <li>Pull down to refresh.</li>
         <li>The current path is shown in the title bar.</li>
       </ul>
 
-      <h3>Downloading files</h3>
+      <h3>Downloading</h3>
       <ol>
-        <li>Tap a file to start a download. A progress indicator shows bytes transferred.</li>
-        <li>When the download completes, meshTerm offers to save the file via the iOS Files sheet — pick iCloud Drive, On My iPhone, or any Files-compatible location.</li>
-        <li>A <strong>Saved to Files</strong> confirmation appears once the file is written.</li>
+        <li>Tap a file to download. A progress indicator shows bytes transferred.</li>
+        <li>When the download completes, the iOS Files share sheet appears — pick iCloud Drive, On My iPhone, or any Files-compatible provider.</li>
       </ol>
 
-      <h3>Uploading files</h3>
+      <h3>Uploading</h3>
       <ol>
-        <li>Tap <strong>Upload</strong> in the browser toolbar.</li>
-        <li>Pick one or more files from the iOS Files sheet — iCloud Drive, Dropbox, On My iPhone, or any provider.</li>
-        <li>meshTerm uploads the files to the current remote directory and shows progress per file.</li>
+        <li>Tap <strong>Upload File</strong> in the browser toolbar.</li>
+        <li>Pick one or more files from the iOS Files sheet.</li>
+        <li>meshTerm uploads them to the current remote directory.</li>
       </ol>
 
       <h3>File operations</h3>
       <p>Long-press a file or folder for options:</p>
       <ul>
-        <li><strong>Rename</strong> — enter a new name; the server-side rename is atomic where supported.</li>
-        <li><strong>Delete</strong> — confirm and meshTerm removes the file or folder. Non-empty folders are not deleted in one pass — empty them first.</li>
-        <li><strong>New Folder</strong> (toolbar) — create a new directory in the current path.</li>
+        <li><strong>Rename</strong> — enter a new name.</li>
+        <li><strong>Delete</strong> — confirm and the file or folder is removed. Non-empty folders aren't deleted in one pass — empty them first.</li>
+        <li><strong>New Folder</strong> (toolbar) — create a directory in the current path.</li>
       </ul>
 
-      <blockquote>All SFTP operations run over the active SSH session's encrypted channel. Credentials never leave your device, and nothing is routed through a third-party server.</blockquote>
+      <figure class="screenshot-placeholder">
+        <img src="images/sftp-browser.png" alt="SFTP browser"
+             onload="this.closest('figure').classList.add('has-image')"
+             onerror="this.style.display='none'">
+        <div class="placeholder-box" aria-hidden="true">
+          <span class="ph-camera">📷</span>
+          <span class="ph-filename">images/sftp-browser.png</span>
+          <span class="ph-status">placeholder · upload to replace</span>
+        </div>
+        <figcaption class="capture-spec">
+          <strong>Capture spec:</strong>
+          Device: iPhone 15 Pro, portrait.
+          Screen: SFTP browser on host <code>demo</code>, viewing a directory with a mix of folders and files
+          (e.g. ~/Documents or ~/Projects with 5–10 entries). The Upload File button should be visible.
+          Drop into <code>images/sftp-browser.png</code>.
+        </figcaption>
+      </figure>
     </section>
 
-    <section id="terminal-controls">
-      <h2>Terminal Controls</h2>
-
-      <div class="image-container">
-        <div class="img-card">
-          <img src="images/IMG_4882.PNG" alt="Terminal UI">
-          <div class="img-caption">Active shell with modifier row.</div>
-        </div>
-        <div class="img-card">
-          <img src="images/IMG_4883.PNG" alt="Symbol Strip">
-          <div class="img-caption">The extended symbol strip.</div>
-        </div>
-        <div class="img-card">
-          <img src="images/IMG_4884.PNG" alt="Function Keys">
-          <div class="img-caption">F1–F12 and navigation keys.</div>
-        </div>
-      </div>
-
-      <h3>Modifier keys</h3>
-      <table>
-        <thead>
-          <tr><th>Key</th><th>Description</th></tr>
-        </thead>
-        <tbody>
-          <tr><td><strong>Ctrl</strong></td><td>One-shot Ctrl modifier. Tap once, then press a key (e.g. C, D, Z, L). Releases automatically after one keystroke.</td></tr>
-          <tr><td><strong>Esc</strong></td><td>Sends the Escape character. Use to exit insert mode in vim or cancel prompts.</td></tr>
-          <tr><td><strong>Alt</strong></td><td>One-shot Alt/Meta modifier. Use for word navigation: Alt+F (forward word), Alt+B (back word).</td></tr>
-          <tr><td><strong>Tab</strong></td><td>Sends Tab for shell autocompletion.</td></tr>
-        </tbody>
-      </table>
-
-      <h3>Common Ctrl sequences</h3>
-      <table>
-        <thead>
-          <tr><th>Sequence</th><th>Action</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Ctrl + C</td><td>Interrupt — stop the running command</td></tr>
-          <tr><td>Ctrl + D</td><td>End of input — log out or close session</td></tr>
-          <tr><td>Ctrl + Z</td><td>Suspend — background the current process</td></tr>
-          <tr><td>Ctrl + L</td><td>Clear — redraw the screen</td></tr>
-          <tr><td>Ctrl + A</td><td>Move cursor to beginning of line</td></tr>
-          <tr><td>Ctrl + E</td><td>Move cursor to end of line</td></tr>
-          <tr><td>Ctrl + R</td><td>Reverse history search</td></tr>
-          <tr><td>Ctrl + W</td><td>Delete the word before the cursor</td></tr>
-        </tbody>
-      </table>
-
-      <h3>Arrow keys</h3>
+    <!-- ============================================ -->
+    <section id="search">
+      <h2>17. Scrollback search <span class="new-badge">2.0</span></h2>
+      <p>Press <strong>⌘ F</strong> (or tap the magnifier in the terminal toolbar) to open the search bar at the bottom of the terminal. Type to find matches in the visible scrollback; a running match count shows how many hits.</p>
       <ul>
-        <li><strong>↑ / ↓</strong> — Navigate command history; move cursor in full-screen apps (vim, htop)</li>
-        <li><strong>← / →</strong> — Move cursor; scroll through menus in full-screen apps</li>
+        <li><strong>Up / Down arrows</strong> — step between matches.</li>
+        <li><strong>Smart Case</strong> — case-insensitive unless your query contains an uppercase letter.</li>
+        <li><strong>Done</strong> — close the search bar and return to the live prompt.</li>
       </ul>
-
-      <h3>Extended keys</h3>
-      <p>Tap the keyboard dismiss button to reveal the full extended key row:</p>
-      <ul>
-        <li><strong>F1–F12</strong> — Function keys</li>
-        <li><strong>Home / End</strong> — Jump to start/end of line</li>
-        <li><strong>Page Up / Page Down</strong> — Scroll one screen at a time</li>
-      </ul>
-
-      <h3>Symbol strip</h3>
-      <p>The symbol strip provides quick access to commonly used characters:</p>
-      <p><code>|</code> <code>`</code> <code>~</code> <code>$</code> <code>/</code> <code>\</code> <code>{</code> <code>}</code> <code>[</code> <code>]</code></p>
-
-      <h3>Hide Keyboard button</h3>
-      <p>Tap the <strong>keyboard-dismiss</strong> button in the terminal toolbar to drop the on-screen keyboard entirely. Useful for reading long output (logs, <code>man</code> pages, build output) without an accessory row eating half the screen. Tap the terminal to bring the keyboard back.</p>
-
-      <h3>Hardware keyboard auto-hide</h3>
-      <p>Connect a Magic Keyboard, Smart Folio, or any Bluetooth keyboard and meshTerm's on-screen accessory bar disappears automatically, giving you a full-screen terminal. Disconnect and it reappears. There is no setting to toggle — meshTerm observes the connected keyboard and hides the accessory for you.</p>
-      <p>While a hardware keyboard is attached, the <a href="#multi-session-tabs">multi-session keyboard shortcuts</a> (⌘T, ⌘K, ⌘1–9, ⌘[, ⌘]) are also available.</p>
+      <p>The scrollback is capped at 5,000 lines by default. On Roam hosts you can search server-side with <code>mtctl search</code> for matches beyond the local cap.</p>
     </section>
 
+    <!-- ============================================ -->
+    <section id="themes">
+      <h2>18. Themes</h2>
+      <p>Settings → Appearance → Theme lets you pick from eight curated themes. Each theme drives the terminal palette, the app accent, and the per-host monogram tints together.</p>
+      <ul>
+        <li>Default Dark</li>
+        <li>Default Light</li>
+        <li>Solarized Dark</li>
+        <li>Solarized Light</li>
+        <li>Gruvbox</li>
+        <li>Dracula</li>
+        <li>Nord</li>
+        <li>Tomorrow Night</li>
+      </ul>
+    </section>
+
+    <!-- ============================================ -->
     <section id="security">
-      <h2>Security</h2>
+      <h2>19. Security &amp; App Lock</h2>
 
-      <h3 id="known-hosts-tofu">Known Hosts (TOFU)</h3>
-      <p>meshTerm uses <strong>Trust On First Use (TOFU)</strong> to verify server identity. The first time you connect to a host, meshTerm presents the server's host key fingerprint and asks you to confirm before proceeding.</p>
-      <ul>
-        <li>Tap <strong>Trust &amp; Connect</strong> to accept the fingerprint and save it.</li>
-        <li>Tap <strong>Cancel</strong> to abort the connection.</li>
-      </ul>
-      <p>On subsequent connections, meshTerm checks the fingerprint automatically. If it has changed, the connection is blocked with a security warning (see <a href="#host-key-mismatch">Host key mismatch</a>).</p>
-
-      <h3>Viewing and managing known hosts</h3>
-      <p>Go to <strong>Settings → Known Hosts</strong> to see all trusted hosts. Swipe left on an entry to delete it.</p>
-      <p>If a server's host key legitimately changes (e.g. after a rebuild), delete the old entry from Known Hosts and reconnect to accept the new fingerprint.</p>
-
-      <h3>Credential storage</h3>
-      <p>All sensitive data is stored in the <strong>iOS Keychain</strong>:</p>
-      <ul>
-        <li>SSH private keys</li>
-        <li>SSH passwords</li>
-        <li>Tailscale API tokens</li>
-      </ul>
-      <p>Nothing sensitive is written to iCloud backup, UserDefaults, or the filesystem.</p>
-
-      <h3 id="app-lock">App Lock</h3>
-      <p>meshTerm can be locked with Face ID, Touch ID, or your device passcode. When enabled, the app locks automatically when it moves to the background and requires biometric or passcode authentication to reopen.</p>
-      <p>Enable app lock in <strong>Settings → App Lock</strong>.</p>
-      <blockquote>App Lock requires a device passcode to be set. If no passcode is configured, you will be prompted to set one in iOS Settings → Face ID &amp; Passcode.</blockquote>
-    </section>
-
-    <section id="settings">
-      <h2>Settings</h2>
-
-      <h3>SSH Keys</h3>
-      <p>Manage your SSH key pairs. See <a href="#ssh-key-management">SSH Key Management</a>.</p>
-
-      <h3>Keyboard → Macros</h3>
-      <p>Add, edit, reorder, or delete the macros shown on the <a href="#macro-bar">Terminal Macro Bar</a>. Use <strong>Restore defaults</strong> to bring back the built-in starter set.</p>
+      <h3>Known Hosts (TOFU)</h3>
+      <p>meshTerm uses <strong>Trust On First Use</strong> for host-key verification. The first time you connect to a host, the app shows the server's host-key fingerprint and asks you to confirm. Subsequent connects check the fingerprint silently. If it changes (server rebuilt, key rotated, or something more sinister), the connection is blocked with a warning.</p>
+      <p>Manage trusted fingerprints in <strong>Settings → Security → Known Hosts</strong>. Swipe an entry left to delete it. If a server's key legitimately changed, delete the old entry and reconnect to accept the new fingerprint.</p>
 
       <h3>App Lock</h3>
-      <p>Require Face ID, Touch ID, or the device passcode to open meshTerm. See <a href="#app-lock">App Lock</a>. Requires an iOS passcode to be set on the device.</p>
+      <p>Settings → Security → App Lock requires Face ID, Touch ID, or your device passcode to reopen meshTerm. Pick one of:</p>
+      <ul>
+        <li><strong>Off</strong></li>
+        <li><strong>Immediately</strong> — lock the moment the app backgrounds.</li>
+        <li><strong>After 30 seconds / 1 minute / 5 minutes</strong> — short app switches pass through.</li>
+      </ul>
+      <p>Cold launch always requires unlock if App Lock is on.</p>
 
-      <h3>Security → Known Hosts</h3>
-      <p>View and delete trusted host fingerprints. See <a href="#known-hosts-tofu">Known Hosts</a>.</p>
+      <div class="callout warn">
+        App Lock requires a device passcode to be set. If you haven't set one, iOS will ask you to in Settings → Face ID &amp; Passcode first.
+      </div>
 
-      <h3>Tailscale → API Token</h3>
-      <p>Enter your read-only Tailscale API token to enable Tailnet device browsing. See <a href="#tailscale-integration">Tailscale Integration</a>.</p>
-
-      <h3>About</h3>
-      <p>Shows the current app version and links to the Privacy Policy and Terms of Use.</p>
+      <h3>Credential storage</h3>
+      <p>Everything sensitive lives in the <strong>iOS Keychain</strong>:</p>
+      <ul>
+        <li>SSH private keys (Ed25519, ECDSA).</li>
+        <li>SSH passwords.</li>
+        <li>Tailscale API tokens.</li>
+        <li>Secret snippets and secret macros.</li>
+      </ul>
+      <p>Nothing sensitive is written to iCloud backup, UserDefaults, or the filesystem in plaintext.</p>
     </section>
 
-    <section id="meshterm-pro">
-      <h2>meshTerm Pro</h2>
-      <p>meshTerm Pro unlocks the following features:</p>
+    <!-- ============================================ -->
+    <section id="settings">
+      <h2>20. Settings reference</h2>
+      <p>A quick map of the Settings tab.</p>
+      <ul>
+        <li><strong>Subscription</strong> — current Pro state and upgrade buttons.</li>
+        <li><strong>Appearance</strong> — theme picker.</li>
+        <li><strong>Terminal</strong> — font size, scrollback options, TUI pill master toggle.</li>
+        <li><strong>Keyboard</strong> — Keyboard Layout, Minimized Row, Left-Handed Chrome, Open Sessions Minimised, Tap-for-Keyboard Reminder, Hardware Buttons, Button Size, Show Macros, Macros editor.</li>
+        <li><strong>Connections</strong> — default persistence and default Roam idle timeout for newly added hosts.</li>
+        <li><strong>SSH Keys</strong> — generate, import, copy, delete.</li>
+        <li><strong>Hosts</strong> — import from <code>.ssh/config</code>, export to <code>ssh_config</code>.</li>
+        <li><strong>Security</strong> — App Lock and Known Hosts.</li>
+        <li><strong>Tailscale</strong> — API Token and help.</li>
+        <li><strong>Privacy</strong> — clear local connection history.</li>
+        <li><strong>About</strong> — version, Privacy Policy, EULA.</li>
+      </ul>
+
+      <!-- TODO: verify against source — the "Terminal" section's exact composition (scrollback options,
+           font size pickers) wasn't fully read in the rewrite pass; the TUI pill master toggle is
+           confirmed at TerminalSettings.tuiPillEnabled but other Terminal-section items should be
+           checked before publish. -->
+    </section>
+
+    <!-- ============================================ -->
+    <section id="pro">
+      <h2>21. meshTerm Pro</h2>
+      <p>Every feature in the app is available in the free tier. The only limit is on concurrent surface area:</p>
 
       <table>
-        <thead>
-          <tr><th>Feature</th><th>Free</th><th>Pro</th></tr>
-        </thead>
+        <thead><tr><th></th><th>Free</th><th>Pro</th></tr></thead>
         <tbody>
           <tr><td>Saved hosts</td><td>1</td><td>Unlimited</td></tr>
-          <tr><td>Password authentication</td><td>Yes</td><td>Yes</td></tr>
-          <tr><td>SSH key authentication</td><td>—</td><td>Yes</td></tr>
-          <tr><td>Generate / import SSH keys</td><td>—</td><td>Yes</td></tr>
-          <tr><td>Install key on a host</td><td>—</td><td>Yes</td></tr>
-          <tr><td>Tailscale SSH</td><td>—</td><td>Yes</td></tr>
-          <tr><td>Tailscale device browsing</td><td>—</td><td>Yes</td></tr>
-          <tr><td>Snippet Vault</td><td>—</td><td>Yes</td></tr>
-          <tr><td>Terminal Macro Bar</td><td>—</td><td>Yes</td></tr>
-          <tr><td>SFTP file browser</td><td>—</td><td>Yes</td></tr>
-          <tr><td>Multi-session tabs</td><td>Yes</td><td>Yes</td></tr>
-          <tr><td>Automatic tmux attach &amp; reconnect</td><td>Yes</td><td>Yes</td></tr>
-          <tr><td>Known hosts management</td><td>Yes</td><td>Yes</td></tr>
-          <tr><td>Terminal emulation</td><td>Yes</td><td>Yes</td></tr>
+          <tr><td>Concurrent sessions</td><td>1</td><td>Unlimited</td></tr>
+          <tr><td>Roam, predictive echo, history browse, TUI pill, wedge recovery</td><td>Yes</td><td>Yes</td></tr>
+          <tr><td>SSH key auth (Ed25519, ECDSA), key generation / import / install</td><td>Yes</td><td>Yes</td></tr>
+          <tr><td>Tailscale SSH and Tailnet device browsing</td><td>Yes</td><td>Yes</td></tr>
+          <tr><td>Snippet Vault (including secret snippets)</td><td>Yes</td><td>Yes</td></tr>
+          <tr><td>Macro bar (including secret macros)</td><td>Yes</td><td>Yes</td></tr>
+          <tr><td>SFTP file browser</td><td>Yes</td><td>Yes</td></tr>
+          <tr><td>Themes, scrollback search, host import/export, tags</td><td>Yes</td><td>Yes</td></tr>
           <tr><td>App Lock</td><td>Yes</td><td>Yes</td></tr>
         </tbody>
       </table>
 
       <h3>Subscribing</h3>
-      <p>Tap <strong>Upgrade</strong> in Settings or the paywall prompt. Pro is available as a monthly or annual subscription — the annual plan is the best value.</p>
+      <p>Tap <strong>Upgrade</strong> in Settings or on the host-limit / session-limit prompt. Pro is available as monthly or annual; the annual plan is the better value. Free trials, when offered, apply on the first qualifying purchase per Apple ID.</p>
+      <!-- TODO: verify against source — exact prices for the monthly and annual tiers aren't
+           hard-coded in the app (StoreKit pulls them from App Store Connect), so concrete numbers
+           depend on the territory. The user may want to add a default price line once StoreKit
+           connect-side pricing is finalised. -->
 
       <h3>Restoring purchases</h3>
       <p>Tap <strong>Restore Purchases</strong> in Settings if you reinstall the app or switch devices.</p>
+
+      <h3>Cancelling</h3>
+      <p>Manage or cancel a subscription via iOS Settings → Apple ID → Subscriptions, or via the Subscriptions row inside the App Store app.</p>
     </section>
 
+    <!-- ============================================ -->
     <section id="troubleshooting">
-      <h2>Troubleshooting</h2>
+      <h2>22. Troubleshooting</h2>
 
-      <h3>Connection issues</h3>
+      <h3>Connection</h3>
 
-      <h4>"Could not resolve '[hostname]'"</h4>
-      <p>The device cannot look up the hostname via DNS.</p>
+      <h4>"Could not resolve [hostname]"</h4>
       <ul>
         <li>Check the hostname is spelled correctly.</li>
         <li>Check your device has a working internet connection.</li>
-        <li>If using a local hostname (e.g. <code>myserver.local</code>), ensure you are on the same local network.</li>
+        <li>If using a local hostname (e.g. <code>home-server.local</code>), ensure you're on the same network.</li>
       </ul>
 
-      <h4>"Could not connect to [host]:[port]"</h4>
-      <p>The TCP connection was refused or timed out.</p>
+      <h4>"Could not connect"</h4>
       <ul>
-        <li>Verify the server is online and accessible.</li>
-        <li>Check the port number is correct (default SSH is 22).</li>
-        <li>Confirm SSH is running on the server: <code>sudo systemctl status ssh</code>.</li>
-        <li>If connecting to a local network address, ensure meshTerm has <strong>Local Network</strong> permission: go to <strong>iOS Settings → Privacy &amp; Security → Local Network</strong> and enable meshTerm.</li>
-      </ul>
-
-      <h4>"The connection was closed"</h4>
-      <p>The server terminated the session.</p>
-      <ul>
-        <li>The server may have timed out an idle connection. Reconnect and consider setting <code>ClientAliveInterval</code> on the server.</li>
-        <li>The shell may have exited normally (e.g. you typed <code>exit</code>).</li>
+        <li>Verify the server is reachable and SSH is running (default port 22).</li>
+        <li>If you're on a local network address, grant meshTerm <strong>Local Network</strong> permission in iOS Settings → Privacy &amp; Security.</li>
+        <li>Firewalls and NATs can drop idle SSH; set <code>ClientAliveInterval</code> on the server if drops are frequent.</li>
       </ul>
 
       <h4>Connection hangs at "Connecting…"</h4>
       <ul>
-        <li>Check your network connection.</li>
-        <li>If connecting via Tailscale, ensure the Tailscale app is open and connected to your Tailnet.</li>
+        <li>Check your network.</li>
+        <li>If connecting via Tailscale, ensure the Tailscale app is open and connected.</li>
         <li>Try toggling Tailscale off and on.</li>
       </ul>
 
-      <h3>Authentication issues</h3>
+      <h3>Authentication</h3>
 
-      <h4>"No SSH key selected. Edit the host and choose a key."</h4>
-      <p>The host is set to SSH key authentication but no key has been assigned.</p>
-      <ul>
-        <li>Go to the host list, swipe left on the host, and tap <strong>Edit</strong>.</li>
-        <li>Under <strong>Authentication</strong>, select a key from the <strong>Key</strong> picker.</li>
-        <li>If no keys are listed, go to <strong>Settings → SSH Keys</strong> and generate or import one first.</li>
-      </ul>
-
-      <h4>SSH key auth fails silently or server rejects key</h4>
+      <h4>SSH key auth fails silently</h4>
       <ul>
         <li>Confirm the public key is in <code>~/.ssh/authorized_keys</code> on the server.</li>
-        <li>Ensure the <code>~/.ssh</code> directory has permissions <code>700</code> and <code>~/.ssh/authorized_keys</code> has permissions <code>600</code> on the server.</li>
+        <li>The <code>~/.ssh</code> directory needs permissions <code>700</code> and <code>~/.ssh/authorized_keys</code> needs <code>600</code>.</li>
         <li>Check <code>sshd_config</code> on the server has <code>PubkeyAuthentication yes</code>.</li>
       </ul>
 
-      <h4>Password auth fails</h4>
-      <ul>
-        <li>Double-check the username and password.</li>
-        <li>The server may require key-based auth only. Check <code>/etc/ssh/sshd_config</code> for <code>PasswordAuthentication no</code>.</li>
-      </ul>
+      <h4>"Unsupported key type"</h4>
+      <p>meshTerm 2.0 accepts Ed25519 and ECDSA (P-256, P-384, P-521). RSA keys aren't supported. Generate a new Ed25519 key in the app, or convert: <code>ssh-keygen -t ed25519</code>.</p>
 
-      <h3>Tailscale issues</h3>
+      <h3>Roam</h3>
+
+      <h4>Install fails at "Verifying"</h4>
+      <p>Very rare. Means the downloaded binary didn't match the signed checksum. Retry once; if it persists, your network is corrupting downloads (an aggressive proxy?) — try a different network, or fall back to plain SSH for that host.</p>
+
+      <h4>Install fails at "Installing service" on Linux</h4>
+      <p>The most common cause is systemd-user not being able to talk to its session bus, usually because the user isn't lingering. The sheet surfaces the exact remediation: run <code>sudo loginctl enable-linger &lt;username&gt;</code> on the host and try the install again. If linger can't be enabled, the install drops to a <code>nohup</code>-supervised fallback and tells you so.</p>
+
+      <h4>"PATH configured" smoke check fails</h4>
+      <p>Means meshTerm's PATH addition didn't land in your shell's rc file (some custom shells aren't covered: bash, zsh, fish, and POSIX <code>~/.profile</code> are). Add <code>export PATH="$HOME/.local/bin:$PATH"</code> to your shell config manually and re-run the smoke checks.</p>
+
+      <h4>Daemon update fails with ETXTBSY</h4>
+      <p>Shouldn't happen — the self-update path uses atomic rename. If you see it, use <strong>Reinstall</strong> from the host detail screen instead. Reinstall stops the daemon first, which ends any active sessions; save your work before you tap it.</p>
+
+      <h4>"Daemon firewall port" instructions</h4>
+      <p>The install sheet's success state shows a distro-specific one-liner to open the daemon's UDP port (default 51820). If you skip it, the daemon will work for SSH-tunnelled attaches but direct attaches over the network won't reach it.</p>
+
+      <h4>Roam silently fell back to plain SSH</h4>
+      <p>If the daemon is unreachable at connect time, meshTerm falls back to a plain SSH session and shows an orange banner above the terminal so the drop isn't silent. Tap the banner for the underlying error. Common causes: the daemon isn't running on the host (run <code>mtctl status</code> or check via SSH), or the firewall port isn't open.</p>
+
+      <h3>Tailscale</h3>
 
       <h4>"Enter your Tailscale API token in Settings first."</h4>
-      <p>You opened the Tailnet browser without an API token configured.</p>
-      <ul>
-        <li>Go to <strong>Settings → Tailscale → API Token</strong> and paste in a valid token.</li>
-        <li>See <a href="#getting-a-tailscale-api-token">Getting a Tailscale API Token</a> for how to generate one.</li>
-      </ul>
+      <p>You opened the Tailnet browser without an API token configured. Go to Settings → Tailscale → API Token and paste one in. See the <a href="meshterm-tailscale-integration.html">Tailscale Setup Guide</a>.</p>
 
       <h4>"Invalid or expired token."</h4>
-      <p>Your API token has expired or is invalid.</p>
+      <p>Tailscale API tokens expire. Generate a new one at <a href="https://login.tailscale.com/admin/settings/keys">login.tailscale.com</a> and paste it into Settings → Tailscale.</p>
+
+      <h4>Tailnet devices missing from the browser</h4>
       <ul>
-        <li>Go to <a href="https://login.tailscale.com/admin/settings/keys">tailscale.com → Settings → Personal Settings → Keys</a> and generate a new token.</li>
-        <li>Paste the new token into <strong>Settings → Tailscale → API Token</strong>.</li>
+        <li>Only authorised devices appear. Check your Tailnet's device-authorisation settings.</li>
+        <li>Confirm the API token was generated for the correct Tailnet.</li>
+        <li>Pull to refresh.</li>
       </ul>
 
-      <h4>Tailnet devices are missing from the browser</h4>
-      <ul>
-        <li>Only <strong>authorised</strong> devices appear in the browser. Check your Tailnet's device authorisation settings.</li>
-        <li>Confirm the API token was generated for the correct Tailnet account.</li>
-        <li>Try pulling to refresh the device list.</li>
-      </ul>
-
-      <h4>Tailscale SSH connection fails</h4>
-      <ul>
-        <li>Confirm the Tailscale app is installed, open, and connected to your Tailnet.</li>
-        <li>Confirm the target device is online in your Tailnet (visible in the Tailscale admin console).</li>
-        <li>Confirm Tailscale SSH is enabled in your Tailnet ACLs for the target device. See <a href="https://tailscale.com/kb/1193/tailscale-ssh">Tailscale SSH docs</a>.</li>
-        <li>Both your iPhone and the server must be on the <strong>same Tailnet</strong>.</li>
-      </ul>
-
-      <h3 id="host-key-mismatch">Security warnings</h3>
+      <h3>Security warnings</h3>
 
       <h4>Host key mismatch</h4>
-      <pre><code>⚠ Host key mismatch for [hostname]!
-Stored: [expected fingerprint]
-Received: [actual fingerprint]</code></pre>
-      <p>The server's host key has changed since you last connected. This can indicate:</p>
-      <ul>
-        <li><strong>Legitimate change</strong>: the server was rebuilt or its SSH keys were regenerated.</li>
-        <li><strong>Security issue</strong>: a man-in-the-middle attack.</li>
-      </ul>
-      <p>If you are confident the key change is legitimate:</p>
+      <p>The server's host key has changed since you last connected. This can mean a legitimate change (server rebuilt, keys rotated) or something more suspicious. If you're confident the change is legitimate:</p>
       <ol>
-        <li>Go to <strong>Settings → Known Hosts</strong>.</li>
-        <li>Find the entry for the affected host and swipe left to delete it.</li>
-        <li>Reconnect — you will be prompted to trust the new fingerprint.</li>
+        <li>Settings → Security → Known Hosts.</li>
+        <li>Find the entry and swipe to delete.</li>
+        <li>Reconnect; you'll be asked to trust the new fingerprint.</li>
       </ol>
-      <p>If you are not sure, do not connect and investigate the server directly.</p>
+      <p>If you're not sure, do not reconnect. Investigate the server directly first.</p>
 
-      <h3>Key installation issues</h3>
+      <h3>App Lock</h3>
 
-      <h4>"Connect via the terminal first to trust this host."</h4>
-      <p>The host's key is not yet in your known hosts store. The Install on a Host flow uses strict verification and will not prompt you to trust an unknown host.</p>
-      <ul>
-        <li>Tap the host in the main host list to open a normal terminal session.</li>
-        <li>Accept the host key fingerprint when prompted.</li>
-        <li>Return to <strong>Settings → SSH Keys</strong>, tap the key, and use <strong>Install on a Host</strong> again.</li>
-      </ul>
+      <h4>"meshTerm requires a device passcode."</h4>
+      <p>App Lock can't be enabled without a device passcode. Set one in iOS Settings → Face ID &amp; Passcode, then return to meshTerm.</p>
 
-      <h4>Installation fails with an authentication error</h4>
-      <ul>
-        <li>The credentials stored for the selected host may be incorrect or the account may not have permission to write to <code>~/.ssh/authorized_keys</code>.</li>
-        <li>Try connecting to the host via the terminal to confirm the credentials work, then retry the installation.</li>
-      </ul>
+      <h3>SFTP</h3>
 
-      <h4>Key appears to install but authentication still fails</h4>
-      <ul>
-        <li>Confirm the <code>~/.ssh</code> directory has permissions <code>700</code> and <code>~/.ssh/authorized_keys</code> has permissions <code>600</code> on the server.</li>
-        <li>Check that <code>PubkeyAuthentication yes</code> is set in <code>/etc/ssh/sshd_config</code> on the server.</li>
-        <li>If the file had incorrect permissions before installation, correct them and reconnect.</li>
-      </ul>
+      <h4>"SFTP subsystem not available"</h4>
+      <p>The server doesn't have the SFTP subsystem enabled. In OpenSSH, ensure <code>/etc/ssh/sshd_config</code> contains <code>Subsystem sftp /usr/lib/openssh/sftp-server</code> (the exact path varies by distro) and restart <code>sshd</code>.</p>
 
-      <h3>SSH key import errors</h3>
-
-      <h4>"The key format is not recognised."</h4>
-      <ul>
-        <li>Ensure you are pasting the <strong>entire</strong> private key file, including the <code>-----BEGIN OPENSSH PRIVATE KEY-----</code> and <code>-----END OPENSSH PRIVATE KEY-----</code> header and footer lines.</li>
-        <li>The key must be in OpenSSH format, not PEM/PKCS8. To convert: <code>ssh-keygen -t ed25519 -m OpenSSH</code>.</li>
-      </ul>
-
-      <h4>"Encrypted (passphrase-protected) keys are not supported."</h4>
-      <p>meshTerm does not support passphrase-protected keys. To remove the passphrase from an existing key:</p>
-      <pre><code>ssh-keygen -p -N "" -f ~/.ssh/id_ed25519</code></pre>
-
-      <h4>"Unsupported key type. Only Ed25519 keys are supported."</h4>
-      <p>meshTerm supports Ed25519 keys only. To generate a compatible key:</p>
-      <pre><code>ssh-keygen -t ed25519 -C "your label"</code></pre>
-
-      <h3>App Lock issues</h3>
-
-      <h4>"meshTerm requires a device passcode to protect your SSH credentials."</h4>
-      <p>App Lock requires a device passcode to be set before it can be enabled.</p>
-      <ul>
-        <li>Go to <strong>iOS Settings → Face ID &amp; Passcode</strong> and set up a passcode.</li>
-        <li>Return to meshTerm and enable App Lock in Settings.</li>
-      </ul>
-
-      <h3>Snippet Vault</h3>
-
-      <h4>Snippets are not sent to the terminal</h4>
-      <ul>
-        <li>Ensure you have an active terminal session open before opening the Snippet Vault.</li>
-        <li>If the session was disconnected, reconnect and try again.</li>
-      </ul>
-
-      <h3>SFTP File Browser</h3>
-
-      <h4>"SFTP subsystem not available" or the browser fails to open</h4>
-      <ul>
-        <li>The server does not have the SFTP subsystem enabled. In OpenSSH, ensure <code>/etc/ssh/sshd_config</code> contains <code>Subsystem sftp /usr/lib/openssh/sftp-server</code> (the exact path varies by distro) and restart <code>sshd</code>.</li>
-        <li>The user's login shell may be restricted (e.g. <code>/usr/sbin/nologin</code>, rbash). SFTP needs a shell the SSH server can invoke.</li>
-      </ul>
-
-      <h4>Permission denied when renaming, deleting, or creating folders</h4>
-      <ul>
-        <li>Your account needs write permission on the target directory. Check with <code>ls -la</code> on the server.</li>
-        <li>Some SFTP servers deny <code>rename</code> across filesystems — keep the rename target in the same directory.</li>
-      </ul>
-
-      <h4>Uploads or downloads stall mid-transfer</h4>
-      <ul>
-        <li>If the SSH session itself drops, the transfer is cancelled. Check your connection and retry — <a href="#auto-reconnect">automatic reconnection</a> will restore the session and you can start the transfer again.</li>
-        <li>Very large transfers (multi-GB) are supported but depend on the stability of both endpoints and any firewall/NAT idle timeouts in between.</li>
-      </ul>
-
-      <h3>Terminal Macro Bar</h3>
-
-      <h4>Tapping a macro does nothing</h4>
-      <ul>
-        <li>You need an active terminal session — the macro bar sends text to the focused tab.</li>
-        <li>Confirm the macro's command text is not empty in <strong>Settings → Keyboard → Macros</strong>.</li>
-      </ul>
+      <h4>Permission denied on rename / delete / mkdir</h4>
+      <p>Your account needs write permission on the target directory. Some SFTP servers reject cross-filesystem renames — keep the target in the same directory.</p>
 
       <h3>Purchases</h3>
 
       <h4>"Purchase could not be verified."</h4>
-      <p>There was a problem verifying your purchase with the App Store.</p>
+      <p>There was a problem verifying with the App Store.</p>
       <ul>
-        <li>Ensure your device has a working internet connection.</li>
+        <li>Check your internet connection.</li>
         <li>Try <strong>Restore Purchases</strong> in Settings.</li>
         <li>If the issue persists, contact Apple Support via the App Store.</li>
       </ul>
 
       <hr style="margin-top: 3rem; border: none; border-top: 1px solid var(--border);">
-      <p style="font-style: italic; color: var(--text-sec); font-size: 14px; margin-top: 20px;">meshTerm is developed by James Betchley. For support or feedback, please open an issue on <a href="https://github.com/JBetchGH/meshTerm">GitHub</a>.</p>
+      <p style="font-style: italic; color: var(--text-sec); font-size: 14px; margin-top: 20px;">
+        meshTerm is developed by James Betchley. For support, contact
+        <a href="mailto:meshterm@gmail.com">meshterm@gmail.com</a>.
+      </p>
     </section>
+
   </main>
 
 </div><!-- /.page-body -->
 
-<!-- Site footer -->
 <footer>
   <p>meshTerm is developed by James Betchley.</p>
   <p style="margin-top: 8px;">
@@ -1156,7 +995,7 @@ Received: [actual fingerprint]</code></pre>
 </footer>
 
 <script>
-  // Scroll spy: highlight active sidebar link
+  // Scroll-spy: highlight the active sidebar link as the user scrolls.
   const sidebarLinks = document.querySelectorAll('.sidebar a');
   window.addEventListener('scroll', () => {
     let current = '';

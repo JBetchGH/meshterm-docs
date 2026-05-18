@@ -255,7 +255,7 @@
 <header>
   <div class="app-name">meshTerm · Cliente SSH para iOS</div>
   <h1>Política de Privacidad</h1>
-  <div class="meta">James Betchley &nbsp;·&nbsp; En vigor desde marzo de 2026 &nbsp;·&nbsp; Versión 1.0</div>
+  <div class="meta">James Betchley &nbsp;·&nbsp; En vigor desde mayo de 2026 &nbsp;·&nbsp; Versión 2.0</div>
 </header>
 
 <div class="nav-links">
@@ -283,6 +283,7 @@
       <li><a href="#s1">Información que no recopilamos</a></li>
       <li><a href="#s2">Información que sí recopilamos</a></li>
       <li><a href="#s3">Cómo se almacena la información en su dispositivo</a></li>
+      <li><a href="#s3b">Datos en sus hosts remotos (Roam)</a></li>
       <li><a href="#s4">Tailscale</a></li>
       <li><a href="#s5">Servicios de terceros</a></li>
       <li><a href="#s6">App Store y servicios de Apple</a></li>
@@ -307,10 +308,12 @@
     su dispositivo y nunca se transmite al Desarrollador ni a terceros:</p>
     <ul>
       <li>El contenido de las sesiones de terminal: todo lo que usted escribe y todo lo que aparece en la terminal</li>
+      <li>El scrollback de las sesiones Roam y cualquier dato que el daemon Roam almacene en su host remoto (véase la Sección 3b)</li>
       <li>Claves privadas SSH y contraseñas: almacenadas exclusivamente en el Llavero de iOS de su dispositivo</li>
       <li>Los datos de los hosts SSH y los registros de conexión</li>
       <li>El historial de comandos</li>
-      <li>El contenido de su Snippet Vault</li>
+      <li>El contenido de su Snippet Vault (incluidos los snippets secretos respaldados por el Llavero de iOS)</li>
+      <li>El contenido de la barra de macros (incluidas las macros secretas respaldadas por el Llavero de iOS)</li>
       <li>Las credenciales de autenticación de Tailscale</li>
       <li>El contenido de cualquier archivo al que se acceda a través de la Aplicación</li>
     </ul>
@@ -381,6 +384,39 @@
     <p>Las huellas digitales de las claves de host SSH se almacenan únicamente de forma local en
     su dispositivo y no se sincronizan con iCloud. Es una decisión deliberada: la confianza en
     las claves de host debe ser específica de cada dispositivo por razones de seguridad.</p>
+  </section>
+
+  <section id="s3b">
+    <h2><span class="num">3b</span> Datos en sus hosts remotos (Roam)</h2>
+    <p>Cuando habilita Roam para un host, la Aplicación instala en ese host un programa auxiliar
+    de código abierto llamado <strong>meshtermd</strong>. Roam es opcional por host y está
+    desactivado de forma predeterminada. Una vez activado, los siguientes datos se almacenan
+    en ese host remoto — un servidor del que usted es propietario o al que tiene acceso
+    legítimo — y no en infraestructura del Desarrollador:</p>
+    <ul>
+      <li>La propia sesión de terminal (el proceso de shell en ejecución) y su buffer de
+      scrollback. El scrollback se mantiene en memoria por el daemon, con una instantánea
+      opcional en disco si activa "Mantener entre reinicios del daemon" en el editor del host.</li>
+      <li>Un pequeño directorio de estado que contiene el certificado y la clave del daemon
+      (utilizados para verificar las reconexiones desde sus dispositivos), metadatos por sesión
+      (nombres, tamaños, marcas de tiempo de inactividad) y, opcionalmente, el scrollback
+      persistido anterior.</li>
+      <li>Entradas de registro que el daemon escribe a través de su supervisor de servicio
+      (systemd-user, launchd o un mecanismo de respaldo basado en <code>nohup</code>). El
+      contenido del registro son metadatos operativos y no incluye la salida de terminal
+      de sus sesiones.</li>
+    </ul>
+    <p>Estos datos se almacenan dentro de su directorio personal en el host (normalmente
+    <code>~/.local/share/meshtermd/</code>). El Desarrollador no tiene acceso a ellos. Se rigen por
+    sus propias prácticas de seguridad en ese host — permisos de archivos, control de acceso de
+    la cuenta, cifrado del disco y cualquier software de copia de seguridad o sincronización
+    que tenga instalado.</p>
+    <p>El tráfico de red entre la Aplicación y el daemon fluye directamente entre su
+    dispositivo y su servidor. No pasa por ningún servidor operado por el Desarrollador.</p>
+    <p>Puede detener el daemon y eliminar estos datos en cualquier momento ejecutando el
+    subcomando <code>uninstall</code> del daemon en el host, o utilizando Reinstalar (que elimina
+    el binario y la unidad de supervisor) desde la pantalla de detalle del host en la
+    Aplicación.</p>
   </section>
 
   <section id="s4">
@@ -499,7 +535,7 @@
 </main>
 
 <footer>
-  <p>Política de Privacidad de meshTerm &nbsp;·&nbsp; Versión 1.0 &nbsp;·&nbsp; En vigor desde marzo de 2026</p>
+  <p>Política de Privacidad de meshTerm &nbsp;·&nbsp; Versión 2.0 &nbsp;·&nbsp; En vigor desde mayo de 2026</p>
   <p style="margin-top: 6px;">
     <a href="mailto:meshterm@gmail.com">meshterm@gmail.com</a>
   </p>

@@ -3,261 +3,215 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>meshTerm — iOS SSH Client</title>
+<title>meshTerm — iOS SSH client with persistent sessions</title>
+<meta name="description" content="meshTerm 2.0 — SSH for iPhone and iPad. Roam keeps your terminal sessions alive on your own server so you can pick them up days later from any device.">
 <link rel="alternate" hreflang="en" href="index.html">
 <link rel="alternate" hreflang="es" href="index.es.html">
+<link rel="stylesheet" href="assets/site.css">
 <style>
-  :root {
-    --blue: #0A84FF;
-    --blue-dark: #0060DF;
-    --green: #30D158;
-    --orange: #FF9F0A;
-    --text: #1C1C1E;
-    --text-sec: #636366;
-    --text-tert: #AEAEB2;
-    --surface: #F2F2F7;
-    --surface2: #E5E5EA;
-    --border: #D1D1D6;
-    --pro-accent: #8b5cf6;
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text",
-                 "Helvetica Neue", Arial, sans-serif;
-    font-size: 16px;
-    line-height: 1.7;
-    color: var(--text);
-    background: #fff;
-  }
-
-  header {
-    background: linear-gradient(135deg, #0A84FF 0%, #2563EB 100%);
-    color: white;
-    padding: 60px 24px 50px;
-    text-align: center;
-  }
-
-  header .app-name {
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: .15em;
-    text-transform: uppercase;
-    opacity: .9;
-    margin-bottom: 12px;
-  }
-
-  header h1 {
-    font-size: 38px;
-    font-weight: 800;
-    margin-bottom: 16px;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
-  }
-
-  header .sub {
-    font-size: 18px;
-    opacity: .9;
-    max-width: 600px;
-    margin: 0 auto;
-    line-height: 1.5;
-  }
-
-  .nav-links {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    text-align: center;
-    padding: 14px 24px;
-    font-size: 14px;
-    font-weight: 500;
-  }
-
-  .nav-links a {
-    color: var(--blue);
-    text-decoration: none;
-    margin: 0 16px;
-    display: inline-block;
-  }
-
-  .nav-links a:hover { text-decoration: underline; }
-
-  .nav-links .lang {
-    color: var(--text-sec);
-    font-weight: 600;
-    border-left: 1px solid var(--border);
-    padding-left: 16px;
-    margin-left: 4px;
-  }
-
-  main {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 60px 24px 80px;
-  }
-
+  /* Landing-page specifics not in the shared stylesheet. */
+  main.landing { max-width: 1080px; margin: 0 auto; padding: 60px 24px 80px; }
   .intro {
     text-align: center;
-    max-width: 700px;
-    margin: 0 auto 48px;
+    max-width: 720px;
+    margin: 0 auto 56px;
     font-size: 17px;
     color: var(--text-sec);
   }
-
-  .grid {
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    margin-bottom: 64px;
+  }
+  .feature-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px;
+  }
+  .feature-card h3 {
+    font-size: 17px;
+    font-weight: 700;
+    margin: 0 0 8px;
+    color: var(--text);
+  }
+  .feature-card p {
+    font-size: 14px;
+    color: var(--text-sec);
+    margin: 0;
+    line-height: 1.55;
+  }
+  .doc-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 24px;
+    gap: 20px;
   }
-
   .doc-card {
-    background: #ffffff;
+    background: white;
     border: 1px solid var(--border);
     border-radius: 16px;
     padding: 24px;
     text-decoration: none;
     color: inherit;
     transition: all 0.2s ease;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
     display: flex;
     flex-direction: column;
   }
-
   .doc-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    transform: translateY(-3px);
     border-color: var(--blue);
+    box-shadow: 0 10px 22px -8px rgba(10,132,255,0.18);
   }
-
   .doc-card .icon {
-    width: 48px;
-    height: 48px;
+    width: 44px;
+    height: 44px;
     background: var(--surface);
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
-    margin-bottom: 16px;
+    font-size: 22px;
+    margin-bottom: 14px;
     color: var(--blue);
   }
-
-  .doc-card.tailscale .icon {
-    background: #EFF6FF;
-    color: #2563EB;
-  }
-
-  .doc-card.legal .icon {
-    background: #F3F4F6;
-    color: #4B5563;
-  }
-
   .doc-card h2 {
-    font-size: 20px;
-    font-weight: 700;
-    margin-bottom: 8px;
-    color: var(--text);
+    border: none;
+    padding: 0;
+    font-size: 19px;
+    margin-bottom: 6px;
   }
-
-  .doc-card p {
-    font-size: 15px;
-    color: var(--text-sec);
-    line-height: 1.6;
-    margin-bottom: 0;
-    flex-grow: 1;
-  }
-
+  .doc-card p { font-size: 14.5px; color: var(--text-sec); flex-grow: 1; }
   .doc-card .action {
-    margin-top: 20px;
-    font-size: 14px;
+    margin-top: 18px;
+    font-size: 13px;
     font-weight: 600;
     color: var(--blue);
-    display: flex;
-    align-items: center;
-    gap: 4px;
   }
-
-  .doc-card .action::after {
-    content: "→";
-    transition: transform 0.2s;
-  }
-
-  .doc-card:hover .action::after {
-    transform: translateX(4px);
-  }
-
-  footer {
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    text-align: center;
-    padding: 32px 24px;
-    font-size: 14px;
-    color: var(--text-sec);
-  }
-
-  footer a { color: var(--blue); text-decoration: none; font-weight: 500;}
-  footer a:hover { text-decoration: underline; }
-
-  @media (max-width: 600px) {
-    header { padding: 40px 16px 32px; }
-    header h1 { font-size: 28px; }
-    header .sub { font-size: 16px; }
-    main { padding: 40px 16px 60px; }
-    .grid { grid-template-columns: 1fr; }
+  .doc-card .action::after { content: " →"; }
+  .section-heading {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    color: var(--text-tert);
+    margin: 0 0 18px;
+    padding: 0;
+    border: none;
   }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="app-name">meshTerm</div>
-  <h1>Documentation & Support</h1>
-  <div class="sub">The professional SSH client for iOS and iPadOS. Multi-session tabs, SFTP file browser, terminal macros, and native Tailscale integration.</div>
+<header class="site-header">
+  <div class="app-name">meshTerm 2.0</div>
+  <h1>SSH that stays where you left it</h1>
+  <div class="sub">SSH sessions for iPhone and iPad. With Roam, the shell runs on your own server — drop the connection, switch devices, pick up exactly where you stopped.</div>
 </header>
 
-<div class="nav-links">
-  <a href="index.html">Home</a>
+<nav class="nav-links">
+  <a href="index.html" class="current">Home</a>
   <a href="meshterm.html">User Guide</a>
   <a href="meshterm-tailscale-integration.html">Tailscale Setup</a>
   <a href="privacy.html">Privacy</a>
   <a href="eula.html">EULA</a>
   <a href="index.es.html" class="lang" hreflang="es">Español</a>
-</div>
+</nav>
 
-<main>
-  <div class="intro">
-    Welcome to the meshTerm documentation hub. Whether you are setting up your first server connection, configuring passwordless authentication, or reviewing our privacy practices, you will find everything you need below.
+<main class="landing">
+
+  <p class="intro">
+    meshTerm is a terminal client built for engineers who care about their sessions.
+    Pair a host once, start a long-running task on the go, walk into the office and continue
+    the same shell from a different device. Your scrollback, your environment, your half-finished
+    command — exactly where you left it.
+  </p>
+
+  <h2 class="section-heading">What's in 2.0</h2>
+
+  <div class="feature-grid">
+    <div class="feature-card">
+      <h3>Roam — persistent sessions</h3>
+      <p>A small open-source helper, meshtermd, runs on your own server and holds your shell open across reconnects, app backgrounding and device switches.</p>
+    </div>
+    <div class="feature-card">
+      <h3>One-tap install</h3>
+      <p>From Add Host, after you authenticate, tap Set Up Roam. meshTerm fetches signed binaries, verifies them on-device, and configures the right service supervisor for your platform.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Named, multi-attach sessions</h3>
+      <p>Run several named sessions per host — exclusive control, read-only watching, or passive tail. Switch between them in one tap.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Predictive echo</h3>
+      <p>Typing feels native even on a slow link. A prompt-aware overlay mirrors keystrokes locally and reconciles them when the daemon's echo arrives.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Shell history at your thumb</h3>
+      <p>Browse the remote host's shell history in a sheet, or accept matching suggestions from the prediction chip strip above the keyboard.</p>
+    </div>
+    <div class="feature-card">
+      <h3>TUI return-to-prompt</h3>
+      <p>A small floating pill detects when you're scrolling away from a Claude Code or Codex CLI prompt and offers a one-tap jump back.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Three keyboard modes</h3>
+      <p>The standard iOS keyboard with an accessory row, a full secondary keyboard with two function rows, or a minimised bar that hands the screen back to your terminal.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Hardware buttons</h3>
+      <p>Assign Volume Up and Volume Down to terminal actions — arrows, Backspace, Ctrl-C, keyboard toggle — with separate short-press and long-press slots.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Wedge recovery</h3>
+      <p>If a Claude Code TUI gets stuck after a resize, a top banner offers to save context and restart the session with one tap.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Tailscale-first SSH</h3>
+      <p>Browse your Tailnet, pick a peer, add it as a host. Tailscale SSH nodes connect without passwords or keys.</p>
+    </div>
+    <div class="feature-card">
+      <h3>SFTP file browser</h3>
+      <p>Browse, upload, download, rename and delete files on any server. Integrates with the iOS Files app for end-to-end drag-and-drop.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Privacy by design</h3>
+      <p>Terminal content never leaves your devices. SSH credentials live in the iOS Keychain. No analytics, no telemetry, no third-party SDKs.</p>
+    </div>
   </div>
 
-  <div class="grid">
+  <h2 class="section-heading">Documentation</h2>
+
+  <div class="doc-grid">
     <a href="meshterm.html" class="doc-card">
       <div class="icon">📖</div>
       <h2>User Guide</h2>
-      <p>The complete manual for meshTerm 1.1. Multi-session tabs, SFTP file browser, terminal macro bar, automatic tmux attach, SSH key management, and the Snippet Vault.</p>
-      <div class="action">Read the Guide</div>
+      <p>Setting up your first host, pairing the Roam daemon, keyboard modes, the macro bar, snippets, SFTP, multi-session attach modes, and troubleshooting.</p>
+      <span class="action">Read the guide</span>
     </a>
 
-    <a href="meshterm-tailscale-integration.html" class="doc-card tailscale">
+    <a href="meshterm-tailscale-integration.html" class="doc-card">
       <div class="icon">⚡</div>
       <h2>Tailscale Setup</h2>
-      <p>Everything you need to connect meshTerm to your Tailnet and enable passwordless, keyless SSH access using your Tailscale identity.</p>
-      <div class="action">Configure Tailscale</div>
+      <p>Connect meshTerm to your Tailnet, generate a read-only API token, and enable Tailscale SSH for passwordless access on every device.</p>
+      <span class="action">Configure Tailscale</span>
     </a>
 
-    <a href="privacy.html" class="doc-card legal">
+    <a href="privacy.html" class="doc-card">
       <div class="icon">🛡️</div>
       <h2>Privacy Policy</h2>
-      <p>meshTerm does not collect your terminal content, SSH credentials, or personal data. We do not sell your data, and we do not display advertisements.</p>
-      <div class="action">Review Privacy Policy</div>
+      <p>What we don't collect, what stays on your device, and where Roam scrollback lives on your remote host.</p>
+      <span class="action">Review privacy</span>
     </a>
 
-    <a href="eula.html" class="doc-card legal">
+    <a href="eula.html" class="doc-card">
       <div class="icon">⚖️</div>
       <h2>End User Licence Agreement</h2>
-      <p>The legal agreement governing your use of the meshTerm mobile software application for Apple iOS and iPadOS devices.</p>
-      <div class="action">Read EULA</div>
+      <p>The legal agreement governing your use of meshTerm on Apple iOS and iPadOS devices.</p>
+      <span class="action">Read EULA</span>
     </a>
   </div>
+
 </main>
 
 <footer>

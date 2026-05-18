@@ -243,7 +243,7 @@
 <header>
   <div class="app-name">meshTerm · iOS SSH Client</div>
   <h1>Privacy Policy</h1>
-  <div class="meta">James Betchley &nbsp;·&nbsp; Effective March 2026 &nbsp;·&nbsp; Version 1.0</div>
+  <div class="meta">James Betchley &nbsp;·&nbsp; Effective May 2026 &nbsp;·&nbsp; Version 2.0</div>
 </header>
 
 <div class="nav-links">
@@ -267,6 +267,7 @@
       <li><a href="#s1">Information We Do Not Collect</a></li>
       <li><a href="#s2">Information We Do Collect</a></li>
       <li><a href="#s3">How Information Is Stored on Your Device</a></li>
+      <li><a href="#s3b">Data on Your Remote Hosts (Roam)</a></li>
       <li><a href="#s4">Tailscale</a></li>
       <li><a href="#s5">Third-Party Services</a></li>
       <li><a href="#s6">Apple App Store and Apple Services</a></li>
@@ -291,10 +292,12 @@
     device and is never transmitted to the Developer or any third party:</p>
     <ul>
       <li>Terminal session content — everything you type and everything displayed in the terminal</li>
+      <li>Roam session scrollback and any data the Roam daemon stores on your remote host (see Section 3b)</li>
       <li>SSH private keys and passwords — stored exclusively in the iOS Keychain on your device</li>
       <li>SSH host details and connection logs</li>
       <li>Command history</li>
-      <li>Snippet vault contents</li>
+      <li>Snippet vault contents (including secret snippets backed by the iOS Keychain)</li>
+      <li>Macro bar contents (including secret macros backed by the iOS Keychain)</li>
       <li>Tailscale authentication credentials</li>
       <li>Contents of any file accessed through the Application</li>
     </ul>
@@ -364,6 +367,35 @@
     <p>SSH host key fingerprints are stored locally on your device only and are not
     synchronised to iCloud. This is intentional — known host key trust is device-specific
     for security reasons.</p>
+  </section>
+
+  <section id="s3b">
+    <h2><span class="num">3b</span> Data on Your Remote Hosts (Roam)</h2>
+    <p>When you enable Roam on a host, the Application installs an open source helper
+    program called <strong>meshtermd</strong> onto that host. Roam is opt-in per host and is
+    off by default. Once enabled, the following data is stored on that remote host —
+    a server you own or have legitimate access to — and not on the Developer's
+    infrastructure:</p>
+    <ul>
+      <li>The terminal session itself (the running shell process) and its scrollback buffer.
+      Scrollback is held in memory by the daemon, with an optional on-disk snapshot when you
+      enable "Persist across daemon restarts" in the host editor.</li>
+      <li>A small state directory containing the daemon's certificate and key (used to verify
+      reconnects from your devices), per-session metadata (names, sizes, idle timestamps),
+      and the optional persisted scrollback above.</li>
+      <li>Log entries the daemon writes through its service supervisor (systemd-user, launchd,
+      or a <code>nohup</code>-supervised fallback). Log content is operational metadata only and does
+      not include the terminal output of your sessions.</li>
+    </ul>
+    <p>This data is stored under your home directory on the host (typically
+    <code>~/.local/share/meshtermd/</code>). The Developer has no access to it. It is governed by
+    your own security practices on that host — file permissions, account access, disk
+    encryption, and any backup or syncing software you have installed.</p>
+    <p>Network traffic between the Application and the daemon flows directly between your
+    device and your server. It does not pass through any Developer-operated server.</p>
+    <p>You can stop the daemon and remove this data at any time by running the daemon's
+    <code>uninstall</code> command on the host, or by triggering Reinstall (which wipes the binary
+    and supervisor unit) from the host detail screen in the Application.</p>
   </section>
 
   <section id="s4">
@@ -479,7 +511,7 @@
 </main>
 
 <footer>
-  <p>meshTerm Privacy Policy &nbsp;·&nbsp; Version 1.0 &nbsp;·&nbsp; Effective March 2026</p>
+  <p>meshTerm Privacy Policy &nbsp;·&nbsp; Version 2.0 &nbsp;·&nbsp; Effective May 2026</p>
   <p style="margin-top: 6px;">
     <a href="mailto:meshterm@gmail.com">meshterm@gmail.com</a>
   </p>
