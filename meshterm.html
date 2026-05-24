@@ -43,16 +43,15 @@
       <li><a href="#keyboard">10. Keyboard</a></li>
       <li><a href="#predictions">11. Predictions &amp; history</a></li>
       <li><a href="#tui-pill">12. TUI return-to-prompt pill</a></li>
-      <li><a href="#wedge">13. Wedge recovery</a></li>
-      <li><a href="#snippets">14. Snippet Vault</a></li>
-      <li><a href="#macros">15. Macro bar</a></li>
-      <li><a href="#sftp">16. SFTP file browser</a></li>
-      <li><a href="#search">17. Scrollback search</a></li>
-      <li><a href="#themes">18. Themes</a></li>
-      <li><a href="#security">19. Security &amp; App Lock</a></li>
-      <li><a href="#settings">20. Settings reference</a></li>
-      <li><a href="#pro">21. meshTerm Pro</a></li>
-      <li><a href="#troubleshooting">22. Troubleshooting</a></li>
+      <li><a href="#snippets">13. Snippet Vault</a></li>
+      <li><a href="#macros">14. Macro bar</a></li>
+      <li><a href="#sftp">15. SFTP file browser</a></li>
+      <li><a href="#search">16. Scrollback search</a></li>
+      <li><a href="#themes">17. Themes</a></li>
+      <li><a href="#security">18. Security &amp; App Lock</a></li>
+      <li><a href="#settings">19. Settings reference</a></li>
+      <li><a href="#pro">20. meshTerm Pro</a></li>
+      <li><a href="#troubleshooting">21. Troubleshooting</a></li>
     </ul>
   </aside>
 
@@ -75,12 +74,12 @@
       </ul>
 
       <figure class="screenshot-placeholder">
-        <img src="images/host-list-overview.png" alt="meshTerm host list"
+        <img src="images/v2-host-list.png.png" alt="meshTerm host list"
              onload="this.closest('figure').classList.add('has-image')"
              onerror="this.style.display='none'">
         <div class="placeholder-box" aria-hidden="true">
           <span class="ph-camera">📷</span>
-          <span class="ph-filename">images/host-list-overview.png</span>
+          <span class="ph-filename">images/v2-host-list.png.png</span>
           <span class="ph-status">placeholder · upload to replace</span>
         </div>
         <figcaption class="capture-spec">
@@ -90,7 +89,7 @@
           <code>home-server</code> (macOS, showing the apple.logo icon), and <code>mac-mini</code> (macOS).
           Frame: full status bar through to the bottom tab bar. The distro/OS badges should be clearly visible on each host card.
           Setup: add hosts with the labels above and don't connect — we just want the list.
-          Drop into <code>images/host-list-overview.png</code>.
+          Drop into <code>images/v2-host-list.png.png</code>.
         </figcaption>
       </figure>
     </section>
@@ -105,7 +104,6 @@
         <li><strong>Predictive echo</strong> — keystrokes mirror locally as you type, then reconcile with the daemon's actual echo. Adapts to the network latency.</li>
         <li><strong>History browse</strong> — pull up a sheet of the host's shell history, search and send a command in one tap.</li>
         <li><strong>TUI return-to-prompt pill</strong> — a floating pill that recognises Claude Code or Codex CLI and offers a one-tap jump back to the live prompt.</li>
-        <li><strong>Wedge recovery banner</strong> — detects a stuck Claude Code render after a resize and offers Save &amp; Restart.</li>
         <li><strong>More key types</strong> — Ed25519, ECDSA P-256, P-384, P-521.</li>
         <li><strong>Hardware buttons</strong> — bind Volume Up/Down (short and long press) to terminal actions.</li>
         <li><strong>⌘F scrollback search</strong>, host import/export from <code>~/.ssh/config</code>, host tags and filter chips, eight curated themes.</li>
@@ -135,12 +133,12 @@
       </ol>
 
       <figure class="screenshot-placeholder">
-        <img src="images/add-host.png" alt="Add Host"
+        <img src="images/V2-add-host.png" alt="Add Host"
              onload="this.closest('figure').classList.add('has-image')"
              onerror="this.style.display='none'">
         <div class="placeholder-box" aria-hidden="true">
           <span class="ph-camera">📷</span>
-          <span class="ph-filename">images/add-host.png</span>
+          <span class="ph-filename">images/V2-add-host.png</span>
           <span class="ph-status">placeholder · upload to replace</span>
         </div>
         <figcaption class="capture-spec">
@@ -149,7 +147,7 @@
           Screen: Add Host sheet, fully filled in. Label <code>demo</code>, hostname <code>192.0.2.10</code> (or any RFC-5737 documentation IP),
           port <code>22</code>, username <code>alice</code>. Authentication set to Password.
           Frame: full sheet from top to the Save button.
-          Drop into <code>images/add-host.png</code>.
+          Drop into <code>images/V2-add-host.png</code>.
         </figcaption>
       </figure>
 
@@ -225,12 +223,12 @@
       <p>Supported platforms: Linux on amd64 / arm64 / armv7, macOS on Intel and Apple Silicon, FreeBSD on amd64 / arm64.</p>
 
       <figure class="screenshot-placeholder">
-        <img src="images/roam-overview.png" alt="Roam session bar"
+        <img src="images/v2-roam-session.png" alt="Roam session bar"
              onload="this.closest('figure').classList.add('has-image')"
              onerror="this.style.display='none'">
         <div class="placeholder-box" aria-hidden="true">
           <span class="ph-camera">📷</span>
-          <span class="ph-filename">images/roam-overview.png</span>
+          <span class="ph-filename">images/v2-roam-session.png</span>
           <span class="ph-status">placeholder · upload to replace</span>
         </div>
         <figcaption class="capture-spec">
@@ -239,7 +237,7 @@
           Screen: a Roam session attached to a host called <code>demo</code>. Run a visible command in advance
           (e.g. <code>top</code> or <code>htop</code>) so the screen shows live output. The session bar at the top
           should show the named session label (e.g. <code>dev</code>).
-          Drop into <code>images/roam-overview.png</code>.
+          Drop into <code>images/v2-roam-session.png</code>.
         </figcaption>
       </figure>
 
@@ -264,12 +262,12 @@
       <p>On success, the sheet shows the supervisor that was set up. On Linux hosts, you'll also see a distro-tailored firewall instruction for the UDP port the daemon uses — copy the one line and run it in a shell to open the port for inbound connections.</p>
 
       <figure class="screenshot-placeholder">
-        <img src="images/roam-install-sheet.png" alt="Roam install sheet"
+        <img src="images/v2-install-roam.PNG" alt="Roam install sheet"
              onload="this.closest('figure').classList.add('has-image')"
              onerror="this.style.display='none'">
         <div class="placeholder-box" aria-hidden="true">
           <span class="ph-camera">📷</span>
-          <span class="ph-filename">images/roam-install-sheet.png</span>
+          <span class="ph-filename">images/v2-install-roam.PNG</span>
           <span class="ph-status">placeholder · upload to replace</span>
         </div>
         <figcaption class="capture-spec">
@@ -278,7 +276,7 @@
           Screen: the Set Up Roam sheet mid-flow — ideally just after the verification stage so the
           "Probing", "Downloading" and "Verifying" rows are ticked and "Uploading" is in progress with a percentage.
           Setup: have a fresh Linux host called <code>demo</code> with no daemon installed; tap Connect on it and screenshot the install sheet.
-          Drop into <code>images/roam-install-sheet.png</code>.
+          Drop into <code>images/v2-install-roam.PNG</code>.
         </figcaption>
       </figure>
 
@@ -323,12 +321,12 @@
       <p>Pick how long the daemon should hold a Roam session when no client is attached. Options: <strong>1 hour</strong>, <strong>1 day</strong>, <strong>7 days</strong>, <strong>30 days</strong>, or <strong>Never</strong> (kept until the daemon restarts or you kill it). The default is the daemon's own default (30 days).</p>
 
       <figure class="screenshot-placeholder">
-        <img src="images/roam-sessions-picker.png" alt="Roam sessions picker"
+        <img src="images/v2-roam-sessions.PNG" alt="Roam sessions picker"
              onload="this.closest('figure').classList.add('has-image')"
              onerror="this.style.display='none'">
         <div class="placeholder-box" aria-hidden="true">
           <span class="ph-camera">📷</span>
-          <span class="ph-filename">images/roam-sessions-picker.png</span>
+          <span class="ph-filename">images/v2-roam-sessions.PNG</span>
           <span class="ph-status">placeholder · upload to replace</span>
         </div>
         <figcaption class="capture-spec">
@@ -337,7 +335,7 @@
           Screen: the Roam Sessions picker for a host called <code>demo</code>, showing three sessions named
           <code>dev</code>, <code>logs</code> and <code>tests</code>, plus the "+ New session" row.
           Setup: open three Roam sessions to a host (with those names) before triggering the picker.
-          Drop into <code>images/roam-sessions-picker.png</code>.
+          Drop into <code>images/v2-roam-sessions.PNG</code>.
         </figcaption>
       </figure>
 
@@ -462,12 +460,12 @@
       <p>A slim bar at the bottom edge of the screen. Hands the rest of the screen back to the terminal for reading long output (logs, <code>man</code> pages, build output). Tap the bar to expand back to one of the full modes; tap a single key on the bar to send it.</p>
 
       <figure class="screenshot-placeholder">
-        <img src="images/keyboard-three-modes.png" alt="Three keyboard modes"
+        <img src="images/v2-keyboard-modes.png" alt="Three keyboard modes"
              onload="this.closest('figure').classList.add('has-image')"
              onerror="this.style.display='none'">
         <div class="placeholder-box" aria-hidden="true">
           <span class="ph-camera">📷</span>
-          <span class="ph-filename">images/keyboard-three-modes.png</span>
+          <span class="ph-filename">images/v2-keyboard-modes.png</span>
           <span class="ph-status">placeholder · upload to replace</span>
         </div>
         <figcaption class="capture-spec">
@@ -477,7 +475,7 @@
           Middle: Secondary keyboard with both function rows visible.
           Right: Minimised mode with just the slim bottom bar; the terminal fills most of the screen.
           Setup: connect to a host called <code>demo</code> and switch through the three modes for each shot.
-          Drop into <code>images/keyboard-three-modes.png</code>.
+          Drop into <code>images/v2-keyboard-modes.png</code>.
         </figcaption>
       </figure>
 
@@ -528,12 +526,12 @@
       <p>As you type, a strip of matching commands from the host's shell history appears above the keyboard. Tap a chip to commit the rest of that command without finishing the keystrokes. The chip strip is purely a fast path on top of the history sheet — it doesn't surface snippets, macros, or anything else.</p>
 
       <figure class="screenshot-placeholder">
-        <img src="images/predictions-chip-strip.png" alt="Prediction chip strip"
+        <img src="images/v2-predictions.png" alt="Prediction chip strip"
              onload="this.closest('figure').classList.add('has-image')"
              onerror="this.style.display='none'">
         <div class="placeholder-box" aria-hidden="true">
           <span class="ph-camera">📷</span>
-          <span class="ph-filename">images/predictions-chip-strip.png</span>
+          <span class="ph-filename">images/v2-predictions.png</span>
           <span class="ph-status">placeholder · upload to replace</span>
         </div>
         <figcaption class="capture-spec">
@@ -543,7 +541,7 @@
           <code>git st</code> (just two characters); the chip strip above the keyboard should show
           history matches like <code>git status</code>, <code>git stash</code>, etc.
           Setup: ensure ~/.bash_history on the host has a few git commands in it; type the partial command in the app.
-          Drop into <code>images/predictions-chip-strip.png</code>.
+          Drop into <code>images/v2-predictions.png</code>.
         </figcaption>
       </figure>
 
@@ -580,12 +578,12 @@
       <p>Settings → Terminal has a master toggle that disables the TUI pill across every host. The pill is on by default.</p>
 
       <figure class="screenshot-placeholder">
-        <img src="images/tui-pill-claude.png" alt="TUI pill in Claude Code"
+        <img src="images/v2-keyboard-main.PNG" alt="TUI pill in Claude Code"
              onload="this.closest('figure').classList.add('has-image')"
              onerror="this.style.display='none'">
         <div class="placeholder-box" aria-hidden="true">
           <span class="ph-camera">📷</span>
-          <span class="ph-filename">images/tui-pill-claude.png</span>
+          <span class="ph-filename">images/v2-keyboard-main.PNG</span>
           <span class="ph-status">placeholder · upload to replace</span>
         </div>
         <figcaption class="capture-spec">
@@ -594,51 +592,14 @@
           Screen: Claude Code running in a session to <code>demo</code>. Scroll the terminal up so the live prompt is off-screen;
           the orange Claude pill should be visible as a floating button.
           Setup: run <code>claude</code> on the host, send a couple of prompts to build up scrollback, then scroll up in meshTerm.
-          Drop into <code>images/tui-pill-claude.png</code>.
+          Drop into <code>images/v2-keyboard-main.PNG</code>.
         </figcaption>
       </figure>
-    </section>
-
-    <!-- ============================================ -->
-    <section id="wedge">
-      <h2>13. Wedge recovery <span class="new-badge">2.0</span></h2>
-      <p>Some terminal UIs have a rendering bug where, after a window-size change (rotating the device, toggling the keyboard), the prompt ends up drawn below the visible area and won't redraw without intervention. Claude Code is the most visible example — there's an upstream tracker at <a href="https://github.com/anthropics/claude-code/issues/60069">anthropics/claude-code#60069</a>.</p>
-
-      <p>The Roam daemon watches each session's output for the signature of this kind of wedge. When it detects one, meshTerm shows a banner at the top of the terminal:</p>
-
-      <figure class="screenshot-placeholder">
-        <img src="images/wedge-banner.png" alt="Wedge recovery banner"
-             onload="this.closest('figure').classList.add('has-image')"
-             onerror="this.style.display='none'">
-        <div class="placeholder-box" aria-hidden="true">
-          <span class="ph-camera">📷</span>
-          <span class="ph-filename">images/wedge-banner.png</span>
-          <span class="ph-status">placeholder · upload to replace</span>
-        </div>
-        <figcaption class="capture-spec">
-          <strong>Capture spec:</strong>
-          Device: iPhone 15 Pro, portrait.
-          Screen: a Roam session where the wedge recovery banner is showing across the top of the terminal.
-          The banner reads "Claude may be wedged" with Save &amp; Restart / Dismiss buttons on a row below.
-          Setup: this is hard to reproduce on demand; if needed, take the screenshot once and reuse it.
-          Drop into <code>images/wedge-banner.png</code>.
-        </figcaption>
-      </figure>
-
-      <p>Tap <strong>Save &amp; Restart</strong> and the daemon walks Claude through:</p>
-      <ol>
-        <li>A natural-language instruction to save in-flight context to memory.</li>
-        <li>An orderly <code>/exit</code> of the wedged Claude process.</li>
-        <li>A <code>claude --resume</code> to bring the session back with the saved context.</li>
-      </ol>
-      <p>The banner reflects each phase as it runs ("Saving context…", "Exiting Claude…", "Restarting Claude…"). When the session is back, the banner shows "Restart complete" and dismisses itself.</p>
-
-      <p>If you'd rather handle it yourself, tap <strong>Dismiss</strong> instead. The banner won't reappear for a short cooldown so a transient redraw doesn't immediately re-pop it.</p>
     </section>
 
     <!-- ============================================ -->
     <section id="snippets">
-      <h2>14. Snippet Vault</h2>
+      <h2>13. Snippet Vault</h2>
       <p>The Snippet Vault is a searchable library of terminal commands you can send to the active session in one tap. Open it from the terminal toolbar.</p>
 
       <h3>Default snippets</h3>
@@ -668,7 +629,7 @@
 
     <!-- ============================================ -->
     <section id="macros">
-      <h2>15. Macro bar</h2>
+      <h2>14. Macro bar</h2>
       <p>The macro bar is a scrollable row of one-tap commands above the keyboard, available in every session. Tap a macro to send its command followed by Return.</p>
 
       <h3>Editing macros</h3>
@@ -690,7 +651,7 @@
 
     <!-- ============================================ -->
     <section id="sftp">
-      <h2>16. SFTP file browser</h2>
+      <h2>15. SFTP file browser</h2>
       <p>The SFTP browser moves files on and off your servers without leaving meshTerm. It runs over the same SSH transport as your terminal sessions — no additional credentials, no third-party cloud.</p>
 
       <h3>Opening the browser</h3>
@@ -728,12 +689,12 @@
       </ul>
 
       <figure class="screenshot-placeholder">
-        <img src="images/sftp-browser.png" alt="SFTP browser"
+        <img src="images/v2-sftp-browser.png" alt="SFTP browser"
              onload="this.closest('figure').classList.add('has-image')"
              onerror="this.style.display='none'">
         <div class="placeholder-box" aria-hidden="true">
           <span class="ph-camera">📷</span>
-          <span class="ph-filename">images/sftp-browser.png</span>
+          <span class="ph-filename">images/v2-sftp-browser.png</span>
           <span class="ph-status">placeholder · upload to replace</span>
         </div>
         <figcaption class="capture-spec">
@@ -741,14 +702,14 @@
           Device: iPhone 15 Pro, portrait.
           Screen: SFTP browser on host <code>demo</code>, viewing a directory with a mix of folders and files
           (e.g. ~/Documents or ~/Projects with 5–10 entries). The Upload File button should be visible.
-          Drop into <code>images/sftp-browser.png</code>.
+          Drop into <code>images/v2-sftp-browser.png</code>.
         </figcaption>
       </figure>
     </section>
 
     <!-- ============================================ -->
     <section id="search">
-      <h2>17. Scrollback search <span class="new-badge">2.0</span></h2>
+      <h2>16. Scrollback search <span class="new-badge">2.0</span></h2>
       <p>Press <strong>⌘ F</strong> (or tap the magnifier in the terminal toolbar) to open the search bar at the bottom of the terminal. Type to find matches in the visible scrollback; a running match count shows how many hits.</p>
       <ul>
         <li><strong>Up / Down arrows</strong> — step between matches.</li>
@@ -760,7 +721,7 @@
 
     <!-- ============================================ -->
     <section id="themes">
-      <h2>18. Themes</h2>
+      <h2>17. Themes</h2>
       <p>Settings → Appearance → Theme lets you pick from eight curated themes. Each theme drives the terminal palette, the app accent, and the per-host monogram tints together.</p>
       <ul>
         <li>Default Dark</li>
@@ -776,7 +737,7 @@
 
     <!-- ============================================ -->
     <section id="security">
-      <h2>19. Security &amp; App Lock</h2>
+      <h2>18. Security &amp; App Lock</h2>
 
       <h3>Known Hosts (TOFU)</h3>
       <p>meshTerm uses <strong>Trust On First Use</strong> for host-key verification. The first time you connect to a host, the app shows the server's host-key fingerprint and asks you to confirm. Subsequent connects check the fingerprint silently. If it changes (server rebuilt, key rotated, or something more sinister), the connection is blocked with a warning.</p>
@@ -808,7 +769,7 @@
 
     <!-- ============================================ -->
     <section id="settings">
-      <h2>20. Settings reference</h2>
+      <h2>19. Settings reference</h2>
       <p>A quick map of the Settings tab.</p>
       <ul>
         <li><strong>Subscription</strong> — current Pro state and upgrade buttons.</li>
@@ -832,7 +793,7 @@
 
     <!-- ============================================ -->
     <section id="pro">
-      <h2>21. meshTerm Pro</h2>
+      <h2>20. meshTerm Pro</h2>
       <p>Every feature in the app is available in the free tier. The only limit is on concurrent surface area:</p>
 
       <table>
@@ -867,7 +828,7 @@
 
     <!-- ============================================ -->
     <section id="troubleshooting">
-      <h2>22. Troubleshooting</h2>
+      <h2>21. Troubleshooting</h2>
 
       <h3>Connection</h3>
 
