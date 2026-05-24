@@ -421,22 +421,99 @@
 
   <div class="callout info">
     <div class="callout-title">ℹ️ Overview</div>
-    meshTerm integrates with Tailscale at two levels. A <strong>Tailscale API Token</strong>
-    lets meshTerm browse your Tailnet and list your devices when adding hosts — this is optional
-    but recommended. <strong>Tailscale SSH</strong> enables passwordless authentication when
-    connecting to remote hosts — this requires a small one-time configuration on each server
-    you want to connect to without a password or key.
+    meshTerm 2.0 has a built-in Tailscale networking stack — no separate Tailscale app required.
+    Setup has three parts: a <strong>Tailscale Auth Key</strong> connects meshTerm to your Tailnet
+    over WireGuard. A <strong>Tailscale API Token</strong> (optional but recommended) lets meshTerm
+    browse your devices by name. <strong>Tailscale SSH</strong> enables passwordless authentication
+    on servers that have it configured.
+  </div>
+
+  <div class="section-header">
+    <div class="section-icon">🔐</div>
+    <h2>Part 1 — Auth Key for Tailnet Connection</h2>
+  </div>
+
+  <p>An auth key lets meshTerm's built-in Tailscale node join your Tailnet. Once connected,
+  all SSH, SFTP, and Roam connections to your Tailscale devices route through an encrypted
+  WireGuard tunnel directly from your iPhone or iPad — no separate Tailscale app needed.</p>
+
+  <ol class="steps">
+    <li>
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>Go to the Tailscale admin console</strong>
+        <p>Open your browser and go to tailscale.com, then sign in to your account.</p>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>Navigate to Auth Keys</strong>
+        <p>Go to Settings &rarr; Personal Settings &rarr; Keys. Scroll to the Auth Keys section.</p>
+        <div class="path-display">
+          <span class="item">tailscale.com</span>
+          <span class="arrow">›</span>
+          <span class="item">Settings</span>
+          <span class="arrow">›</span>
+          <span class="item">Personal Settings</span>
+          <span class="arrow">›</span>
+          <span class="item">Keys</span>
+          <span class="arrow">›</span>
+          <span class="item">Auth Keys</span>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>Click Generate auth key</strong>
+        <p>Enable <strong>Reusable</strong> so the key survives app restarts. Optionally enable <strong>Ephemeral</strong> so the node auto-removes from your Tailnet when meshTerm isn't running.</p>
+        <span class="step-note">💡 Reusable + Ephemeral is the recommended combination</span>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <strong>Copy the auth key</strong>
+        <p>Copy the key immediately — Tailscale will only show it once.</p>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <strong>Paste it into meshTerm</strong>
+        <p>Open meshTerm and navigate to the auth key setting.</p>
+        <div class="path-display">
+          <span class="item">meshTerm</span>
+          <span class="arrow">›</span>
+          <span class="item">Settings</span>
+          <span class="arrow">›</span>
+          <span class="item">Tailscale</span>
+          <span class="arrow">›</span>
+          <span class="item">Auth Key</span>
+        </div>
+        <p>meshTerm connects to your Tailnet automatically. You'll see the connection status and your Tailscale IP addresses in Settings &rarr; Tailscale.</p>
+      </div>
+    </li>
+  </ol>
+
+  <div class="callout security">
+    <div class="callout-title">🔒 Security — How Your Auth Key Is Stored</div>
+    <ul class="security-list" style="margin: 4px 0 0;">
+      <li>Your auth key is stored securely in the iOS Keychain — never in plain text</li>
+      <li>It is used only to authenticate meshTerm's Tailscale node on your Tailnet</li>
+      <li>All traffic is encrypted end-to-end via WireGuard — meshTerm routes connections through the built-in Tailscale stack, not through any third-party relay</li>
+    </ul>
   </div>
 
   <div class="section-header">
     <div class="section-icon">🔑</div>
-    <h2>Part 1 — API Token for Host Discovery</h2>
+    <h2>Part 2 — API Token for Host Discovery (Optional)</h2>
   </div>
 
-  <p>meshTerm uses a read-only Tailscale API token to browse your Tailnet when adding hosts.
-  It allows meshTerm to list your devices by name rather than requiring you to type IP addresses
-  manually. <strong>Tailscale SSH connections work without it</strong> — you can skip this part
-  and still connect to hosts if you know their Tailscale IP or hostname.</p>
+  <p>A read-only API token lets meshTerm browse your Tailnet and list devices by name when adding hosts.
+  This is optional — you can skip it and add hosts manually using their Tailscale IP or MagicDNS name.
+  <strong>Tailscale SSH connections work without it.</strong></p>
 
   <ol class="steps">
     <li>
@@ -524,7 +601,7 @@
 
   <div class="section-header">
     <div class="section-icon">⚡</div>
-    <h2>Part 2 — Enabling Tailscale SSH on Remote Hosts</h2>
+    <h2>Part 3 — Enabling Tailscale SSH on Remote Hosts</h2>
   </div>
 
   <p>Tailscale SSH enables passwordless, keyless authentication when connecting from meshTerm
