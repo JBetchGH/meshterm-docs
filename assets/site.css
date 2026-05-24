@@ -342,6 +342,19 @@ tr:hover td { background: #FAFAFA; }
    Plain CSS + 2 inline event handlers. No framework, no build step.
    ────────────────────────────────────────────────────────────────── */
 
+main figure {
+  margin: 24px 0;
+  text-align: center;
+}
+
+main figure img {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  border-radius: 10px;
+  margin: 0 auto;
+}
+
 .screenshot-placeholder {
   margin: 24px 0;
   background: var(--surface);
