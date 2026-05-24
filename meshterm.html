@@ -73,24 +73,8 @@
         <li>Native Tailscale integration for keyless SSH on your Tailnet.</li>
       </ul>
 
-      <figure class="screenshot-placeholder">
-        <img src="images/v2-host-list.png.png" alt="meshTerm host list"
-             onload="this.closest('figure').classList.add('has-image')"
-             onerror="this.style.display='none'">
-        <div class="placeholder-box" aria-hidden="true">
-          <span class="ph-camera">📷</span>
-          <span class="ph-filename">images/v2-host-list.png.png</span>
-          <span class="ph-status">placeholder · upload to replace</span>
-        </div>
-        <figcaption class="capture-spec">
-          <strong>Capture spec:</strong>
-          Device: iPhone 15 Pro, portrait.
-          Screen: the Hosts tab with 3–4 demo hosts visible — e.g. a host called <code>demo</code> (Linux),
-          <code>home-server</code> (macOS, showing the apple.logo icon), and <code>mac-mini</code> (macOS).
-          Frame: full status bar through to the bottom tab bar. The distro/OS badges should be clearly visible on each host card.
-          Setup: add hosts with the labels above and don't connect — we just want the list.
-          Drop into <code>images/v2-host-list.png.png</code>.
-        </figcaption>
+      <figure>
+        <img src="images/v2-host-list.png.png" alt="meshTerm host list">
       </figure>
     </section>
 
@@ -132,23 +116,8 @@
         <li>Tap <strong>Save</strong>.</li>
       </ol>
 
-      <figure class="screenshot-placeholder">
-        <img src="images/V2-add-host.png" alt="Add Host"
-             onload="this.closest('figure').classList.add('has-image')"
-             onerror="this.style.display='none'">
-        <div class="placeholder-box" aria-hidden="true">
-          <span class="ph-camera">📷</span>
-          <span class="ph-filename">images/V2-add-host.png</span>
-          <span class="ph-status">placeholder · upload to replace</span>
-        </div>
-        <figcaption class="capture-spec">
-          <strong>Capture spec:</strong>
-          Device: iPhone 15 Pro, portrait.
-          Screen: Add Host sheet, fully filled in. Label <code>demo</code>, hostname <code>192.0.2.10</code> (or any RFC-5737 documentation IP),
-          port <code>22</code>, username <code>alice</code>. Authentication set to Password.
-          Frame: full sheet from top to the Save button.
-          Drop into <code>images/V2-add-host.png</code>.
-        </figcaption>
+      <figure>
+        <img src="images/V2-add-host.png" alt="Add Host">
       </figure>
 
       <h3>Connecting</h3>
@@ -178,67 +147,8 @@
       <h3>Distro / OS icons</h3>
       <p>Each host card shows a small icon for its operating system — Ubuntu, Debian, Fedora, CentOS / Rocky / Alma, Arch, openSUSE, NixOS, Linux Mint, Gentoo, elementary OS, Void, Solus, Zorin, deepin, macOS (Apple logo), FreeBSD, Android, AIX, and GNU/Hurd. The icon is tinted with the host's per-card hue. Choose the OS in <strong>Edit Host → Operating System</strong>; <strong>Unknown</strong> falls back to the generic Linux icon and shows the host's initials as a monogram.</p>
 
-      <h3>Host limit</h3>
-      <p>The free tier allows <strong>1 saved host</strong>. <a href="#pro">meshTerm Pro</a> lifts this to unlimited.</p>
-    </section>
-
-    <!-- ============================================ -->
-    <section id="connecting">
-      <h2>5. Connecting to a host</h2>
-      <p>Tap a host to open it. meshTerm resolves the address, verifies the host key against your stored known hosts, authenticates with the method configured for that host, and opens a shell.</p>
-
-      <h3>Plain SSH vs Roam</h3>
-      <p>Each host can use one of two connection methods, picked in Edit Host → Protocol:</p>
-      <ul>
-        <li><strong>Plain SSH</strong> — a regular SSH session. The shell runs inside the app. If the network drops, meshTerm reconnects automatically and you can optionally attach a <code>tmux</code> session so your work survives.</li>
-        <li><strong>Roam</strong> — the shell runs inside the meshtermd daemon on your server. Drop the connection, switch devices, come back hours later: same scrollback, same prompt. See <a href="#roam">Roam: persistent sessions</a>.</li>
-      </ul>
-
-      <h3>Multiple concurrent sessions</h3>
-      <p>Tap a second host to open it alongside the first. A session bar appears above the terminal showing each open tab — tap to switch, swipe down to dismiss. Each session runs independently.</p>
-
-      <h3>Automatic reconnection</h3>
-      <p>meshTerm watches the network and your app's foreground state. If the connection drops — Wi-Fi handoff, backgrounded app, cellular blip — the session reconnects when conditions return. A dim "reconnected" marker is drawn into the terminal where the reattach happened.</p>
-
-      <h3>Environment variables</h3>
-      <p>Edit Host → Environment Variables lets you attach custom variables that are sent to the shell on connect.</p>
-
-      <h3>Disconnecting</h3>
-      <p>Type <code>exit</code> in the shell, or close the terminal tab. For Roam hosts, closing the tab leaves the session running on the server — see <a href="#roam">Roam</a>.</p>
-    </section>
-
-    <!-- ============================================ -->
-    <section id="roam">
-      <h2>6. Roam: persistent sessions <span class="new-badge">2.0</span></h2>
-      <p>Roam is the headline change in 2.0. A small open-source helper, the <strong>meshtermd</strong> daemon, runs on your server and holds your shell open. meshTerm talks to it over a fast reconnect-friendly transport. The shell is no longer tied to the app — it lives on the host until you kill it.</p>
-
-      <p>Why use Roam:</p>
-      <ul>
-        <li>Start a long-running task from your phone over cellular, pick it up from another device hours later — exactly where you left it.</li>
-        <li>Background the app, switch networks, lock the device. None of that kills the session.</li>
-        <li>Open the same session from your phone and your laptop, with one client driving and the other read-only watching.</li>
-        <li>Named sessions per host — keep <code>dev</code>, <code>logs</code>, and <code>tests</code> open in parallel.</li>
-      </ul>
-
-      <p>Supported platforms: Linux on amd64 / arm64 / armv7, macOS on Intel and Apple Silicon, FreeBSD on amd64 / arm64.</p>
-
-      <figure class="screenshot-placeholder">
-        <img src="images/v2-roam-session.png" alt="Roam session bar"
-             onload="this.closest('figure').classList.add('has-image')"
-             onerror="this.style.display='none'">
-        <div class="placeholder-box" aria-hidden="true">
-          <span class="ph-camera">📷</span>
-          <span class="ph-filename">images/v2-roam-session.png</span>
-          <span class="ph-status">placeholder · upload to replace</span>
-        </div>
-        <figcaption class="capture-spec">
-          <strong>Capture spec:</strong>
-          Device: iPhone 15 Pro, portrait.
-          Screen: a Roam session attached to a host called <code>demo</code>. Run a visible command in advance
-          (e.g. <code>top</code> or <code>htop</code>) so the screen shows live output. The session bar at the top
-          should show the named session label (e.g. <code>dev</code>).
-          Drop into <code>images/v2-roam-session.png</code>.
-        </figcaption>
+      <figure>
+        <img src="images/v2-edit-host.png" alt="Edit Host screen">
       </figure>
 
       <h3 id="roam-install">Installing the daemon on a host</h3>
@@ -261,23 +171,8 @@
 
       <p>On success, the sheet shows the supervisor that was set up. On Linux hosts, you'll also see a distro-tailored firewall instruction for the UDP port the daemon uses — copy the one line and run it in a shell to open the port for inbound connections.</p>
 
-      <figure class="screenshot-placeholder">
-        <img src="images/v2-install-roam.PNG" alt="Roam install sheet"
-             onload="this.closest('figure').classList.add('has-image')"
-             onerror="this.style.display='none'">
-        <div class="placeholder-box" aria-hidden="true">
-          <span class="ph-camera">📷</span>
-          <span class="ph-filename">images/v2-install-roam.PNG</span>
-          <span class="ph-status">placeholder · upload to replace</span>
-        </div>
-        <figcaption class="capture-spec">
-          <strong>Capture spec:</strong>
-          Device: iPhone 15 Pro, portrait.
-          Screen: the Set Up Roam sheet mid-flow — ideally just after the verification stage so the
-          "Probing", "Downloading" and "Verifying" rows are ticked and "Uploading" is in progress with a percentage.
-          Setup: have a fresh Linux host called <code>demo</code> with no daemon installed; tap Connect on it and screenshot the install sheet.
-          Drop into <code>images/v2-install-roam.PNG</code>.
-        </figcaption>
+      <figure>
+        <img src="images/v2-install-roam.PNG" alt="Roam install sheet">
       </figure>
 
       <h4>Updating the daemon</h4>
@@ -320,23 +215,8 @@
       <h4>Keep-alive (idle timeout)</h4>
       <p>Pick how long the daemon should hold a Roam session when no client is attached. Options: <strong>1 hour</strong>, <strong>1 day</strong>, <strong>7 days</strong>, <strong>30 days</strong>, or <strong>Never</strong> (kept until the daemon restarts or you kill it). The default is the daemon's own default (30 days).</p>
 
-      <figure class="screenshot-placeholder">
-        <img src="images/v2-roam-sessions.PNG" alt="Roam sessions picker"
-             onload="this.closest('figure').classList.add('has-image')"
-             onerror="this.style.display='none'">
-        <div class="placeholder-box" aria-hidden="true">
-          <span class="ph-camera">📷</span>
-          <span class="ph-filename">images/v2-roam-sessions.PNG</span>
-          <span class="ph-status">placeholder · upload to replace</span>
-        </div>
-        <figcaption class="capture-spec">
-          <strong>Capture spec:</strong>
-          Device: iPhone 15 Pro, portrait.
-          Screen: the Roam Sessions picker for a host called <code>demo</code>, showing three sessions named
-          <code>dev</code>, <code>logs</code> and <code>tests</code>, plus the "+ New session" row.
-          Setup: open three Roam sessions to a host (with those names) before triggering the picker.
-          Drop into <code>images/v2-roam-sessions.PNG</code>.
-        </figcaption>
+      <figure>
+        <img src="images/v2-roam-sessions.PNG" alt="Roam sessions picker">
       </figure>
 
       <h3 id="roam-attach">Attach modes</h3>
@@ -430,6 +310,10 @@
         <li>Private keys are stored in the <strong>iOS Keychain</strong>, marked <code>WhenUnlockedThisDeviceOnly</code> — they don't back up to iCloud or transfer to other devices.</li>
         <li>Public keys are stored alongside the host record for display purposes.</li>
       </ul>
+
+      <figure>
+        <img src="images/v2-ssh-key.png" alt="SSH key management">
+      </figure>
     </section>
 
     <!-- ============================================ -->
@@ -443,6 +327,35 @@
         <li>Paste it into Settings → Tailscale → API Token.</li>
         <li>Tap the globe icon in the host list to browse your Tailnet and add devices.</li>
       </ol>
+
+      <figure>
+        <img src="images/v2-tailnet-browser.png" alt="Tailnet device browser">
+      </figure>
+
+      <h3>Embedded Tailscale <span class="new-badge">2.0</span></h3>
+      <p>meshTerm 2.0 includes a built-in Tailscale networking stack. When you add a Tailscale API token, meshTerm can route connections through its own in-process Tailscale node — no separate Tailscale app required. This means SSH, SFTP, Roam, and all auxiliary connections work over your Tailnet natively.</p>
+      <p>The embedded stack starts automatically when you open the app and have a saved API token. You can see its status (connected, IP addresses) in <strong>Settings → Tailscale</strong>.</p>
+
+      <figure class="screenshot-placeholder">
+        <img src="images/v2-tailscale-settings.png" alt="Tailscale settings"
+             onload="this.closest('figure').classList.add('has-image')"
+             onerror="this.style.display='none'">
+        <div class="placeholder-box" aria-hidden="true">
+          <span class="ph-camera">📷</span>
+          <span class="ph-filename">images/v2-tailscale-settings.png</span>
+          <span class="ph-status">placeholder · upload to replace</span>
+        </div>
+      </figure>
+
+      <h3>Auth keys</h3>
+      <p>To authenticate the embedded Tailscale node, meshTerm uses a <strong>Tailscale auth key</strong>. Generate one at <a href="https://login.tailscale.com/admin/settings/keys">login.tailscale.com → Settings → Keys</a>:</p>
+      <ol>
+        <li>Click <strong>Generate auth key</strong>.</li>
+        <li>Enable <strong>Reusable</strong> so the key survives app restarts.</li>
+        <li>Optionally enable <strong>Ephemeral</strong> so the node auto-removes from your Tailnet when meshTerm isn't running.</li>
+        <li>Copy the key and paste it into <strong>Settings → Tailscale → Auth Key</strong> in meshTerm.</li>
+      </ol>
+      <p>The auth key is stored in the iOS Keychain. meshTerm uses it to join your Tailnet on each launch — no browser login required.</p>
     </section>
 
     <!-- ============================================ -->
@@ -577,23 +490,8 @@
       <h3>Master kill switch</h3>
       <p>Settings → Terminal has a master toggle that disables the TUI pill across every host. The pill is on by default.</p>
 
-      <figure class="screenshot-placeholder">
-        <img src="images/v2-keyboard-main.PNG" alt="TUI pill in Claude Code"
-             onload="this.closest('figure').classList.add('has-image')"
-             onerror="this.style.display='none'">
-        <div class="placeholder-box" aria-hidden="true">
-          <span class="ph-camera">📷</span>
-          <span class="ph-filename">images/v2-keyboard-main.PNG</span>
-          <span class="ph-status">placeholder · upload to replace</span>
-        </div>
-        <figcaption class="capture-spec">
-          <strong>Capture spec:</strong>
-          Device: iPhone 15 Pro, portrait.
-          Screen: Claude Code running in a session to <code>demo</code>. Scroll the terminal up so the live prompt is off-screen;
-          the orange Claude pill should be visible as a floating button.
-          Setup: run <code>claude</code> on the host, send a couple of prompts to build up scrollback, then scroll up in meshTerm.
-          Drop into <code>images/v2-keyboard-main.PNG</code>.
-        </figcaption>
+      <figure>
+        <img src="images/v2-keyboard-main.PNG" alt="TUI pill in Claude Code">
       </figure>
     </section>
 
@@ -625,6 +523,10 @@
 
       <h3>Folders &amp; search</h3>
       <p>Tap <strong>New Folder</strong> to organise. The search bar at the top of the Vault searches across titles, command text, and tags.</p>
+
+      <figure>
+        <img src="images/v2-snippet-vault.png" alt="Snippet Vault">
+      </figure>
     </section>
 
     <!-- ============================================ -->
@@ -647,6 +549,10 @@
 
       <h3>Secret macros</h3>
       <p>Like secret snippets, macros can be marked secret and gated by Face ID. Useful for fast-fire credentials without the macro text appearing in the bar.</p>
+
+      <figure>
+        <img src="images/v2-macros.png" alt="Macro bar">
+      </figure>
     </section>
 
     <!-- ============================================ -->
@@ -688,22 +594,8 @@
         <li><strong>New Folder</strong> (toolbar) — create a directory in the current path.</li>
       </ul>
 
-      <figure class="screenshot-placeholder">
-        <img src="images/v2-sftp-browser.png" alt="SFTP browser"
-             onload="this.closest('figure').classList.add('has-image')"
-             onerror="this.style.display='none'">
-        <div class="placeholder-box" aria-hidden="true">
-          <span class="ph-camera">📷</span>
-          <span class="ph-filename">images/v2-sftp-browser.png</span>
-          <span class="ph-status">placeholder · upload to replace</span>
-        </div>
-        <figcaption class="capture-spec">
-          <strong>Capture spec:</strong>
-          Device: iPhone 15 Pro, portrait.
-          Screen: SFTP browser on host <code>demo</code>, viewing a directory with a mix of folders and files
-          (e.g. ~/Documents or ~/Projects with 5–10 entries). The Upload File button should be visible.
-          Drop into <code>images/v2-sftp-browser.png</code>.
-        </figcaption>
+      <figure>
+        <img src="images/v2-sftp-browser.png" alt="SFTP browser">
       </figure>
     </section>
 
@@ -717,6 +609,10 @@
         <li><strong>Done</strong> — close the search bar and return to the live prompt.</li>
       </ul>
       <p>The scrollback is capped at 5,000 lines by default. On Roam hosts you can search server-side with <code>mtctl search</code> for matches beyond the local cap.</p>
+
+      <figure>
+        <img src="images/v2-terminal-search.png" alt="Scrollback search">
+      </figure>
     </section>
 
     <!-- ============================================ -->
@@ -733,6 +629,10 @@
         <li>Nord</li>
         <li>Tomorrow Night</li>
       </ul>
+
+      <figure>
+        <img src="images/v2-themes.png" alt="Theme picker">
+      </figure>
     </section>
 
     <!-- ============================================ -->
@@ -771,6 +671,11 @@
     <section id="settings">
       <h2>19. Settings reference</h2>
       <p>A quick map of the Settings tab.</p>
+
+      <figure>
+        <img src="images/v2-settings.png" alt="Settings overview">
+      </figure>
+
       <ul>
         <li><strong>Subscription</strong> — current Pro state and upgrade buttons.</li>
         <li><strong>Appearance</strong> — theme picker.</li>
@@ -780,7 +685,7 @@
         <li><strong>SSH Keys</strong> — generate, import, copy, delete.</li>
         <li><strong>Hosts</strong> — import from <code>.ssh/config</code>, export to <code>ssh_config</code>.</li>
         <li><strong>Security</strong> — App Lock and Known Hosts.</li>
-        <li><strong>Tailscale</strong> — API Token and help.</li>
+        <li><strong>Tailscale</strong> — API Token, Auth Key, embedded node status.</li>
         <li><strong>Privacy</strong> — clear local connection history.</li>
         <li><strong>About</strong> — version, Privacy Policy, EULA.</li>
       </ul>
