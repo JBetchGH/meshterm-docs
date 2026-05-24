@@ -319,22 +319,24 @@
     <!-- ============================================ -->
     <section id="tailscale">
       <h2>9. Tailscale</h2>
-      <p>meshTerm integrates with Tailscale to browse your Tailnet and add devices as SSH hosts in a tap. Tailscale SSH–enabled devices connect without passwords or keys.</p>
-      <p>Setup is covered in detail in the <a href="meshterm-tailscale-integration.html">Tailscale Setup Guide</a>. In short:</p>
+      <p>meshTerm has a built-in Tailscale networking stack — no separate Tailscale app required. Add your Tailnet credentials and meshTerm connects to your devices directly over WireGuard. SSH, SFTP, Roam, and all auxiliary connections route through the encrypted Tailscale tunnel natively.</p>
+
+      <h3>Setting up Tailscale</h3>
       <ol>
-        <li>Install and sign into the Tailscale app on your iPhone or iPad.</li>
-        <li>Generate a read-only Tailscale API token at <a href="https://login.tailscale.com/admin/settings/keys">login.tailscale.com</a>.</li>
-        <li>Paste it into Settings → Tailscale → API Token.</li>
-        <li>Tap the globe icon in the host list to browse your Tailnet and add devices.</li>
+        <li>Go to <a href="https://login.tailscale.com/admin/settings/keys">login.tailscale.com → Settings → Keys</a>.</li>
+        <li>Click <strong>Generate auth key</strong>. Enable <strong>Reusable</strong> so the key survives app restarts. Optionally enable <strong>Ephemeral</strong> so the node auto-removes from your Tailnet when meshTerm isn't running.</li>
+        <li>Copy the auth key and paste it into <strong>Settings → Tailscale → Auth Key</strong> in meshTerm.</li>
+        <li>Generate a <strong>read-only API token</strong> on the same page and paste it into <strong>Settings → Tailscale → API Token</strong>. This lets meshTerm browse your Tailnet devices.</li>
+        <li>Tap the globe icon in the host list to browse your Tailnet and add devices in a tap.</li>
       </ol>
+      <p>The embedded Tailscale node starts automatically when you open the app. You can see its status (connected, IP addresses) in <strong>Settings → Tailscale</strong>.</p>
 
       <figure>
         <img src="images/v2-tailnet-browser.png" alt="Tailnet device browser">
       </figure>
 
-      <h3>Embedded Tailscale <span class="new-badge">2.0</span></h3>
-      <p>meshTerm 2.0 includes a built-in Tailscale networking stack. When you add a Tailscale API token, meshTerm can route connections through its own in-process Tailscale node — no separate Tailscale app required. This means SSH, SFTP, Roam, and all auxiliary connections work over your Tailnet natively.</p>
-      <p>The embedded stack starts automatically when you open the app and have a saved API token. You can see its status (connected, IP addresses) in <strong>Settings → Tailscale</strong>.</p>
+      <h3>Tailscale SSH</h3>
+      <p>Devices on your Tailnet with <a href="meshterm-tailscale-integration.html">Tailscale SSH enabled</a> connect without passwords or keys — Tailscale authenticates the connection at the network layer using your device's identity. Set the host's authentication method to <strong>Tailscale SSH</strong> in the host editor.</p>
 
       <figure class="screenshot-placeholder">
         <img src="images/v2-tailscale-settings.png" alt="Tailscale settings"
