@@ -389,7 +389,7 @@
   <section id="s3b">
     <h2><span class="num">3b</span> Datos en sus hosts remotos (Roam)</h2>
     <p>Cuando habilita Roam para un host, la Aplicación instala en ese host un programa auxiliar
-    de código abierto llamado <strong>meshtermd</strong>. Roam es opcional por host y está
+    de código abierto llamado <strong><a href="https://ag-studio-apps.github.io/mtroamd">mtroamd</a></strong>. Roam es opcional por host y está
     desactivado de forma predeterminada. Una vez activado, los siguientes datos se almacenan
     en ese host remoto — un servidor del que usted es propietario o al que tiene acceso
     legítimo — y no en infraestructura del Desarrollador:</p>
@@ -407,7 +407,7 @@
       de sus sesiones.</li>
     </ul>
     <p>Estos datos se almacenan dentro de su directorio personal en el host (normalmente
-    <code>~/.local/share/meshtermd/</code>). El Desarrollador no tiene acceso a ellos. Se rigen por
+    <code>~/.local/share/mtroamd/</code>). El Desarrollador no tiene acceso a ellos. Se rigen por
     sus propias prácticas de seguridad en ese host — permisos de archivos, control de acceso de
     la cuenta, cifrado del disco y cualquier software de copia de seguridad o sincronización
     que tenga instalado.</p>
@@ -445,6 +445,23 @@
     </ul>
     <p>La Aplicación no integra redes publicitarias, SDK de redes sociales ni servicios
     de intermediarios de datos.</p>
+
+    <h3>Servicios externos que la Aplicación puede contactar</h3>
+    <p>Además de sus propios servidores, la Aplicación contacta los siguientes
+    extremos de terceros, cada uno únicamente con el fin y bajo la condición indicados:</p>
+    <ul>
+      <li><strong>Sus hosts SSH</strong> — los servidores a los que usted decide conectarse. Es la
+      función principal de la Aplicación; este tráfico va directamente a sus propios hosts.</li>
+      <li><strong>github.com</strong> — para descargar el daemon y la CLI firmados de
+      <a href="https://ag-studio-apps.github.io/mtroamd">mtroamd</a> mediante HTTPS, solo cuando usted
+      decide instalar o actualizar Roam en un host.</li>
+      <li><strong>Servidores de coordinación de Tailscale y api.tailscale.com</strong> — solo si añade
+      una clave de autenticación de Tailscale (para unirse a su tailnet) o un token de API de solo
+      lectura (para explorar sus dispositivos). Sus claves de autenticación y tokens de API de
+      Tailscale se almacenan en el Llavero de iOS, igual que sus credenciales SSH.</li>
+      <li><strong>Apple</strong> — los extremos de App Store / StoreKit procesan la suscripción Pro
+      opcional (consulte la sección 6).</li>
+    </ul>
   </section>
 
   <section id="s6">

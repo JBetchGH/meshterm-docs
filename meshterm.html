@@ -36,7 +36,7 @@
       <li><a href="#roam-install" style="padding-left: 22px; font-size: 13px;">↳ Installing the daemon</a></li>
       <li><a href="#roam-sessions" style="padding-left: 22px; font-size: 13px;">↳ Multiple named sessions</a></li>
       <li><a href="#roam-attach" style="padding-left: 22px; font-size: 13px;">↳ Attach modes</a></li>
-      <li><a href="#mtctl" style="padding-left: 22px; font-size: 13px;">↳ Desktop CLI (mtctl)</a></li>
+      <li><a href="#mtroam" style="padding-left: 22px; font-size: 13px;">↳ Desktop CLI (mtroam)</a></li>
       <li><a href="#auth">7. Authentication</a></li>
       <li><a href="#ssh-keys">8. SSH keys</a></li>
       <li><a href="#tailscale">9. Tailscale</a></li>
@@ -83,7 +83,7 @@
       <h2>2. What's new in 2.0</h2>
       <p>If you're upgrading from meshTerm 1.x, here's what changed:</p>
       <ul>
-        <li><strong>Roam mode</strong> — opt-in per host. Pair a small open-source daemon on your server and your shell becomes durable across reconnects, app suspension, and device switches.</li>
+        <li><strong>Roam mode</strong> — opt-in per host. Pair a small <a href="https://ag-studio-apps.github.io/mtroamd">open-source daemon</a> on your server and your shell becomes durable across reconnects, app suspension, and device switches.</li>
         <li><strong>Named multi-attach sessions</strong> — open <code>dev</code>, <code>logs</code>, <code>tests</code> on the same host and switch between them in one tap. Attach exclusively, read-only watch, or passively tail.</li>
         <li><strong>Predictive echo</strong> — keystrokes mirror locally as you type, then reconcile with the daemon's actual echo. Adapts to the network latency.</li>
         <li><strong>History browse</strong> — pull up a sheet of the host's shell history, search and send a command in one tap.</li>
@@ -155,7 +155,7 @@
       <p>The first time you tap Connect on a Roam-enabled host that doesn't already have the daemon, a <strong>Set Up Roam</strong> sheet appears. The sheet runs a six-stage install pipeline:</p>
       <ol>
         <li><strong>Probing</strong> — meshTerm runs a few read-only commands over SSH to detect the platform (Linux distro family, macOS, BSD), the architecture, and where to install the binary.</li>
-        <li><strong>Downloading</strong> — fetches the signed daemon binary and the companion mtctl CLI from the project's GitHub Releases. Progress is shown as a single bar covering both files.</li>
+        <li><strong>Downloading</strong> — fetches the signed daemon binary and the companion mtroam CLI from the project's GitHub Releases. Progress is shown as a single bar covering both files.</li>
         <li><strong>Verifying</strong> — verifies the release's minisign signature against keys built into the app, then checks each binary's SHA-256 against the signed checksum file. If anything fails, the install aborts with a clear error and the binaries are never uploaded.</li>
         <li><strong>Uploading</strong> — SFTPs the verified binaries into <code>~/.local/bin/</code> on your host and marks them executable.</li>
         <li><strong>Installing service</strong> — sets up the right supervisor for the platform:
@@ -164,9 +164,9 @@
             <li>macOS → a per-user launchd agent.</li>
             <li>Hosts where neither is available → a <code>nohup</code>-supervised fallback. The sheet tells you the system is on the fallback path.</li>
           </ul>
-          A PATH entry is appended to your login shell's rc file so you can run <code>meshtermd</code> and <code>mtctl</code> from any SSH session.
+          A PATH entry is appended to your login shell's rc file so you can run <code>mtroamd</code> and <code>mtroam</code> from any SSH session.
         </li>
-        <li><strong>Smoke test</strong> — a four-check verification: the binary runs, the daemon responds, your login shell can find it on PATH, and the mtctl CLI is in place. Each check is shown as a row in the sheet. If a check fails, you get an inline <strong>Retry Checks</strong> button (cheap re-run) and a <strong>Full Reinstall</strong> button (escalation).</li>
+        <li><strong>Smoke test</strong> — a four-check verification: the binary runs, the daemon responds, your login shell can find it on PATH, and the mtroam CLI is in place. Each check is shown as a row in the sheet. If a check fails, you get an inline <strong>Retry Checks</strong> button (cheap re-run) and a <strong>Full Reinstall</strong> button (escalation).</li>
       </ol>
 
       <p>On success, the sheet shows the supervisor that was set up. On Linux hosts, you'll also see a distro-tailored firewall instruction for the UDP port the daemon uses — copy the one line and run it in a shell to open the port for inbound connections.</p>
@@ -224,32 +224,32 @@
       <ul>
         <li><strong>Exclusive</strong> (default) — you receive output, you send keystrokes, you own the terminal size. If someone else attaches exclusively, you're handed off to read-only.</li>
         <li><strong>Read-only</strong> — you see everything but your keystrokes are dropped at the daemon. Useful for watching a colleague drive, or for a second device tailing along.</li>
-        <li><strong>Passive</strong> — a quiet tail. Same as read-only but invisible to the other clients' "who else is attached" indicators. Used by the <code>mtctl tail</code> command.</li>
+        <li><strong>Passive</strong> — a quiet tail. Same as read-only but invisible to the other clients' "who else is attached" indicators. Used by the <code>mtroam tail</code> command.</li>
       </ul>
       <p>Any number of read-only watchers can coexist with a single exclusive driver. The session label in the bar shows your role.</p>
 
-      <h3 id="mtctl">Desktop CLI: mtctl <span class="new-badge">2.0</span></h3>
-      <p>The Roam daemon ships with a small companion command-line tool called <strong>mtctl</strong>, installed on your host as part of Set Up Roam. Use it from any SSH session on the host (or from a laptop with <code>ssh user@host mtctl …</code>) to manage sessions without opening the iOS app.</p>
+      <h3 id="mtroam">Desktop CLI: mtroam <span class="new-badge">2.0</span></h3>
+      <p>The Roam daemon ships with a small companion command-line tool called <strong>mtroam</strong>, installed on your host as part of Set Up Roam. Use it from any SSH session on the host (or from a laptop with <code>ssh user@host mtroam …</code>) to manage sessions without opening the iOS app.</p>
       <p>Subcommands:</p>
       <ul>
-        <li><code>mtctl list</code> — enumerate sessions on this host (id, name, idle time, attached clients).</li>
-        <li><code>mtctl session-info &lt;name&gt;</code> — detail for one session, including geometry and idle state.</li>
-        <li><code>mtctl status</code> — daemon health snapshot.</li>
-        <li><code>mtctl search &lt;regex&gt; &lt;session&gt;</code> — grep a session's scrollback.</li>
-        <li><code>mtctl doctor</code> — diagnostic checks for daemon, supervisor unit, and lingering.</li>
-        <li><code>mtctl tail &lt;session&gt;</code> — passively attach to live output. No input, no replay; just a tail.</li>
-        <li><code>mtctl new --name &lt;name&gt;</code> — create a new named session without attaching to it. Useful for pre-creating a session before opening the app, or for cron jobs.</li>
-        <li><code>mtctl attach &lt;session&gt;</code> — attach to a session as the local terminal. Detach with <code>~.</code> on a fresh line.</li>
-        <li><code>mtctl kill &lt;session&gt;</code> — reap a session.</li>
-        <li><code>mtctl rename &lt;session&gt; &lt;new-name&gt;</code> — rename a session. Buffer and active attaches are unaffected.</li>
-        <li><code>mtctl update</code> — check for and apply a signed self-update from the project's GitHub Releases.</li>
-        <li><code>mtctl restart</code> — cycle the daemon via its supervisor. In-flight sessions survive the restart.</li>
-        <li><code>mtctl uninstall</code> — remove the mtctl binary.</li>
+        <li><code>mtroam list</code> — enumerate sessions on this host (id, name, idle time, attached clients).</li>
+        <li><code>mtroam session-info &lt;name&gt;</code> — detail for one session, including geometry and idle state.</li>
+        <li><code>mtroam status</code> — daemon health snapshot.</li>
+        <li><code>mtroam search &lt;regex&gt; &lt;session&gt;</code> — grep a session's scrollback.</li>
+        <li><code>mtroam doctor</code> — diagnostic checks for daemon, supervisor unit, and lingering.</li>
+        <li><code>mtroam tail &lt;session&gt;</code> — passively attach to live output. No input, no replay; just a tail.</li>
+        <li><code>mtroam new --name &lt;name&gt;</code> — create a new named session without attaching to it. Useful for pre-creating a session before opening the app, or for cron jobs.</li>
+        <li><code>mtroam attach &lt;session&gt;</code> — attach to a session as the local terminal. Detach with <code>~.</code> on a fresh line.</li>
+        <li><code>mtroam kill &lt;session&gt;</code> — reap a session.</li>
+        <li><code>mtroam rename &lt;session&gt; &lt;new-name&gt;</code> — rename a session. Buffer and active attaches are unaffected.</li>
+        <li><code>mtroam update</code> — check for and apply a signed self-update from the project's GitHub Releases.</li>
+        <li><code>mtroam restart</code> — cycle the daemon via its supervisor. In-flight sessions survive the restart.</li>
+        <li><code>mtroam uninstall</code> — remove the mtroam binary.</li>
       </ul>
-      <p>Authentication uses your normal SSH config — <code>~/.ssh/config</code>, ssh-agent and keys all work. mtctl invokes the system <code>ssh</code> binary, so anything that works for <code>ssh user@host</code> works here too.</p>
+      <p>Authentication uses your normal SSH config — <code>~/.ssh/config</code>, ssh-agent and keys all work. mtroam invokes the system <code>ssh</code> binary, so anything that works for <code>ssh user@host</code> works here too.</p>
 
       <div class="callout info">
-        Each mtctl invocation accepts <code>--host user@host</code> to pick a target, or reads <code>$MTCTL_HOST</code>, or falls back to <code>~/.config/mtctl/host</code>.
+        Each mtroam invocation accepts <code>--host user@host</code> to pick a target, or reads <code>$MTCTL_HOST</code>, or falls back to <code>~/.config/mtroam/host</code>.
       </div>
     </section>
 
@@ -610,7 +610,7 @@
         <li><strong>Smart Case</strong> — case-insensitive unless your query contains an uppercase letter.</li>
         <li><strong>Done</strong> — close the search bar and return to the live prompt.</li>
       </ul>
-      <p>The scrollback is capped at 5,000 lines by default. On Roam hosts you can search server-side with <code>mtctl search</code> for matches beyond the local cap.</p>
+      <p>The scrollback is capped at 5,000 lines by default. On Roam hosts you can search server-side with <code>mtroam search</code> for matches beyond the local cap.</p>
 
       <figure>
         <img src="images/v2-terminal-search.png" alt="Scrollback search">
@@ -790,7 +790,7 @@
       <p>The install sheet's success state shows a distro-specific one-liner to open the daemon's UDP port (default 51820). If you skip it, the daemon will work for SSH-tunnelled attaches but direct attaches over the network won't reach it.</p>
 
       <h4>Roam silently fell back to plain SSH</h4>
-      <p>If the daemon is unreachable at connect time, meshTerm falls back to a plain SSH session and shows an orange banner above the terminal so the drop isn't silent. Tap the banner for the underlying error. Common causes: the daemon isn't running on the host (run <code>mtctl status</code> or check via SSH), or the firewall port isn't open.</p>
+      <p>If the daemon is unreachable at connect time, meshTerm falls back to a plain SSH session and shows an orange banner above the terminal so the drop isn't silent. Tap the banner for the underlying error. Common causes: the daemon isn't running on the host (run <code>mtroam status</code> or check via SSH), or the firewall port isn't open.</p>
 
       <h3>Tailscale</h3>
 

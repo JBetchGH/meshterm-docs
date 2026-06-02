@@ -372,7 +372,7 @@
   <section id="s3b">
     <h2><span class="num">3b</span> Data on Your Remote Hosts (Roam)</h2>
     <p>When you enable Roam on a host, the Application installs an open source helper
-    program called <strong>meshtermd</strong> onto that host. Roam is opt-in per host and is
+    program called <strong><a href="https://ag-studio-apps.github.io/mtroamd">mtroamd</a></strong> onto that host. Roam is opt-in per host and is
     off by default. Once enabled, the following data is stored on that remote host —
     a server you own or have legitimate access to — and not on the Developer's
     infrastructure:</p>
@@ -388,7 +388,7 @@
       not include the terminal output of your sessions.</li>
     </ul>
     <p>This data is stored under your home directory on the host (typically
-    <code>~/.local/share/meshtermd/</code>). The Developer has no access to it. It is governed by
+    <code>~/.local/share/mtroamd/</code>). The Developer has no access to it. It is governed by
     your own security practices on that host — file permissions, account access, disk
     encryption, and any backup or syncing software you have installed.</p>
     <p>Network traffic between the Application and the daemon flows directly between your
@@ -424,6 +424,22 @@
     </ul>
     <p>The Application does not integrate any advertising networks, social media SDKs,
     or data broker services.</p>
+
+    <h3>External services the Application can contact</h3>
+    <p>Beyond your own servers, the Application contacts the following third-party
+    endpoints — each only for the purpose, and under the condition, noted:</p>
+    <ul>
+      <li><strong>Your SSH hosts</strong> — the servers you choose to connect to. This is the
+      core function of the Application; this traffic goes directly to your own hosts.</li>
+      <li><strong>github.com</strong> — to download the signed <a href="https://ag-studio-apps.github.io/mtroamd">mtroamd</a>
+      daemon and CLI over HTTPS, only when you choose to install or update Roam on a host.</li>
+      <li><strong>Tailscale coordination servers and api.tailscale.com</strong> — only if you add a
+      Tailscale auth key (to join your tailnet) or a read-only API token (to browse your devices).
+      Your Tailscale auth keys and API tokens are stored in the iOS Keychain, the same as your SSH
+      credentials.</li>
+      <li><strong>Apple</strong> — App Store / StoreKit endpoints process the optional Pro
+      subscription (see section 6).</li>
+    </ul>
   </section>
 
   <section id="s6">
