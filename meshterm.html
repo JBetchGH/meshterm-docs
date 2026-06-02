@@ -193,6 +193,14 @@
         <li><strong>Service install failed</strong> — most often systemd-user can't talk to its bus because the user isn't lingering. The sheet surfaces the exact next step.</li>
       </ul>
 
+      <h3 id="roam-transport">Choosing a transport (Direct vs SSH Tunnel)</h3>
+      <p>Roam can reach the daemon two ways. Set this in <strong>Edit Host → Protocol &amp; Transport</strong>: pick <strong>Protocol → mtRoam</strong>, then open <strong>Transport Details → mtRoam Transport</strong>:</p>
+      <ul>
+        <li><strong>Direct (QUIC/TCP)</strong> — meshTerm dials the daemon's QUIC port directly over UDP. Lowest latency, but the daemon's UDP port (49820 by default) has to be reachable from your device. The install sheet shows the exact firewall line to open it.</li>
+        <li><strong>SSH Tunnel</strong> — the Roam protocol is carried inside the SSH connection you already authenticated with. Nothing extra to open: it works through any firewall that allows SSH, at a little more latency than Direct.</li>
+      </ul>
+      <p>If you choose Direct and the UDP port turns out to be blocked, meshTerm automatically falls back to the SSH tunnel for that connection, so a session always comes up. Over Tailscale, Roam routes through the encrypted tunnel regardless of this setting.</p>
+
       <h3 id="roam-sessions">Multiple named sessions per host</h3>
       <p>Each Roam host can hold any number of named sessions: <code>dev</code>, <code>logs</code>, <code>tests</code>, whatever you want. Tap the host and a picker appears showing the existing sessions plus a <strong>+ New</strong> entry. Tap a session to attach; tap + New to start a fresh one.</p>
 
@@ -249,7 +257,7 @@
       <p>Authentication uses your normal SSH config — <code>~/.ssh/config</code>, ssh-agent and keys all work. mtroam invokes the system <code>ssh</code> binary, so anything that works for <code>ssh user@host</code> works here too.</p>
 
       <div class="callout info">
-        Each mtroam invocation accepts <code>--host user@host</code> to pick a target, or reads <code>$MTCTL_HOST</code>, or falls back to <code>~/.config/mtroam/host</code>.
+        Each mtroam invocation accepts <code>--host user@host</code> to pick a target, or reads <code>$MTROAM_HOST</code>, or falls back to <code>~/.config/mtroam/host</code>.
       </div>
     </section>
 
@@ -358,6 +366,16 @@
         <li>Copy the key and paste it into <strong>Settings → Tailscale → Auth Key</strong> in meshTerm.</li>
       </ol>
       <p>The auth key is stored in the iOS Keychain. meshTerm uses it to join your Tailnet on each launch — no browser login required.</p>
+
+      <h3 id="tailscale-profiles">Multiple Tailscale profiles <span class="new-badge">2.0</span></h3>
+      <p>meshTerm can hold more than one Tailscale identity — for example a work tailnet and a personal one, or a separate profile per client. Manage them in <strong>Settings → Connections → Tailscale</strong>, where each profile carries its own auth key and optional read-only API token.</p>
+      <ul>
+        <li><strong>Add a profile</strong> — tap <strong>New Tailscale Profile</strong>, name it, and add its auth key (plus an API token if you want to browse that tailnet's devices).</li>
+        <li><strong>Switch profiles</strong> — open a profile and tap <strong>Connect</strong>. Only one profile's node is up at a time, so switching brings the previous one down and the chosen one up.</li>
+        <li><strong>Browse per tailnet</strong> — the device browser shows the devices of whichever profile you pick, independent of which one is currently connected.</li>
+      </ul>
+      <h4>Binding a host to a profile</h4>
+      <p>In the host editor you can bind a host to a specific Tailscale profile. When you open that host, meshTerm switches to its bound profile first — so a work host always comes up on the work tailnet and a personal host on the personal one, with no manual switching. Hosts left unbound use whichever profile is the current default.</p>
     </section>
 
     <!-- ============================================ -->
