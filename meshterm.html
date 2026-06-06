@@ -329,15 +329,14 @@
       <h2>9. Tailscale</h2>
       <p>meshTerm has a built-in Tailscale networking stack — no separate Tailscale app required. Add your Tailnet credentials and meshTerm connects to your devices directly over WireGuard. SSH, SFTP, Roam, and all auxiliary connections route through the encrypted Tailscale tunnel natively.</p>
 
-      <h3>Setting up Tailscale</h3>
+      <h3>Setting up Tailscale <span class="new-badge">2.0.2</span></h3>
       <ol>
-        <li>Go to <a href="https://login.tailscale.com/admin/settings/keys">login.tailscale.com → Settings → Keys</a>.</li>
-        <li>Click <strong>Generate auth key</strong>. Enable <strong>Reusable</strong> so the key survives app restarts. Optionally enable <strong>Ephemeral</strong> so the node auto-removes from your Tailnet when meshTerm isn't running.</li>
-        <li>Copy the auth key and paste it into <strong>Settings → Tailscale → Auth Key</strong> in meshTerm.</li>
-        <li>Generate a <strong>read-only API token</strong> on the same page and paste it into <strong>Settings → Tailscale → API Token</strong>. This lets meshTerm browse your Tailnet devices.</li>
-        <li>Tap the globe icon in the host list to browse your Tailnet and add devices in a tap.</li>
+        <li>Tap the globe icon in the host list (or go to <strong>Settings → Tailscale</strong>) and create a profile.</li>
+        <li>Tap <strong>Sign in with Tailscale</strong> — a browser sheet opens and you sign in with your Tailscale account (Google, Microsoft, GitHub, Apple…). No keys to generate, nothing to renew. If your tailnet requires device approval, meshTerm waits and connects the moment an admin approves.</li>
+        <li>That's it. Tap the globe icon to browse your Tailnet and add devices in a tap — once connected, the device list comes straight from your tailnet, <strong>no API token required</strong>.</li>
       </ol>
-      <p>The embedded Tailscale node starts automatically when you open the app. You can see its status (connected, IP addresses) in <strong>Settings → Tailscale</strong>.</p>
+      <p>Prefer not to sign in through a browser? An <a href="#tailscale-auth-keys">auth key</a> works exactly as before. And an optional <strong>read-only API token</strong> supplements discovery: it lets meshTerm list your devices even when it isn't connected to the tailnet (or when using System routing through the Tailscale app).</p>
+      <p>The embedded Tailscale node starts automatically when you open the app. You can see its status (connected, IP addresses, signed-in identity) in <strong>Settings → Tailscale</strong>.</p>
 
       <figure>
         <img src="images/v2-tailnet-browser.png" alt="Tailnet device browser">
@@ -357,22 +356,22 @@
         </div>
       </figure>
 
-      <h3>Auth keys</h3>
-      <p>To authenticate the embedded Tailscale node, meshTerm uses a <strong>Tailscale auth key</strong>. Generate one at <a href="https://login.tailscale.com/admin/settings/keys">login.tailscale.com → Settings → Keys</a>:</p>
+      <h3 id="tailscale-auth-keys">Auth keys (alternative to sign-in)</h3>
+      <p>If you'd rather not authenticate through a browser — or you're automating setup — the embedded node can join your Tailnet with a <strong>Tailscale auth key</strong> instead. Generate one at <a href="https://login.tailscale.com/admin/settings/keys">login.tailscale.com → Settings → Keys</a>:</p>
       <ol>
         <li>Click <strong>Generate auth key</strong>.</li>
         <li>Enable <strong>Reusable</strong> so the key survives app restarts.</li>
         <li>Optionally enable <strong>Ephemeral</strong> so the node auto-removes from your Tailnet when meshTerm isn't running.</li>
         <li>Copy the key and paste it into <strong>Settings → Tailscale → Auth Key</strong> in meshTerm.</li>
       </ol>
-      <p>The auth key is stored in the iOS Keychain. meshTerm uses it to join your Tailnet on each launch — no browser login required.</p>
+      <p>The auth key is stored in the iOS Keychain. meshTerm uses it to join your Tailnet on each launch — no browser login required. Auth-key profiles browse the device list exactly like signed-in ones: connected = no API token needed.</p>
 
       <h3 id="tailscale-profiles">Multiple Tailscale profiles <span class="new-badge">2.0</span></h3>
-      <p>meshTerm can hold more than one Tailscale identity — for example a work tailnet and a personal one, or a separate profile per client. Manage them in <strong>Settings → Connections → Tailscale</strong>, where each profile carries its own auth key and optional read-only API token.</p>
+      <p>meshTerm can hold more than one Tailscale identity — for example a work tailnet and a personal one, or a separate profile per client. Manage them in <strong>Settings → Connections → Tailscale</strong>, where each profile carries its own sign-in (or auth key) and optional read-only API token.</p>
       <ul>
-        <li><strong>Add a profile</strong> — tap <strong>New Tailscale Profile</strong>, name it, and add its auth key (plus an API token if you want to browse that tailnet's devices).</li>
-        <li><strong>Switch profiles</strong> — open a profile and tap <strong>Connect</strong>. Only one profile's node is up at a time, so switching brings the previous one down and the chosen one up.</li>
-        <li><strong>Browse per tailnet</strong> — the device browser shows the devices of whichever profile you pick, independent of which one is currently connected.</li>
+        <li><strong>Add a profile</strong> — tap <strong>New Tailscale Profile</strong>, name it, and sign in with your Tailscale account (or paste an auth key).</li>
+        <li><strong>Switch profiles</strong> — open a profile and tap <strong>Connect</strong>. Only one profile's node is up at a time, so switching brings the previous one down and the chosen one up. The device browser also offers Connect / Disconnect / switch directly, and warns you first if switching would drop live sessions.</li>
+        <li><strong>Browse per tailnet</strong> — the device browser shows whichever profile you pick. The connected profile lists devices straight from its tailnet; browsing a profile that isn't connected uses its read-only API token.</li>
       </ul>
       <h4>Binding a host to a profile</h4>
       <p>In the host editor you can bind a host to a specific Tailscale profile. When you open that host, meshTerm switches to its bound profile first — so a work host always comes up on the work tailnet and a personal host on the personal one, with no manual switching. Hosts left unbound use whichever profile is the current default.</p>

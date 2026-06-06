@@ -421,21 +421,71 @@
 
   <div class="callout info">
     <div class="callout-title">ℹ️ Overview</div>
-    meshTerm 2.0 has a built-in Tailscale networking stack — no separate Tailscale app required.
-    Setup has three parts: a <strong>Tailscale Auth Key</strong> connects meshTerm to your Tailnet
-    over WireGuard. A <strong>Tailscale API Token</strong> (optional but recommended) lets meshTerm
-    browse your devices by name. <strong>Tailscale SSH</strong> enables passwordless authentication
-    on servers that have it configured.
+    meshTerm has a built-in Tailscale networking stack — no separate Tailscale app required.
+    Setup has three parts: <strong>connect to your Tailnet</strong> by signing in with your
+    Tailscale account (or with an auth key) — once connected, this is also enough to browse
+    and discover your Tailnet's devices. A <strong>read-only API token</strong> (optional)
+    supplements discovery, letting meshTerm list your devices even when it isn't connected.
+    <strong>Tailscale SSH</strong> enables passwordless authentication on servers that have
+    it configured.
   </div>
 
   <div class="section-header">
     <div class="section-icon">🔐</div>
-    <h2>Part 1 — Auth Key for Tailnet Connection</h2>
+    <h2>Part 1 — Connect to Your Tailnet</h2>
   </div>
 
-  <p>An auth key lets meshTerm's built-in Tailscale node join your Tailnet. Once connected,
+  <p>Connecting joins meshTerm's built-in Tailscale node to your Tailnet. Once connected,
   all SSH, SFTP, and Roam connections to your Tailscale devices route through an encrypted
-  WireGuard tunnel directly from your iPhone or iPad — no separate Tailscale app needed.</p>
+  WireGuard tunnel directly from your iPhone or iPad — no separate Tailscale app needed —
+  and the device browser lists your Tailnet's machines with no further setup.</p>
+
+  <h3>Sign in with Tailscale <span style="font-size:0.7em; vertical-align:middle; background:#0a84ff22; color:#0a84ff; border-radius:6px; padding:2px 8px;">New in 2.0.2</span></h3>
+
+  <p>The simplest path — no keys to generate, nothing to renew:</p>
+
+  <ol class="steps">
+    <li>
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>Create a profile in meshTerm</strong>
+        <p>Tap the globe icon in the host list (or go to Settings &rarr; Tailscale) and create a Tailscale profile.</p>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>Tap Sign in with Tailscale</strong>
+        <p>A browser sheet opens — sign in with the account behind your tailnet (Google, Microsoft, GitHub, Apple, or any identity provider Tailscale supports).</p>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>Approve the device if your tailnet requires it</strong>
+        <p>On tailnets with device approval, meshTerm waits patiently and connects the moment an admin approves — there's a direct link to the admin console right in the app.</p>
+      </div>
+    </li>
+  </ol>
+
+  <p>Self-hosting? Each profile can point at your own <strong>Headscale</strong> (or other
+  self-hosted control server) — set the control URL when creating the profile.</p>
+
+  <figure class="screenshot-placeholder">
+    <img src="images/v202-tailscale-signin.png" alt="Sign in with Tailscale browser sheet"
+         onload="this.closest('figure').classList.add('has-image')"
+         onerror="this.style.display='none'">
+    <div class="placeholder-box" aria-hidden="true">
+      <span class="ph-camera">📷</span>
+      <span class="ph-filename">images/v202-tailscale-signin.png</span>
+      <span class="ph-status">placeholder · upload to replace</span>
+    </div>
+  </figure>
+
+  <h3>Alternative: use an auth key</h3>
+
+  <p>Prefer not to authenticate through a browser, or automating setup? An auth key joins
+  your Tailnet without any interactive login:</p>
 
   <ol class="steps">
     <li>
@@ -498,22 +548,37 @@
   </ol>
 
   <div class="callout security">
-    <div class="callout-title">🔒 Security — How Your Auth Key Is Stored</div>
+    <div class="callout-title">🔒 Security — How Your Credentials Are Stored</div>
     <ul class="security-list" style="margin: 4px 0 0;">
-      <li>Your auth key is stored securely in the iOS Keychain — never in plain text</li>
-      <li>It is used only to authenticate meshTerm's Tailscale node on your Tailnet</li>
+      <li>Auth keys and API tokens are stored securely in the iOS Keychain — never in plain text; browser sign-ins keep their identity in the profile's protected node state</li>
+      <li>Credentials are used only to authenticate meshTerm's Tailscale node on your Tailnet</li>
       <li>All traffic is encrypted end-to-end via WireGuard — meshTerm routes connections through the built-in Tailscale stack, not through any third-party relay</li>
     </ul>
   </div>
 
   <div class="section-header">
     <div class="section-icon">🔑</div>
-    <h2>Part 2 — API Token for Host Discovery (Optional)</h2>
+    <h2>Part 2 — API Token for Offline Host Discovery (Optional)</h2>
   </div>
 
-  <p>A read-only API token lets meshTerm browse your Tailnet and list devices by name when adding hosts.
-  This is optional — you can skip it and add hosts manually using their Tailscale IP or MagicDNS name.
-  <strong>Tailscale SSH connections work without it.</strong></p>
+  <p><strong>You don't need this to browse your Tailnet.</strong> Once Part 1's connection is up,
+  the device browser lists your machines straight from the tailnet itself. A read-only API token
+  <em>supplements</em> discovery: with one, meshTerm can list your devices by name even when it
+  isn't connected to the tailnet — useful before connecting for the first time on a new profile,
+  when browsing a profile other than the connected one, or when using System routing through the
+  Tailscale app. You can also skip discovery entirely and add hosts manually by Tailscale IP or
+  MagicDNS name. <strong>Tailscale SSH connections work without it.</strong></p>
+
+  <figure class="screenshot-placeholder">
+    <img src="images/v202-tailnet-browser-connected.png" alt="Tailnet device browser listing devices from the connected tailnet"
+         onload="this.closest('figure').classList.add('has-image')"
+         onerror="this.style.display='none'">
+    <div class="placeholder-box" aria-hidden="true">
+      <span class="ph-camera">📷</span>
+      <span class="ph-filename">images/v202-tailnet-browser-connected.png</span>
+      <span class="ph-status">placeholder · upload to replace</span>
+    </div>
+  </figure>
 
   <ol class="steps">
     <li>
@@ -693,7 +758,7 @@
       <div class="step-num">1</div>
       <div class="step-content">
         <strong>Open meshTerm and go to Hosts</strong>
-        <p>Your Tailscale peers are listed automatically if you have set up your API token. If not, add the host manually using its Tailscale IP (e.g. 100.x.x.x) or MagicDNS name (e.g. my-server.tail1234.ts.net).</p>
+        <p>Your Tailscale peers are listed automatically whenever meshTerm is connected to your tailnet — and, when it isn't, via the optional read-only API token. You can also add a host manually using its Tailscale IP (e.g. 100.x.x.x) or MagicDNS name (e.g. my-server.tail1234.ts.net).</p>
       </div>
     </li>
     <li>
