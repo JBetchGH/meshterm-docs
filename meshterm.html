@@ -212,6 +212,17 @@
 
       <p>If a host only has one session, meshTerm skips the picker and attaches directly. If it has none, a fresh session is spawned and you connect to it.</p>
 
+      <h4 id="halo">Halo: the persistent ring buffer</h4>
+      <p>The thing that makes Roam durable is a per-session <strong>ring buffer</strong> the daemon keeps for every session. We call it <strong>Halo</strong>. It is a rolling window of your session's output (up to <strong>4&nbsp;MiB per session</strong>) that lives on the host, independent of whether any client is attached. When your phone drops off, backgrounds, or switches networks, the shell keeps running and its output keeps flowing into the ring, so nothing is lost while you are away.</p>
+      <p>When you reattach, the daemon replays the ring from the exact byte you last acknowledged and then hands you straight into the live stream with no visible seam. Because the buffer tracks output by byte position, replay resumes precisely where you left off rather than redrawing the whole screen. A few details worth knowing:</p>
+      <ul>
+        <li><strong>Recency window.</strong> meshTerm asks for only as much replay as your scrollback setting can actually display, so a quick reconnect does not re-stream megabytes you will never scroll back to.</li>
+        <li><strong>Full-screen apps.</strong> Inside a full-screen TUI (vim, htop, a pager) the replay budget tightens automatically, since an alt-screen app has no scrollback of its own. The daemon also reconstructs the app's stable bottom rows (status bars, prompts) so they are intact the moment you reattach.</li>
+        <li><strong>Honest truncation.</strong> If you were away long enough that the oldest output rolled out of the 4&nbsp;MiB ring, meshTerm tells you plainly that some output was lost during the disconnect rather than pretending the scrollback is complete.</li>
+        <li><strong>Survives daemon restarts.</strong> With <em>Persist across daemon restarts</em> on, the ring is checkpointed to disk, so your scrollback and session come back even after a self-update or a host reboot.</li>
+      </ul>
+      <p>Halo lives entirely on the open-source daemon; nothing about your session travels anywhere but between your device and your own host. The full buffer and replay design is documented in the <a href="https://github.com/AG-Studio-Apps/mtroamd">mtroamd</a> repository.</p>
+
       <h4>Default session and pinning</h4>
       <p>In Edit Host → Roam Persistence:</p>
       <ul>
@@ -221,7 +232,7 @@
       </ul>
 
       <h4>Keep-alive (idle timeout)</h4>
-      <p>Pick how long the daemon should hold a Roam session when no client is attached. Options: <strong>1 hour</strong>, <strong>1 day</strong>, <strong>7 days</strong>, <strong>30 days</strong>, or <strong>Never</strong> (kept until the daemon restarts or you kill it). The default is the daemon's own default (30 days).</p>
+      <p>Pick how long the daemon should hold a Roam session when no client is attached. Options: <strong>Default</strong> (uses the daemon's built-in timeout), <strong>1 hour</strong>, <strong>1 day</strong>, <strong>7 days</strong>, <strong>30 days</strong>, or <strong>Never</strong> (kept until the daemon restarts or you kill it). New hosts inherit whatever you choose under Settings, Persistence.</p>
 
       <figure>
         <img src="images/v2-roam-sessions.PNG" alt="Roam sessions picker">
@@ -315,7 +326,7 @@
 
       <h3>Where keys live</h3>
       <ul>
-        <li>Private keys are stored in the <strong>iOS Keychain</strong>, marked <code>WhenUnlockedThisDeviceOnly</code> — they don't back up to iCloud or transfer to other devices.</li>
+        <li>Private keys are stored in the <strong>iOS Keychain</strong>. By default they are marked <code>WhenUnlockedThisDeviceOnly</code>, so they stay on this device and never reach iCloud. If you turn on <strong>iCloud Sync</strong> (Settings; off by default; a Pro feature), your secrets migrate to <strong>iCloud Keychain</strong>, which is end-to-end encrypted, so they become available on your other devices. Tailscale credentials never sync.</li>
         <li>Public keys are stored alongside the host record for display purposes.</li>
       </ul>
 
@@ -335,7 +346,7 @@
         <li>Tap <strong>Sign in with Tailscale</strong> — a browser sheet opens and you sign in with your Tailscale account (Google, Microsoft, GitHub, Apple…). No keys to generate, nothing to renew. If your tailnet requires device approval, meshTerm waits and connects the moment an admin approves.</li>
         <li>That's it. Tap the globe icon to browse your Tailnet and add devices in a tap — once connected, the device list comes straight from your tailnet, <strong>no API token required</strong>.</li>
       </ol>
-      <p>Prefer not to sign in through a browser? An <a href="#tailscale-auth-keys">auth key</a> works exactly as before. And an optional <strong>read-only API token</strong> supplements discovery: it lets meshTerm list your devices even when it isn't connected to the tailnet (or when using System routing through the Tailscale app).</p>
+      <p>Prefer not to sign in through a browser? An <a href="#tailscale-auth-keys">auth key</a> works exactly as before. And an optional <strong>read-only API token</strong> supplements discovery: it lets meshTerm list your devices even when it isn't connected to the tailnet (or when you route through the Tailscale app in <strong>Device network</strong> mode).</p>
       <p>The embedded Tailscale node starts automatically when you open the app. You can see its status (connected, IP addresses, signed-in identity) in <strong>Settings → Tailscale</strong>.</p>
 
       <figure>
@@ -804,7 +815,7 @@
       <p>Shouldn't happen — the self-update path uses atomic rename. If you see it, use <strong>Reinstall</strong> from the host detail screen instead. Reinstall stops the daemon first, which ends any active sessions; save your work before you tap it.</p>
 
       <h4>"Daemon firewall port" instructions</h4>
-      <p>The install sheet's success state shows a distro-specific one-liner to open the daemon's UDP port (default 51820). If you skip it, the daemon will work for SSH-tunnelled attaches but direct attaches over the network won't reach it.</p>
+      <p>The install sheet's success state shows a distro-specific one-liner to open the daemon's UDP port (default 49820). If you skip it, the daemon still works for SSH-tunnelled attaches, but direct attaches over the network won't reach it.</p>
 
       <h4>Roam silently fell back to plain SSH</h4>
       <p>If the daemon is unreachable at connect time, meshTerm falls back to a plain SSH session and shows an orange banner above the terminal so the drop isn't silent. Tap the banner for the underlying error. Common causes: the daemon isn't running on the host (run <code>mtroam status</code> or check via SSH), or the firewall port isn't open.</p>
