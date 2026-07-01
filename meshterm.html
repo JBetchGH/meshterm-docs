@@ -153,6 +153,24 @@
       <figure>
         <img src="images/v2-edit-host.png" alt="Edit Host screen">
       </figure>
+    </section>
+
+    <!-- ============================================ -->
+    <section id="connecting">
+      <h2>5. Connecting to a host</h2>
+      <p>Tap any host in the Sessions tab to open a terminal session.</p>
+
+      <h3>Verifying the host key</h3>
+      <p>On the first connection to a new host, meshTerm shows its host-key fingerprint and asks you to confirm it (trust on first use). Tap <strong>Trust &amp; Connect</strong> to save the key and proceed. If a host's key changes later, meshTerm does not fail silently: it shows an accept-or-compare sheet so you can review and re-trust the new key in place.</p>
+
+      <h3>Reconnecting</h3>
+      <p>meshTerm keeps working as you move between networks and background the app; when you return, live sessions reconnect automatically. A plain SSH shell ends when its connection drops. To keep a shell alive across drops, use tmux or Halo (see <a href="#roam">Roam</a>).</p>
+    </section>
+
+    <!-- ============================================ -->
+    <section id="roam">
+      <h2>6. Roam: persistent sessions</h2>
+      <p><strong>Roam</strong> is meshTerm's persistent-session mode, powered by the open-source <a href="https://ag-studio-apps.github.io/mtroamd">mtRoam</a> daemon (mtroamd) on your own host. Turn it on per host and your shell survives reconnects, app suspension, device switches, and even daemon restarts, with full scrollback replayed on reattach. Its signature is <a href="#halo">Halo</a>, the persistent ring buffer described below.</p>
 
       <h3 id="roam-install">Installing the daemon on a host</h3>
       <p>The first time you tap Connect on a Roam-enabled host that doesn't already have the daemon, a <strong>Set Up Roam</strong> sheet appears. The sheet runs a six-stage install pipeline:</p>
@@ -521,10 +539,6 @@
         </figcaption>
       </figure>
 
-      <!-- TODO: verify against source — exact UI affordance for opening the history browse sheet
-           wasn't confirmed in the read-through (the HistoryBrowseView exists in
-           Sources/meshTerm/Views/HistoryBrowseView.swift but the discoverability point — long-press
-           the chip strip? a button on the accessory bar? — needs a screenshot or another read). -->
     </section>
 
     <!-- ============================================ -->
@@ -539,7 +553,7 @@
         <li><strong>Generic TUI</strong> — blue pill. Sends Ctrl+End, which works in most alt-screen TUIs and pagers.</li>
       </ul>
 
-      <p>Detection runs off the terminal title set by the app, so it's lightweight and accurate. There's no process inspection or byte-stream fingerprinting.</p>
+      <p>Over a Roam (mtRoam) connection the daemon reports the real foreground process running on the host, so detection is exact. For plain SSH hosts, meshTerm falls back to a lightweight heuristic based on the terminal title.</p>
 
       <h3>Per-host override</h3>
       <p>Edit Host → TUI Detection lets you change the behaviour per host:</p>
@@ -749,10 +763,6 @@
         <li><strong>About</strong> — version, Privacy Policy, EULA.</li>
       </ul>
 
-      <!-- TODO: verify against source — the "Terminal" section's exact composition (scrollback options,
-           font size pickers) wasn't fully read in the rewrite pass; the TUI pill master toggle is
-           confirmed at TerminalSettings.tuiPillEnabled but other Terminal-section items should be
-           checked before publish. -->
     </section>
 
     <!-- ============================================ -->
@@ -778,10 +788,6 @@
 
       <h3>Subscribing</h3>
       <p>Tap <strong>Upgrade</strong> in Settings or on the host-limit / session-limit prompt. Pro is available as monthly or annual; the annual plan is the better value. Free trials, when offered, apply on the first qualifying purchase per Apple ID.</p>
-      <!-- TODO: verify against source — exact prices for the monthly and annual tiers aren't
-           hard-coded in the app (StoreKit pulls them from App Store Connect), so concrete numbers
-           depend on the territory. The user may want to add a default price line once StoreKit
-           connect-side pricing is finalised. -->
 
       <h3>Restoring purchases</h3>
       <p>Tap <strong>Restore Purchases</strong> in Settings if you reinstall the app or switch devices.</p>
@@ -851,11 +857,11 @@
 
       <h3>Tailscale</h3>
 
-      <h4>"Enter your Tailscale API token in Settings first."</h4>
-      <p>You opened the Tailnet browser without an API token configured. Go to Settings → Tailscale → API Token and paste one in. See the <a href="meshterm-tailscale-integration.html">Tailscale Setup Guide</a>.</p>
+      <h4>Tailnet device browser is empty or asks for a token</h4>
+      <p>When meshTerm is connected to your tailnet (Built-in mode), the device list comes straight from the tailnet with no API token needed. A read-only API token is only needed to browse while you are <em>not</em> connected (offline, or a profile you haven't signed into). Add one under Settings → Connections → Tailscale if you want that. See the <a href="meshterm-tailscale-integration.html">Tailscale Setup Guide</a>.</p>
 
       <h4>"Invalid or expired token."</h4>
-      <p>Tailscale API tokens expire. Generate a new one at <a href="https://login.tailscale.com/admin/settings/keys">login.tailscale.com</a> and paste it into Settings → Tailscale.</p>
+      <p>Tailscale API tokens expire. If you use one, generate a new one at <a href="https://login.tailscale.com/admin/settings/keys">login.tailscale.com</a> and paste it into Settings → Connections → Tailscale.</p>
 
       <h4>Tailnet devices missing from the browser</h4>
       <ul>
