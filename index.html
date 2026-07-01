@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>meshTerm — iOS SSH client with persistent sessions</title>
-<meta name="description" content="meshTerm 2.0 — SSH for iPhone and iPad. Roam keeps your terminal sessions alive on your own server so you can pick them up days later from any device.">
+<meta name="description" content="meshTerm - SSH for iPhone and iPad. Roam (Halo) keeps your terminal sessions alive on your own server so you can pick them up days later from any device.">
 <link rel="alternate" hreflang="en" href="index.html">
 <link rel="alternate" hreflang="es" href="index.es.html">
 <link rel="stylesheet" href="assets/site.css">
@@ -104,7 +104,7 @@
 <body>
 
 <header class="site-header">
-  <div class="app-name">meshTerm 2.0</div>
+  <div class="app-name">meshTerm</div>
   <h1>SSH that stays where you left it</h1>
   <div class="sub">SSH sessions for iPhone and iPad. With Roam, the shell runs on your own server — drop the connection, switch devices, pick up exactly where you stopped.</div>
 </header>
@@ -127,16 +127,32 @@
     command — exactly where you left it.
   </p>
 
-  <h2 class="section-heading">What's in 2.0</h2>
+  <h2 class="section-heading">What's inside</h2>
 
   <div class="feature-grid">
     <div class="feature-card">
-      <h3>Roam — persistent sessions</h3>
-      <p>A small open-source helper, <a href="https://ag-studio-apps.github.io/mtroamd">mtroamd</a>, runs on your own server and holds your shell open across reconnects, app backgrounding and device switches.</p>
+      <h3>Roam: persistent sessions (Halo)</h3>
+      <p>A small open-source daemon, <a href="https://ag-studio-apps.github.io/mtroamd">mtroamd</a>, runs on your own server and holds your shell open across reconnects, app backgrounding, and device switches. Its persistent ring buffer, Halo, replays your scrollback the moment you reattach.</p>
     </div>
     <div class="feature-card">
       <h3>One-tap install</h3>
-      <p>From Add Host, after you authenticate, tap Set Up Roam. meshTerm fetches signed binaries, verifies them on-device, and configures the right service supervisor for your platform.</p>
+      <p>From Edit Host, after you authenticate, tap Set Up mtRoam. meshTerm fetches signed binaries, verifies them on-device, and configures the right service supervisor for your platform.</p>
+    </div>
+    <div class="feature-card">
+      <h3>iCloud Sync</h3>
+      <p>Your hosts, keys, macros, snippets, tags, Tailscale profiles and preferences sync across your devices, with secrets carried end-to-end by iCloud Keychain. Opt-in, off by default.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Port forwarding</h3>
+      <p>Local (-L) forwards and a dynamic SOCKS5 (-D) proxy, managed per host, with an in-app browser for local web forwards.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Session takeover</h3>
+      <p>Open a session on one device and take it over from another with a single tap. The displaced device drops to read-only.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Retro color modes</h3>
+      <p>True Color plus green, blue and red phosphor and monochrome, with diff-aware brightness so additions stay bright and removals dim.</p>
     </div>
     <div class="feature-card">
       <h3>Named, multi-attach sessions</h3>
@@ -186,7 +202,7 @@
     <a href="meshterm.html" class="doc-card">
       <div class="icon">📖</div>
       <h2>User Guide</h2>
-      <p>Setting up your first host, pairing the Roam daemon, keyboard modes, the macro bar, snippets, SFTP, multi-session attach modes, and troubleshooting.</p>
+      <p>Setting up hosts, the Roam daemon and Halo, port forwarding, keyboard modes, the macro bar, snippets, SFTP, multi-session attach modes, and troubleshooting.</p>
       <span class="action">Read the guide</span>
     </a>
 
