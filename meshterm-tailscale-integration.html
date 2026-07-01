@@ -440,7 +440,7 @@
   WireGuard tunnel directly from your iPhone or iPad — no separate Tailscale app needed —
   and the device browser lists your Tailnet's machines with no further setup.</p>
 
-  <h3>Sign in with Tailscale <span style="font-size:0.7em; vertical-align:middle; background:#0a84ff22; color:#0a84ff; border-radius:6px; padding:2px 8px;">New in 2.0.2</span></h3>
+  <h3>Sign in with Tailscale</h3>
 
   <p>The simplest path — no keys to generate, nothing to renew:</p>
 
@@ -449,7 +449,7 @@
       <div class="step-num">1</div>
       <div class="step-content">
         <strong>Create a profile in meshTerm</strong>
-        <p>Tap the globe icon in the host list (or go to Settings &rarr; Tailscale) and create a Tailscale profile.</p>
+        <p>Tap the globe icon in the Sessions tab (or go to Settings &rarr; Connections &rarr; Tailscale) and create a Tailscale profile.</p>
       </div>
     </li>
     <li>
@@ -542,7 +542,7 @@
           <span class="arrow">›</span>
           <span class="item">Auth Key</span>
         </div>
-        <p>meshTerm connects to your Tailnet automatically. You'll see the connection status and your Tailscale IP addresses in Settings &rarr; Tailscale.</p>
+        <p>meshTerm connects to your Tailnet automatically. You'll see the connection status and your Tailscale IP addresses in Settings &rarr; Connections &rarr; Tailscale.</p>
       </div>
     </li>
   </ol>
@@ -565,8 +565,8 @@
   the device browser lists your machines straight from the tailnet itself. A read-only API token
   <em>supplements</em> discovery: with one, meshTerm can list your devices by name even when it
   isn't connected to the tailnet — useful before connecting for the first time on a new profile,
-  when browsing a profile other than the connected one, or when using System routing through the
-  Tailscale app. You can also skip discovery entirely and add hosts manually by Tailscale IP or
+  when browsing a profile other than the connected one, or when routing through the Tailscale app in
+  Device network mode. You can also skip discovery entirely and add hosts manually by Tailscale IP or
   MagicDNS name. <strong>Tailscale SSH connections work without it.</strong></p>
 
   <figure class="screenshot-placeholder">
@@ -640,15 +640,15 @@
       <div class="step-num">7</div>
       <div class="step-content">
         <strong>Paste it into meshTerm</strong>
-        <p>Open meshTerm and navigate to the API token setting.</p>
+        <p>Open meshTerm, go to your Tailscale profile, and paste the token into its API Token field.</p>
         <div class="path-display">
           <span class="item">meshTerm</span>
           <span class="arrow">›</span>
           <span class="item">Settings</span>
           <span class="arrow">›</span>
-          <span class="item">Tailscale</span>
+          <span class="item">Connections</span>
           <span class="arrow">›</span>
-          <span class="item">API Token</span>
+          <span class="item">Tailscale</span>
         </div>
       </div>
     </li>
@@ -799,7 +799,7 @@
 
   <h3>API token expired</h3>
   <p>Generate a new token at tailscale.com &rarr; Settings &rarr; Personal Settings &rarr; Keys and update it in
-  meshTerm &rarr; Settings &rarr; Tailscale &rarr; API Token.</p>
+  meshTerm &rarr; Settings &rarr; Connections &rarr; Tailscale (in the profile that uses it).</p>
 
   <h3>Enabling Tailscale SSH by Linux distribution</h3>
 
