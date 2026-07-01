@@ -50,9 +50,10 @@
       <li><a href="#search">17. Scrollback search</a></li>
       <li><a href="#themes">18. Color modes</a></li>
       <li><a href="#security">19. Security &amp; App Lock</a></li>
-      <li><a href="#settings">20. Settings reference</a></li>
-      <li><a href="#pro">21. meshTerm Pro</a></li>
-      <li><a href="#troubleshooting">22. Troubleshooting</a></li>
+      <li><a href="#sync">20. iCloud Sync</a></li>
+      <li><a href="#settings">21. Settings reference</a></li>
+      <li><a href="#pro">22. meshTerm Pro</a></li>
+      <li><a href="#troubleshooting">23. Troubleshooting</a></li>
     </ul>
   </aside>
 
@@ -737,12 +738,31 @@
         <li>Tailscale API tokens.</li>
         <li>Secret snippets and secret macros.</li>
       </ul>
-      <p>Nothing sensitive is written to iCloud backup, UserDefaults, or the filesystem in plaintext.</p>
+      <p>By default nothing sensitive is written to UserDefaults, the filesystem, or an iCloud device backup in plaintext. If you enable <a href="#sync">iCloud Sync</a>, secrets sync only through iCloud Keychain, which is end-to-end encrypted.</p>
+    </section>
+
+    <!-- ============================================ -->
+    <section id="sync">
+      <h2>20. iCloud Sync</h2>
+      <p>iCloud Sync keeps meshTerm consistent across your iPhone and iPad. It is <strong>opt-in and off by default</strong> - turn it on in Settings &rarr; iCloud Sync - and it is a <a href="#pro">Pro</a> feature.</p>
+
+      <h3>What syncs</h3>
+      <ul>
+        <li>Your hosts, host tags, and known-host trust (the fingerprints you have accepted).</li>
+        <li>Your SSH key list, macros, snippets, and Tailscale profile names.</li>
+        <li>Appearance and terminal preferences. Some are kept per device class, so an iPhone and an iPad can differ where that makes sense.</li>
+      </ul>
+
+      <h3>Secrets</h3>
+      <p>Sensitive material - SSH private keys, passwords, and secret snippets and macros - is never placed in the synced records. It rides <strong>iCloud Keychain</strong> instead, which is end-to-end encrypted, so it reaches your other devices without ever being exposed to iCloud in plaintext. <strong>Tailscale credentials (auth keys and API tokens) never sync</strong>; each device signs in for itself.</p>
+
+      <h3>Turning it off</h3>
+      <p>Turning sync off stops further propagation but never deletes anything already on a device. To remove synced data, use the erase options under Settings &rarr; Security &amp; Privacy.</p>
     </section>
 
     <!-- ============================================ -->
     <section id="settings">
-      <h2>20. Settings reference</h2>
+      <h2>21. Settings reference</h2>
       <p>A quick map of the Settings tab.</p>
 
       <figure>
@@ -767,7 +787,7 @@
 
     <!-- ============================================ -->
     <section id="pro">
-      <h2>21. meshTerm Pro</h2>
+      <h2>22. meshTerm Pro</h2>
       <p>Every feature in the app is available in the free tier. The only limit is on concurrent surface area:</p>
 
       <table>
@@ -798,7 +818,7 @@
 
     <!-- ============================================ -->
     <section id="troubleshooting">
-      <h2>22. Troubleshooting</h2>
+      <h2>23. Troubleshooting</h2>
 
       <h3>Connection</h3>
 
