@@ -40,18 +40,19 @@
       <li><a href="#auth">7. Authentication</a></li>
       <li><a href="#ssh-keys">8. SSH keys</a></li>
       <li><a href="#tailscale">9. Tailscale</a></li>
-      <li><a href="#keyboard">10. Keyboard</a></li>
-      <li><a href="#predictions">11. Predictions &amp; history</a></li>
-      <li><a href="#tui-pill">12. TUI return-to-prompt pill</a></li>
-      <li><a href="#snippets">13. Snippet Vault</a></li>
-      <li><a href="#macros">14. Macro bar</a></li>
-      <li><a href="#sftp">15. SFTP file browser</a></li>
-      <li><a href="#search">16. Scrollback search</a></li>
-      <li><a href="#themes">17. Color modes</a></li>
-      <li><a href="#security">18. Security &amp; App Lock</a></li>
-      <li><a href="#settings">19. Settings reference</a></li>
-      <li><a href="#pro">20. meshTerm Pro</a></li>
-      <li><a href="#troubleshooting">21. Troubleshooting</a></li>
+      <li><a href="#tunnels">10. Port forwarding &amp; Tunnels</a></li>
+      <li><a href="#keyboard">11. Keyboard</a></li>
+      <li><a href="#predictions">12. Predictions &amp; history</a></li>
+      <li><a href="#tui-pill">13. TUI return-to-prompt pill</a></li>
+      <li><a href="#snippets">14. Snippet Vault</a></li>
+      <li><a href="#macros">15. Macro bar</a></li>
+      <li><a href="#sftp">16. SFTP file browser</a></li>
+      <li><a href="#search">17. Scrollback search</a></li>
+      <li><a href="#themes">18. Color modes</a></li>
+      <li><a href="#security">19. Security &amp; App Lock</a></li>
+      <li><a href="#settings">20. Settings reference</a></li>
+      <li><a href="#pro">21. meshTerm Pro</a></li>
+      <li><a href="#troubleshooting">22. Troubleshooting</a></li>
     </ul>
   </aside>
 
@@ -63,7 +64,7 @@
     <section id="overview">
       <h2>1. Overview</h2>
       <p>meshTerm is an SSH client for iOS and iPadOS. It connects to remote servers over standard SSH, with built-in Tailscale networking, SFTP, port forwarding, and a fast Metal terminal.</p>
-      <p>For sessions that outlive a disconnect, meshTerm offers three levels of persistence, chosen per host: <strong>None</strong> (a plain SSH shell that ends with the connection), <strong>tmux</strong> (your shell survives on the server using software already on most machines), and <strong>Halo</strong> - the optional open-source <a href="https://ag-studio-apps.github.io/mtroamd">mtRoam</a> daemon on your own host, for full persistence that survives network changes, app suspension, device switches, and daemon restarts. See <a href="#roam">Roam</a> for the walkthrough and <a href="#halo">Halo</a> for how the persistent ring buffer works.</p>
+      <p>For sessions that outlive a disconnect, meshTerm offers three levels of persistence, chosen per host: <strong>None</strong> (a plain SSH shell that ends with the connection), <strong>tmux</strong> (your shell survives on the server using software already on most machines), and <strong>Halo</strong> - the optional open-source <a href="https://ag-studio-apps.github.io/mtroamd">mtRoam</a> daemon on your own host, for full persistence that survives network changes, app suspension, device switches, and daemon restarts. See <a href="#roam-install">Roam</a> for the walkthrough and <a href="#halo">Halo</a> for how the persistent ring buffer works.</p>
       <p>Beyond the terminal, meshTerm includes:</p>
       <ul>
         <li>Multiple concurrent sessions per host, with attach modes for sharing or watching.</li>
@@ -398,8 +399,31 @@
     </section>
 
     <!-- ============================================ -->
+    <section id="tunnels">
+      <h2>10. Port forwarding &amp; Tunnels</h2>
+      <p>meshTerm can forward network ports over an SSH connection, the same way <code>ssh -L</code> and <code>ssh -D</code> do on a desktop. Rules are configured per host and managed from the <strong>Tunnels</strong> screen.</p>
+
+      <h3>Rule types</h3>
+      <ul>
+        <li><strong>Local</strong> (<code>-L</code>) - binds <code>127.0.0.1:&lt;port&gt;</code> on your device and forwards each connection to a <code>host:port</code> reachable from the server. Good for reaching a database, an admin panel, or an internal web app that only listens on the server's own network.</li>
+        <li><strong>Dynamic</strong> (<code>-D</code>) - runs a SOCKS5 proxy on <code>127.0.0.1:&lt;port&gt;</code>; point an app at it and its traffic routes out through the host. Remote (<code>-R</code>) forwarding is not supported yet.</li>
+      </ul>
+
+      <h3>Setting up a rule</h3>
+      <p>In <strong>Edit Host &#8594; Port Forwarding</strong>, tap <strong>Add Port Forward</strong>, choose Local or Dynamic, and set the local port (and, for Local, the destination as seen from the host). Add a label if you like, then toggle it on.</p>
+
+      <h3>Managing tunnels</h3>
+      <p>Open <strong>Tunnels</strong> from a host's long-press menu or the terminal's more-menu. Each rule shows a live status: <em>Listening</em>, <em>Not running</em>, or an error. Tunnels start when the session connects.</p>
+      <p>For a local web forward, tap its row to open the target in meshTerm's built-in browser; the tunnel stays connected while you browse. For a SOCKS proxy, point an app at <code>127.0.0.1:&lt;port&gt;</code>.</p>
+
+      <div class="callout info">
+        Tunnels are plain-SSH only (not available over the mtRoam/Halo transport), bind loopback only (reachable just by apps on this device), and are active only while the session is connected and the app is in the foreground. Rules are saved per host and travel with iCloud Sync.
+      </div>
+    </section>
+
+    <!-- ============================================ -->
     <section id="keyboard">
-      <h2>10. Keyboard</h2>
+      <h2>11. Keyboard</h2>
       <p>meshTerm has three on-screen keyboard modes. Switch between them with the toggle on the accessory row, or swipe between them.</p>
 
       <h3>iOS keyboard</h3>
@@ -463,7 +487,7 @@
 
     <!-- ============================================ -->
     <section id="predictions">
-      <h2>11. Predictions &amp; history <span class="new-badge">2.0</span></h2>
+      <h2>12. Predictions &amp; history <span class="new-badge">2.0</span></h2>
 
       <h3>Predictive echo overlay</h3>
       <p>When you're typing at a shell prompt, meshTerm mirrors your keystrokes on screen immediately and then reconciles them with the echo that comes back from the server. On a slow link, typing feels native — you see the letters appear as you type, not after a 200 ms round-trip.</p>
@@ -505,7 +529,7 @@
 
     <!-- ============================================ -->
     <section id="tui-pill">
-      <h2>12. TUI return-to-prompt pill <span class="new-badge">2.0</span></h2>
+      <h2>13. TUI return-to-prompt pill <span class="new-badge">2.0</span></h2>
       <p>When a full-screen terminal app (TUI) like Claude Code or Codex CLI is running, scrolling up to look at earlier output normally means the prompt scrolls off the bottom of the screen. The TUI return-to-prompt pill is a small floating button that surfaces in those situations and jumps you straight back to the live prompt with one tap.</p>
 
       <p>Three styles, picked automatically by what's running:</p>
@@ -536,7 +560,7 @@
 
     <!-- ============================================ -->
     <section id="snippets">
-      <h2>13. Snippet Vault</h2>
+      <h2>14. Snippet Vault</h2>
       <p>The Snippet Vault is a searchable library of terminal commands you can send to the active session in one tap. Open it from the terminal toolbar.</p>
 
       <h3>Default snippets</h3>
@@ -570,7 +594,7 @@
 
     <!-- ============================================ -->
     <section id="macros">
-      <h2>14. Macro bar</h2>
+      <h2>15. Macro bar</h2>
       <p>The macro bar is a scrollable row of one-tap commands above the keyboard, available in every session. Tap a macro to send its command followed by Return.</p>
 
       <h3>Editing macros</h3>
@@ -596,7 +620,7 @@
 
     <!-- ============================================ -->
     <section id="sftp">
-      <h2>15. SFTP file browser</h2>
+      <h2>16. SFTP file browser</h2>
       <p>The SFTP browser moves files on and off your servers without leaving meshTerm. It runs over the same SSH transport as your terminal sessions — no additional credentials, no third-party cloud.</p>
 
       <h3>Opening the browser</h3>
@@ -640,7 +664,7 @@
 
     <!-- ============================================ -->
     <section id="search">
-      <h2>16. Scrollback search <span class="new-badge">2.0</span></h2>
+      <h2>17. Scrollback search <span class="new-badge">2.0</span></h2>
       <p>Press <strong>⌘ F</strong> (or tap the magnifier in the terminal toolbar) to open the search bar at the bottom of the terminal. Type to find matches in the visible scrollback; a running match count shows how many hits.</p>
       <ul>
         <li><strong>Up / Down arrows</strong> — step between matches.</li>
@@ -656,7 +680,7 @@
 
     <!-- ============================================ -->
     <section id="themes">
-      <h2>17. Color modes</h2>
+      <h2>18. Color modes</h2>
       <p>Settings → Terminal → <strong>Color Mode</strong> sets the terminal's look. Alongside full <strong>True Color</strong>, meshTerm offers retro single-hue modes for a calmer, CRT-style view:</p>
       <ul>
         <li><strong>True Color</strong> - full 24-bit color.</li>
@@ -672,7 +696,7 @@
 
     <!-- ============================================ -->
     <section id="security">
-      <h2>18. Security &amp; App Lock</h2>
+      <h2>19. Security &amp; App Lock</h2>
 
       <h3>Known Hosts (TOFU)</h3>
       <p>meshTerm uses <strong>Trust On First Use</strong> for host-key verification. The first time you connect to a host, the app shows the server's host-key fingerprint and asks you to confirm. Subsequent connects check the fingerprint silently. If it changes (server rebuilt, key rotated, or something more sinister), the connection is blocked with a warning.</p>
@@ -704,7 +728,7 @@
 
     <!-- ============================================ -->
     <section id="settings">
-      <h2>19. Settings reference</h2>
+      <h2>20. Settings reference</h2>
       <p>A quick map of the Settings tab.</p>
 
       <figure>
@@ -733,7 +757,7 @@
 
     <!-- ============================================ -->
     <section id="pro">
-      <h2>20. meshTerm Pro</h2>
+      <h2>21. meshTerm Pro</h2>
       <p>Every feature in the app is available in the free tier. The only limit is on concurrent surface area:</p>
 
       <table>
@@ -768,7 +792,7 @@
 
     <!-- ============================================ -->
     <section id="troubleshooting">
-      <h2>21. Troubleshooting</h2>
+      <h2>22. Troubleshooting</h2>
 
       <h3>Connection</h3>
 
