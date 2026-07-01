@@ -28,7 +28,7 @@
     <div class="sidebar-title">Contents</div>
     <ul>
       <li><a href="#overview">1. Overview</a></li>
-      <li><a href="#whats-new">2. What's new in 2.0</a></li>
+      <li><a href="#whats-new">2. What's new</a></li>
       <li><a href="#getting-started">3. Getting started</a></li>
       <li><a href="#hosts">4. Managing hosts</a></li>
       <li><a href="#connecting">5. Connecting to a host</a></li>
@@ -47,7 +47,7 @@
       <li><a href="#macros">14. Macro bar</a></li>
       <li><a href="#sftp">15. SFTP file browser</a></li>
       <li><a href="#search">16. Scrollback search</a></li>
-      <li><a href="#themes">17. Themes</a></li>
+      <li><a href="#themes">17. Color modes</a></li>
       <li><a href="#security">18. Security &amp; App Lock</a></li>
       <li><a href="#settings">19. Settings reference</a></li>
       <li><a href="#pro">20. meshTerm Pro</a></li>
@@ -62,7 +62,8 @@
     <!-- ============================================ -->
     <section id="overview">
       <h2>1. Overview</h2>
-      <p>meshTerm is an SSH client for iOS and iPadOS. It connects to remote servers over standard SSH and offers an optional persistent-session mode called <strong>Roam</strong> that keeps your shell alive on the server even when your phone reconnects, backgrounds, or switches networks.</p>
+      <p>meshTerm is an SSH client for iOS and iPadOS. It connects to remote servers over standard SSH, with built-in Tailscale networking, SFTP, port forwarding, and a fast Metal terminal.</p>
+      <p>For sessions that outlive a disconnect, meshTerm offers three levels of persistence, chosen per host: <strong>None</strong> (a plain SSH shell that ends with the connection), <strong>tmux</strong> (your shell survives on the server using software already on most machines), and <strong>Halo</strong> - the optional open-source <a href="https://ag-studio-apps.github.io/mtroamd">mtRoam</a> daemon on your own host, for full persistence that survives network changes, app suspension, device switches, and daemon restarts. See <a href="#roam">Roam</a> for the walkthrough and <a href="#halo">Halo</a> for how the persistent ring buffer works.</p>
       <p>Beyond the terminal, meshTerm includes:</p>
       <ul>
         <li>Multiple concurrent sessions per host, with attach modes for sharing or watching.</li>
@@ -80,18 +81,19 @@
 
     <!-- ============================================ -->
     <section id="whats-new">
-      <h2>2. What's new in 2.0</h2>
-      <p>If you're upgrading from meshTerm 1.x, here's what changed:</p>
+      <h2>2. What's new</h2>
+      <p>meshTerm is currently at version <strong>2.1.2</strong>. The headline additions since the 2.0 line:</p>
       <ul>
-        <li><strong>Roam mode</strong> — opt-in per host. Pair a small <a href="https://ag-studio-apps.github.io/mtroamd">open-source daemon</a> on your server and your shell becomes durable across reconnects, app suspension, and device switches.</li>
-        <li><strong>Named multi-attach sessions</strong> — open <code>dev</code>, <code>logs</code>, <code>tests</code> on the same host and switch between them in one tap. Attach exclusively, read-only watch, or passively tail.</li>
-        <li><strong>Predictive echo</strong> — keystrokes mirror locally as you type, then reconcile with the daemon's actual echo. Adapts to the network latency.</li>
-        <li><strong>History browse</strong> — pull up a sheet of the host's shell history, search and send a command in one tap.</li>
-        <li><strong>TUI return-to-prompt pill</strong> — a floating pill that recognises Claude Code or Codex CLI and offers a one-tap jump back to the live prompt.</li>
-        <li><strong>More key types</strong> — Ed25519, ECDSA P-256, P-384, P-521.</li>
-        <li><strong>Hardware buttons</strong> — bind Volume Up/Down (short and long press) to terminal actions.</li>
-        <li><strong>⌘F scrollback search</strong>, host import/export from <code>~/.ssh/config</code>, host tags and filter chips, eight curated themes.</li>
-        <li><strong>Pro tier simplified</strong> — every feature is free; Pro only lifts the 1-host / 1-session cap to unlimited.</li>
+        <li><strong>All-new Metal terminal</strong> - the renderer was rebuilt from scratch for smoother output and rock-steady layout. Live content stays pinned above the keyboard and the grid holds steady through rotations, with nothing to configure.</li>
+        <li><strong>iCloud Sync</strong> (Pro) - hosts, known-host trust, your SSH key list, macros, snippets, Tailscale profiles, session tags and preferences sync across your devices. Secrets ride iCloud Keychain (end-to-end encrypted). Opt-in, off by default.</li>
+        <li><strong>Port forwarding / Tunnels</strong> - local (<code>-L</code>) forwards and a dynamic SOCKS5 (<code>-D</code>) proxy, configured per host, with an in-app browser for local web forwards.</li>
+        <li><strong>Session takeover</strong> - open a session on one device and take it over from another with a single tap; the displaced device drops to read-only with a Take Over banner.</li>
+        <li><strong>Sessions tab</strong> - the old Hosts tab is retired; your hosts and their live and resumable sessions now live together under Sessions, with per-host CPU, RAM and storage stats.</li>
+        <li><strong>Tailscale, deeper</strong> - browser sign-in (no auth keys to paste), multiple named profiles with per-host binding, an in-app device browser, and fully in-process networking (no Tailscale app required). Headscale and self-hosted control servers are supported.</li>
+        <li><strong>Retro color modes</strong> - Green, Blue and Red phosphor plus Monochrome, alongside True Color, with diff-aware brightness so additions stay bright and removals dim.</li>
+        <li><strong>Agent-aware terminal</strong> - a return-to-prompt pill for Claude Code and Codex, a "Claude may be idle" banner with one-tap Save &amp; Restart, and a fullscreen mode for agent TUIs.</li>
+        <li><strong>Reconnect hardening</strong> - faster, quieter resumes after a network change or a long spell in the background, with anti-flood backoff.</li>
+        <li><strong>In-place host-key re-trust</strong>, SSH key file import, and opt-in hardware volume-button keys.</li>
       </ul>
     </section>
 
@@ -101,8 +103,8 @@
 
       <h3>Adding your first host</h3>
       <ol>
-        <li>Open meshTerm. On first launch you'll see the Hosts tab, empty.</li>
-        <li>Tap <strong>+</strong> in the top right.</li>
+        <li>Open meshTerm. On first launch the <strong>Sessions</strong> tab is empty ("No Hosts").</li>
+        <li>Tap <strong>+</strong> in the top right (or the globe icon to browse and add a host from your Tailnet).</li>
         <li>Fill in the connection details:
           <ul>
             <li><strong>Label</strong> — a friendly name (e.g. <code>demo</code>).</li>
@@ -132,10 +134,10 @@
       <p>Long-press a host card or open its detail screen, then tap <strong>Edit</strong>. The editor groups settings into Connection, Authentication, Protocol (plain SSH or Roam), Session, TUI Detection, Tags, Operating System, and Environment Variables.</p>
 
       <h3>Deleting a host</h3>
-      <p>Swipe a host card left and tap <strong>Delete</strong>.</p>
+      <p>Tap <strong>Edit</strong> at the top of the Sessions tab, then the red minus on a host to remove it (you can also drag to reorder here). A host is also reachable by long-press for a context menu of actions.</p>
 
       <h3>Tags &amp; filter chips</h3>
-      <p>Tag hosts in the editor's <strong>Tags</strong> section (comma-separated, e.g. <code>prod, web</code>). A chip row at the top of the Hosts tab lets you filter by tag.</p>
+      <p>Tag hosts in the editor's <strong>Tags</strong> section (comma-separated, e.g. <code>prod, web</code>). A chip row at the top of the Sessions tab lets you filter by tag.</p>
 
       <h3>Host import / export</h3>
       <p>Settings → Hosts gives you two buttons:</p>
@@ -338,7 +340,14 @@
     <!-- ============================================ -->
     <section id="tailscale">
       <h2>9. Tailscale</h2>
-      <p>meshTerm has a built-in Tailscale networking stack — no separate Tailscale app required. Add your Tailnet credentials and meshTerm connects to your devices directly over WireGuard. SSH, SFTP, Roam, and all auxiliary connections route through the encrypted Tailscale tunnel natively.</p>
+      <p>meshTerm has a built-in Tailscale networking stack, so no separate Tailscale app is required. Add your Tailnet credentials and meshTerm connects to your devices directly over WireGuard. SSH, SFTP, Roam, and all auxiliary connections route through the encrypted Tailscale tunnel natively.</p>
+
+      <h3 id="tailscale-routing">Routing modes</h3>
+      <p>Each host uses one of two routing modes. Set the default in Settings → Connections → Tailscale, and override it per host in Edit Host:</p>
+      <ul>
+        <li><strong>Built-in (Tailscale)</strong> - meshTerm's own in-process Tailscale node. Works alongside any system VPN and needs a Tailscale profile. This is the recommended default, and it does not depend on the Tailscale app being installed.</li>
+        <li><strong>Device network</strong> - uses your device's normal networking: it routes via the Tailscale app if that app is running, or connects directly otherwise.</li>
+      </ul>
 
       <h3>Setting up Tailscale <span class="new-badge">2.0.2</span></h3>
       <ol>
@@ -647,21 +656,17 @@
 
     <!-- ============================================ -->
     <section id="themes">
-      <h2>17. Themes</h2>
-      <p>Settings → Appearance → Theme lets you pick from eight curated themes. Each theme drives the terminal palette, the app accent, and the per-host monogram tints together.</p>
+      <h2>17. Color modes</h2>
+      <p>Settings → Terminal → <strong>Color Mode</strong> sets the terminal's look. Alongside full <strong>True Color</strong>, meshTerm offers retro single-hue modes for a calmer, CRT-style view:</p>
       <ul>
-        <li>Default Dark</li>
-        <li>Default Light</li>
-        <li>Solarized Dark</li>
-        <li>Solarized Light</li>
-        <li>Gruvbox</li>
-        <li>Dracula</li>
-        <li>Nord</li>
-        <li>Tomorrow Night</li>
+        <li><strong>True Color</strong> - full 24-bit color.</li>
+        <li><strong>Monochrome</strong> - a single neutral hue.</li>
+        <li><strong>Green Phosphor</strong>, <strong>Blue Phosphor</strong>, <strong>Red Phosphor</strong> - classic terminal glows.</li>
       </ul>
+      <p>The single-hue modes collapse color to one tint but keep diffs legible: additions render bright, removals dim. The change applies instantly to the open terminal.</p>
 
       <figure>
-        <img src="images/v2-themes.png" alt="Theme picker">
+        <img src="images/v2-themes.png" alt="Color mode picker">
       </figure>
     </section>
 
