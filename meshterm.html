@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>meshTerm 2.0 - User Guide</title>
+<title>meshTerm 2.1 - User Guide</title>
 <link rel="stylesheet" href="assets/site.css">
 </head>
 <body>
 
 <header class="site-header">
-  <div class="app-name">meshTerm 2.0</div>
+  <div class="app-name">meshTerm 2.1</div>
   <h1>User Guide</h1>
   <div class="sub">Connecting, pairing the Roam daemon, named sessions, AI agents, the keyboard palette, snippets, SFTP, and everything in between.</div>
 </header>
@@ -46,20 +46,21 @@
       <li><a href="#predictions">13. Predictions &amp; history</a></li>
       <li><a href="#tui-pill">14. TUI return-to-prompt pill</a></li>
       <li><a href="#snippets">15. Snippet Vault</a></li>
-      <li><a href="#macros">16. Macro bar</a></li>
-      <li><a href="#sftp">17. SFTP file browser</a></li>
-      <li><a href="#search">18. Scrollback search</a></li>
-      <li><a href="#themes">19. Color modes</a></li>
-      <li><a href="#security">20. Security &amp; App Lock</a></li>
-      <li><a href="#sync">21. iCloud Sync</a></li>
-      <li><a href="#settings">22. Settings reference</a></li>
-      <li><a href="#pro">23. meshTerm Pro</a></li>
-      <li><a href="#troubleshooting">24. Troubleshooting</a></li>
+      <li><a href="#secret-profiles">16. Secret Profiles</a></li>
+      <li><a href="#macros">17. Macro bar</a></li>
+      <li><a href="#sftp">18. SFTP file browser</a></li>
+      <li><a href="#search">19. Scrollback search</a></li>
+      <li><a href="#themes">20. Color modes</a></li>
+      <li><a href="#security">21. Security &amp; App Lock</a></li>
+      <li><a href="#sync">22. iCloud Sync</a></li>
+      <li><a href="#settings">23. Settings reference</a></li>
+      <li><a href="#pro">24. meshTerm Pro</a></li>
+      <li><a href="#troubleshooting">25. Troubleshooting</a></li>
     </ul>
   </aside>
 
   <main>
-    <div class="page-title">meshTerm 2.0 - User Guide</div>
+    <div class="page-title">meshTerm 2.1 - User Guide</div>
     <div class="page-subtitle">For iPhone and iPad.</div>
 
     <!-- ============================================ -->
@@ -88,7 +89,7 @@
       <ul>
         <li><strong>Faster, steadier reconnects</strong> - returning to the app is quicker and more reliable. meshTerm refreshes stale network paths the moment you wake, re-probes a dropped link in about a second, and no longer double-reconnects on a deep link. Your sessions snap back where you left them.</li>
         <li><strong>Clean reattach for full-screen tools</strong> - Claude Code, vim, htop, and other full-screen apps now repaint correctly when you return to a session. No more blank screen, split screen, or missing prompt after backgrounding, locking, or switching devices.</li>
-        <li><strong>Secret Profiles, delivered live</strong> - inject a bundle of environment variables and keys straight into the session you are already in, with one tap. Nothing is typed and nothing is left on screen. It works over plain SSH, MTRoam, and tmux. See <a href="#snippets">Secret Profiles</a>.</li>
+        <li><strong>Secret Profiles, delivered live</strong> - inject a bundle of environment variables and keys straight into the session you are already in, with one tap. Nothing is typed and nothing is left on screen. It works over plain SSH, MTRoam, and tmux. See <a href="#secret-profiles">Secret Profiles</a>.</li>
       </ul>
 
       <h3>2.1.4</h3>
@@ -585,18 +586,22 @@
       <h3>Secret snippets</h3>
       <p>When adding a snippet, mark it as <strong>Secret</strong> to back its command text with the iOS Keychain instead of plain storage. Optionally require Face ID, Touch ID, or your device passcode each time the snippet fires - useful for sudo passwords, API tokens, or anything you don't want appearing in a list of commands.</p>
 
-      <h3>Secret Profiles <span class="new-badge">2.1</span></h3>
-      <p>A <strong>Secret Profile</strong> bundles a set of environment variables and keys under one name, so you can hand a whole environment to a session at once. Tap to inject a profile into the session you are already in: its variables and keys reach the running shell or agent <strong>invisibly</strong>, with nothing typed into the terminal and nothing left on screen afterward. Injection works over plain SSH, mtRoam, and tmux.</p>
-      <p>Like secret snippets and macros, profile values are backed by the iOS Keychain and can be gated by Face ID, Touch ID, or your device passcode. Profiles are handy for giving an agent or a shell its API keys and tokens without those values ever landing in your scrollback.</p>
-
       <h3>Folders &amp; search</h3>
       <p>Tap <strong>New Folder</strong> to organise. The search bar at the top of the Vault searches across titles, command text, and tags.</p>
 
     </section>
 
     <!-- ============================================ -->
+    <section id="secret-profiles">
+      <h2>16. Secret Profiles <span class="new-badge">2.1</span></h2>
+      <p>A <strong>Secret Profile</strong> bundles a set of environment variables and keys under one name, so you can hand a whole environment to a session at once. Tap to inject a profile into the session you are already in: its variables and keys reach the running shell or agent <strong>invisibly</strong>, with nothing typed into the terminal and nothing left on screen afterward. Injection works over plain SSH, mtRoam, and tmux.</p>
+      <p>Like secret snippets and macros, profile values are backed by the iOS Keychain and can be gated by Face ID, Touch ID, or your device passcode. Profiles are handy for giving an agent or a shell its API keys and tokens without those values ever landing in your scrollback.</p>
+      <p>Manage profiles in <strong>Settings → Security → Secret Profiles</strong>, or open the <strong>Secret Profiles</strong> tile on the keyboard palette's Features page.</p>
+    </section>
+
+    <!-- ============================================ -->
     <section id="macros">
-      <h2>16. Macro bar</h2>
+      <h2>17. Macro bar</h2>
       <p>The macro bar is a scrollable row of one-tap commands above the keyboard, available in every session. Tap a macro to send its command followed by Return.</p>
 
       <h3>Editing macros</h3>
@@ -619,7 +624,7 @@
 
     <!-- ============================================ -->
     <section id="sftp">
-      <h2>17. SFTP file browser</h2>
+      <h2>18. SFTP file browser</h2>
       <p>The SFTP browser moves files on and off your servers without leaving meshTerm. It runs over the same SSH transport as your terminal sessions - no additional credentials, no third-party cloud.</p>
 
       <h3>Opening the browser</h3>
@@ -660,7 +665,7 @@
 
     <!-- ============================================ -->
     <section id="search">
-      <h2>18. Scrollback search <span class="new-badge">2.0</span></h2>
+      <h2>19. Scrollback search <span class="new-badge">2.0</span></h2>
       <p>Press <strong>⌘ F</strong> (or tap the magnifier in the terminal toolbar) to open the search bar at the bottom of the terminal. Type to find matches in the visible scrollback; a running match count shows how many hits.</p>
       <ul>
         <li><strong>Up / Down arrows</strong> - step between matches.</li>
@@ -673,7 +678,7 @@
 
     <!-- ============================================ -->
     <section id="themes">
-      <h2>19. Color modes</h2>
+      <h2>20. Color modes</h2>
       <p>Settings → Terminal → <strong>Color Mode</strong> sets the terminal's look. Alongside full <strong>True Color</strong>, meshTerm offers retro single-hue modes for a calmer, CRT-style view:</p>
       <ul>
         <li><strong>True Color</strong> - full 24-bit color.</li>
@@ -686,7 +691,7 @@
 
     <!-- ============================================ -->
     <section id="security">
-      <h2>20. Security &amp; App Lock</h2>
+      <h2>21. Security &amp; App Lock</h2>
 
       <h3>Known Hosts (TOFU)</h3>
       <p>meshTerm uses <strong>Trust On First Use</strong> for host-key verification. The first time you connect to a host, the app shows the server's host-key fingerprint and asks you to confirm. Subsequent connects check the fingerprint silently. If it changes (server rebuilt, key rotated, or something more sinister), the connection is blocked with a warning.</p>
@@ -718,7 +723,7 @@
 
     <!-- ============================================ -->
     <section id="sync">
-      <h2>21. iCloud Sync</h2>
+      <h2>22. iCloud Sync</h2>
       <p>iCloud Sync keeps meshTerm consistent across your iPhone and iPad. It is <strong>opt-in and off by default</strong> - turn it on in Settings &rarr; iCloud Sync - and it is a <a href="#pro">Pro</a> feature.</p>
 
       <h3>What syncs</h3>
@@ -737,7 +742,7 @@
 
     <!-- ============================================ -->
     <section id="settings">
-      <h2>22. Settings reference</h2>
+      <h2>23. Settings reference</h2>
       <p>A quick map of the Settings tab.</p>
 
 
@@ -759,7 +764,7 @@
 
     <!-- ============================================ -->
     <section id="pro">
-      <h2>23. meshTerm Pro</h2>
+      <h2>24. meshTerm Pro</h2>
       <p>Every feature in the app is available in the free tier. The only limit is on concurrent surface area:</p>
 
       <table>
@@ -791,7 +796,7 @@
 
     <!-- ============================================ -->
     <section id="troubleshooting">
-      <h2>24. Troubleshooting</h2>
+      <h2>25. Troubleshooting</h2>
 
       <h3>Connection</h3>
 
@@ -826,7 +831,7 @@
       </ul>
 
       <h4>"Unsupported key type"</h4>
-      <p>meshTerm 2.0 accepts Ed25519 and ECDSA (P-256, P-384, P-521). RSA keys aren't supported. Generate a new Ed25519 key in the app, or convert: <code>ssh-keygen -t ed25519</code>.</p>
+      <p>meshTerm 2.1 accepts Ed25519 and ECDSA (P-256, P-384, P-521). RSA keys aren't supported. Generate a new Ed25519 key in the app, or convert: <code>ssh-keygen -t ed25519</code>.</p>
 
       <h3>Roam</h3>
 
