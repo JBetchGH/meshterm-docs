@@ -594,6 +594,7 @@
     <!-- ============================================ -->
     <section id="secret-profiles">
       <h2>16. Secret Profiles <span class="new-badge">2.1</span></h2>
+      <p><strong>Secret Profiles are a meshTerm Pro feature.</strong> Creating and using them requires an active Pro subscription.</p>
       <p>A <strong>Secret Profile</strong> bundles a set of environment variables and keys under one name, so you can hand a whole environment to a session at once. Tap to inject a profile into the session you are already in: its variables and keys reach the running shell <strong>invisibly</strong>, with nothing typed into the terminal and nothing left on screen afterward. Injection works over plain SSH, mtRoam, and tmux.</p>
       <h3>When injected values take effect</h3>
       <p>Injection delivers the values to the shell, which picks them up at its <strong>next prompt</strong>. That means they apply to the next command you run, not to a command already in progress. Inject only updates a pane sitting at a shell prompt; a full-screen app or an agent in the foreground is skipped.</p>
