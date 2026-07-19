@@ -283,7 +283,7 @@
   <p>Your privacy is important to us. This Privacy Policy explains how James Betchley
   ("Developer", "we", "us", or "our") collects, uses, and protects information when
   you use meshTerm (the "Application"). We have designed meshTerm with privacy as a
-  core principle — the Application is built to handle sensitive SSH credentials and
+  core principle - the Application is built to handle sensitive SSH credentials and
   terminal sessions, and we take that responsibility seriously.</p>
 
   <section id="s1">
@@ -291,9 +291,9 @@
     <p>meshTerm is designed so that the following sensitive information never leaves your
     device and is never transmitted to the Developer or any third party:</p>
     <ul>
-      <li>Terminal session content — everything you type and everything displayed in the terminal</li>
+      <li>Terminal session content - everything you type and everything displayed in the terminal</li>
       <li>Roam session scrollback and any data the Roam daemon stores on your remote host (see Section 3b)</li>
-      <li>SSH private keys and passwords — stored exclusively in the iOS Keychain on your device</li>
+      <li>SSH private keys and passwords - stored exclusively in the iOS Keychain on your device</li>
       <li>SSH host details and connection logs</li>
       <li>Command history</li>
       <li>Snippet vault contents (including secret snippets backed by the iOS Keychain)</li>
@@ -353,8 +353,8 @@
     <h3>3.1 SSH Credentials</h3>
     <p>SSH private keys and passwords are stored in the iOS Keychain with the following protections:</p>
     <ul>
-      <li><strong>Private keys:</strong> kSecAttrAccessibleWhenUnlockedThisDeviceOnly — requires device to be unlocked, never backed up to iCloud or transferred to other devices</li>
-      <li><strong>Passwords:</strong> kSecAttrAccessibleWhenUnlocked — protected by your device passcode</li>
+      <li><strong>Private keys:</strong> kSecAttrAccessibleWhenUnlockedThisDeviceOnly - requires device to be unlocked, never backed up to iCloud or transferred to other devices</li>
+      <li><strong>Passwords:</strong> kSecAttrAccessibleWhenUnlocked - protected by your device passcode</li>
       <li>Biometric authentication (Face ID / Touch ID) is required each time a private key is used</li>
     </ul>
 
@@ -365,7 +365,7 @@
 
     <h3>3.3 SSH Host Keys</h3>
     <p>SSH host key fingerprints are stored locally on your device only and are not
-    synchronised to iCloud. This is intentional — known host key trust is device-specific
+    synchronised to iCloud. This is intentional - known host key trust is device-specific
     for security reasons.</p>
   </section>
 
@@ -373,8 +373,8 @@
     <h2><span class="num">3b</span> Data on Your Remote Hosts (Roam)</h2>
     <p>When you enable Roam on a host, the Application installs an open source helper
     program called <strong><a href="https://ag-studio-apps.github.io/mtroamd">mtroamd</a></strong> onto that host. Roam is opt-in per host and is
-    off by default. Once enabled, the following data is stored on that remote host —
-    a server you own or have legitimate access to — and not on the Developer's
+    off by default. Once enabled, the following data is stored on that remote host -
+    a server you own or have legitimate access to - and not on the Developer's
     infrastructure:</p>
     <ul>
       <li>The terminal session itself (the running shell process) and its scrollback buffer.
@@ -389,7 +389,7 @@
     </ul>
     <p>This data is stored under your home directory on the host (typically
     <code>~/.local/share/mtroamd/</code>). The Developer has no access to it. It is governed by
-    your own security practices on that host — file permissions, account access, disk
+    your own security practices on that host - file permissions, account access, disk
     encryption, and any backup or syncing software you have installed.</p>
     <p>Network traffic between the Application and the daemon flows directly between your
     device and your server. It does not pass through any Developer-operated server.</p>
@@ -402,9 +402,9 @@
     <h2><span class="num">4</span> Tailscale</h2>
     <p>The Application integrates with Tailscale networking. When you use Tailscale features:</p>
     <ul>
-      <li>You authenticate directly with Tailscale using your Tailscale account — your Tailscale credentials are never seen by the Developer</li>
+      <li>You authenticate directly with Tailscale using your Tailscale account - your Tailscale credentials are never seen by the Developer</li>
       <li>The Application creates an independent Tailscale node associated with your Tailnet</li>
-      <li>Network traffic flows directly between your device and your Tailscale nodes, or via Tailscale DERP relay servers — it does not pass through Developer-operated infrastructure</li>
+      <li>Network traffic flows directly between your device and your Tailscale nodes, or via Tailscale DERP relay servers - it does not pass through Developer-operated infrastructure</li>
       <li>Tailscale's own privacy policy governs data processed by Tailscale infrastructure</li>
     </ul>
     <div class="highlight">
@@ -418,26 +418,26 @@
     <p>The Application uses the following third-party open source components. These run
     entirely on your device and do not transmit data to third-party servers:</p>
     <ul>
-      <li>Tailscale iOS SDK — BSD-3-Clause licence — tailscale.com</li>
-      <li>SwiftNIO SSH — Apache 2.0 licence — Apple Inc.</li>
-      <li>SwiftTerm — MIT licence — Miguel de Icaza</li>
+      <li>Tailscale iOS SDK - BSD-3-Clause licence - tailscale.com</li>
+      <li>SwiftNIO SSH - Apache 2.0 licence - Apple Inc.</li>
+      <li>SwiftTerm - MIT licence - Miguel de Icaza</li>
     </ul>
     <p>The Application does not integrate any advertising networks, social media SDKs,
     or data broker services.</p>
 
     <h3>External services the Application can contact</h3>
     <p>Beyond your own servers, the Application contacts the following third-party
-    endpoints — each only for the purpose, and under the condition, noted:</p>
+    endpoints - each only for the purpose, and under the condition, noted:</p>
     <ul>
-      <li><strong>Your SSH hosts</strong> — the servers you choose to connect to. This is the
+      <li><strong>Your SSH hosts</strong> - the servers you choose to connect to. This is the
       core function of the Application; this traffic goes directly to your own hosts.</li>
-      <li><strong>github.com</strong> — to download the signed <a href="https://ag-studio-apps.github.io/mtroamd">mtroamd</a>
+      <li><strong>github.com</strong> - to download the signed <a href="https://ag-studio-apps.github.io/mtroamd">mtroamd</a>
       daemon and CLI over HTTPS, only when you choose to install or update Roam on a host.</li>
-      <li><strong>Tailscale coordination servers and api.tailscale.com</strong> — only if you add a
+      <li><strong>Tailscale coordination servers and api.tailscale.com</strong> - only if you add a
       Tailscale auth key (to join your tailnet) or a read-only API token (to browse your devices).
       Your Tailscale auth keys and API tokens are stored in the iOS Keychain, the same as your SSH
       credentials.</li>
-      <li><strong>Apple</strong> — App Store / StoreKit endpoints process the optional Pro
+      <li><strong>Apple</strong> - App Store / StoreKit endpoints process the optional Pro
       subscription (see section 6).</li>
     </ul>
   </section>
@@ -465,12 +465,12 @@
     <p>Under the UK General Data Protection Regulation (UK GDPR) and applicable data
     protection legislation, you have the following rights:</p>
     <ul>
-      <li><strong>Right of access</strong> — to request information about personal data we hold about you</li>
-      <li><strong>Right to rectification</strong> — to correct inaccurate personal data</li>
-      <li><strong>Right to erasure</strong> — to request deletion of personal data we hold</li>
-      <li><strong>Right to restriction</strong> — to restrict processing of your personal data</li>
-      <li><strong>Right to data portability</strong> — to receive your personal data in a portable format</li>
-      <li><strong>Right to object</strong> — to object to processing of your personal data</li>
+      <li><strong>Right of access</strong> - to request information about personal data we hold about you</li>
+      <li><strong>Right to rectification</strong> - to correct inaccurate personal data</li>
+      <li><strong>Right to erasure</strong> - to request deletion of personal data we hold</li>
+      <li><strong>Right to restriction</strong> - to restrict processing of your personal data</li>
+      <li><strong>Right to data portability</strong> - to receive your personal data in a portable format</li>
+      <li><strong>Right to object</strong> - to object to processing of your personal data</li>
     </ul>
     <p>Given the privacy-by-design nature of meshTerm, we hold minimal personal data
     about you. Most data is stored exclusively on your device and in your iCloud account,
