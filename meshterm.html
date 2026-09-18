@@ -83,7 +83,15 @@
     <!-- ============================================ -->
     <section id="whats-new">
       <h2>2. What's new</h2>
-      <p>meshTerm is currently at version <strong>2.1.5</strong>. The headline additions since 2.1.2:</p>
+      <p>meshTerm is currently at version <strong>2.1.11</strong>. The headline additions since 2.1.2:</p>
+
+      <h3>2.1.11</h3>
+      <ul>
+        <li><strong>Agent notifications</strong> - meshTerm can now tell you the moment an agent needs you. Get a push when Claude Code, Codex or Gemini asks for an approval or finishes a turn, even while the app is in the background or fully closed, and tap it to jump straight to that exact session. You opt in per host, choose whether approvals, turn-completions, or both notify you, and the alerts are content-free - the relay only ever sends a "needs attention" signal and your device fills in the session name locally. See <a href="#agent-notifications">Agent notifications</a>.</li>
+        <li><strong>Tap to resume</strong> - a notification, the lock-screen Live Activity, or a return-to-prompt tap now drops you back into the right session, and for an agent the right conversation.</li>
+        <li><strong>Tappable agent sign-in</strong> - when an agent prints a long sign-in URL that wraps across several lines, meshTerm treats it as one link you can tap to open.</li>
+        <li><strong>Sharper terminal</strong> - app-defined terminal palettes render true to the program's own colors, text selection keeps the word you grabbed as you extend it, agent history holds more scrollback, and warm resumes recover a dropped link even faster.</li>
+      </ul>
 
       <h3>2.1.5</h3>
       <ul>
@@ -331,6 +339,14 @@
 
       <h3>Persistence and resume</h3>
       <p>Agent sessions are as durable as the rest of Roam. An agent keeps running through an app restart or a network drop and picks straight back up when you return. You can <strong>resume any previous conversation</strong>, including agent sessions you started from the terminal rather than the chat, so a session you kicked off in a plain shell is still yours to continue in the native chat later.</p>
+
+      <h3 id="agent-notifications">Notifications <span class="new-badge">2.1.11</span></h3>
+      <p>meshTerm can push you a notification the moment an agent needs you, even while the app is in the background or fully closed. You get a <strong>needs-approval</strong> alert when Claude Code or Codex pauses for a permission decision, and a <strong>turn finished</strong> alert when an agent completes a turn and is waiting for your next instruction. Tap the notification and meshTerm opens the exact session it came from, dropping you straight back into that conversation.</p>
+      <p>Notifications are <strong>opt in per host</strong>. In Edit Host, turn on <strong>Send notifications from this host</strong>. The first time an agent starts there, meshTerm installs a small notify hook into that agent's own configuration (Claude, Codex, or Gemini) so the host can signal your device; an agent already running when you opt in starts notifying once you relaunch it. In <strong>Settings &gt; Agent Mode &gt; Notifications</strong> you choose whether approvals, turn-completions, or both reach you, and those switches apply immediately, even to sessions already running.</p>
+      <p>The alerts are <strong>content-free by design</strong>. The relay only ever sends your device a "needs attention" signal for a host you enrolled; it never sees your session content, and your device fills in the session name locally. Notifications work for agents you run in the terminal (over tmux or mtRoam) as well as in the native chat, covering Claude Code and Codex for both approvals and turn-completion, and Gemini for turn-completion.</p>
+      <div class="callout info">
+        Notifications go to one device per host. Turning them on from another device takes over, so that host then notifies the newer device.
+      </div>
 
       <div class="callout info">
         Agents run on your own hardware using your own credentials on the host. meshTerm is the interface; the model, its API key, and its access all live on your server.
