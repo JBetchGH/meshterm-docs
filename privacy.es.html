@@ -368,9 +368,9 @@
     un agente de código necesita su aprobación o termina un turno. Para ello:</p>
     <ul>
       <li>El sistema operativo de Apple emite un token push para su dispositivo, que la
-      Aplicación envía a un servicio de retransmisión operado por el Desarrollador
-      (<code>relay.meshterm.com</code>), junto con un identificador de dispositivo opaco y sus
-      preferencias de notificación por tipo de evento. No se adjunta ninguna cuenta, correo
+      Aplicación envía a un servicio de retransmisión operado por el Desarrollador, junto con
+      un identificador de dispositivo opaco y sus preferencias de notificación por tipo de
+      evento. No se adjunta ninguna cuenta, correo
       electrónico ni ningún otro dato personal.</li>
       <li>El servicio de retransmisión es <strong>sin contenido</strong>. Solo envía a su
       dispositivo una señal de "requiere atención" etiquetada con una referencia de sesión
@@ -490,10 +490,6 @@
       opcional (consulte la sección 6). El servicio de notificaciones push de Apple (APNs) entrega
       las notificaciones de agentes a su dispositivo, solo si las activa; la carga útil es sin
       contenido.</li>
-      <li><strong>relay.meshterm.com</strong> - el servicio de retransmisión push del Desarrollador,
-      solo si activa las notificaciones de agentes para un host. Almacena un registro de dispositivo
-      sin contenido (un token push de Apple, un identificador de dispositivo opaco y sus preferencias
-      de notificación) para poder enviarle avisos de "requiere atención". Consulte la sección 2.4.</li>
     </ul>
   </section>
 

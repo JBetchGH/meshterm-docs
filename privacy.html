@@ -352,9 +352,8 @@
     agent needs your approval or finishes a turn. To do this:</p>
     <ul>
       <li>Apple's operating system issues a push token for your device, which the
-      Application sends to a relay service operated by the Developer
-      (<code>relay.meshterm.com</code>), along with an opaque device identifier and your
-      per-event notification preferences. No account, email, or other personal detail is
+      Application sends to a relay service operated by the Developer, along with an opaque
+      device identifier and your per-event notification preferences. No account, email, or other personal detail is
       attached.</li>
       <li>The relay is <strong>content-free</strong>. It only ever sends your device a
       "needs attention" signal tagged with an opaque session reference; it never receives
@@ -463,10 +462,6 @@
       <li><strong>Apple</strong> - App Store / StoreKit endpoints process the optional Pro
       subscription (see section 6). Apple's Push Notification service (APNs) delivers agent
       notifications to your device, only if you enable them; the payload is content-free.</li>
-      <li><strong>relay.meshterm.com</strong> - the Developer's push relay, only if you enable
-      agent notifications for a host. It stores a content-free device registration (an Apple
-      push token, an opaque device identifier, and your notification preferences) so it can
-      send you "needs attention" alerts. See section 2.4.</li>
     </ul>
   </section>
 
