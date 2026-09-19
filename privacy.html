@@ -243,7 +243,7 @@
 <header>
   <div class="app-name">meshTerm · iOS SSH Client</div>
   <h1>Privacy Policy</h1>
-  <div class="meta">James Betchley &nbsp;·&nbsp; Effective May 2026 &nbsp;·&nbsp; Version 2.0</div>
+  <div class="meta">James Betchley &nbsp;·&nbsp; Effective September 2026 &nbsp;·&nbsp; Version 2.1</div>
 </header>
 
 <div class="nav-links">
@@ -345,6 +345,29 @@
       <li>Accessible only to you and to the Application running on your devices</li>
     </ul>
     <p>We do not have access to the contents of your iCloud data.</p>
+
+    <h3>2.4 Agent Notifications</h3>
+    <p>If you turn on notifications for a host (off by default, opt-in per host), the
+    Application registers to receive push notifications so it can alert you when a coding
+    agent needs your approval or finishes a turn. To do this:</p>
+    <ul>
+      <li>Apple's operating system issues a push token for your device, which the
+      Application sends to a relay service operated by the Developer
+      (<code>relay.meshterm.com</code>), along with an opaque device identifier and your
+      per-event notification preferences. No account, email, or other personal detail is
+      attached.</li>
+      <li>The relay is <strong>content-free</strong>. It only ever sends your device a
+      "needs attention" signal tagged with an opaque session reference; it never receives
+      or sends your session content, commands, output, host names, or credentials. The name
+      shown in a notification is resolved locally on your device.</li>
+      <li>Notifications are delivered through Apple's Push Notification service (APNs),
+      subject to Apple's own privacy policy.</li>
+      <li>Enabling notifications for a host also installs a small notify hook, containing
+      your device's relay token, into the agent's own configuration on that host so the
+      host can call the relay on your behalf. This runs on your own server (see section 3b).</li>
+      <li>The registration exists only while notifications are enabled. Turning them off, or
+      an invalidated push token, removes it, and the relay drops stale tokens automatically.</li>
+    </ul>
   </section>
 
   <section id="s3">
@@ -438,7 +461,12 @@
       Your Tailscale auth keys and API tokens are stored in the iOS Keychain, the same as your SSH
       credentials.</li>
       <li><strong>Apple</strong> - App Store / StoreKit endpoints process the optional Pro
-      subscription (see section 6).</li>
+      subscription (see section 6). Apple's Push Notification service (APNs) delivers agent
+      notifications to your device, only if you enable them; the payload is content-free.</li>
+      <li><strong>relay.meshterm.com</strong> - the Developer's push relay, only if you enable
+      agent notifications for a host. It stores a content-free device registration (an Apple
+      push token, an opaque device identifier, and your notification preferences) so it can
+      send you "needs attention" alerts. See section 2.4.</li>
     </ul>
   </section>
 
@@ -489,6 +517,10 @@
     exclusively on your device and in your iCloud account. Deleting the Application
     removes all locally stored data. You can manage iCloud data through your device
     Settings &rarr; Apple ID &rarr; iCloud &rarr; Manage Storage.</p>
+    <p>If you enable agent notifications, the push registration on the Developer's relay
+    (an Apple push token, an opaque device identifier, and your notification preferences)
+    is retained only while notifications remain enabled. It is removed when you turn them
+    off, and stale push tokens are dropped automatically.</p>
   </section>
 
   <section id="s10">

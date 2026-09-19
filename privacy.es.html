@@ -255,7 +255,7 @@
 <header>
   <div class="app-name">meshTerm · Cliente SSH para iOS</div>
   <h1>Política de Privacidad</h1>
-  <div class="meta">James Betchley &nbsp;·&nbsp; En vigor desde mayo de 2026 &nbsp;·&nbsp; Versión 2.0</div>
+  <div class="meta">James Betchley &nbsp;·&nbsp; En vigor desde septiembre de 2026 &nbsp;·&nbsp; Versión 2.1</div>
 </header>
 
 <div class="nav-links">
@@ -361,6 +361,33 @@
       <li>Son accesibles únicamente por usted y por la Aplicación ejecutándose en sus dispositivos</li>
     </ul>
     <p>No tenemos acceso al contenido de sus datos en iCloud.</p>
+
+    <h3>2.4 Notificaciones de agentes</h3>
+    <p>Si activa las notificaciones para un host (desactivadas por defecto, opcionales por
+    host), la Aplicación se registra para recibir notificaciones push a fin de avisarle cuando
+    un agente de código necesita su aprobación o termina un turno. Para ello:</p>
+    <ul>
+      <li>El sistema operativo de Apple emite un token push para su dispositivo, que la
+      Aplicación envía a un servicio de retransmisión operado por el Desarrollador
+      (<code>relay.meshterm.com</code>), junto con un identificador de dispositivo opaco y sus
+      preferencias de notificación por tipo de evento. No se adjunta ninguna cuenta, correo
+      electrónico ni ningún otro dato personal.</li>
+      <li>El servicio de retransmisión es <strong>sin contenido</strong>. Solo envía a su
+      dispositivo una señal de "requiere atención" etiquetada con una referencia de sesión
+      opaca; nunca recibe ni envía el contenido de su sesión, comandos, salida, nombres de host
+      ni credenciales. El nombre que aparece en una notificación se resuelve localmente en su
+      dispositivo.</li>
+      <li>Las notificaciones se entregan a través del servicio de notificaciones push de Apple
+      (APNs), sujeto a la propia política de privacidad de Apple.</li>
+      <li>Activar las notificaciones para un host también instala un pequeño hook de
+      notificación, que contiene el token de retransmisión de su dispositivo, en la
+      configuración del propio agente en ese host, para que el host pueda contactar el servicio
+      de retransmisión en su nombre. Esto se ejecuta en su propio servidor (consulte la
+      sección 3b).</li>
+      <li>El registro existe únicamente mientras las notificaciones están activadas.
+      Desactivarlas, o un token push invalidado, lo elimina, y el servicio de retransmisión
+      descarta los tokens obsoletos automáticamente.</li>
+    </ul>
   </section>
 
   <section id="s3">
@@ -460,7 +487,13 @@
       lectura (para explorar sus dispositivos). Sus claves de autenticación y tokens de API de
       Tailscale se almacenan en el Llavero de iOS, igual que sus credenciales SSH.</li>
       <li><strong>Apple</strong> - los extremos de App Store / StoreKit procesan la suscripción Pro
-      opcional (consulte la sección 6).</li>
+      opcional (consulte la sección 6). El servicio de notificaciones push de Apple (APNs) entrega
+      las notificaciones de agentes a su dispositivo, solo si las activa; la carga útil es sin
+      contenido.</li>
+      <li><strong>relay.meshterm.com</strong> - el servicio de retransmisión push del Desarrollador,
+      solo si activa las notificaciones de agentes para un host. Almacena un registro de dispositivo
+      sin contenido (un token push de Apple, un identificador de dispositivo opaco y sus preferencias
+      de notificación) para poder enviarle avisos de "requiere atención". Consulte la sección 2.4.</li>
     </ul>
   </section>
 
@@ -514,6 +547,11 @@
     eliminan todos los datos almacenados localmente. Puede gestionar los datos de iCloud
     desde los Ajustes de su dispositivo &rarr; Apple ID &rarr; iCloud &rarr; Gestionar
     almacenamiento.</p>
+    <p>Si activa las notificaciones de agentes, el registro push en el servicio de retransmisión
+    del Desarrollador (un token push de Apple, un identificador de dispositivo opaco y sus
+    preferencias de notificación) se conserva únicamente mientras las notificaciones permanezcan
+    activadas. Se elimina cuando las desactiva, y los tokens push obsoletos se descartan
+    automáticamente.</p>
   </section>
 
   <section id="s10">
