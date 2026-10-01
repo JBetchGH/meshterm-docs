@@ -2,7 +2,7 @@
 {%- assign links = site.data.nav[navlang] | default: site.data.nav.en -%}
 <header class="nav" data-chrome>
   <div class="nav__inner container">
-    <a class="nav__brand" href="{{ links[0].href }}">meshTerm</a>
+    <a class="nav__brand" href="{{ links[0].href }}"><img src="{{ '/assets/img/icon-180.png' | relative_url }}" alt="" width="30" height="30">meshTerm</a>
     <button class="nav__toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav-links">
       <span></span><span></span>
     </button>

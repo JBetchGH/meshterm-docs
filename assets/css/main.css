@@ -70,7 +70,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
   border-bottom: 1px solid var(--line-soft); }
 .nav__inner { height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
 .nav__brand { display: flex; align-items: center; gap: 11px; color: var(--text); font-weight: 700; letter-spacing: -.01em; font-size: 1.05rem; }
-.nav__brand::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--prompt); box-shadow: 0 0 10px var(--prompt); }
+.nav__brand img { border-radius: 8px; box-shadow: 0 0 0 1px rgba(255,255,255,.08); }
 .nav__brand:hover { text-decoration: none; }
 .nav__links { display: flex; align-items: center; gap: 4px; }
 .nav__links a { color: var(--text-2); padding: 8px 12px; border-radius: 8px; font-size: .93rem; font-weight: 500; white-space: nowrap; }
