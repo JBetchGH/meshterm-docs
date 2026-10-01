@@ -1,0 +1,13 @@
+# Site navigation labels. Every label here is the one the pages already used in their nav bar.
+en:
+  - { href: "index.html", label: "Home" }
+  - { href: "meshterm.html", label: "User Guide" }
+  - { href: "meshterm-tailscale-integration.html", label: "Tailscale Setup" }
+  - { href: "privacy.html", label: "Privacy" }
+  - { href: "eula.html", label: "EULA" }
+es:
+  - { href: "index.es.html", label: "Inicio" }
+  - { href: "meshterm.html", label: "Guía del usuario (EN)" }
+  - { href: "meshterm-tailscale-integration.html", label: "Configuración de Tailscale (EN)" }
+  - { href: "privacy.es.html", label: "Privacidad" }
+  - { href: "eula.es.html", label: "EULA" }

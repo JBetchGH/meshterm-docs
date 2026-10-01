@@ -1,0 +1,17 @@
+# meshTerm docs: Jekyll on GitHub Pages (legacy build from main /), plain CSS, no build step of our own.
+# Every page keeps its historic .html path through an explicit permalink in its front matter.
+title: meshTerm
+lang: en
+url: "https://docs.meshterm.com"
+baseurl: ""
+
+markdown: kramdown
+plugins:
+  - jekyll-sitemap
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - node_modules
+  - scripts

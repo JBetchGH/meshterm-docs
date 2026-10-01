@@ -1,122 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>meshTerm - iOS SSH client with persistent sessions</title>
-<meta name="description" content="meshTerm - SSH for iPhone and iPad. Roam (Halo) keeps your terminal sessions alive on your own server so you can pick them up days later from any device.">
-<link rel="alternate" hreflang="en" href="index.html">
-<link rel="alternate" hreflang="es" href="index.es.html">
-<link rel="stylesheet" href="assets/site.css">
-<style>
-  /* Landing-page specifics not in the shared stylesheet. */
-  main.landing { max-width: 1080px; margin: 0 auto; padding: 60px 24px 80px; }
-  .intro {
-    text-align: center;
-    max-width: 720px;
-    margin: 0 auto 56px;
-    font-size: 17px;
-    color: var(--text-sec);
-  }
-  .feature-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 20px;
-    margin-bottom: 64px;
-  }
-  .feature-card {
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 22px;
-  }
-  .feature-card h3 {
-    font-size: 17px;
-    font-weight: 700;
-    margin: 0 0 8px;
-    color: var(--text);
-  }
-  .feature-card p {
-    font-size: 14px;
-    color: var(--text-sec);
-    margin: 0;
-    line-height: 1.55;
-  }
-  .doc-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-  }
-  .doc-card {
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 24px;
-    text-decoration: none;
-    color: inherit;
-    transition: all 0.2s ease;
-    display: flex;
-    flex-direction: column;
-  }
-  .doc-card:hover {
-    transform: translateY(-3px);
-    border-color: var(--blue);
-    box-shadow: 0 10px 22px -8px rgba(10,132,255,0.18);
-  }
-  .doc-card .icon {
-    width: 44px;
-    height: 44px;
-    background: var(--surface);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-    margin-bottom: 14px;
-    color: var(--blue);
-  }
-  .doc-card h2 {
-    border: none;
-    padding: 0;
-    font-size: 19px;
-    margin-bottom: 6px;
-  }
-  .doc-card p { font-size: 14.5px; color: var(--text-sec); flex-grow: 1; }
-  .doc-card .action {
-    margin-top: 18px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--blue);
-  }
-  .doc-card .action::after { content: " →"; }
-  .section-heading {
-    font-size: 13px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .12em;
-    color: var(--text-tert);
-    margin: 0 0 18px;
-    padding: 0;
-    border: none;
-  }
-</style>
-</head>
-<body>
-
+---
+layout: landing
+title: "meshTerm - iOS SSH client with persistent sessions"
+lang: en
+permalink: /index.html
+description: "meshTerm - SSH for iPhone and iPad. Roam (Halo) keeps your terminal sessions alive on your own server so you can pick them up days later from any device."
+alternates:
+  - { hreflang: en, href: "index.html" }
+  - { hreflang: es, href: "index.es.html" }
+lang_switch: { href: "index.es.html", hreflang: es, label: "Español" }
+footer: |
+    <p>meshTerm is developed by James Betchley.</p>
+    <p style="margin-top: 8px;">
+      <a href="mailto:meshterm@gmail.com">meshterm@gmail.com</a>
+    </p>
+    <p style="margin-top: 16px; font-size: 12px; opacity: 0.8;">
+      meshTerm is not affiliated with, endorsed by, or in partnership with Tailscale Inc.
+    </p>
+---
 <header class="site-header">
   <div class="app-name">meshTerm</div>
   <h1>SSH that stays where you left it</h1>
   <div class="sub">SSH sessions for iPhone and iPad. With Roam, the shell runs on your own server - drop the connection, switch devices, pick up exactly where you stopped.</div>
 </header>
 
-<nav class="nav-links">
-  <a href="index.html" class="current">Home</a>
-  <a href="meshterm.html">User Guide</a>
-  <a href="meshterm-tailscale-integration.html">Tailscale Setup</a>
-  <a href="privacy.html">Privacy</a>
-  <a href="eula.html">EULA</a>
-  <a href="index.es.html" class="lang" hreflang="es">Español</a>
-</nav>
 
 <main class="landing">
 
@@ -241,16 +147,3 @@
   </div>
 
 </main>
-
-<footer>
-  <p>meshTerm is developed by James Betchley.</p>
-  <p style="margin-top: 8px;">
-    <a href="mailto:meshterm@gmail.com">meshterm@gmail.com</a>
-  </p>
-  <p style="margin-top: 16px; font-size: 12px; opacity: 0.8;">
-    meshTerm is not affiliated with, endorsed by, or in partnership with Tailscale Inc.
-  </p>
-</footer>
-
-</body>
-</html>

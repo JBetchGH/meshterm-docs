@@ -1,0 +1,19 @@
+{%- assign navlang = page.lang | default: site.lang -%}
+{%- assign links = site.data.nav[navlang] | default: site.data.nav.en -%}
+<footer class="footer">
+  <div class="container footer__inner" data-chrome>
+    <div class="footer__brand"><strong>meshTerm</strong></div>
+    <nav class="footer__links">
+      {%- for l in links %}
+      <a href="{{ l.href }}">{{ l.label }}</a>
+      {%- endfor %}
+      {%- if page.lang_switch %}
+      <a href="{{ page.lang_switch.href }}" hreflang="{{ page.lang_switch.hreflang }}" lang="{{ page.lang_switch.hreflang }}">{{ page.lang_switch.label }}</a>
+      {%- endif %}
+    </nav>
+  </div>
+  <div class="container footer__legal" data-footer-content>
+{{ page.footer }}
+  </div>
+</footer>
+<script src="{{ '/assets/js/site.js' | relative_url }}" defer></script>

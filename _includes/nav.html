@@ -1,0 +1,19 @@
+{%- assign navlang = page.lang | default: site.lang -%}
+{%- assign links = site.data.nav[navlang] | default: site.data.nav.en -%}
+<header class="nav" data-chrome>
+  <div class="nav__inner container">
+    <a class="nav__brand" href="{{ links[0].href }}">meshTerm</a>
+    <button class="nav__toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav-links">
+      <span></span><span></span>
+    </button>
+    <nav id="nav-links" class="nav__links">
+      {%- for l in links %}
+      {%- assign target = '/' | append: l.href %}
+      <a href="{{ l.href }}"{% if page.url == target %} aria-current="page"{% endif %}>{{ l.label }}</a>
+      {%- endfor %}
+      {%- if page.lang_switch %}
+      <a class="nav__lang" href="{{ page.lang_switch.href }}" hreflang="{{ page.lang_switch.hreflang }}" lang="{{ page.lang_switch.hreflang }}">{{ page.lang_switch.label }}</a>
+      {%- endif %}
+    </nav>
+  </div>
+</header>

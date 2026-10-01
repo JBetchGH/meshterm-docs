@@ -1,26 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>meshTerm 2.2 - User Guide</title>
-<link rel="stylesheet" href="assets/site.css">
-</head>
-<body>
-
+---
+layout: guide
+title: "meshTerm 2.2 - User Guide"
+lang: en
+permalink: /meshterm.html
+footer: |
+    <p>meshTerm is developed by James Betchley.</p>
+    <p style="margin-top: 8px;">
+      <a href="mailto:meshterm@gmail.com">meshterm@gmail.com</a>
+    </p>
+    <p style="margin-top: 16px; font-size: 12px; opacity: 0.8;">
+      meshTerm is not affiliated with, endorsed by, or in partnership with Tailscale Inc.
+    </p>
+---
 <header class="site-header">
   <div class="app-name">meshTerm 2.2</div>
   <h1>User Guide</h1>
   <div class="sub">Connecting, tmux and mtRoam persistent sessions, named sessions, AI agents, the keyboard palette, snippets, SFTP, and everything in between.</div>
 </header>
 
-<nav class="nav-links">
-  <a href="index.html">Home</a>
-  <a href="meshterm.html" class="current">User Guide</a>
-  <a href="meshterm-tailscale-integration.html">Tailscale Setup</a>
-  <a href="privacy.html">Privacy</a>
-  <a href="eula.html">EULA</a>
-</nav>
 
 <div class="page-body">
 
@@ -1140,35 +1137,3 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
   </main>
 
 </div><!-- /.page-body -->
-
-<footer>
-  <p>meshTerm is developed by James Betchley.</p>
-  <p style="margin-top: 8px;">
-    <a href="mailto:meshterm@gmail.com">meshterm@gmail.com</a>
-  </p>
-  <p style="margin-top: 16px; font-size: 12px; opacity: 0.8;">
-    meshTerm is not affiliated with, endorsed by, or in partnership with Tailscale Inc.
-  </p>
-</footer>
-
-<script>
-  // Scroll-spy: highlight the active sidebar link as the user scrolls.
-  const sidebarLinks = document.querySelectorAll('.sidebar a');
-  window.addEventListener('scroll', () => {
-    let current = '';
-    document.querySelectorAll('section').forEach(section => {
-      if (window.scrollY >= section.offsetTop - 90) {
-        current = section.getAttribute('id');
-      }
-    });
-    sidebarLinks.forEach(a => {
-      a.classList.remove('active');
-      if (current && a.getAttribute('href') === `#${current}`) {
-        a.classList.add('active');
-      }
-    });
-  });
-</script>
-
-</body>
-</html>

@@ -1,0 +1,12 @@
+<meta charset="utf-8">
+<script>document.documentElement.className += " js";</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0B0C0F">
+<title>{{ page.title }}</title>
+{% if page.description %}<meta name="description" content="{{ page.description }}">
+{% endif %}{% for alt in page.alternates %}<link rel="alternate" hreflang="{{ alt.hreflang }}" href="{{ alt.href }}">
+{% endfor %}<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">

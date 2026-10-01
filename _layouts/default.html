@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="{{ page.lang | default: site.lang }}">
+<head>
+{% include head.html %}
+</head>
+<body class="layout-{{ page.layout }}">
+{% include nav.html %}
+<div id="main" class="site-main" tabindex="-1">
+{{ content }}
+</div>
+{% include footer.html %}
+</body>
+</html>
