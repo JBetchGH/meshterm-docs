@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>meshTerm 2.1 - User Guide</title>
+<title>meshTerm 2.2 - User Guide</title>
 <link rel="stylesheet" href="assets/site.css">
 </head>
 <body>
 
 <header class="site-header">
-  <div class="app-name">meshTerm 2.1</div>
+  <div class="app-name">meshTerm 2.2</div>
   <h1>User Guide</h1>
-  <div class="sub">Connecting, pairing the Roam daemon, named sessions, AI agents, the keyboard palette, snippets, SFTP, and everything in between.</div>
+  <div class="sub">Connecting, tmux and mtRoam persistent sessions, named sessions, AI agents, the keyboard palette, snippets, SFTP, and everything in between.</div>
 </header>
 
 <nav class="nav-links">
@@ -32,8 +32,10 @@
       <li><a href="#getting-started">3. Getting started</a></li>
       <li><a href="#hosts">4. Managing hosts</a></li>
       <li><a href="#connecting">5. Connecting to a host</a></li>
-      <li><a href="#roam">6. Roam: persistent sessions</a></li>
-      <li><a href="#roam-install" style="padding-left: 22px; font-size: 13px;">↳ Installing the daemon</a></li>
+      <li><a href="#roam">6. Persistent sessions</a></li>
+      <li><a href="#tmux" style="padding-left: 22px; font-size: 13px;">↳ tmux sessions</a></li>
+      <li><a href="#roam-install" style="padding-left: 22px; font-size: 13px;">↳ Installing mtroamd</a></li>
+      <li><a href="#roam-migrate" style="padding-left: 22px; font-size: 13px;">↳ Switching to a package</a></li>
       <li><a href="#roam-sessions" style="padding-left: 22px; font-size: 13px;">↳ Multiple named sessions</a></li>
       <li><a href="#roam-attach" style="padding-left: 22px; font-size: 13px;">↳ Attach modes</a></li>
       <li><a href="#mtroam" style="padding-left: 22px; font-size: 13px;">↳ Desktop CLI (mtroam)</a></li>
@@ -60,14 +62,14 @@
   </aside>
 
   <main>
-    <div class="page-title">meshTerm 2.1 - User Guide</div>
+    <div class="page-title">meshTerm 2.2 - User Guide</div>
     <div class="page-subtitle">For iPhone and iPad.</div>
 
     <!-- ============================================ -->
     <section id="overview">
       <h2>1. Overview</h2>
       <p>meshTerm is an SSH client for iOS and iPadOS. It connects to remote servers over standard SSH, with built-in Tailscale networking, SFTP, port forwarding, and a fast Metal terminal.</p>
-      <p>For sessions that outlive a disconnect, meshTerm offers three levels of persistence, chosen per host: <strong>None</strong> (a plain SSH shell that ends with the connection), <strong>tmux</strong> (your shell survives on the server using software already on most machines), and <strong>Halo</strong> - the optional open-source <a href="https://ag-studio-apps.github.io/mtroamd">mtRoam</a> daemon on your own host, for full persistence that survives network changes, app suspension, device switches, and daemon restarts. See <a href="#roam-install">Roam</a> for the walkthrough and <a href="#halo">Halo</a> for how the persistent ring buffer works.</p>
+      <p>For sessions that outlive a disconnect, meshTerm offers three levels of persistence, chosen per host: <strong>tmux</strong> (your shell survives on the server using software already on most machines, with tmux windows and panes shown as native panes), <strong>mtRoam</strong> (the optional open-source <a href="https://ag-studio-apps.github.io/mtroamd">mtRoam</a> daemon on your own host, for full persistence that survives network changes, app suspension, device switches, and daemon restarts), and <strong>None</strong> (a plain SSH shell that ends with the connection). See <a href="#roam">Persistent sessions</a> for the walkthrough and <a href="#halo">Halo</a> for how mtRoam's persistent ring buffer works.</p>
       <p>Beyond the terminal, meshTerm includes:</p>
       <ul>
         <li>Multiple concurrent sessions per host, with attach modes for sharing or watching.</li>
@@ -83,7 +85,23 @@
     <!-- ============================================ -->
     <section id="whats-new">
       <h2>2. What's new</h2>
-      <p>meshTerm is currently at version <strong>2.1.11</strong>. The headline additions since 2.1.2:</p>
+      <p>meshTerm is currently at version <strong>2.2.0</strong>. The headline additions since 2.1.2:</p>
+
+      <h3>2.2</h3>
+      <ul>
+        <li><strong>Native tmux</strong>: on hosts with tmux 3.2 or newer, meshTerm now talks to tmux directly (tmux "control mode"). Your tmux panes become real native panes: side by side with draggable dividers on iPad, one at a time on iPhone with a pane switcher in the top-right corner. Reconnects put you back in the same session at the same size. Control mode is on by default; a per-host <strong>tmux attach</strong> setting can choose <strong>Legacy</strong>, and meshTerm falls back to the classic attach by itself if a host's tmux is too old. See <a href="#tmux">tmux sessions</a>.</li>
+        <li><strong>tmux page in the palette</strong>: a new palette page manages tmux windows and panes: switch, add, rename and close windows; split right or down, zoom, make a pane wider, narrower, taller or shorter, and even out the layout. On iPad your windows show as a row of chips.</li>
+        <li><strong>Persistence picker</strong>: every host has one <strong>Persistence</strong> choice, <strong>tmux</strong>, <strong>mtRoam</strong> or <strong>None</strong> (Edit Host &gt; Session). <strong>Check persistence</strong> on a host's Details shows whether tmux and mtroamd are installed, where, and which versions. See <a href="#persistence">Choosing persistence</a>.</li>
+        <li><strong>mtroamd installs move to your package manager</strong>: installing mtroamd from the app is deprecated from iOS 2.2. Install it with your server's package manager (apt, dnf, apk, AUR, Nix) or from source. Copies the app installed earlier keep their Update, Repair, Restart and Uninstall actions. See <a href="#roam-install">Installing mtroamd</a> and <a href="#roam-migrate">Switching to a package</a>.</li>
+        <li><strong>Clearer mtRoam fallbacks</strong>: if a host set to mtRoam has no mtroamd, meshTerm connects through tmux and offers <strong>Switch to tmux</strong>. If mtroamd is installed but can't be reached, you choose <strong>Retry</strong> or <strong>Open with tmux instead</strong>.</li>
+        <li><strong>Settings, regrouped</strong>: Settings is organised into panes with a search field that jumps straight to the row you need, and many rows have plainer names, such as <strong>End session</strong>, <strong>Open read-only</strong>, <strong>Take control</strong>, <strong>Trusted servers</strong>, <strong>Left-handed layout</strong>, <strong>Back-to-prompt button</strong> and <strong>Full-screen apps</strong>. See <a href="#settings">Settings reference</a>.</li>
+        <li><strong>A friendlier first run</strong>: a short welcome tour (replay it from Settings &gt; General &gt; <strong>Show Welcome Tour</strong>), a "How do you connect?" step for Tailscale or SSH, and a clear waiting screen with an <strong>Open Admin Console</strong> button while your tailnet approves a new device.</li>
+        <li><strong>Easier host editing</strong>: Edit Host is split into Connection, Session, Shell &amp; Environment and Tunnels screens, each with its own Save, and when Save is disabled the screen says why. A password host with no saved password on this device can still be saved, with a reminder to enter it before you connect.</li>
+        <li><strong>Tidier SFTP uploads</strong>: uploaded file names are cleaned up, for example dropping the <code>cid:</code> prefix Mail gives attachments and replacing characters that break paths or tools.</li>
+        <li><strong>Firewall rules moved</strong>: the mtRoam Direct firewall rules now sit behind a <strong>Firewall setup</strong> screen in Edit Host.</li>
+        <li><strong>Claude Fullscreen Mode removed</strong>: meshTerm no longer sets Claude Code's fullscreen option, so Claude Code's own default applies.</li>
+        <li><strong>Faster, more reliable resume and reconnects.</strong></li>
+      </ul>
 
       <h3>2.1.11</h3>
       <ul>
@@ -117,7 +135,7 @@
         <li><strong>Sessions tab</strong> - the old Hosts tab is retired; your hosts and their live and resumable sessions now live together under Sessions, with per-host CPU, RAM and storage stats.</li>
         <li><strong>Tailscale, deeper</strong> - browser sign-in (no auth keys to paste), multiple named profiles with per-host binding, an in-app device browser, and fully in-process networking (no Tailscale app required). Headscale and self-hosted control servers are supported.</li>
         <li><strong>Retro color modes</strong> - Green, Blue and Red phosphor plus Monochrome, alongside True Color, with diff-aware brightness so additions stay bright and removals dim.</li>
-        <li><strong>Agent-aware terminal</strong> - a return-to-prompt pill for Claude Code and Codex, a "Claude may be idle" banner with one-tap Save &amp; Restart, and a fullscreen mode for agent TUIs.</li>
+        <li><strong>Agent-aware terminal</strong> - a return-to-prompt pill for Claude Code and Codex, a "Claude may be idle" banner with one-tap Save &amp; Restart, and a fullscreen mode for agent TUIs (removed in 2.2).</li>
         <li><strong>Reconnect hardening</strong> - faster, quieter resumes after a network change or a long spell in the background, with anti-flood backoff.</li>
         <li><strong>In-place host-key re-trust</strong> and SSH key file import.</li>
       </ul>
@@ -127,26 +145,34 @@
     <section id="getting-started">
       <h2>3. Getting started</h2>
 
+      <h3 id="welcome">The welcome tour <span class="new-badge">2.2</span></h3>
+      <p>On first launch meshTerm shows a short welcome tour: tap <strong>Get Started</strong>, skim <strong>What it does</strong>, then answer <strong>How do you connect?</strong>:</p>
+      <ul>
+        <li><strong>Tailscale</strong> (Recommended): sign in to your tailnet, then pick a device to add. If your tailnet requires an admin to approve new devices, meshTerm shows <strong>Waiting for device approval</strong> with an <strong>Open Admin Console</strong> button; the connection completes by itself once the device is approved.</li>
+        <li><strong>SSH</strong>: add a host with a key or password (below).</li>
+        <li><strong>Continue</strong> skips this step and goes straight into the app.</li>
+      </ul>
+      <p>Replay the tour any time from <strong>Settings &gt; General &gt; Show Welcome Tour</strong>.</p>
+
       <h3>Adding your first host</h3>
       <ol>
-        <li>Open meshTerm. On first launch the <strong>Sessions</strong> tab is empty ("No Hosts").</li>
-        <li>Tap <strong>+</strong> in the top right (or the globe icon to browse and add a host from your Tailnet).</li>
-        <li>Fill in the connection details:
+        <li>On the <strong>Sessions</strong> tab, tap <strong>+</strong> in the top right (or the globe icon to browse and add a host from your Tailnet).</li>
+        <li><strong>Where is it?</strong> Fill in the connection details:
           <ul>
-            <li><strong>Label</strong> - a friendly name (e.g. <code>demo</code>).</li>
-            <li><strong>Hostname or IP</strong> - the address of your server.</li>
-            <li><strong>Port</strong> - defaults to 22.</li>
-            <li><strong>Username</strong> - your account on the server.</li>
+            <li><strong>Label</strong>: a friendly name (for example <code>demo</code>).</li>
+            <li><strong>Hostname or IP</strong>: the address of your server.</li>
+            <li><strong>Port</strong>: defaults to 22.</li>
+            <li><strong>Username</strong>: your account on the server.</li>
           </ul>
         </li>
-        <li>Pick an <strong>authentication method</strong> - password, SSH key, or (if the server runs Tailscale SSH) Tailscale.</li>
-        <li>Optionally pick a <strong>Connection method</strong> - plain SSH or Roam. You can toggle this later from Edit Host.</li>
-        <li>Tap <strong>Save</strong>.</li>
+        <li><strong>How do you sign in?</strong> Pick an authentication method: password, SSH key, or (if the server runs Tailscale SSH) Tailscale SSH.</li>
+        <li><strong>Session preferences</strong>: pick the host's <strong>Persistence</strong>: <strong>tmux</strong>, <strong>mtRoam</strong> or <strong>None</strong> (see <a href="#persistence">Choosing persistence</a>). You can change it later in Edit Host &gt; Session.</li>
+        <li><strong>Ready to connect</strong>: check the summary and tap <strong>Connect</strong>.</li>
       </ol>
 
 
       <h3>Connecting</h3>
-      <p>Tap any host in the list to open a terminal session. On first connect to a new host, meshTerm asks you to verify its host-key fingerprint (see <a href="#security">Known Hosts</a>) - tap <strong>Trust &amp; Connect</strong> to proceed.</p>
+      <p>Tap any host in the list to open a terminal session. On first connect to a new host, meshTerm asks you to verify its host-key fingerprint (see <a href="#security">Trusted servers</a>) - tap <strong>Trust &amp; Connect</strong> to proceed.</p>
     </section>
 
     <!-- ============================================ -->
@@ -154,7 +180,15 @@
       <h2>4. Managing hosts</h2>
 
       <h3>Editing a host</h3>
-      <p>Long-press a host card or open its detail screen, then tap <strong>Edit</strong>. The editor groups settings into Connection, Authentication, Protocol (plain SSH or Roam), Session, TUI Detection, Tags, Operating System, and Environment Variables.</p>
+      <p>Long-press a host card and tap <strong>Edit</strong>. <strong>Edit Host</strong> opens on a short list of screens:</p>
+      <ul>
+        <li><strong>Connection</strong>: address, authentication, tags, operating system, and (for an mtRoam host) the mtRoam transport.</li>
+        <li><strong>Session</strong>: the Persistence picker and the settings of the chosen option (see <a href="#persistence">Choosing persistence</a>).</li>
+        <li><strong>Shell &amp; Environment</strong>: working directory, the per-host <a href="#tui-pill">Back-to-prompt button</a> setting, and environment variables.</li>
+        <li><strong>Tunnels</strong>: port forwarding rules.</li>
+      </ul>
+      <p>Below them, <strong>Changes on this host</strong> lists what meshTerm leaves on the server, such as agent notification hooks, and lets you turn them off or remove them where that is possible.</p>
+      <p><strong>Save</strong> is available on every screen, so you can save where you made the change. When Save is disabled, a note at the bottom says why (a host needs a label, hostname and username). A password host with no password saved on this device can still be saved; a reminder asks you to enter the password in Connection before you connect.</p>
 
       <h3>Deleting a host</h3>
       <p>Tap <strong>Edit</strong> at the top of the Sessions tab, then the red minus on a host to remove it (you can also drag to reorder here). A host is also reachable by long-press for a context menu of actions.</p>
@@ -163,6 +197,7 @@
       <p>Tag hosts in the editor's <strong>Tags</strong> section (comma-separated, e.g. <code>prod, web</code>). A chip row at the top of the Sessions tab lets you filter by tag.</p>
 
       <h3>Host import / export</h3>
+      <!-- VERIFY: there is no Settings → Hosts pane in 2.2 (nor in 2.1.11), and RemoteSSHConfigImporter is not presented anywhere in the app source. Confirm where (or whether) import/export is reachable, then fix or remove this subsection. -->
       <p>Settings → Hosts gives you two buttons:</p>
       <ul>
         <li><strong>Import from .ssh/config</strong> - pick a host you can already SSH to. meshTerm reads its <code>~/.ssh/config</code> over SSH and shows a checklist of entries to mirror. Imported hosts start in password mode with an empty password - set credentials in the editor before connecting.</li>
@@ -170,7 +205,7 @@
       </ul>
 
       <h3>Distro / OS icons</h3>
-      <p>Each host card shows a small icon for its operating system - Ubuntu, Debian, Fedora, CentOS / Rocky / Alma, Arch, openSUSE, NixOS, Linux Mint, Gentoo, elementary OS, Void, Solus, Zorin, deepin, macOS (Apple logo), FreeBSD, Android, AIX, and GNU/Hurd. The icon is tinted with the host's per-card hue. Choose the OS in <strong>Edit Host → Operating System</strong>; <strong>Unknown</strong> falls back to the generic Linux icon and shows the host's initials as a monogram.</p>
+      <p>Each host card shows a small icon for its operating system - Ubuntu, Debian, Fedora, CentOS / Rocky / Alma, Arch, openSUSE, NixOS, Linux Mint, Gentoo, elementary OS, Void, Solus, Zorin, deepin, macOS (Apple logo), FreeBSD, Android, AIX, and GNU/Hurd. The icon is tinted with the host's per-card hue. Choose the OS in <strong>Edit Host &gt; Connection &gt; Operating System</strong>; <strong>Unknown</strong> falls back to the generic Linux icon and shows the host's initials as a monogram.</p>
 
     </section>
 
@@ -183,68 +218,209 @@
       <p>On the first connection to a new host, meshTerm shows its host-key fingerprint and asks you to confirm it (trust on first use). Tap <strong>Trust &amp; Connect</strong> to save the key and proceed. If a host's key changes later, meshTerm does not fail silently: it shows an accept-or-compare sheet so you can review and re-trust the new key in place.</p>
 
       <h3>Reconnecting</h3>
-      <p>meshTerm keeps working as you move between networks and background the app; when you return, live sessions reconnect automatically. A plain SSH shell ends when its connection drops. To keep a shell alive across drops, use tmux or Halo (see <a href="#roam">Roam</a>).</p>
+      <p>meshTerm keeps working as you move between networks and background the app; when you return, live sessions reconnect automatically. A plain SSH shell ends when its connection drops. To keep a shell alive across drops, use tmux or mtRoam (see <a href="#roam">Persistent sessions</a>).</p>
+
+      <h3>Sessions on a host</h3>
+      <p>For a host that uses tmux or mtRoam, long-press it and choose <strong>Sessions…</strong> to see the sessions living on the server. Tap one to attach, tap <strong>+</strong> to start a new one, or swipe a row to the left and tap <strong>End session</strong> to close it on the host (meshTerm asks first). Inside a tmux session, windows and panes are managed from the palette's tmux page: see <a href="#tmux">tmux sessions</a>.</p>
     </section>
 
     <!-- ============================================ -->
     <section id="roam">
-      <h2>6. Roam: persistent sessions</h2>
-      <p><strong>Roam</strong> is meshTerm's persistent-session mode, powered by the open-source <a href="https://ag-studio-apps.github.io/mtroamd">mtRoam</a> daemon (mtroamd) on your own host. Turn it on per host and your shell survives reconnects, app suspension, device switches, and even daemon restarts, with full scrollback replayed on reattach. Its signature is <a href="#halo">Halo</a>, the persistent ring buffer described below.</p>
+      <h2>6. Persistent sessions: tmux and mtRoam</h2>
+      <p>A plain SSH shell ends when its connection drops. To keep your shell running on the host while your phone sleeps, changes network or switches to another device, meshTerm offers three choices per host:</p>
+      <ul>
+        <li><strong>tmux</strong>: your shell lives in a tmux session on the host, using software already on most servers. This is the default for new hosts.</li>
+        <li><strong>mtRoam</strong>: your shell lives in the open-source <a href="https://ag-studio-apps.github.io/mtroamd/">mtRoam</a> service (mtroamd) on your own host, with its <a href="#halo">Halo</a> scrollback buffer, named sessions and attach modes.</li>
+        <li><strong>None</strong>: plain SSH. The shell ends with the connection.</li>
+      </ul>
 
-      <h3 id="roam-install">Installing the daemon on a host</h3>
-      <p>The first time you tap Connect on a Roam-enabled host that doesn't already have the daemon, a <strong>Set Up Roam</strong> sheet appears. The sheet runs a six-stage install pipeline:</p>
-      <ol>
-        <li><strong>Probing</strong> - meshTerm runs a few read-only commands over SSH to detect the platform (Linux distro family, macOS, BSD), the architecture, and where to install the binary.</li>
-        <li><strong>Downloading</strong> - fetches the signed daemon binary and the companion mtroam CLI from the project's GitHub Releases. Progress is shown as a single bar covering both files.</li>
-        <li><strong>Verifying</strong> - verifies the release's minisign signature against keys built into the app, then checks each binary's SHA-256 against the signed checksum file. If anything fails, the install aborts with a clear error and the binaries are never uploaded.</li>
-        <li><strong>Uploading</strong> - SFTPs the verified binaries into <code>~/.local/bin/</code> on your host and marks them executable.</li>
-        <li><strong>Installing service</strong> - sets up the right supervisor for the platform:
-          <ul>
-            <li>Linux with systemd → a user-level systemd unit, optionally with linger enabled so the daemon survives a logout.</li>
-            <li>macOS → a per-user launchd agent.</li>
-            <li>Hosts where neither is available → a <code>nohup</code>-supervised fallback. The sheet tells you the system is on the fallback path.</li>
-          </ul>
-          A PATH entry is appended to your login shell's rc file so you can run <code>mtroamd</code> and <code>mtroam</code> from any SSH session.
-        </li>
-        <li><strong>Smoke test</strong> - a four-check verification: the binary runs, the daemon responds, your login shell can find it on PATH, and the mtroam CLI is in place. Each check is shown as a row in the sheet. If a check fails, you get an inline <strong>Retry Checks</strong> button (cheap re-run) and a <strong>Full Reinstall</strong> button (escalation).</li>
-      </ol>
+      <h3 id="persistence">Choosing persistence for a host <span class="new-badge">2.2</span></h3>
+      <p>Pick one in the <strong>Persistence</strong> picker (<strong>tmux</strong>, <strong>mtRoam</strong> or <strong>None</strong>). It is on the <strong>Session preferences</strong> step when you add a host, and under <strong>Edit Host &gt; Session</strong> afterwards.</p>
+      <ul>
+        <li>With <strong>tmux</strong> chosen you can also set a <strong>Session name (optional)</strong>; leave it blank to use a name derived from your device. The <strong>tmux attach</strong> setting is described in <a href="#tmux-attach">Control mode or Legacy</a>.</li>
+        <li>With <strong>mtRoam</strong> chosen the picker reminds you that it "Needs the mtRoam service (mtroamd) on the host." and links the <strong>Install guide</strong>. The mtRoam settings (Keep alive, Session name, and so on) appear below it.</li>
+        <li>A host marked as Windows always connects over plain SSH: tmux and mtRoam need a Linux or macOS host.</li>
+      </ul>
+      <p>New hosts start with the choice in <strong>Settings &gt; Sessions &gt; Persistence for new hosts</strong> (<strong>tmux</strong> or <strong>None</strong>). mtRoam is always chosen per host. If a host's choice differs from that default, Edit Host &gt; Session offers <strong>Reset to app default</strong>.</p>
 
-      <p>On success, the sheet shows the supervisor that was set up. On Linux hosts, you'll also see a distro-tailored firewall instruction for the UDP port the daemon uses - copy the one line and run it in a shell to open the port for inbound connections.</p>
+      <h3 id="check-persistence">Check persistence <span class="new-badge">2.2</span></h3>
+      <p>Not sure what a host has installed? Open the host's <strong>Details</strong> (long-press the host) and tap <strong>Check persistence</strong> in the <strong>Persistence</strong> section. meshTerm runs one read-only command over SSH and shows a row each for <strong>tmux</strong> and <strong>mtroamd</strong>: the version and where it was found, <strong>Not found</strong>, or <strong>Unknown</strong> if the host could not be reached. Nothing is installed or changed.</p>
+      <ul>
+        <li>The tmux row says <strong>Control mode: ready.</strong> for tmux 3.2 or newer, or that it is too old for control mode (see <a href="#tmux-attach">below</a>).</li>
+        <li>For an mtroamd that meshTerm installed itself (in <code>~/.local/bin</code>), the mtroamd row carries the <strong>Update</strong>, <strong>Repair</strong>, <strong>Restart</strong> and <strong>Uninstall</strong> buttons. Any other copy shows "Installed by a package manager." instead, with a link to the install guide.</li>
+        <li>Finding mtroamd never changes the host's setting: pick mtRoam yourself in Edit Host &gt; Session if you want to use it.</li>
+      </ul>
 
+      <!-- ============================================ -->
+      <h3 id="tmux">tmux sessions <span class="new-badge">2.2</span></h3>
+      <p>On a host with tmux 3.2 or newer, meshTerm talks to tmux directly through tmux's own <strong>control mode</strong>. Instead of drawing a tmux client inside one terminal, meshTerm knows every window and pane and shows each pane as its own native terminal, with its own scrollback. When you come back to the app, it reattaches to the exact session you left, sized to your screen. The status line you configured in tmux on the host is left alone (the old tmux Status Bar setting is gone).</p>
+      <p>If another device takes the session over, your screen shows <strong>Detached from another device</strong> with a <strong>Reattach</strong> button to take it back.</p>
 
-      <h4>Updating the daemon</h4>
-      <p>When meshTerm needs a newer daemon than the one on the host, the host's editor shows a <strong>Daemon update available</strong> banner with the installed and available versions. Tap <strong>Update now</strong> and the sheet drives a self-update - the daemon swaps itself out via atomic rename so the running process isn't interrupted, then restarts via its supervisor.</p>
+      <h4>Panes on iPad and iPhone</h4>
+      <ul>
+        <li><strong>iPad</strong>: the panes of the current window are laid out side by side as tmux arranges them. Drag a divider to resize the panes (the size is applied when you let go); double-tap a divider to even them out.</li>
+        <li><strong>iPhone</strong>: held upright, you see one pane at a time. When the window has more than one pane, a small row of dots sits in the top-right corner of the terminal (top-left with Left-handed layout on): tap a dot, or swipe across the dots, to switch panes. The pane you leave keeps running, so switching back shows its current output straight away.</li>
+      </ul>
 
-      <h4>Reinstalling or recovering</h4>
-      <p>Open the host's detail screen for a <strong>Reinstall</strong> button. Reinstall stops the running daemon, removes the binary, re-runs the full install pipeline, and brings the supervisor back. Your pairing state and cert are preserved, so reinstall doesn't require re-trusting the host.</p>
+      <h4>Windows and panes from the palette</h4>
+      <p>While a tmux session is attached in control mode, the <a href="#keyboard">keyboard palette</a> gains a fourth page, marked with the tmux icon. It lists your <strong>Windows</strong> and the <strong>Panes</strong> of the current window:</p>
+      <ul>
+        <li><strong>Windows</strong>: tap a window to switch to it; tap <strong>New window</strong> to add one. Each window's <strong>...</strong> menu has <strong>Rename window</strong> and <strong>Close window</strong>. On iPad the windows show as a row of chips.</li>
+        <li><strong>Panes</strong>: a small map of the window's layout; tap a pane to focus it. Below it: <strong>Split right</strong>, <strong>Split down</strong> and, with more than one pane, <strong>Zoom</strong> / <strong>Unzoom</strong>. The <strong>...</strong> menu has <strong>Rename pane</strong>, <strong>Fit to this screen</strong> (useful when a desktop client left the session another size) and <strong>Close pane</strong>.</li>
+        <li><strong>Resize</strong>: in a window with several panes (and not zoomed), <strong>Wider</strong>, <strong>Narrower</strong>, <strong>Taller</strong> and <strong>Shorter</strong> resize the focused pane, and <strong>Even out</strong> evens the whole window.</li>
+      </ul>
+      <p>Closing a window or pane asks first, since it also closes whatever is running in it.</p>
+      <p>With a hardware keyboard, control mode adds its own shortcuts; see <a href="#keyboard">External keyboards</a>.</p>
 
+      <h4 id="tmux-attach">Control mode or Legacy</h4>
+      <p>Control mode is on by default. Each tmux host has a <strong>tmux attach</strong> setting in <strong>Edit Host &gt; Session</strong> (shown while Persistence is tmux) with two choices:</p>
+      <ul>
+        <li><strong>Control mode</strong>: recommended. Native panes, the tmux palette page and the iPad splits described above.</li>
+        <li><strong>Legacy</strong>: "a plain tmux client, without splits or the window palette", the way meshTerm attached to tmux before 2.2. Use it if control mode misbehaves on a particular host.</li>
+      </ul>
+      <p>A control-mode session picks up a change to this setting the next time it reattaches; a Legacy session switches to control mode when you start a new session.</p>
+
+      <h4>Older tmux, and hosts without tmux</h4>
+      <ul>
+        <li><strong>tmux older than 3.2</strong>: meshTerm notices and automatically reconnects with the classic tmux attach, so the session still persists. Check persistence explains this on the tmux row. After you upgrade tmux on the host, tap <strong>Check persistence</strong> so meshTerm tries control mode again on the next connect.</li>
+        <li><strong>No tmux</strong>: the session opens as a plain shell with a <strong>No session persistence</strong> banner. Where meshTerm knows your distro's install command, <strong>Install tmux</strong> pastes it at your prompt for you to review and run.</li>
+      </ul>
+
+      <!-- ============================================ -->
+      <h3 id="mtroam-service">mtRoam</h3>
+      <p><strong>mtRoam</strong> (Roam in earlier versions of this guide) is meshTerm's own persistent-session service, powered by the open-source <a href="https://ag-studio-apps.github.io/mtroamd/">mtroamd</a> daemon on your host. Your shell survives reconnects, app suspension, device switches, and even daemon restarts, with full scrollback replayed on reattach. Its signature is <a href="#halo">Halo</a>, the persistent ring buffer described below.</p>
+
+      <h3 id="roam-install">Installing mtroamd</h3>
       <div class="callout warn">
-        <strong>Reinstall ends active sessions.</strong> Self-update preserves them; reinstall does not. Save anything important first.
+        <strong>Installing mtroamd from the app is deprecated from iOS 2.2.</strong> meshTerm no longer installs the daemon. Install it with your server's package manager (apt, dnf, apk, AUR or Nix) or build it from source, following the <a href="https://ag-studio-apps.github.io/mtroamd/">mtroamd install page</a>. A copy the app installed earlier (in <code>~/.local/bin</code>) keeps working, and the app still offers Update, Repair, Restart and Uninstall for it. To move that copy onto a package, see <a href="#roam-migrate">Switching from the app-installed mtroamd to a package</a>.
+      </div>
+      <p>The <a href="https://ag-studio-apps.github.io/mtroamd/">install page</a> is the place for the repository and signing-key setup of each package manager. Once the repository is added, the install itself is one line:</p>
+      <table>
+        <thead><tr><th>System</th><th>Install</th></tr></thead>
+        <tbody>
+          <tr><td>Debian, Ubuntu (apt)</td><td><code>sudo apt install mtroamd</code></td></tr>
+          <tr><td>Fedora (dnf)</td><td><code>sudo dnf install mtroamd</code></td></tr>
+          <tr><td>Alpine (apk, x86_64 for now)</td><td><code>apk add mtroamd</code> (as root, after adding the repository)</td></tr>
+          <tr><td>Arch (AUR)</td><td><code>mtroamd-bin</code> (prebuilt) or <code>mtroamd</code> (builds from source)</td></tr>
+          <tr><td>Nix / NixOS</td><td>The flake's NixOS module or home-manager module (see <a href="#roam-migrate-nix">Nix</a> below)</td></tr>
+          <tr><td>Any systemd Linux</td><td><a href="#roam-source">Build from source</a></td></tr>
+        </tbody>
+      </table>
+      <p>The packages come in two channels. <strong>Stable</strong> is the one the App Store version of meshTerm pairs with, and the one to use. <strong>Dev</strong> carries pre-releases that pair with TestFlight builds.</p>
+      <p>On apt and dnf, run the install as your normal login user with <code>sudo</code>: the package then starts mtroamd for that user and keeps it running after you log out. Check it with <code>mtroamd doctor</code>. Then set the host's Persistence to <strong>mtRoam</strong> in Edit Host &gt; Session and connect.</p>
+
+      <h4>Updating and maintaining mtroamd</h4>
+      <ul>
+        <li><strong>Package-managed copy</strong>: update it with the package manager, for example <code>sudo apt upgrade mtroamd</code> or <code>sudo dnf upgrade mtroamd</code>. The app shows "Installed by a package manager." in place of the maintenance buttons, adding "Update it with your package manager." when a newer daemon is available.</li>
+        <li><strong>App-installed copy</strong> (in <code>~/.local/bin</code>): when meshTerm needs a newer daemon, the host shows <strong>mtRoam service update available</strong> with the installed and available versions; tap <strong>Update now</strong>. The host's Details screen also offers <strong>Repair</strong> (re-downloads the current release, verifies it and restarts), <strong>Restart mtRoam service</strong> and <strong>Uninstall</strong>. Each asks first. Sessions set to persist across restarts are kept through a Repair or Restart; Uninstall ends all mtRoam sessions on the host. Your pairing (certificate and key) is kept either way.</li>
+        <li>If meshTerm has never seen the daemon's version, or does not yet know who installed it, it asks you to run <strong>Check persistence</strong> before it offers any of these.</li>
+      </ul>
+
+      <div class="callout info">
+        Before 2.2, connecting to a Roam host without the daemon opened a <strong>Set Up Roam</strong> sheet that downloaded and installed mtroamd. That sheet, and the <strong>Reinstall</strong> button, are gone.
       </div>
 
-      <h4>If the install fails</h4>
-      <p>Each stage has its own failure message and a copyable manual command you can paste into a shell to run the same step yourself. Common causes:</p>
-      <ul>
-        <li><strong>Probing failed</strong> - the SSH connection itself isn't working, or the user account doesn't have a writable home directory.</li>
-        <li><strong>Verification failed</strong> - extremely rare; means the downloaded files didn't match the signed checksum. Re-run; if it persists, file a report.</li>
-        <li><strong>Service install failed</strong> - most often systemd-user can't talk to its bus because the user isn't lingering. The sheet surfaces the exact next step.</li>
-      </ul>
+      <h4 id="roam-source">Building from source</h4>
+      <p>On any systemd Linux you can build mtroamd yourself. You need Go 1.26 or newer. Build a release tag (the version shown as "Current stable" on the install page), not an arbitrary development commit: the app requires a minimum daemon version.</p>
+      <pre>git clone https://github.com/AG-Studio-Apps/mtroamd.git
+cd mtroamd
+git checkout v1.8.0          # use the current stable tag from the install page
+make build build-mtroam      # builds ./mtroamd and ./mtroam
+sudo install -m 755 mtroamd mtroam /usr/local/bin/</pre>
+      <p>If this host has an app-installed copy, switch it over with <code>/usr/local/bin/mtroamd migrate</code> (see <a href="#roam-migrate-manual">AUR and source builds</a>). Otherwise set up the service yourself:</p>
+      <pre>mkdir -p ~/.config/systemd/user
+mtroamd unit print --bin=/usr/local/bin/mtroamd &gt; ~/.config/systemd/user/mtroamd.service
+systemctl --user daemon-reload
+systemctl --user enable --now mtroamd
+sudo loginctl enable-linger "$USER"
+mtroamd doctor</pre>
+      <div class="callout warn">
+        Install your build to <code>/usr/local/bin</code>, not <code>~/.local/bin</code>. A binary in <code>~/.local/bin</code> is treated as the app-installed copy: the app offers Update, Repair and Uninstall for it, and an update would replace your build with a release download.
+      </div>
+      <p>To update a source build, check out the new tag, rebuild, install, and restart (a restart keeps live sessions):</p>
+      <pre>git pull &amp;&amp; git checkout &lt;new tag&gt;
+make build build-mtroam
+sudo install -m 755 mtroamd mtroam /usr/local/bin/
+systemctl --user restart mtroamd</pre>
 
-      <h3 id="roam-transport">Choosing a transport (Direct vs SSH Tunnel)</h3>
-      <p>Roam can reach the daemon two ways. Set this in <strong>Edit Host → Protocol &amp; Transport</strong>: pick <strong>Protocol → mtRoam</strong>, then open <strong>Transport Details → mtRoam Transport</strong>:</p>
+      <!-- ============================================ -->
+      <h3 id="roam-migrate">Switching from the app-installed mtroamd to a package <span class="new-badge">2.2</span></h3>
+      <p>If meshTerm installed mtroamd on a host for you (it lives at <code>~/.local/bin/mtroamd</code>), you can move that host onto a package or a source build. Whatever the method, the daemon's state in <code>~/.local/share/mtroamd</code> (the certificate the app trusts, and your session state) is kept, so the app reconnects with <strong>no re-pairing</strong>. There is <strong>nothing to change in the app</strong>: it finds the new binary on its next connect and dials the same socket (<code>~/.local/share/mtroamd/mtroamd.sock</code>), which every package uses by default.</p>
+
+      <h4>apt and dnf: automatic</h4>
+      <ol>
+        <li>Add the repository from the <a href="https://ag-studio-apps.github.io/mtroamd/">install page</a>.</li>
+        <li>As your normal login user, run <code>sudo apt install mtroamd</code> or <code>sudo dnf install mtroamd</code>.</li>
+        <li>Watch for <code>mtroamd: migrating existing ~/.local/bin install for '&lt;you&gt;'</code> followed by a line saying it migrated with sessions preserved. That's it.</li>
+      </ol>
+      <p><strong>What happens.</strong> The package notices the <code>~/.local/bin</code> copy belonging to the user who ran <code>sudo</code> and runs <code>mtroamd migrate --yes</code> as that user. migrate:</p>
       <ul>
-        <li><strong>Direct (QUIC/TCP)</strong> - meshTerm dials the daemon's QUIC port directly over UDP. Lowest latency, but the daemon's UDP port (49820 by default) has to be reachable from your device. The install sheet shows the exact firewall line to open it.</li>
-        <li><strong>SSH Tunnel</strong> - the Roam protocol is carried inside the SSH connection you already authenticated with. Nothing extra to open: it works through any firewall that allows SSH, at a little more latency than Direct.</li>
+        <li>rewrites your systemd user service to run <code>/usr/bin/mtroamd</code>, keeping the same ports and socket;</li>
+        <li>restarts the daemon in a way that keeps your live sessions running (they reattach to the new daemon);</li>
+        <li>removes <code>~/.local/bin/mtroamd</code> only once the new daemon is confirmed running;</li>
+        <li>puts your previous setup back if any step fails, so you are never left half-migrated.</li>
       </ul>
-      <p>If you choose Direct and the UDP port turns out to be blocked, meshTerm automatically falls back to the SSH tunnel for that connection, so a session always comes up. Over Tailscale, Roam routes through the encrypted tunnel regardless of this setting.</p>
+      <p><strong>If it didn't migrate.</strong> If the installer printed that the user session "isn't reachable from here" or that the auto-migration failed, or you installed as root or from automation (no <code>sudo</code> user), run the migration yourself as your login user:</p>
+      <pre>/usr/bin/mtroamd migrate</pre>
+      <p>Use the full path: until the migration runs, a plain <code>mtroamd</code> may still find the old copy in <code>~/.local/bin</code> first, which only replies that there is nothing to migrate to. Until you migrate, both copies exist and the old one keeps running, so package upgrades do not take effect.</p>
+      <p><strong>Several users on one host?</strong> Only the user who ran <code>sudo</code> is migrated. Each other user with an app-installed copy runs <code>/usr/bin/mtroamd migrate</code> themselves.</p>
+
+      <h4 id="roam-migrate-manual">AUR and source builds: run migrate once</h4>
+      <p>These do not migrate automatically. After installing, run migrate as your login user, using the <em>new</em> binary's full path (the old <code>~/.local/bin</code> copy refuses with "nothing to migrate to"):</p>
+      <pre>/usr/bin/mtroamd migrate          # AUR
+/usr/local/bin/mtroamd migrate    # source build
+sudo loginctl enable-linger "$USER"   # if not already, so it survives logout and reboot</pre>
+      <p>migrate performs the same safe switch described above: same ports and socket, live sessions kept, the old binary removed only once the new daemon is running, and a rollback if anything fails.</p>
+
+      <h4 id="roam-migrate-nix">Nix and NixOS</h4>
+      <p>Don't use <code>mtroamd migrate</code> here (it would write a Nix store path into your own service file). Instead, remove the app-installed copy while keeping its state, then let Nix run the daemon:</p>
+      <ol>
+        <li>As your login user: <pre>~/.local/bin/mtroamd uninstall --yes</pre> This stops the old daemon and removes its user service, <code>~/.local/bin/mtroamd</code> and <code>~/.local/bin/mtroam</code>, and <strong>keeps</strong> <code>~/.local/share/mtroamd</code>. Never add <code>--purge</code>: that deletes the certificate, and the app would have to trust the host again.</li>
+        <li>Enable the module and rebuild. On NixOS:
+          <pre>imports = [ mtroamd.nixosModules.default ];
+services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
+          This also keeps the daemon running after you log out and puts <code>mtroamd</code> on your PATH. With home-manager, set <code>services.mtroamd.enable = true;</code> and, in your NixOS configuration, <code>users.users.&lt;you&gt;.linger = true</code>.</li>
+      </ol>
+      <div class="callout warn">
+        Open mtRoam sessions on the host end when the old daemon stops. Save your work first.
+      </div>
+
+      <h4>Alpine (apk)</h4>
+      <p>Alpine has no systemd, so there is no migrate step:</p>
+      <ol>
+        <li>As your login user: <code>~/.local/bin/mtroamd uninstall --yes</code> (keeps your state; never add <code>--purge</code>).</li>
+        <li>As root, install mtroamd from the apk repository on the <a href="https://ag-studio-apps.github.io/mtroamd/">install page</a>.</li>
+        <li>In <code>/etc/conf.d/mtroamd</code>, set <code>MTROAMD_USER</code> to your login user. The daemon starts your shells as that user and uses that user's <code>~/.local/share/mtroamd</code>, so the certificate the app trusts carries over.</li>
+        <li>Start it, and enable it at boot: <code>rc-update add mtroamd &amp;&amp; rc-service mtroamd start</code>.</li>
+      </ol>
+      <p>As with Nix, open sessions end when the old daemon stops.</p>
+
+      <h4>Verify</h4>
+      <ul>
+        <li><code>mtroamd doctor</code> reports the daemon's health.</li>
+        <li><code>command -v mtroamd</code> should print the package or source path, not <code>~/.local/bin</code>. (Open a new shell first if it still shows the old path.)</li>
+        <li>On systemd: <code>systemctl --user status mtroamd</code>. On Alpine: <code>rc-service mtroamd status</code>.</li>
+        <li>In meshTerm, open the host's <strong>Details</strong> and tap <strong>Check persistence</strong>. The mtroamd row now shows the new path and "Installed by a package manager." in place of Update, Repair, Restart and Uninstall. (meshTerm also re-checks by itself when you open the host's Details and its last check is more than a day old.) From now on, update with your package manager, or by rebuilding for a source install.</li>
+      </ul>
+      <p>The app-installed companion CLI <code>~/.local/bin/mtroam</code> is left in place by migrate; you can delete it so the packaged <code>mtroam</code> is used instead.</p>
+
+      <!-- ============================================ -->
+      <h3 id="roam-transport">Choosing a transport (Direct vs SSH Tunnel)</h3>
+      <p>mtRoam can reach the daemon two ways. With Persistence set to mtRoam, open <strong>Edit Host &gt; Connection</strong>, then <strong>mtRoam transport &gt; Transport Details &gt; mtRoam Transport</strong>:</p>
+      <ul>
+        <li><strong>Direct (QUIC/TCP)</strong>: meshTerm dials the daemon's QUIC port directly over UDP. Lowest latency, but the daemon's UDP port (49820 by default) has to be reachable from your device. The <strong>Firewall setup</strong> row under Transport Details opens the exact firewall rules for the host.</li>
+        <li><strong>SSH Tunnel</strong>: the mtRoam protocol is carried inside the SSH connection you already authenticated with. Nothing extra to open: it works through any firewall that allows SSH, at a little more latency than Direct.</li>
+      </ul>
+      <p>If you choose Direct and the UDP port turns out to be blocked, meshTerm falls back to the SSH tunnel for that connection, so a session always comes up. Over meshTerm's built-in Tailscale, Direct uses mtRoam over TCP on the tailnet instead (port 49920 by default), and Firewall setup shows the matching rule.</p>
 
       <h3 id="roam-sessions">Multiple named sessions per host</h3>
-      <p>Each Roam host can hold any number of named sessions: <code>dev</code>, <code>logs</code>, <code>tests</code>, whatever you want. Tap the host and a picker appears showing the existing sessions plus a <strong>+ New</strong> entry. Tap a session to attach; tap + New to start a fresh one.</p>
+      <p>Each mtRoam host can hold any number of named sessions: <code>dev</code>, <code>logs</code>, <code>tests</code>, whatever you want. Tap the host and a picker appears showing the existing sessions; tap one to attach, or tap <strong>+</strong> to start a fresh one.</p>
 
       <p>Manage sessions from the picker:</p>
       <ul>
-        <li><strong>Rename</strong> - long-press a row.</li>
-        <li><strong>Kill</strong> - swipe a row left and tap Kill. Confirmation required.</li>
+        <li><strong>Rename</strong>: swipe a row to the right, or long-press it and choose <strong>Rename…</strong>. Only the label changes; the shell and its scrollback are untouched.</li>
+        <li><strong>End session</strong>: swipe a row to the left, or long-press it. Confirmation required.</li>
+        <li><strong>Open read-only</strong>: long-press a row to watch a session without taking it over (see <a href="#roam-attach">Attach modes</a>).</li>
       </ul>
 
       <p>If a host only has one session, meshTerm skips the picker and attaches directly. If it has none, a fresh session is spawned and you connect to it.</p>
@@ -256,20 +432,20 @@
         <li><strong>Recency window.</strong> meshTerm asks for only as much replay as your scrollback setting can actually display, so a quick reconnect does not re-stream megabytes you will never scroll back to.</li>
         <li><strong>Full-screen apps.</strong> Inside a full-screen TUI (vim, htop, a pager) the replay budget tightens automatically, since an alt-screen app has no scrollback of its own. The daemon also reconstructs the app's stable bottom rows (status bars, prompts) so they are intact the moment you reattach.</li>
         <li><strong>Honest truncation.</strong> If you were away long enough that the oldest output rolled out of the 4&nbsp;MiB ring, meshTerm tells you plainly that some output was lost during the disconnect rather than pretending the scrollback is complete.</li>
-        <li><strong>Survives daemon restarts.</strong> With <em>Persist across daemon restarts</em> on, the ring is checkpointed to disk, so your scrollback and session come back even after a self-update or a host reboot.</li>
+        <li><strong>Survives daemon restarts.</strong> With <em>Persist across mtRoam service restarts</em> on, the ring is checkpointed to disk, so your scrollback and session come back even after a self-update or a host reboot.</li>
       </ul>
       <p>Halo lives entirely on the open-source daemon; nothing about your session travels anywhere but between your device and your own host. The full buffer and replay design is documented in the <a href="https://github.com/AG-Studio-Apps/mtroamd">mtroamd</a> repository.</p>
 
       <h4>Default session and pinning</h4>
-      <p>In Edit Host → Roam Persistence:</p>
+      <p>In <strong>Edit Host &gt; Session</strong>, the <strong>mtRoam</strong> section (shown while Persistence is mtRoam) holds:</p>
       <ul>
-        <li><strong>Default Session</strong> - pick which named session the host opens by default. <em>None</em> uses your most recently attached one.</li>
-        <li><strong>Always open this session</strong> - pins the host directly to the default session, skipping the picker. The picker is still available via long-press → Sessions….</li>
-        <li><strong>Persist across daemon restarts</strong> - when on, the session's scrollback is snapshotted to disk so it survives if the daemon restarts (e.g. after a self-update or host reboot).</li>
+        <li><strong>Session name</strong>: which named session the host opens by default. Tap it to change the session or remove sessions you no longer need. <em>None</em> uses your most recently attached one.</li>
+        <li><strong>Always open this session</strong>: pins the host directly to that session, skipping the picker. The picker is still available via long-press &gt; <strong>Sessions…</strong>.</li>
+        <li><strong>Persist across mtRoam service restarts</strong>: when on, the session's scrollback is snapshotted to disk so it survives a daemon restart (for example after an update or a host reboot).</li>
       </ul>
 
       <h4>Keep-alive (idle timeout)</h4>
-      <p>Pick how long the daemon should hold a Roam session when no client is attached. Options: <strong>Default</strong> (uses the daemon's built-in timeout), <strong>1 hour</strong>, <strong>1 day</strong>, <strong>7 days</strong>, <strong>30 days</strong>, or <strong>Never</strong> (kept until the daemon restarts or you kill it). New hosts inherit whatever you choose under Settings, Persistence.</p>
+      <p><strong>Keep alive</strong>, in the same section, sets how long the mtRoam service holds a session when no client is attached. Options: <strong>Default (30 days)</strong>, <strong>1 hour</strong>, <strong>1 day</strong>, <strong>7 days</strong>, <strong>30 days</strong>, or <strong>Never (until daemon restart)</strong>.</p>
 
 
       <h3 id="roam-attach">Attach modes</h3>
@@ -280,9 +456,10 @@
         <li><strong>Passive</strong> - a quiet tail. Same as read-only but invisible to the other clients' "who else is attached" indicators. Used by the <code>mtroam tail</code> command.</li>
       </ul>
       <p>Any number of read-only watchers can coexist with a single exclusive driver. The session label in the bar shows your role.</p>
+      <p>To watch rather than drive, long-press a session in the picker and choose <strong>Open read-only</strong>. When another device holds the session, your screen shows a <strong>Live on another device</strong> banner: tap <strong>Take control</strong> to move typing to this device, and the other device becomes the viewer.</p>
 
       <h3 id="mtroam">Desktop CLI: mtroam <span class="new-badge">2.0</span></h3>
-      <p>The Roam daemon ships with a small companion command-line tool called <strong>mtroam</strong>, installed on your host as part of Set Up Roam. Use it from any SSH session on the host (or from a laptop with <code>ssh user@host mtroam …</code>) to manage sessions without opening the iOS app.</p>
+      <p>The mtRoam daemon ships with a small companion command-line tool called <strong>mtroam</strong>, installed alongside <code>mtroamd</code> by the packages and by a source build. Use it from any SSH session on the host (or from a laptop with <code>ssh user@host mtroam …</code>) to manage sessions without opening the iOS app.</p>
       <p>Subcommands:</p>
       <ul>
         <li><code>mtroam list</code> - enumerate sessions on this host (id, name, idle time, attached clients).</li>
@@ -299,6 +476,7 @@
         <li><code>mtroam restart</code> - cycle the daemon via its supervisor. In-flight sessions survive the restart.</li>
         <li><code>mtroam uninstall</code> - remove the mtroam binary.</li>
       </ul>
+      <p>On a host where mtroamd came from a package manager, update and remove it with the package manager instead (see <a href="#roam-install">Installing mtroamd</a>).</p>
       <p>Authentication uses your normal SSH config - <code>~/.ssh/config</code>, ssh-agent and keys all work. mtroam invokes the system <code>ssh</code> binary, so anything that works for <code>ssh user@host</code> works here too.</p>
 
       <div class="callout info">
@@ -342,7 +520,7 @@
 
       <h3 id="agent-notifications">Notifications <span class="new-badge">2.1.11</span></h3>
       <p>meshTerm can push you a notification the moment an agent needs you, even while the app is in the background or fully closed. You get a <strong>needs-approval</strong> alert when Claude Code or Codex pauses for a permission decision, and a <strong>turn finished</strong> alert when an agent completes a turn and is waiting for your next instruction. Tap the notification and meshTerm opens the exact session it came from, dropping you straight back into that conversation.</p>
-      <p>Notifications are <strong>opt in per host</strong>. In Edit Host, turn on <strong>Send notifications from this host</strong>. The first time an agent starts there, meshTerm installs a small notify hook into that agent's own configuration (Claude, Codex, or Gemini) so the host can signal your device; an agent already running when you opt in starts notifying once you relaunch it. In <strong>Settings &gt; Agent Mode &gt; Notifications</strong> you choose whether approvals, turn-completions, or both reach you, and those switches apply immediately, even to sessions already running.</p>
+      <p>Notifications are <strong>opt in per host</strong>. In Edit Host, turn on <strong>Send notifications from this host</strong>. The first time an agent starts there, meshTerm installs a small notify hook into that agent's own configuration (Claude, Codex, or Gemini) so the host can signal your device; an agent already running when you opt in starts notifying once you relaunch it. In <strong>Settings &gt; Agents &gt; Notifications</strong> you choose whether approvals, turn-completions, or both reach you, and those switches apply immediately, even to sessions already running.</p>
       <p>The alerts are <strong>content-free by design</strong>. The relay only ever sends your device a "needs attention" signal for a host you enrolled; it never sees your session content, and your device fills in the session name locally. Notifications work for agents you run in the terminal (over tmux or mtRoam) as well as in the native chat, covering Claude Code and Codex for both approvals and turn-completion, and Gemini for turn-completion.</p>
       <div class="callout info">
         Notifications go to one device per host. Turning them on from another device takes over, so that host then notifies the newer device.
@@ -374,7 +552,7 @@
     <!-- ============================================ -->
     <section id="ssh-keys">
       <h2>9. SSH keys</h2>
-      <p>Manage keys in Settings → SSH Keys.</p>
+      <p>Manage keys in Settings → Hosts &amp; Network → SSH Keys.</p>
 
       <h3>Supported key types</h3>
       <ul>
@@ -385,7 +563,7 @@
 
       <h3>Generating a new key</h3>
       <ol>
-        <li>Settings → SSH Keys → <strong>Add Key</strong>.</li>
+        <li>Settings → Hosts &amp; Network → <strong>Add Key</strong>.</li>
         <li>Pick a type and enter a label (e.g. "Work iPhone").</li>
         <li>Tap <strong>Generate</strong>. meshTerm creates the key pair, saves the private half in the iOS Keychain, and shows the public key in OpenSSH format.</li>
         <li>If you have saved hosts, an <strong>Install on a Host</strong> section appears immediately. Pick a host, tap <strong>Install Key</strong>, and meshTerm appends the public key to <code>~/.ssh/authorized_keys</code> on that server.</li>
@@ -397,7 +575,7 @@
 
       <h3>Importing an existing key</h3>
       <ol>
-        <li>Settings → SSH Keys → <strong>Add Key</strong> → <strong>Import</strong>.</li>
+        <li>Settings → Hosts &amp; Network → <strong>Add Key</strong> → <strong>Import</strong>.</li>
         <li>Paste the full OpenSSH-format private key (including the BEGIN and END lines).</li>
         <li>If the key is passphrase-protected, enter the passphrase. meshTerm decrypts it on import and stores the seed in the Keychain - there's no second prompt at connect time.</li>
         <li>Tap <strong>Import</strong>.</li>
@@ -423,7 +601,7 @@
       <p>meshTerm has a built-in Tailscale networking stack, so no separate Tailscale app is required. Add your Tailnet credentials and meshTerm connects to your devices directly over WireGuard. SSH, SFTP, Roam, and all auxiliary connections route through the encrypted Tailscale tunnel natively.</p>
 
       <h3 id="tailscale-routing">Routing modes</h3>
-      <p>Each host uses one of two routing modes. Set the default in Settings → Connections → Tailscale, and override it per host in Edit Host:</p>
+      <p>Each host uses one of two routing modes. Set the default in Settings → Hosts &amp; Network → Tailscale, and override it per host in Edit Host:</p>
       <ul>
         <li><strong>Built-in (Tailscale)</strong> - meshTerm's own in-process Tailscale node. Works alongside any system VPN and needs a Tailscale profile. This is the recommended default, and it does not depend on the Tailscale app being installed.</li>
         <li><strong>Device network</strong> - uses your device's normal networking: it routes via the Tailscale app if that app is running, or connects directly otherwise.</li>
@@ -431,12 +609,12 @@
 
       <h3>Setting up Tailscale <span class="new-badge">2.0.2</span></h3>
       <ol>
-        <li>Tap the globe icon in the host list (or go to <strong>Settings → Tailscale</strong>) and create a profile.</li>
+        <li>Tap the globe icon in the host list (or go to <strong>Settings → Hosts &amp; Network → Tailscale</strong>) and create a profile.</li>
         <li>Tap <strong>Sign in with Tailscale</strong> - a browser sheet opens and you sign in with your Tailscale account (Google, Microsoft, GitHub, Apple…). No keys to generate, nothing to renew. If your tailnet requires device approval, meshTerm waits and connects the moment an admin approves.</li>
         <li>That's it. Tap the globe icon to browse your Tailnet and add devices in a tap - once connected, the device list comes straight from your tailnet, <strong>no API token required</strong>.</li>
       </ol>
       <p>Prefer not to sign in through a browser? An <a href="#tailscale-auth-keys">auth key</a> works exactly as before. And an optional <strong>read-only API token</strong> supplements discovery: it lets meshTerm list your devices even when it isn't connected to the tailnet (or when you route through the Tailscale app in <strong>Device network</strong> mode).</p>
-      <p>The embedded Tailscale node starts automatically when you open the app. You can see its status (connected, IP addresses, signed-in identity) in <strong>Settings → Tailscale</strong>.</p>
+      <p>The embedded Tailscale node starts automatically when you open the app. You can see its status (connected, IP addresses, signed-in identity) in <strong>Settings → Hosts &amp; Network → Tailscale</strong>.</p>
 
 
       <h3>Tailscale SSH</h3>
@@ -449,12 +627,12 @@
         <li>Click <strong>Generate auth key</strong>.</li>
         <li>Enable <strong>Reusable</strong> so the key survives app restarts.</li>
         <li>Optionally enable <strong>Ephemeral</strong> so the node auto-removes from your Tailnet when meshTerm isn't running.</li>
-        <li>Copy the key and paste it into <strong>Settings → Tailscale → Auth Key</strong> in meshTerm.</li>
+        <li>Copy the key and paste it into <strong>Settings → Hosts &amp; Network → Tailscale → Auth Key</strong> in meshTerm.</li>
       </ol>
       <p>The auth key is stored in the iOS Keychain. meshTerm uses it to join your Tailnet on each launch - no browser login required. Auth-key profiles browse the device list exactly like signed-in ones: connected = no API token needed.</p>
 
       <h3 id="tailscale-profiles">Multiple Tailscale profiles <span class="new-badge">2.0</span></h3>
-      <p>meshTerm can hold more than one Tailscale identity - for example a work tailnet and a personal one, or a separate profile per client. Manage them in <strong>Settings → Connections → Tailscale</strong>, where each profile carries its own sign-in (or auth key) and optional read-only API token.</p>
+      <p>meshTerm can hold more than one Tailscale identity - for example a work tailnet and a personal one, or a separate profile per client. Manage them in <strong>Settings → Hosts &amp; Network → Tailscale</strong>, where each profile carries its own sign-in (or auth key) and optional read-only API token.</p>
       <ul>
         <li><strong>Add a profile</strong> - tap <strong>New Tailscale Profile</strong>, name it, and sign in with your Tailscale account (or paste an auth key).</li>
         <li><strong>Switch profiles</strong> - open a profile and tap <strong>Connect</strong>. Only one profile's node is up at a time, so switching brings the previous one down and the chosen one up. The device browser also offers Connect / Disconnect / switch directly, and warns you first if switching would drop live sessions.</li>
@@ -476,7 +654,7 @@
       </ul>
 
       <h3>Setting up a rule</h3>
-      <p>In <strong>Edit Host &#8594; Port Forwarding</strong>, tap <strong>Add Port Forward</strong>, choose Local or Dynamic, and set the local port (and, for Local, the destination as seen from the host). Add a label if you like, then toggle it on.</p>
+      <p>In <strong>Edit Host &#8594; Tunnels &#8594; Port Forwarding</strong>, tap <strong>Add Port Forward</strong>, choose Local or Dynamic, and set the local port (and, for Local, the destination as seen from the host). Add a label if you like, then toggle it on.</p>
 
       <h3>Managing tunnels</h3>
       <p>Open <strong>Tunnels</strong> from a host's long-press menu or the terminal's more-menu. Each rule shows a live status: <em>Listening</em>, <em>Not running</em>, or an error. Tunnels start when the session connects.</p>
@@ -490,13 +668,14 @@
     <!-- ============================================ -->
     <section id="keyboard">
       <h2>12. Keyboard <span class="new-badge">2.1</span></h2>
-      <p>The on-screen accessory above the keyboard is a <strong>three-page palette</strong>. Swipe left and right to move between the pages, or tap the page control. Each page keeps a different set of tools within thumb reach.</p>
+      <p>The on-screen accessory above the keyboard is a <strong>three-page palette</strong> (four pages in a tmux session). Swipe left and right to move between the pages, or tap the page control. Each page keeps a different set of tools within thumb reach.</p>
 
-      <h3>The three pages</h3>
+      <h3>The pages</h3>
       <ul>
         <li><strong>Features</strong> - one-tap access to the things you reach for mid-session: the SFTP file browser, buffer and history search, the Snippet Vault, Tunnels, and <a href="#agents">Agents</a>.</li>
         <li><strong>Keys</strong> - a custom terminal keyboard built from your own key groups: F-keys, navigation, modifiers, and the keys you use most. This is where Ctrl, Esc, Tab, the arrows, and your top row live.</li>
         <li><strong>Sessions</strong> - your live and resumable sessions, for one-tap switching without leaving the terminal.</li>
+        <li><strong>tmux</strong> <span class="new-badge">2.2</span>: a fourth page, marked with the tmux icon, that appears only while a tmux session is attached in control mode. It manages the session's windows and panes; see <a href="#tmux">tmux sessions</a>.</li>
       </ul>
 
 
@@ -510,10 +689,10 @@
 
       <h3>Minimizing and dismissing</h3>
       <p>Minimize the palette to a slim bar at the bottom edge and hand the rest of the screen back to the terminal for reading long output (logs, <code>man</code> pages, build output). Tap the bar to expand it again, or tap a single key on it to send that key.</p>
-      <p>To put the keyboard away entirely, <strong>swipe down</strong> on it, or tap the <strong>hide</strong> button next to Back. <strong>Open Sessions Minimised</strong> (Settings → Keyboard) starts every session with the palette already minimized.</p>
+      <p>To put the keyboard away entirely, <strong>swipe down</strong> on it, or tap the <strong>hide</strong> button next to Back. <strong>Keyboard when a session opens</strong> (Settings → Keyboard) sets the state new sessions start in: <strong>Minimised</strong>, <strong>Keyboard</strong> or <strong>Remember Last</strong>.</p>
 
-      <h3>Left-Handed Chrome</h3>
-      <p><strong>Settings → Keyboard → Left-Handed Chrome</strong> mirrors every bottom-edge control to the leading side of the screen, so the palette's chrome sits under your thumb when you drive one-handed from the left.</p>
+      <h3>Left-handed layout</h3>
+      <p><strong>Settings → Keyboard → Left-handed layout</strong> mirrors every bottom-edge control to the leading side of the screen, so the palette's chrome sits under your thumb when you drive one-handed from the left.</p>
 
       <h3>External keyboards</h3>
       <p>Connect a Magic Keyboard, Smart Folio, or any Bluetooth keyboard and the on-screen accessory bar hides automatically. Disconnect and it returns. While an external keyboard is attached, the following shortcuts are available:</p>
@@ -525,6 +704,19 @@
           <tr><td>⌘ 1 - ⌘ 9</td><td>Jump to tab N</td></tr>
           <tr><td>⌘ [ / ⌘ ]</td><td>Previous / next tab</td></tr>
           <tr><td>⌘ F</td><td>Open scrollback search</td></tr>
+        </tbody>
+      </table>
+      <p>In a tmux session in control mode <span class="new-badge">2.2</span>, these extra shortcuts work on windows and panes:</p>
+      <table>
+        <thead><tr><th>Shortcut</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td>⌘ ⌥ 1 to ⌘ ⌥ 9</td><td>Switch to tmux window N</td></tr>
+          <tr><td>⌘ ⌥ T</td><td>New tmux window</td></tr>
+          <tr><td>⌘ ⌥ [ / ⌘ ⌥ ]</td><td>Previous / next pane</td></tr>
+          <tr><td>⌘ D</td><td>Split right</td></tr>
+          <tr><td>⌘ ⇧ D</td><td>Split down</td></tr>
+          <tr><td>⌘ ⇧ Return</td><td>Zoom pane</td></tr>
+          <tr><td>⌘ K</td><td>Clear screen (in place of Close current session)</td></tr>
         </tbody>
       </table>
     </section>
@@ -563,16 +755,18 @@
       <p>Over a Roam (mtRoam) connection the daemon reports the real foreground process running on the host, so detection is exact. For plain SSH hosts, meshTerm falls back to a lightweight heuristic based on the terminal title.</p>
 
       <h3>Per-host override</h3>
-      <p>Edit Host → TUI Detection lets you change the behaviour per host:</p>
+      <p>The <strong>Back-to-prompt button</strong> picker in <strong>Edit Host &gt; Shell &amp; Environment</strong> changes the behaviour per host:</p>
       <ul>
-        <li><strong>Auto</strong> - detect from the title (default).</li>
-        <li><strong>Claude Code</strong> - force the Claude pill on this host even if the title detection fails (some custom zsh prompts overwrite the title).</li>
-        <li><strong>Codex CLI</strong> - force the Codex pill.</li>
-        <li><strong>Off</strong> - suppress the pill on this host entirely.</li>
+        <li><strong>Auto-detect</strong>: detect from what is running (default).</li>
+        <li><strong>Claude Code</strong>: force the Claude pill on this host even if the title detection fails (some custom zsh prompts overwrite the title).</li>
+        <li><strong>Codex CLI</strong>: force the Codex pill.</li>
+        <li><strong>Off</strong>: suppress the pill on this host entirely.</li>
       </ul>
+      <p>The picker also lists a <strong>tmux</strong> option.</p>
+      <!-- VERIFY: what the per-host "tmux" Back-to-prompt option does (SSHHost.TUIModePreference.tmux); its doc comment does not describe it. -->
 
-      <h3>Master kill switch</h3>
-      <p>Settings → Terminal has a master toggle that disables the TUI pill across every host. The pill is on by default.</p>
+      <h3>Turning it off everywhere</h3>
+      <p>The <strong>Back-to-prompt button</strong> toggle in Settings → Terminal turns the pill off across every host. The pill is on by default.</p>
 
     </section>
 
@@ -614,9 +808,9 @@
       <p>A <strong>Secret Profile</strong> bundles a set of environment variables and keys under one name, so you can hand a whole environment to a session at once. Tap to inject a profile into the session you are already in: its variables and keys reach the running shell <strong>invisibly</strong>, with nothing typed into the terminal and nothing left on screen afterward. Injection works over plain SSH, mtRoam, and tmux.</p>
       <h3>When injected values take effect</h3>
       <p>Injection delivers the values to the shell, which picks them up at its <strong>next prompt</strong>. That means they apply to the next command you run, not to a command already in progress. Inject only updates a pane sitting at a shell prompt; a full-screen app or an agent in the foreground is skipped.</p>
-      <p>A running agent has an important limitation: <strong>Claude Code, Codex, and Gemini keep the environment they launched with</strong>, because a running process's environment cannot be changed from the outside, and injection only lands at a shell prompt. For that reason the <strong>Inject button is disabled while an agent is in the foreground</strong>. To give an agent new secrets: return to a shell prompt, tap <strong>Inject</strong> there, then <strong>restart or resume the agent session</strong>, which relaunches it with the new values already in place so it reads them on start. New sessions always receive the secrets on connect, so this only affects an agent that was already live when you injected.</p>
+      <p>A running agent has an important limitation: <strong>Claude Code, Codex, and Gemini keep the environment they launched with</strong>, because a running process's environment cannot be changed from the outside, and injection only lands at a shell prompt. For that reason the <strong>Apply to this session</strong> button is disabled while an agent is in the foreground. To give an agent new secrets: return to a shell prompt, tap <strong>Apply to this session</strong> there, then <strong>restart or resume the agent session</strong>, which relaunches it with the new values already in place so it reads them on start. New sessions always receive the secrets on connect, so this only affects an agent that was already live when you injected.</p>
       <p>Like secret snippets and macros, profile values are backed by the iOS Keychain and can be gated by Face ID, Touch ID, or your device passcode. Profiles are handy for giving an agent or a shell its API keys and tokens without those values ever landing in your scrollback.</p>
-      <p>Manage profiles in <strong>Settings → Security → Secret Profiles</strong>, or open the <strong>Secret Profiles</strong> tile on the keyboard palette's Features page.</p>
+      <p>Manage profiles in <strong>Settings → Hosts &amp; Network → Secret Profiles</strong>, or open the <strong>Secret Profiles</strong> tile on the keyboard palette's Features page.</p>
     </section>
 
     <!-- ============================================ -->
@@ -672,6 +866,13 @@
         <li>Pick one or more files from the iOS Files sheet.</li>
         <li>meshTerm uploads them to the current remote directory.</li>
       </ol>
+      <p><strong>File names are cleaned on upload</strong> <span class="new-badge">2.2</span>. meshTerm keeps your name as it is (spaces, accents and leading dots included, so a <code>.bashrc</code> stays a dotfile) but removes what breaks paths or common tools:</p>
+      <ul>
+        <li>a leading <code>cid:</code>, the prefix Mail gives attachments you share into the app;</li>
+        <li><code>/</code> and <code>\</code> (path separators), <code>:</code> (which <code>scp</code> and <code>rsync</code> read as a host name), and control characters;</li>
+        <li><code>&lt; &gt; " | ? *</code>, which Windows OpenSSH servers reject in file names.</li>
+      </ul>
+      <p>The <code>cid:</code> prefix is dropped, each of the characters becomes an underscore, and leading or trailing spaces are trimmed. A name left empty (or just <code>.</code> or <code>..</code>) falls back to a timestamped name such as <code>file-20261001-142530</code>.</p>
 
       <h3>File operations</h3>
       <p>Long-press a file or folder for options:</p>
@@ -713,12 +914,12 @@
     <section id="security">
       <h2>21. Security &amp; App Lock</h2>
 
-      <h3>Known Hosts (TOFU)</h3>
+      <h3>Trusted servers (TOFU)</h3>
       <p>meshTerm uses <strong>Trust On First Use</strong> for host-key verification. The first time you connect to a host, the app shows the server's host-key fingerprint and asks you to confirm. Subsequent connects check the fingerprint silently. If it changes (server rebuilt, key rotated, or something more sinister), the connection is blocked with a warning.</p>
-      <p>Manage trusted fingerprints in <strong>Settings → Security → Known Hosts</strong>. Swipe an entry left to delete it. If a server's key legitimately changed, delete the old entry and reconnect to accept the new fingerprint.</p>
+      <p>Manage trusted fingerprints in <strong>Settings → Hosts &amp; Network → Trusted servers</strong>. Swipe an entry left to delete it. If a server's key legitimately changed, delete the old entry and reconnect to accept the new fingerprint.</p>
 
       <h3>App Lock</h3>
-      <p>Settings → Security → App Lock requires Face ID, Touch ID, or your device passcode to reopen meshTerm. Pick one of:</p>
+      <p>Settings → Privacy &amp; Security → App Lock requires Face ID, Touch ID, or your device passcode to reopen meshTerm. Pick one of:</p>
       <ul>
         <li><strong>Off</strong></li>
         <li><strong>Immediately</strong> - lock the moment the app backgrounds.</li>
@@ -757,28 +958,27 @@
       <p>Sensitive material - SSH private keys, passwords, and secret snippets and macros - is never placed in the synced records. It rides <strong>iCloud Keychain</strong> instead, which is end-to-end encrypted, so it reaches your other devices without ever being exposed to iCloud in plaintext. <strong>Tailscale credentials (auth keys and API tokens) never sync</strong>; each device signs in for itself.</p>
 
       <h3>Turning it off</h3>
-      <p>Turning sync off stops further propagation but never deletes anything already on a device. To remove synced data, use the erase options under Settings &rarr; Security &amp; Privacy.</p>
+      <p>Turning sync off stops further propagation but never deletes anything already on a device. To remove synced data, use the erase options under Settings &rarr; Privacy &amp; Security.</p>
     </section>
 
     <!-- ============================================ -->
     <section id="settings">
       <h2>23. Settings reference</h2>
-      <p>A quick map of the Settings tab.</p>
-
+      <p>A quick map of the Settings tab. Since 2.2, Settings is grouped into panes <span class="new-badge">2.2</span>. Not sure where something lives? Type into the <strong>Search</strong> field at the top of Settings: a result opens the pane, scrolls to the row and highlights it for a moment. Search also matches the English name of a row when the app is in Spanish.</p>
 
       <ul>
-        <li><strong>Subscription</strong> - current Pro state and upgrade buttons.</li>
-        <li><strong>Appearance</strong> - theme picker.</li>
-        <li><strong>Terminal</strong> - font size, scrollback options, TUI pill master toggle.</li>
-        <li><strong>Keyboard</strong> - Customize Keyboard, Minimized Row, Left-Handed Chrome, Open Sessions Minimised, Tap-for-Keyboard Reminder, Button Size, Show Macros, Macros editor.</li>
-        <li><strong>Connections</strong> - default persistence and default Roam idle timeout for newly added hosts.</li>
-        <li><strong>SSH Keys</strong> - generate, import, copy, delete.</li>
-        <li><strong>Hosts</strong> - import from <code>.ssh/config</code>, export to <code>ssh_config</code>.</li>
-        <li><strong>Security</strong> - App Lock and Known Hosts.</li>
-        <li><strong>Tailscale</strong> - API Token, Auth Key, embedded node status.</li>
-        <li><strong>Privacy</strong> - clear local connection history.</li>
-        <li><strong>About</strong> - version, Privacy Policy, EULA.</li>
+        <li><strong>Subscription</strong> (top of Settings): current plan and <strong>Restore Purchases</strong>.</li>
+        <li><strong>Hosts &amp; Network</strong>: <a href="#tailscale">Tailscale</a> (profiles, sign-in, auth key, API token, routing), <a href="#ssh-keys">SSH Keys</a> (<strong>Add Key</strong>, copy, delete), <strong>Trusted servers</strong> (the <a href="#security">known host keys</a>) and <a href="#secret-profiles">Secret Profiles</a>.</li>
+        <li><strong>Sessions</strong>: <strong>Persistence for new hosts</strong> (<strong>tmux</strong> or <strong>None</strong>) and <strong>Forget closed plain-SSH sessions</strong>.</li>
+        <li><strong>Terminal</strong>: Color Mode, Font Size, Cursor, Cursor Blink, Haptic Feedback, Bell, Predictions, <strong>Back-to-prompt button</strong>, Mouse Input (<strong>Off</strong>, <strong>Full-screen apps</strong> or <strong>Always</strong>), Cursor Drag Sensitivity, Scrollback.</li>
+        <li><strong>Keyboard</strong>: Customize Keyboard, <strong>Left-handed layout</strong>, <strong>Keyboard when a session opens</strong>, Tap-for-Keyboard Reminder, Hardware Buttons, Button Size, Show Macros, Macros, Double-Tap Action.</li>
+        <li><strong>Agents</strong>: edit diffs, typing (autocorrect and smart punctuation), Claude session age and size warnings, <a href="#agent-notifications">Notifications</a>, and <strong>Stop All Agents</strong>.</li>
+        <li><strong>Containers</strong>: defaults for <strong>Log Lines</strong> and for the view the containers screen opens on (<strong>Open On</strong>).</li>
+        <li><strong>iCloud Sync</strong>: <a href="#sync">Sync with iCloud</a>, Sync secrets, Sync preferences.</li>
+        <li><strong>Privacy &amp; Security</strong>: <a href="#security">App Lock</a>, Delete from Keychain, Erase This Device, Clear Connection History.</li>
+        <li><strong>General</strong>: Appearance, onboarding (Hide Onboarding Cards, <strong>Show Welcome Tour</strong>), and About (version, Privacy Policy, Terms of Use, Keyboard Guide, Open-Source Licenses, Reset All Settings).</li>
       </ul>
+      <p>Renamed in 2.2: <strong>Known Hosts</strong> is now <strong>Trusted servers</strong>; <strong>Left-Handed Chrome</strong> is <strong>Left-handed layout</strong>; <strong>Open Sessions Minimised</strong> is <strong>Keyboard when a session opens</strong>; the TUI pill toggle is <strong>Back-to-prompt button</strong>; Mouse Input's TUI option is <strong>Full-screen apps</strong>; and on session lists <strong>Kill</strong> / <strong>Prune</strong> is <strong>End session</strong>. The tmux Status Bar and Claude Fullscreen Mode settings are gone.</p>
 
     </section>
 
@@ -853,33 +1053,41 @@
       <h4>"Unsupported key type"</h4>
       <p>meshTerm 2.1 accepts Ed25519 and ECDSA (P-256, P-384, P-521). RSA keys aren't supported. Generate a new Ed25519 key in the app, or convert: <code>ssh-keygen -t ed25519</code>.</p>
 
-      <h3>Roam</h3>
+      <h3>tmux</h3>
 
-      <h4>Install fails at "Verifying"</h4>
-      <p>Very rare. Means the downloaded binary didn't match the signed checksum. Retry once; if it persists, your network is corrupting downloads (an aggressive proxy?) - try a different network, or fall back to plain SSH for that host.</p>
+      <h4>"No session persistence": tmux isn't installed</h4>
+      <p>The host is set to tmux but has no tmux, so the session is a plain shell that ends with the connection. Tap <strong>Install tmux</strong> on the banner to paste your distro's install command at the prompt, review it, and press Return. Or install tmux yourself, or set the host's Persistence to <strong>None</strong> to stop the banner.</p>
 
-      <h4>Install fails at "Installing service" on Linux</h4>
-      <p>The most common cause is systemd-user not being able to talk to its session bus, usually because the user isn't lingering. The sheet surfaces the exact remediation: run <code>sudo loginctl enable-linger &lt;username&gt;</code> on the host and try the install again. If linger can't be enabled, the install drops to a <code>nohup</code>-supervised fallback and tells you so.</p>
+      <h4>tmux is too old for control mode</h4>
+      <p>Control mode needs tmux 3.2 or newer. With an older tmux, meshTerm reconnects with the classic tmux attach by itself, so the session still persists, just without native panes and the tmux palette page. <strong>Check persistence</strong> on the host's Details says so on the tmux row. A newer tmux usually comes from your distro's backports or EPEL, or a static build. After upgrading, tap <strong>Check persistence</strong> so meshTerm tries control mode again on the next connect.</p>
 
-      <h4>"PATH configured" smoke check fails</h4>
-      <p>Means meshTerm's PATH addition didn't land in your shell's rc file (some custom shells aren't covered: bash, zsh, fish, and POSIX <code>~/.profile</code> are). Add <code>export PATH="$HOME/.local/bin:$PATH"</code> to your shell config manually and re-run the smoke checks.</p>
+      <h4>Control mode misbehaves on one host</h4>
+      <p>Set <strong>Edit Host &gt; Session &gt; tmux attach</strong> to <strong>Legacy</strong>. That host then uses a plain tmux client, as before 2.2, while your other hosts keep control mode. Switch back to <strong>Control mode</strong> any time.</p>
 
-      <h4>Daemon update fails with ETXTBSY</h4>
-      <p>Shouldn't happen - the self-update path uses atomic rename. If you see it, use <strong>Reinstall</strong> from the host detail screen instead. Reinstall stops the daemon first, which ends any active sessions; save your work before you tap it.</p>
+      <h3>mtRoam</h3>
 
-      <h4>"Daemon firewall port" instructions</h4>
-      <p>The install sheet's success state shows a distro-specific one-liner to open the daemon's UDP port (default 49820). If you skip it, the daemon still works for SSH-tunnelled attaches, but direct attaches over the network won't reach it.</p>
+      <h4>"mtRoam isn't installed on this host."</h4>
+      <p>The host's Persistence is mtRoam, but mtroamd isn't on the host. meshTerm connects through tmux instead and says "mtRoam isn't installed on this host. Using tmux." Tap <strong>Switch to tmux</strong> to make tmux the host's setting for good, or <strong>Install guide</strong> to install mtroamd (see <a href="#roam-install">Installing mtroamd</a>). If tmux is missing too, the banner offers only the install guide. After a confirmed "not installed", meshTerm keeps using tmux for that host for up to a day; after you install mtroamd, tap <strong>Check persistence</strong> on the host's Details to use it straight away.</p>
 
-      <h4>Roam silently fell back to plain SSH</h4>
-      <p>If the daemon is unreachable at connect time, meshTerm falls back to a plain SSH session and shows an orange banner above the terminal so the drop isn't silent. Tap the banner for the underlying error. Common causes: the daemon isn't running on the host (run <code>mtroam status</code> or check via SSH), or the firewall port isn't open.</p>
+      <h4>"Connection Failed" on an mtRoam host</h4>
+      <p>mtroamd is installed but meshTerm couldn't reach it. Tap <strong>Retry</strong>, or <strong>Open with tmux instead</strong> to open this one connection through tmux without changing the host's setting. Common causes: the daemon isn't running (check with <code>mtroamd doctor</code>, or <code>systemctl --user status mtroamd</code>), or, with the Direct transport, the firewall port isn't open (see <strong>Firewall setup</strong> under <a href="#roam-transport">Choosing a transport</a>, or switch to SSH Tunnel).</p>
+
+      <h4>No Update, Repair or Uninstall button for mtroamd</h4>
+      <p>Those buttons appear only for a copy meshTerm installed in <code>~/.local/bin</code>. A copy from a package manager (or a source build) shows "Installed by a package manager." instead: update it with the package manager, for example <code>sudo apt upgrade mtroamd</code>. If meshTerm hasn't learned yet who installed the daemon, tap <strong>Check persistence</strong> on the host's Details first.</p>
+
+      <h4>Package installed, but the old daemon is still running</h4>
+      <p>The package's automatic migration didn't run for your user (for example you installed as root, or your user session wasn't reachable). Run <code>/usr/bin/mtroamd migrate</code> as your login user; see <a href="#roam-migrate">Switching to a package</a>. Until then, package upgrades don't reach the running daemon.</p>
+
+      <h4>"Connected via SSH Tunnel"</h4>
+      <p>With the Direct transport, meshTerm couldn't reach the daemon's QUIC port, so it carried the session inside SSH instead. Sessions persist normally. To use Direct, open the daemon's port (see <strong>Firewall setup</strong> in Edit Host &gt; Connection).</p>
 
       <h3>Tailscale</h3>
 
       <h4>Tailnet device browser is empty or asks for a token</h4>
-      <p>When meshTerm is connected to your tailnet (Built-in mode), the device list comes straight from the tailnet with no API token needed. A read-only API token is only needed to browse while you are <em>not</em> connected (offline, or a profile you haven't signed into). Add one under Settings → Connections → Tailscale if you want that. See the <a href="meshterm-tailscale-integration.html">Tailscale Setup Guide</a>.</p>
+      <p>When meshTerm is connected to your tailnet (Built-in mode), the device list comes straight from the tailnet with no API token needed. A read-only API token is only needed to browse while you are <em>not</em> connected (offline, or a profile you haven't signed into). Add one under Settings → Hosts &amp; Network → Tailscale if you want that. See the <a href="meshterm-tailscale-integration.html">Tailscale Setup Guide</a>.</p>
 
       <h4>"Invalid or expired token."</h4>
-      <p>Tailscale API tokens expire. If you use one, generate a new one at <a href="https://login.tailscale.com/admin/settings/keys">login.tailscale.com</a> and paste it into Settings → Connections → Tailscale.</p>
+      <p>Tailscale API tokens expire. If you use one, generate a new one at <a href="https://login.tailscale.com/admin/settings/keys">login.tailscale.com</a> and paste it into Settings → Hosts &amp; Network → Tailscale.</p>
 
       <h4>Tailnet devices missing from the browser</h4>
       <ul>
@@ -893,7 +1101,7 @@
       <h4>Host key mismatch</h4>
       <p>The server's host key has changed since you last connected. This can mean a legitimate change (server rebuilt, keys rotated) or something more suspicious. If you're confident the change is legitimate:</p>
       <ol>
-        <li>Settings → Security → Known Hosts.</li>
+        <li>Settings → Hosts &amp; Network → Trusted servers.</li>
         <li>Find the entry and swipe to delete.</li>
         <li>Reconnect; you'll be asked to trust the new fingerprint.</li>
       </ol>

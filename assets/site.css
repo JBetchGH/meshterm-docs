@@ -288,6 +288,20 @@ code {
   border: 1px solid var(--border);
 }
 
+/* ── Command blocks ── */
+pre {
+  background: #1C1C1E;
+  color: #E5E5EA;
+  border-radius: 10px;
+  padding: 16px 18px;
+  font-family: "SF Mono", ui-monospace, "Fira Code", monospace;
+  font-size: 13px;
+  line-height: 1.7;
+  overflow-x: auto;
+  margin: 12px 0 16px;
+  white-space: pre;
+}
+
 /* ── Tables ── */
 table {
   width: 100%;
