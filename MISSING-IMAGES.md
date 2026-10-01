@@ -32,6 +32,19 @@ The two sections added in this pass are text-only. Optional shots if you want th
 | `images/v2-roam-transport.png` | §6 Roam → "Choosing a transport" | **Edit Host → Transport Details** with the **mtRoam Transport** segmented control showing **Direct (QUIC/TCP)** / **SSH Tunnel**. |
 | `images/v2-tailscale-profiles.png` | §9 Tailscale → "Multiple Tailscale profiles" | The Tailscale **Profiles** list with two profiles (e.g. "Work" / "Personal"), one connected. |
 
+## 4. New v2.2 sections with no screenshot (optional)
+
+The 2.2 pass (branch `docs/v2.2`) is text-only. Suggested shots, none referenced by the HTML yet:
+
+| Suggested file | Section | What to capture |
+|----------------|---------|-----------------|
+| `images/v22-tmux-palette.png` | §6 Persistent sessions → "Windows and panes from the palette" | A tmux host attached in control mode with two windows and a two-pane split; the keyboard palette on its **tmux** page showing **Windows**, **Panes** (layout map), **Split right** / **Split down** / **Zoom** and the Wider / Narrower / Taller / Shorter / **Even out** row. |
+| `images/v22-tmux-ipad-split.png` | §6 → "Panes on iPad and iPhone" | iPad landscape, the same session with two panes side by side and the divider visible; palette tmux page showing the windows as a row of chips. (iPad framing: the framer expects iPhone 1179×2556, so this one needs its own frame or none.) |
+| `images/v22-pane-switcher.png` | §6 → "Panes on iPad and iPhone" | iPhone portrait, a two-pane tmux window: the pane-switcher dots in the terminal's top-right corner. |
+| `images/v22-persistence-picker.png` | §6 → "Choosing persistence for a host" | **Edit Host → Session** with the **Persistence** segmented picker (**tmux** / **mtRoam** / **None**) on tmux, showing **Session name (optional)** and the **tmux attach** row (**Control mode** / **Legacy**). |
+| `images/v22-check-persistence.png` | §6 → "Check persistence" | Host **Details → Persistence** after **Check persistence**: the tmux row ("Control mode: ready.") and an mtroamd row for a package-managed copy ("Installed by a package manager." + Install guide link). |
+| `images/v22-mtroam-not-installed.png` | §25 Troubleshooting → "mtRoam isn't installed on this host." | An mtRoam host with no mtroamd: the "mtRoam isn't installed on this host. Using tmux." banner with **Switch to tmux** and **Install guide**. |
+
 ## Not used by v2.0 (no action)
 
 The old `IMG_*.PNG` files (750×1624 / 828×1792) are the v1.1 screenshots. The
