@@ -449,7 +449,7 @@
       <div class="step-num">1</div>
       <div class="step-content">
         <strong>Create a profile in meshTerm</strong>
-        <p>Tap the globe icon in the Sessions tab (or go to Settings &rarr; Connections &rarr; Tailscale) and create a Tailscale profile.</p>
+        <p>Tap the globe icon in the Sessions tab (or go to Settings &rarr; Hosts &amp; Network &rarr; Tailscale) and create a Tailscale profile.</p>
       </div>
     </li>
     <li>
@@ -463,7 +463,7 @@
       <div class="step-num">3</div>
       <div class="step-content">
         <strong>Approve the device if your tailnet requires it</strong>
-        <p>On tailnets with device approval, meshTerm waits patiently and connects the moment an admin approves - there's a direct link to the admin console right in the app.</p>
+        <p>On tailnets with device approval, meshTerm shows <strong>Waiting for device approval</strong> and connects the moment an admin approves. Tap <strong>Open Admin Console</strong> to approve the device yourself in the Tailscale admin console.</p>
       </div>
     </li>
   </ol>
@@ -528,11 +528,13 @@
           <span class="arrow">›</span>
           <span class="item">Settings</span>
           <span class="arrow">›</span>
+          <span class="item">Hosts &amp; Network</span>
+          <span class="arrow">›</span>
           <span class="item">Tailscale</span>
           <span class="arrow">›</span>
           <span class="item">Auth Key</span>
         </div>
-        <p>meshTerm connects to your Tailnet automatically. You'll see the connection status and your Tailscale IP addresses in Settings &rarr; Connections &rarr; Tailscale.</p>
+        <p>meshTerm connects to your Tailnet automatically. You'll see the connection status and your Tailscale IP addresses in Settings &rarr; Hosts &amp; Network &rarr; Tailscale.</p>
       </div>
     </li>
   </ol>
@@ -626,7 +628,7 @@
           <span class="arrow">›</span>
           <span class="item">Settings</span>
           <span class="arrow">›</span>
-          <span class="item">Connections</span>
+          <span class="item">Hosts &amp; Network</span>
           <span class="arrow">›</span>
           <span class="item">Tailscale</span>
         </div>
@@ -779,7 +781,7 @@
 
   <h3>API token expired</h3>
   <p>Generate a new token at tailscale.com &rarr; Settings &rarr; Personal Settings &rarr; Keys and update it in
-  meshTerm &rarr; Settings &rarr; Connections &rarr; Tailscale (in the profile that uses it).</p>
+  meshTerm &rarr; Settings &rarr; Hosts &amp; Network &rarr; Tailscale (in the profile that uses it).</p>
 
   <h3>Enabling Tailscale SSH by Linux distribution</h3>
 
