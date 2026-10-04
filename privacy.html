@@ -16,7 +16,7 @@ footer: |
 <header>
   <div class="app-name">meshTerm · iOS SSH Client</div>
   <h1>Privacy Policy</h1>
-  <div class="meta">James Betchley &nbsp;·&nbsp; Effective September 2026 &nbsp;·&nbsp; Version 2.1</div>
+  <div class="meta">James Betchley &nbsp;·&nbsp; Effective October 2026 &nbsp;·&nbsp; Version 2.2</div>
 </header>
 
 
@@ -139,11 +139,16 @@ footer: |
       host can call the relay on your behalf. This runs on your own server (see section 3b).</li>
       <li>Turning notifications off for a host stops new notify hooks being installed there;
       removing the hook (Edit Host &rarr; Changes on this host) stops that host's alerts, and the
-      switches in Settings &rarr; Agents &rarr; Notifications stop them at the relay. The
-      registration itself stays on the relay until you erase the Application's data (Settings
-      &rarr; Privacy &amp; Security &rarr; Erase This Device), or until Apple reports the push
-      token invalid (for example after you delete the Application), when the relay deletes it
-      automatically.</li>
+      switches in Settings &rarr; Agents &rarr; Notifications stop them at the relay.</li>
+      <li>When no host sends your device notifications any more (notifications are off for
+      every host, and no host still has meshTerm's herdr notification plugin), the Application
+      deletes your device's registration from the relay, together with its delivery counts, so
+      a notify hook left on a host can no longer reach your device. If your device is offline
+      at that moment, the Application retries each time you open it until the relay confirms.
+      Turning notifications on for a host again creates a new registration. The registration
+      is also deleted when you erase the Application's data (Settings &rarr; Privacy &amp;
+      Security &rarr; Erase This Device), and the relay deletes it automatically when Apple
+      reports the push token invalid (for example after you delete the Application).</li>
     </ul>
   </section>
 
@@ -293,10 +298,11 @@ footer: |
     Settings &rarr; Apple ID &rarr; iCloud &rarr; Manage Storage.</p>
     <p>If you enable agent notifications, the push registration on the Developer's relay
     (an Apple push token, an opaque device identifier, and your notification preferences)
-    and its delivery counts are kept until you erase the Application's data (Settings &rarr;
-    Privacy &amp; Security &rarr; Erase This Device), or until Apple reports the push token
-    invalid (for example after you delete the Application), when the relay deletes them
-    automatically.</p>
+    and its delivery counts are kept only while at least one host sends your device
+    notifications. The Application deletes them from the relay when no host does any more
+    (see section 2.4), or when you erase the Application's data (Settings &rarr; Privacy &amp;
+    Security &rarr; Erase This Device), and the relay deletes them automatically when Apple
+    reports the push token invalid (for example after you delete the Application).</p>
   </section>
 
   <section id="s10">

@@ -16,7 +16,7 @@ footer: |
 <header>
   <div class="app-name">meshTerm · Cliente SSH para iOS</div>
   <h1>Política de Privacidad</h1>
-  <div class="meta">James Betchley &nbsp;·&nbsp; En vigor desde septiembre de 2026 &nbsp;·&nbsp; Versión 2.1</div>
+  <div class="meta">James Betchley &nbsp;·&nbsp; En vigor desde octubre de 2026 &nbsp;·&nbsp; Versión 2.2</div>
 </header>
 
 
@@ -150,11 +150,18 @@ footer: |
       <li>Desactivar las notificaciones de un host evita que se instalen nuevos hooks de
       notificación en él; quitar el hook (Editar host &rarr; Cambios en este host) detiene las
       alertas de ese host, y los interruptores de Ajustes &rarr; Agentes &rarr; Notificaciones
-      las detienen en el servicio de retransmisión. El registro se conserva en el servicio de
-      retransmisión hasta que borre los datos de la Aplicación (Ajustes &rarr; Privacidad y
-      seguridad &rarr; Borrar este dispositivo), o hasta que Apple indique que el token push no
-      es válido (por ejemplo, tras eliminar la Aplicación), momento en que el servicio de
-      retransmisión lo elimina automáticamente.</li>
+      las detienen en el servicio de retransmisión.</li>
+      <li>Cuando ya ningún host envía notificaciones a su dispositivo (las notificaciones están
+      desactivadas en todos los hosts y ningún host conserva el plugin de notificaciones de
+      herdr de meshTerm), la Aplicación elimina el registro de su dispositivo del servicio de
+      retransmisión, junto con sus recuentos de entrega, de modo que un hook de notificación
+      que quede en un host ya no puede llegar a su dispositivo. Si su dispositivo no tiene
+      conexión en ese momento, la Aplicación lo reintenta cada vez que la abre hasta que el
+      servicio de retransmisión lo confirma. Volver a activar las notificaciones de un host
+      crea un registro nuevo. El registro también se elimina cuando borra los datos de la
+      Aplicación (Ajustes &rarr; Privacidad y seguridad &rarr; Borrar este dispositivo), y el
+      servicio de retransmisión lo elimina automáticamente cuando Apple indica que el token
+      push no es válido (por ejemplo, tras eliminar la Aplicación).</li>
     </ul>
   </section>
 
@@ -313,11 +320,13 @@ footer: |
     almacenamiento.</p>
     <p>Si activa las notificaciones de agentes, el registro push en el servicio de retransmisión
     del Desarrollador (un token push de Apple, un identificador de dispositivo opaco y sus
-    preferencias de notificación) y sus recuentos de entrega se conservan hasta que borre los
-    datos de la Aplicación (Ajustes &rarr; Privacidad y seguridad &rarr; Borrar este
-    dispositivo), o hasta que Apple indique que el token push no es válido (por ejemplo, tras
-    eliminar la Aplicación), momento en que el servicio de retransmisión los elimina
-    automáticamente.</p>
+    preferencias de notificación) y sus recuentos de entrega se conservan solo mientras al
+    menos un host envíe notificaciones a su dispositivo. La Aplicación los elimina del
+    servicio de retransmisión cuando ya ningún host lo hace (consulte la sección 2.4), o
+    cuando borra los datos de la Aplicación (Ajustes &rarr; Privacidad y seguridad &rarr;
+    Borrar este dispositivo), y el servicio de retransmisión los elimina automáticamente
+    cuando Apple indica que el token push no es válido (por ejemplo, tras eliminar la
+    Aplicación).</p>
   </section>
 
   <section id="s10">
