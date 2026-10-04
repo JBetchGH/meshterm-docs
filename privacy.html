@@ -121,17 +121,29 @@ footer: |
       Kingdom, along with an opaque device identifier and your per-event notification
       preferences. No account, email, or other personal detail is
       attached.</li>
-      <li>The relay is <strong>content-free</strong>. It only ever sends your device a
-      "needs attention" signal tagged with an opaque session reference; it never receives
-      or sends your session content, commands, output, host names, or credentials. The name
-      shown in a notification is resolved locally on your device.</li>
-      <li>Notifications are delivered through Apple's Push Notification service (APNs),
-      subject to Apple's own privacy policy.</li>
+      <li>Alerts come through Apple Push Notification service (APNs) via our relay, over
+      encrypted connections. They carry no information that identifies you, your hosts or your
+      work: no prompts, commands, code, file names, or host or session names, just an anonymous
+      tag, the kind of alert (needs approval or finished) and the agent's name (for example
+      "Claude"). Your device adds the session name itself. The relay never receives your session
+      content, output or credentials.</li>
+      <li>Your host sends each alert to the relay over HTTPS, and the relay passes it to APNs
+      over HTTPS. APNs delivers it to your device, subject to Apple's own privacy policy.</li>
+      <li>So that the Developer can notice broken delivery, the relay keeps, for each
+      registration, counts of alerts accepted by APNs, muted by your settings, rate-limited or
+      failed, with times rounded to the hour and the last error code from APNs. These counts hold no tags, alert content, IP addresses or host
+      details, and are deleted with the registration. The relay does not store or log IP
+      addresses; it uses them only briefly, in memory, to limit abuse.</li>
       <li>Enabling notifications for a host also installs a small notify hook, containing
       your device's relay token, into the agent's own configuration on that host so the
       host can call the relay on your behalf. This runs on your own server (see section 3b).</li>
-      <li>The registration exists only while notifications are enabled. Turning them off, or
-      an invalidated push token, removes it, and the relay drops stale tokens automatically.</li>
+      <li>Turning notifications off for a host stops new notify hooks being installed there;
+      removing the hook (Edit Host &rarr; Changes on this host) stops that host's alerts, and the
+      switches in Settings &rarr; Agents &rarr; Notifications stop them at the relay. The
+      registration itself stays on the relay until you erase the Application's data (Settings
+      &rarr; Privacy &amp; Security &rarr; Erase This Device), or until Apple reports the push
+      token invalid (for example after you delete the Application), when the relay deletes it
+      automatically.</li>
     </ul>
   </section>
 
@@ -227,7 +239,8 @@ footer: |
       credentials.</li>
       <li><strong>Apple</strong> - App Store / StoreKit endpoints process the optional Pro
       subscription (see section 6). Apple's Push Notification service (APNs) delivers agent
-      notifications to your device, only if you enable them; the payload is content-free.</li>
+      notifications to your device, only if you enable them; the payload carries only an anonymous
+      tag, the kind of alert and the agent's name.</li>
     </ul>
   </section>
 
@@ -280,8 +293,10 @@ footer: |
     Settings &rarr; Apple ID &rarr; iCloud &rarr; Manage Storage.</p>
     <p>If you enable agent notifications, the push registration on the Developer's relay
     (an Apple push token, an opaque device identifier, and your notification preferences)
-    is retained only while notifications remain enabled. It is removed when you turn them
-    off, and stale push tokens are dropped automatically.</p>
+    and its delivery counts are kept until you erase the Application's data (Settings &rarr;
+    Privacy &amp; Security &rarr; Erase This Device), or until Apple reports the push token
+    invalid (for example after you delete the Application), when the relay deletes them
+    automatically.</p>
   </section>
 
   <section id="s10">

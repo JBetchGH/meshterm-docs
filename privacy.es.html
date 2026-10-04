@@ -125,21 +125,36 @@ footer: |
       el Reino Unido, junto con un identificador de dispositivo opaco y sus preferencias de
       notificación por tipo de evento. No se adjunta ninguna cuenta, correo
       electrónico ni ningún otro dato personal.</li>
-      <li>El servicio de retransmisión es <strong>sin contenido</strong>. Solo envía a su
-      dispositivo una señal de "requiere atención" etiquetada con una referencia de sesión
-      opaca; nunca recibe ni envía el contenido de su sesión, comandos, salida, nombres de host
-      ni credenciales. El nombre que aparece en una notificación se resuelve localmente en su
-      dispositivo.</li>
-      <li>Las notificaciones se entregan a través del servicio de notificaciones push de Apple
-      (APNs), sujeto a la propia política de privacidad de Apple.</li>
+      <li>Las alertas llegan a través del servicio de notificaciones push de Apple (APNs)
+      mediante nuestro servicio de retransmisión, con conexiones cifradas. No llevan información
+      que le identifique a usted, a sus hosts ni su trabajo: ni prompts, comandos, código,
+      nombres de archivo ni nombres de host o de sesión, solo una etiqueta anónima, el tipo de
+      alerta (requiere aprobación o terminado) y el nombre del agente (por ejemplo, "Claude").
+      Su dispositivo añade el nombre de la sesión por su cuenta. El servicio de retransmisión
+      nunca recibe el contenido de su sesión, la salida ni sus credenciales.</li>
+      <li>Su host envía cada alerta al servicio de retransmisión por HTTPS, y este la pasa a
+      APNs por HTTPS. APNs la entrega a su dispositivo, sujeto a la propia política de
+      privacidad de Apple.</li>
+      <li>Para que el Desarrollador pueda detectar entregas fallidas, el servicio de
+      retransmisión guarda, por cada registro, recuentos de alertas aceptadas por APNs,
+      silenciadas por sus ajustes, limitadas o fallidas, con marcas de tiempo redondeadas a la hora y el
+      último código de error de APNs. Estos recuentos
+      no contienen etiquetas, contenido de alertas, direcciones IP ni datos de hosts, y se
+      eliminan junto con el registro. El servicio de retransmisión no guarda ni registra
+      direcciones IP; solo las usa brevemente, en memoria, para limitar abusos.</li>
       <li>Activar las notificaciones para un host también instala un pequeño hook de
       notificación, que contiene el token de retransmisión de su dispositivo, en la
       configuración del propio agente en ese host, para que el host pueda contactar el servicio
       de retransmisión en su nombre. Esto se ejecuta en su propio servidor (consulte la
       sección 3b).</li>
-      <li>El registro existe únicamente mientras las notificaciones están activadas.
-      Desactivarlas, o un token push invalidado, lo elimina, y el servicio de retransmisión
-      descarta los tokens obsoletos automáticamente.</li>
+      <li>Desactivar las notificaciones de un host evita que se instalen nuevos hooks de
+      notificación en él; quitar el hook (Editar host &rarr; Cambios en este host) detiene las
+      alertas de ese host, y los interruptores de Ajustes &rarr; Agentes &rarr; Notificaciones
+      las detienen en el servicio de retransmisión. El registro se conserva en el servicio de
+      retransmisión hasta que borre los datos de la Aplicación (Ajustes &rarr; Privacidad y
+      seguridad &rarr; Borrar este dispositivo), o hasta que Apple indique que el token push no
+      es válido (por ejemplo, tras eliminar la Aplicación), momento en que el servicio de
+      retransmisión lo elimina automáticamente.</li>
     </ul>
   </section>
 
@@ -241,8 +256,8 @@ footer: |
       Tailscale se almacenan en el Llavero de iOS, igual que sus credenciales SSH.</li>
       <li><strong>Apple</strong> - los extremos de App Store / StoreKit procesan la suscripción Pro
       opcional (consulte la sección 6). El servicio de notificaciones push de Apple (APNs) entrega
-      las notificaciones de agentes a su dispositivo, solo si las activa; la carga útil es sin
-      contenido.</li>
+      las notificaciones de agentes a su dispositivo, solo si las activa; la carga útil solo lleva
+      una etiqueta anónima, el tipo de alerta y el nombre del agente.</li>
     </ul>
   </section>
 
@@ -298,8 +313,10 @@ footer: |
     almacenamiento.</p>
     <p>Si activa las notificaciones de agentes, el registro push en el servicio de retransmisión
     del Desarrollador (un token push de Apple, un identificador de dispositivo opaco y sus
-    preferencias de notificación) se conserva únicamente mientras las notificaciones permanezcan
-    activadas. Se elimina cuando las desactiva, y los tokens push obsoletos se descartan
+    preferencias de notificación) y sus recuentos de entrega se conservan hasta que borre los
+    datos de la Aplicación (Ajustes &rarr; Privacidad y seguridad &rarr; Borrar este
+    dispositivo), o hasta que Apple indique que el token push no es válido (por ejemplo, tras
+    eliminar la Aplicación), momento en que el servicio de retransmisión los elimina
     automáticamente.</p>
   </section>
 
