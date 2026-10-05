@@ -136,22 +136,28 @@ footer: |
       failed, with times rounded to the hour and the last error code from APNs. These counts hold no tags, alert content, IP addresses or host
       details, and are deleted with the registration. The relay does not store or log IP
       addresses; it uses them only briefly, in memory, to limit abuse.</li>
-      <li>Enabling notifications for a host also installs a small notify hook, containing
-      the relay token of the device that installed it, into the agent's own configuration on
-      that host so the host can call the relay on your behalf. The configuration file is
-      written so that only your user account on the host can read it. A host notifies one
-      device at a time: of your devices that have notifications on for it, the one that most
-      recently connected to it or started an agent there. This runs on your own server (see
-      section 3b).</li>
-      <li>Turning notifications off for a host on a device removes that device's notify hook
-      from the host (the next time the host is reachable); a device with notifications off never
-      changes the host. Removing the hooks (Edit Host &rarr; Changes on this host) takes them off
-      the host whichever device they notify, and the switches in Settings &rarr; Agents &rarr;
+      <li>Enabling notifications for a host also installs a small notify hook into the agent's
+      own configuration on that host, so the host can call the relay on your behalf. The hook
+      contains no relay token. Instead, each device you turn notifications on for keeps its relay
+      token in its own private file, in a folder in your home directory on that host that only
+      your user account can read. This runs on your own server (see section 3b).</li>
+      <li>So that an alert reaches the device you are using, the host records, for each terminal
+      session, a random identifier of the device that last used it, and sends that session's
+      alerts only to that device. An agent chat's alerts go to the device that sent the message,
+      identified the same way. Alerts from herdr go to each device that has herdr alerts turned
+      on for that host. These identifiers stay on your host; nothing new is sent to the relay or
+      to the Developer, and the alerts themselves are unchanged.</li>
+      <li>Turning notifications off for a host on a device deletes that device's file and
+      session records from the host (the next time the host is reachable, if it is not reachable
+      then; while herdr alerts are still on for that device, its file stays for them); a device
+      with notifications off never changes where your other devices' alerts go.
+      Removing the hooks (Edit Host &rarr; Changes on this host) deletes the hooks and every
+      device's file and records from the host, and the switches in Settings &rarr; Agents &rarr;
       Notifications stop alerts at the relay.</li>
-      <li>When no host sends your device notifications any more (notifications are off on that
-      device for every host, and no host still has meshTerm's herdr notification plugin), the Application
+      <li>When no host sends your device notifications any more (notifications and herdr alerts
+      are off on that device for every host), the Application
       deletes your device's registration from the relay, together with its delivery counts, so
-      a notify hook left on a host can no longer reach your device. If your device is offline
+      nothing left on a host can reach your device any more. If your device is offline
       at that moment, the Application retries each time you open it until the relay confirms.
       Turning notifications on for a host again creates a new registration. The registration
       is also deleted when you erase the Application's data (Settings &rarr; Privacy &amp;

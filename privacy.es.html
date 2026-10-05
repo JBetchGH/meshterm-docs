@@ -145,24 +145,32 @@ footer: |
       eliminan junto con el registro. El servicio de retransmisión no guarda ni registra
       direcciones IP; solo las usa brevemente, en memoria, para limitar abusos.</li>
       <li>Activar las notificaciones para un host también instala un pequeño hook de
-      notificación, que contiene el token de retransmisión del dispositivo que lo instaló, en la
-      configuración del propio agente en ese host, para que el host pueda contactar el servicio
-      de retransmisión en su nombre. El archivo de configuración se escribe de forma que solo su
-      cuenta de usuario en el host pueda leerlo. Un host avisa a un solo dispositivo a la vez:
-      de sus dispositivos que tienen las notificaciones activadas para él, el que se conectó a
-      él o inició un agente en él más recientemente. Esto se ejecuta en su propio servidor
-      (consulte la sección 3b).</li>
-      <li>Desactivar las notificaciones de un host en un dispositivo quita del host el hook de
-      notificación de ese dispositivo (la próxima vez que el host esté accesible); un
-      dispositivo con las notificaciones desactivadas nunca cambia el host. Quitar los hooks
-      (Editar host &rarr; Cambios en este host) los elimina del host sea cual sea el dispositivo
-      al que avisan, y los interruptores de Ajustes &rarr; Agentes &rarr; Notificaciones
-      detienen las alertas en el servicio de retransmisión.</li>
-      <li>Cuando ya ningún host envía notificaciones a su dispositivo (las notificaciones están
-      desactivadas en ese dispositivo para todos los hosts y ningún host conserva el plugin de notificaciones de
-      herdr de meshTerm), la Aplicación elimina el registro de su dispositivo del servicio de
-      retransmisión, junto con sus recuentos de entrega, de modo que un hook de notificación
-      que quede en un host ya no puede llegar a su dispositivo. Si su dispositivo no tiene
+      notificación en la configuración del propio agente en ese host, para que el host pueda
+      contactar el servicio de retransmisión en su nombre. El hook no contiene ningún token de
+      retransmisión. En su lugar, cada dispositivo en el que active las notificaciones guarda su
+      token de retransmisión en su propio archivo privado, en una carpeta de su directorio
+      personal en ese host que solo su cuenta de usuario puede leer. Esto se ejecuta en su propio
+      servidor (consulte la sección 3b).</li>
+      <li>Para que cada alerta llegue al dispositivo que está usando, el host registra, por cada
+      sesión de terminal, un identificador aleatorio del dispositivo que la usó por última vez, y
+      envía las alertas de esa sesión solo a ese dispositivo. Las alertas de un chat de agente
+      llegan al dispositivo que envió el mensaje, identificado de la misma forma. Las alertas de
+      herdr llegan a cada dispositivo que tenga activados los avisos de herdr para ese host. Estos
+      identificadores se quedan en su host; no se envía nada nuevo al servicio de retransmisión
+      ni al Desarrollador, y las alertas no cambian.</li>
+      <li>Desactivar las notificaciones de un host en un dispositivo elimina del host el archivo
+      y los registros de sesión de ese dispositivo (la próxima vez que el host esté accesible, si
+      no lo está en ese momento; mientras los avisos de herdr sigan activados en ese
+      dispositivo, su archivo se queda para ellos); un dispositivo con las notificaciones
+      desactivadas nunca cambia adónde llegan las alertas de sus otros dispositivos. Quitar los
+      hooks (Editar host &rarr; Cambios en este host) elimina del host los hooks y el archivo y
+      los registros de todos los dispositivos, y los interruptores de Ajustes &rarr; Agentes
+      &rarr; Notificaciones detienen las alertas en el servicio de retransmisión.</li>
+      <li>Cuando ya ningún host envía notificaciones a su dispositivo (las notificaciones
+      y los avisos de herdr están desactivados en ese dispositivo para todos los hosts), la
+      Aplicación elimina el registro de su dispositivo del servicio de
+      retransmisión, junto con sus recuentos de entrega, de modo que nada de lo que quede en un
+      host puede llegar ya a su dispositivo. Si su dispositivo no tiene
       conexión en ese momento, la Aplicación lo reintenta cada vez que la abre hasta que el
       servicio de retransmisión lo confirma. Volver a activar las notificaciones de un host
       crea un registro nuevo. El registro también se elimina cuando borra los datos de la
