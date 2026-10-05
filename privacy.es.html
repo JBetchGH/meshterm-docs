@@ -114,10 +114,12 @@ footer: |
       <li>Son accesibles únicamente por usted y por la Aplicación ejecutándose en sus dispositivos</li>
     </ul>
     <p>No tenemos acceso al contenido de sus datos en iCloud.</p>
+    <p>Los ajustes de notificaciones de agentes no se sincronizan: si un host avisa a un
+    dispositivo se ajusta en ese dispositivo y se queda en él.</p>
 
     <h3>2.4 Notificaciones de agentes</h3>
     <p>Si activa las notificaciones para un host (desactivadas por defecto, opcionales por
-    host), la Aplicación se registra para recibir notificaciones push a fin de avisarle cuando
+    host y por dispositivo), la Aplicación se registra para recibir notificaciones push a fin de avisarle cuando
     un agente de código necesita su aprobación o termina un turno. Para ello:</p>
     <ul>
       <li>El sistema operativo de Apple emite un token push para su dispositivo, que la
@@ -143,16 +145,21 @@ footer: |
       eliminan junto con el registro. El servicio de retransmisión no guarda ni registra
       direcciones IP; solo las usa brevemente, en memoria, para limitar abusos.</li>
       <li>Activar las notificaciones para un host también instala un pequeño hook de
-      notificación, que contiene el token de retransmisión de su dispositivo, en la
+      notificación, que contiene el token de retransmisión del dispositivo que lo instaló, en la
       configuración del propio agente en ese host, para que el host pueda contactar el servicio
-      de retransmisión en su nombre. Esto se ejecuta en su propio servidor (consulte la
-      sección 3b).</li>
-      <li>Desactivar las notificaciones de un host evita que se instalen nuevos hooks de
-      notificación en él; quitar el hook (Editar host &rarr; Cambios en este host) detiene las
-      alertas de ese host, y los interruptores de Ajustes &rarr; Agentes &rarr; Notificaciones
-      las detienen en el servicio de retransmisión.</li>
+      de retransmisión en su nombre. El archivo de configuración se escribe de forma que solo su
+      cuenta de usuario en el host pueda leerlo. Un host avisa a un solo dispositivo a la vez:
+      de sus dispositivos que tienen las notificaciones activadas para él, el que se conectó a
+      él o inició un agente en él más recientemente. Esto se ejecuta en su propio servidor
+      (consulte la sección 3b).</li>
+      <li>Desactivar las notificaciones de un host en un dispositivo quita del host el hook de
+      notificación de ese dispositivo (la próxima vez que el host esté accesible); un
+      dispositivo con las notificaciones desactivadas nunca cambia el host. Quitar los hooks
+      (Editar host &rarr; Cambios en este host) los elimina del host sea cual sea el dispositivo
+      al que avisan, y los interruptores de Ajustes &rarr; Agentes &rarr; Notificaciones
+      detienen las alertas en el servicio de retransmisión.</li>
       <li>Cuando ya ningún host envía notificaciones a su dispositivo (las notificaciones están
-      desactivadas en todos los hosts y ningún host conserva el plugin de notificaciones de
+      desactivadas en ese dispositivo para todos los hosts y ningún host conserva el plugin de notificaciones de
       herdr de meshTerm), la Aplicación elimina el registro de su dispositivo del servicio de
       retransmisión, junto con sus recuentos de entrega, de modo que un hook de notificación
       que quede en un host ya no puede llegar a su dispositivo. Si su dispositivo no tiene

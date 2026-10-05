@@ -110,9 +110,11 @@ footer: |
       <li>Accessible only to you and to the Application running on your devices</li>
     </ul>
     <p>We do not have access to the contents of your iCloud data.</p>
+    <p>Agent notification settings are not synced: whether a host notifies a device is set on
+    that device and stays on it.</p>
 
     <h3>2.4 Agent Notifications</h3>
-    <p>If you turn on notifications for a host (off by default, opt-in per host), the
+    <p>If you turn on notifications for a host (off by default, opt-in per host and per device), the
     Application registers to receive push notifications so it can alert you when a coding
     agent needs your approval or finishes a turn. To do this:</p>
     <ul>
@@ -135,13 +137,19 @@ footer: |
       details, and are deleted with the registration. The relay does not store or log IP
       addresses; it uses them only briefly, in memory, to limit abuse.</li>
       <li>Enabling notifications for a host also installs a small notify hook, containing
-      your device's relay token, into the agent's own configuration on that host so the
-      host can call the relay on your behalf. This runs on your own server (see section 3b).</li>
-      <li>Turning notifications off for a host stops new notify hooks being installed there;
-      removing the hook (Edit Host &rarr; Changes on this host) stops that host's alerts, and the
-      switches in Settings &rarr; Agents &rarr; Notifications stop them at the relay.</li>
-      <li>When no host sends your device notifications any more (notifications are off for
-      every host, and no host still has meshTerm's herdr notification plugin), the Application
+      the relay token of the device that installed it, into the agent's own configuration on
+      that host so the host can call the relay on your behalf. The configuration file is
+      written so that only your user account on the host can read it. A host notifies one
+      device at a time: of your devices that have notifications on for it, the one that most
+      recently connected to it or started an agent there. This runs on your own server (see
+      section 3b).</li>
+      <li>Turning notifications off for a host on a device removes that device's notify hook
+      from the host (the next time the host is reachable); a device with notifications off never
+      changes the host. Removing the hooks (Edit Host &rarr; Changes on this host) takes them off
+      the host whichever device they notify, and the switches in Settings &rarr; Agents &rarr;
+      Notifications stop alerts at the relay.</li>
+      <li>When no host sends your device notifications any more (notifications are off on that
+      device for every host, and no host still has meshTerm's herdr notification plugin), the Application
       deletes your device's registration from the relay, together with its delivery counts, so
       a notify hook left on a host can no longer reach your device. If your device is offline
       at that moment, the Application retries each time you open it until the relay confirms.
