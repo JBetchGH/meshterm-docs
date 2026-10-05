@@ -87,7 +87,7 @@ footer: |
 
       <h3>2.2</h3>
       <ul>
-        <li><strong>herdr</strong>: meshTerm now works with <a href="https://herdr.dev">herdr</a>, which keeps Claude, Codex, Gemini and other agents running in panes on your host. <strong>Set Up herdr</strong> checks a host and installs herdr's official build in one tap. The Agents tab gains a <strong>herdr</strong> side with every herdr session on every host, alerts when an agent needs you, and approvals you can answer from your phone. herdr is free and unlimited on your host: agents, tabs, workspaces and sessions. You only need Pro to use herdr on more than one host. See <a href="#herdr">herdr</a>.</li>
+        <li><strong>herdr</strong>: meshTerm now works with <a href="https://herdr.dev">herdr</a>, which keeps Claude, Codex, Gemini and other agents running in panes on your host. <strong>Set Up herdr</strong> checks a host and installs herdr's official build in one tap. The Agents tab gains a <strong>herdr</strong> side with every herdr session on every host, alerts when an agent needs you, and approvals you can answer from your phone. herdr is free on your host: one herdr session at a time, on top of your one live session, with unlimited agents, tabs and workspaces inside it. Pro adds more hosts and parallel sessions. See <a href="#herdr">herdr</a>.</li>
         <li><strong>Native tmux</strong>: on hosts with tmux 3.2 or newer, meshTerm now talks to tmux directly (tmux "control mode"). Your tmux panes become real native panes: side by side with draggable dividers on iPad, one at a time on iPhone with a pane switcher in the top-right corner. Reconnects put you back in the same session at the same size. Control mode is on by default; a per-host <strong>tmux attach</strong> setting can choose <strong>Legacy</strong>, and meshTerm falls back to the classic attach by itself if a host's tmux is too old. See <a href="#tmux">tmux sessions</a>.</li>
         <li><strong>tmux page in the palette</strong>: a new palette page manages tmux windows and panes: switch, add, rename and close windows; split right or down, zoom, make a pane wider, narrower, taller or shorter, and even out the layout. On iPad your windows show as a row of chips.</li>
         <li><strong>Persistence picker</strong>: every host has one <strong>Persistence</strong> choice, <strong>tmux</strong>, <strong>mtRoam</strong> or <strong>None</strong> (Edit Host &gt; Session). <strong>Check persistence</strong> on a host's Details shows whether tmux and mtroamd are installed, where, and which versions. See <a href="#persistence">Choosing persistence</a>.</li>
@@ -529,7 +529,7 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
       <h3 id="herdr">herdr <span class="new-badge">2.2</span></h3>
       <p><a href="https://herdr.dev">herdr</a> is an open-source terminal workspace for coding agents. It keeps Claude Code, Codex, Gemini and other agents running in panes on your host, whether or not meshTerm is open, and knows when one is waiting for you. meshTerm reads herdr's own status over SSH, so you can see and answer your agents from your phone without opening a terminal.</p>
       <div class="callout info">
-        <strong>Free and unlimited on your host.</strong> meshTerm puts no limit on herdr agents, tabs, workspaces or sessions, free plan included. You only need <a href="#pro">meshTerm Pro</a> to use herdr on more than one host.
+        <strong>Free on your host.</strong> The free plan includes one herdr session at a time, on top of your one live session, with no limit on the agents, tabs and workspaces inside it. <a href="#pro">meshTerm Pro</a> adds more hosts and parallel sessions.
       </div>
 
       <h4>Set Up herdr</h4>
@@ -1015,7 +1015,7 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
     <!-- ============================================ -->
     <section id="pro">
       <h2>24. meshTerm Pro</h2>
-      <p>One host, one live session and one agent are free. Pro lifts those limits and adds Containers, Secret Profiles, iCloud Sync and agent Resume. Everything else is free. In detail:</p>
+      <p>One host, one live session plus one herdr session, and one agent are free. Pro lifts those limits and adds Containers, Secret Profiles, iCloud Sync and agent Resume. Everything else is free. In detail:</p>
 
       <table>
         <thead><tr><th></th><th>Free</th><th>Pro</th></tr></thead>
@@ -1023,7 +1023,8 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
           <tr><td>Saved hosts</td><td>1</td><td>Unlimited</td></tr>
           <tr><td>Concurrent sessions</td><td>1</td><td>Unlimited</td></tr>
           <tr><td>Concurrent agents (Agent Mode)</td><td>1</td><td>Unlimited</td></tr>
-          <tr><td>herdr agents, tabs, workspaces and sessions on your host</td><td>Unlimited</td><td>Unlimited</td></tr>
+          <tr><td>Concurrent herdr sessions, on top of the session above</td><td>1</td><td>Unlimited</td></tr>
+          <tr><td>herdr agents, tabs and workspaces inside a session</td><td>Unlimited</td><td>Unlimited</td></tr>
           <tr><td>Hosts running herdr</td><td>1</td><td>Unlimited</td></tr>
           <tr><td>herdr overview, dashboard, alerts, approvals, plugin, Set Up herdr, Live Activity count</td><td>Yes</td><td>Yes</td></tr>
           <tr><td>Containers, Secret Profiles, iCloud Sync, agent Resume</td><td>No</td><td>Yes</td></tr>
@@ -1038,7 +1039,7 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
         </tbody>
       </table>
 
-      <p><strong>herdr is free and unlimited on your host:</strong> agents, tabs, workspaces and sessions. You only need Pro to use herdr on more than one host. See <a href="#herdr">herdr</a>.</p>
+      <p><strong>herdr is free on your host:</strong> one herdr session at a time, on top of your one live session, with unlimited agents, tabs and workspaces inside it. Pro adds more hosts and parallel sessions. See <a href="#herdr">herdr</a>.</p>
 
       <h3>Subscribing</h3>
       <p>Tap <strong>Upgrade</strong> in Settings or on the host-limit / session-limit prompt. Pro is available as monthly or annual; the annual plan is the better value. Free trials, when offered, apply on the first qualifying purchase per Apple ID.</p>
