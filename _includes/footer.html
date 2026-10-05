@@ -7,6 +7,7 @@
       {%- for l in links %}
       <a href="{{ l.href }}">{{ l.label }}</a>
       {%- endfor %}
+      <a href="https://github.com/AG-Studio-Apps/meshterm-feedback">{% if navlang == "es" %}Comentarios{% else %}Feedback{% endif %}</a>
       {%- if page.lang_switch %}
       <a href="{{ page.lang_switch.href }}" hreflang="{{ page.lang_switch.hreflang }}" lang="{{ page.lang_switch.hreflang }}">{{ page.lang_switch.label }}</a>
       {%- endif %}

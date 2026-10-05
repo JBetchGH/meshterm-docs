@@ -55,6 +55,7 @@ footer: |
       <li><a href="#settings">23. Settings reference</a></li>
       <li><a href="#pro">24. meshTerm Pro</a></li>
       <li><a href="#troubleshooting">25. Troubleshooting</a></li>
+      <li><a href="#feedback">26. Feedback</a></li>
     </ul>
   </aside>
 
@@ -97,6 +98,7 @@ footer: |
         <li><strong>Easier host editing</strong>: Edit Host is split into Connection, Session, Shell &amp; Environment and Tunnels screens, each with its own Save, and when Save is disabled the screen says why. A password host with no saved password on this device can still be saved, with a reminder to enter it before you connect.</li>
         <li><strong>Tidier SFTP uploads</strong>: uploaded file names are cleaned up, for example dropping the <code>cid:</code> prefix Mail gives attachments and replacing characters that break paths or tools.</li>
         <li><strong>Firewall rules moved</strong>: the mtRoam Direct firewall rules now sit behind a <strong>Firewall setup</strong> screen in Edit Host.</li>
+        <li><strong>Feedback and feature requests</strong>: a new Settings pane to report a bug, request a feature, ask a question or rate the app. See <a href="#feedback">Feedback and feature requests</a>.</li>
         <li><strong>Claude Fullscreen Mode removed</strong>: meshTerm no longer sets Claude Code's fullscreen option, so Claude Code's own default applies.</li>
         <li><strong>Faster, more reliable resume and reconnects.</strong></li>
       </ul>
@@ -1004,6 +1006,7 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
         <li><strong>iCloud Sync</strong>: <a href="#sync">Sync with iCloud</a>, Sync secrets, Sync preferences.</li>
         <li><strong>Privacy &amp; Security</strong>: <a href="#security">App Lock</a>, Delete from Keychain, Erase This Device, Clear Connection History.</li>
         <li><strong>General</strong>: Appearance, onboarding (Hide Onboarding Cards, <strong>Show Welcome Tour</strong>), and About (version, Privacy Policy, Terms of Use, Keyboard Guide, Open-Source Licenses, Reset All Settings).</li>
+        <li><strong>Feedback and Feature Requests</strong> <span class="new-badge">2.2</span>: Share This App, Rate on the App Store, Report a Bug, Request a Feature, Questions and Ideas, Write It with an AI Agent, Copy Details and Contact. See <a href="#feedback">Feedback and feature requests</a>.</li>
       </ul>
       <p>Renamed in 2.2: <strong>Known Hosts</strong> is now <strong>Trusted servers</strong>; <strong>Left-Handed Chrome</strong> is <strong>Left-handed layout</strong>; <strong>Open Sessions Minimised</strong> is <strong>Keyboard when a session opens</strong>; the TUI pill toggle is <strong>Back-to-prompt button</strong>; Mouse Input's TUI option is <strong>Full-screen apps</strong>; and on session lists <strong>Kill</strong> / <strong>Prune</strong> is <strong>End session</strong>. The tmux Status Bar and Claude Fullscreen Mode settings are gone.</p>
 
@@ -1163,11 +1166,29 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
         <li>If the issue persists, contact Apple Support via the App Store.</li>
       </ul>
 
+      <h3>Still stuck?</h3>
+      <p>Ask in our <a href="https://github.com/AG-Studio-Apps/meshterm-feedback/discussions">GitHub Discussions</a>, or report a bug from Settings &gt; <strong>Feedback and Feature Requests</strong>. See <a href="#feedback">Feedback and feature requests</a>.</p>
+
       <hr style="margin-top: 3rem; border: none; border-top: 1px solid var(--border);">
       <p style="font-style: italic; color: var(--text-sec); font-size: 14px; margin-top: 20px;">
         meshTerm is developed by James Betchley. For support, contact
         <a href="mailto:meshterm@gmail.com">meshterm@gmail.com</a>.
       </p>
+    </section>
+
+    <!-- ============================================ -->
+    <section id="feedback">
+      <h2>26. Feedback and feature requests <span class="new-badge">2.2</span></h2>
+      <p>Settings &gt; <strong>Feedback and Feature Requests</strong> gathers every way to reach us. The bug, feature and question rows open our public <a href="https://github.com/AG-Studio-Apps/meshterm-feedback">meshterm-feedback</a> repo on GitHub.</p>
+      <ul>
+        <li><strong>Share This App</strong> and <strong>Rate on the App Store</strong>.</li>
+        <li><strong>Report a Bug</strong> and <strong>Request a Feature</strong>: open the repo's <a href="https://github.com/AG-Studio-Apps/meshterm-feedback/issues">Issues</a> with the Bug report or Feature request form.</li>
+        <li><strong>Questions and Ideas</strong>: opens the repo's <a href="https://github.com/AG-Studio-Apps/meshterm-feedback/discussions">Discussions</a>, with Q&amp;A, Ideas and Show and tell.</li>
+        <li><strong>Write It with an AI Agent</strong>: shows a ready-made prompt, with your app details, to copy into Claude, ChatGPT, Gemini or another agent. Add what happened in your own words and the agent drafts the issue in the form's fields.</li>
+        <li><strong>Copy Details</strong>: copies your app version, iOS version, device, language, Free or Pro, which features are on, and counts such as how many hosts and sessions you have. Never hostnames, usernames, IP addresses, keys or logs. Paste it into the form's <strong>App details</strong> box; it is laid out so an AI agent can read it too.</li>
+        <li><strong>Contact</strong>: email <a href="mailto:meshterm@gmail.com">meshterm@gmail.com</a>.</li>
+      </ul>
+      <p>These rows open GitHub, the App Store or Mail; meshTerm sends nothing itself. <strong>The repo is public</strong>, so leave out hostnames, IP addresses, keys and logs. For anything private, email <a href="mailto:meshterm@gmail.com">meshterm@gmail.com</a>. Report a security issue through the repo's <a href="https://github.com/AG-Studio-Apps/meshterm-feedback/security/policy">security policy</a>, not in a public issue.</p>
     </section>
 
   </main>
