@@ -1,0 +1,884 @@
+---
+layout: guide
+title: "meshTerm Troubleshooting: SSH, tmux, files, agents and Containers"
+description: "Fix meshTerm problems by what you see: SSH refused or timed out, wrong password, key and host key errors, tmux install, SFTP, agents, notifications, herdr and Containers, with commands for each system."
+lang: en
+permalink: /troubleshooting.html
+footer: |
+    <p>meshTerm is developed by James Betchley.</p>
+    <p style="margin-top: 8px;">
+      <a href="mailto:meshterm@gmail.com">meshterm@gmail.com</a>
+    </p>
+    <p style="margin-top: 16px; font-size: 12px; opacity: 0.8;">
+      meshTerm is not affiliated with, endorsed by, or in partnership with Tailscale Inc.
+    </p>
+---
+<header class="site-header">
+  <div class="app-name">meshTerm 2.3</div>
+  <h1>Troubleshooting</h1>
+  <div class="sub">Find the message or symptom you see, learn why it happens, and fix it. Connecting, keys and host keys, tmux and mtRoam, files, agents, notifications, herdr and Containers.</div>
+</header>
+
+
+<div class="page-body">
+
+  <aside class="sidebar">
+    <div class="sidebar-title">Contents</div>
+    <ul>
+      <li><a href="#how-to-read">How to read this page</a></li>
+      <li><a href="#s-connect">1. Getting connected</a></li>
+      <li><a href="#s-terminal">2. Terminal and persistence</a></li>
+      <li><a href="#s-files">3. Files (SFTP)</a></li>
+      <li><a href="#s-forwarding">4. Port forwarding</a></li>
+      <li><a href="#s-agents">5. Agents</a></li>
+      <li><a href="#s-notifications">6. Notifications</a></li>
+      <li><a href="#s-herdr">7. herdr</a></li>
+      <li><a href="#s-containers">8. Containers</a></li>
+      <li><a href="#s-fresh">9. Fresh-server notes</a></li>
+      <li><a href="#s-help">Still stuck?</a></li>
+    </ul>
+  </aside>
+
+  <main>
+    <div class="page-title">meshTerm 2.3 - Troubleshooting</div>
+    <div class="page-subtitle">By what you see: symptom, why, fix.</div>
+
+    <section id="how-to-read">
+      <h2>How to read this page</h2>
+      <p>Each entry starts with the message or symptom, in the words the app uses, then says <strong>why</strong> it happens and the <strong>fix</strong>. Bold names are buttons in meshTerm. Where the app can fix something with one tap, that button is the first thing listed; the commands are for when a tap cannot work (for example the server cannot be reached, so nothing can be run on it for you). Button names and messages follow meshTerm 2.3. On older versions the same causes and commands apply; you just run the commands yourself.</p>
+
+      <div class="callout info">
+        <div class="callout-title">Commands</div>
+        <p>Run commands <strong>on the server</strong> (in a meshTerm terminal, or in your provider's web console), not on the phone. They are written for a normal user with <code>sudo</code>:</p>
+        <ul>
+          <li>Signed in as <strong>root</strong>? Leave out the leading <code>sudo</code>. Fresh Debian, Ubuntu and Alpine images have no <code>sudo</code> at all.</li>
+          <li>No <code>sudo</code> on the host? Wrap the whole command in <code>su -c '...'</code>. It asks for the root password. meshTerm does the same in the install commands it offers ("Needs the root password.").</li>
+          <li>On Debian and Ubuntu, run <code>apt-get update</code> before <code>apt-get install</code>. A fresh server's package lists are empty and the install fails with "Unable to locate package". Every Debian and Ubuntu command here already includes it.</li>
+        </ul>
+      </div>
+
+      <div class="ts-index">
+        <div>
+          <h2>Getting connected</h2>
+          <ul>
+            <li><a href="#c-refused">Connection refused, SSH not running</a></li>
+            <li><a href="#c-timeout">Couldn't reach the host, timeouts, firewalls</a></li>
+            <li><a href="#c-password">Wrong password, root login blocked</a></li>
+            <li><a href="#c-keyonly">Server only accepts SSH keys</a></li>
+            <li><a href="#c-keyrejected">Server rejected the SSH key</a></li>
+            <li><a href="#c-rsa">RSA keys can't be used</a></li>
+            <li><a href="#c-rsahostkey">Only offers an RSA host key</a></li>
+            <li><a href="#c-hostkey">Unknown or changed host key</a></li>
+            <li><a href="#c-kbdint">Keyboard-interactive and 2FA</a></li>
+            <li><a href="#c-fail2ban">Closed during sign-in (fail2ban)</a></li>
+            <li><a href="#c-tailscale-ssh">Tailscale SSH not accepted</a></li>
+            <li><a href="#c-address">Pasting user@host:port</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2>Terminal and persistence</h2>
+          <ul>
+            <li><a href="#t-tmux">No session persistence: tmux isn't installed</a></li>
+            <li><a href="#t-brew">tmux wasn't found (Homebrew on a Mac)</a></li>
+            <li><a href="#t-old">tmux is too old</a></li>
+            <li><a href="#t-control">Control mode misbehaves</a></li>
+            <li><a href="#t-mtroam">mtRoam isn't installed</a></li>
+            <li><a href="#t-locale">Locale and UTF-8</a></li>
+          </ul>
+          <h2 style="margin-top: 14px;">Files and forwarding</h2>
+          <ul>
+            <li><a href="#f-sftp">The file service isn't available</a></li>
+            <li><a href="#f-slow">The file service is slow</a></li>
+            <li><a href="#f-perms">Permission errors on files</a></li>
+            <li><a href="#p-forward">Port forwarding is blocked</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2>Agents, notifications, herdr</h2>
+          <ul>
+            <li><a href="#a-prepare">Installing agents on a bare server</a></li>
+            <li><a href="#a-signin">Sign-in fails (Codex device code)</a></li>
+            <li><a href="#a-path">The CLI isn't on the SSH PATH</a></li>
+            <li><a href="#a-folder">Folder Not Found</a></li>
+            <li><a href="#a-apikey">Using an API key</a></li>
+            <li><a href="#a-mac">Mac hosts</a></li>
+            <li><a href="#a-sandbox">Codex sandbox (bubblewrap)</a></li>
+            <li><a href="#n-tools">Notifications need python3 and curl</a></li>
+            <li><a href="#n-permission">Notifications are off in iOS</a></li>
+            <li><a href="#n-live">Live Activities are off</a></li>
+            <li><a href="#h-prereq">herdr prerequisites</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2>Containers</h2>
+          <ul>
+            <li><a href="#k-noengine">No container engine found</a></li>
+            <li><a href="#k-notrunning">Container Engine Not Running</a></li>
+            <li><a href="#k-permission">No Permission for the Container Engine</a></li>
+            <li><a href="#k-sudo">Sudo needs a password</a></li>
+            <li><a href="#k-notchecked">Hosts under Not Checked</a></li>
+            <li><a href="#k-compose">Compose or git missing, Compose too old</a></li>
+            <li><a href="#k-port">Port Already in Use</a></li>
+            <li><a href="#k-lowport">Low ports on rootless engines</a></li>
+            <li><a href="#k-disk">Host Out of Disk Space</a></li>
+            <li><a href="#k-arch">Image Not Built for This Host</a></li>
+            <li><a href="#k-registry">Registry unreachable, login, certificates</a></li>
+            <li><a href="#k-podman-names">Image Name Needs a Registry (Podman)</a></li>
+            <li><a href="#k-linger">Rootless engines stop at sign-out</a></li>
+            <li><a href="#k-portainer">Portainer certificate and environment</a></li>
+            <li><a href="#k-web">Couldn't Reach the Web Page</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================ -->
+    <section id="s-connect">
+      <h2>1. Getting connected</h2>
+      <p>Most connection failures show a failure page with the cause in plain words and the next step as buttons, such as <strong>Edit Host</strong>, <strong>Copy Public Key</strong>, <strong>Show Install Command</strong>, <strong>Server Setup Help</strong> and <strong>Reconnect</strong>. For the short version of the basics (hostnames that do not resolve, a connection that hangs at "Connecting...", Tailscale), see <a href="meshterm.html#troubleshooting">Troubleshooting in the user guide</a>.</p>
+
+      <article class="issue" id="c-refused">
+        <h3>"HOST refused the connection on port 22. Check that SSH is running on that port."</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>The host answered, but nothing is listening for SSH on that port. The SSH server (sshd) is not installed, is stopped, or listens on a different port. A brand-new server often has no SSH server yet.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <p>Tap <strong>Server Setup Help</strong> on the failure (it is also on Add Host's first step as <strong>New server? How to turn on SSH</strong>). It lists the commands for your system. You need console access to the server, for example your provider's web console, because the phone cannot reach it yet.</p>
+<pre><code># Debian, Ubuntu
+sudo apt-get update &amp;&amp; sudo apt-get install -y openssh-server
+sudo systemctl enable --now ssh
+
+# Fedora
+sudo dnf install -y openssh-server &amp;&amp; sudo systemctl enable --now sshd
+
+# Alpine (as root)
+apk add openssh &amp;&amp; rc-update add sshd &amp;&amp; rc-service sshd start</code></pre>
+          <p>On a Mac, turn on <strong>Remote Login</strong> in System Settings, under General, Sharing. To check which port sshd uses and whether it is listening, run <code>sudo ss -tlnp | grep sshd</code>, then put that port in Edit Host.</p>
+          <p>The service is named <code>ssh</code> on Debian and Ubuntu and <code>sshd</code> on Fedora. A related message, "accepted the connection but didn't start SSH", means something is listening on the port but it is not an SSH server (or it is still starting). Check that sshd is running on that port.</p>
+        </div>
+      </article>
+
+      <article class="issue" id="c-timeout">
+        <h3>"Couldn't reach HOST:22. Check that the host is online and on the same network or tailnet." / "The Host Didn't Answer"</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>Nothing came back at all. Usually a firewall on the server or a cloud <strong>security group</strong> is dropping the traffic, the IP address is wrong, the server is off, or it has only a private address and you are not on that network. A refused connection (above) means the host answered; a timeout means it did not.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <ul>
+            <li>Check the address and that the server is running. In your provider's console, confirm the public IP.</li>
+            <li>Cloud servers: open the provider's firewall (security group, firewall rule) for <strong>TCP port 22</strong>, or your own SSH port. Allowing only your own IP is safer than allowing everyone.</li>
+            <li>Tailscale needs <strong>no open port</strong>. If both ends are on your tailnet, connect by the host's tailnet name or 100.x address and close port 22 to the internet. See the <a href="meshterm-tailscale-integration.html">Tailscale Setup Guide</a>.</li>
+            <li>Host on your home or office network: grant meshTerm the <strong>Local Network</strong> permission in iOS Settings, under Privacy &amp; Security.</li>
+            <li>Server firewall on the host itself. <strong>Server Setup Help</strong> shows these with your port filled in; they open only the SSH port:</li>
+          </ul>
+<pre><code># Ubuntu, Debian (ufw)
+sudo ufw allow 22/tcp
+
+# Fedora (firewalld)
+sudo firewall-cmd --permanent --add-service=ssh &amp;&amp; sudo firewall-cmd --reload</code></pre>
+          <p>If connections work and then drop when idle, a firewall or NAT in between is closing quiet connections. Set <code>ClientAliveInterval 60</code> in <code>/etc/ssh/sshd_config</code> and reload sshd.</p>
+        </div>
+      </article>
+
+      <article class="issue" id="c-password">
+        <h3>"HOST rejected the password for USER. Check the username and password in Edit Host."</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>Either the username or password is wrong, or the server does not allow password sign-in for that account. Many cloud images turn password sign-in off, and many servers refuse <strong>root</strong>'s password altogether (<code>PermitRootLogin</code>). For root, the app adds: "Many servers refuse root's password (PermitRootLogin). Sign in as a normal user, or use an SSH key."</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <ul>
+            <li>Open <strong>Edit Host</strong> and re-enter the username and password. Usernames are case sensitive.</li>
+            <li>Sign in as a normal user instead of root. Cloud images usually create one for you, for example <code>ubuntu</code> on Ubuntu images or <code>ec2-user</code> on Amazon Linux. The username field's hint reads "ubuntu, admin, your-name...".</li>
+            <li>Better, use an SSH key (see <a href="#c-keyonly">server only accepts SSH keys</a>). We recommend against turning on <code>PermitRootLogin yes</code>.</li>
+          </ul>
+          <p>A saved password that is wrong can repeat on every reconnect and may trigger <a href="#c-fail2ban">fail2ban</a>. Fix the password first.</p>
+        </div>
+      </article>
+
+      <article class="issue" id="c-keyonly">
+        <h3>"HOST only accepts SSH keys for USER. Add a key to the server (Show Install Command), then choose it in Edit Host."</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>The server has <code>PasswordAuthentication no</code>, which is the default on most cloud images and a good security setting. Only a key will work.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <p>On the failure page:</p>
+          <ul>
+            <li><strong>Show Install Command</strong> opens a sheet with the key's one-line <code>authorized_keys</code> command. For a password host it lets you pick a key or tap <strong>Generate a New Key</strong>.</li>
+            <li><strong>Copy Public Key</strong> copies the key in one tap (the button flips to "Copied").</li>
+            <li><strong>Install on Host</strong> appears only when another saved host reaches the same server and user with a different working sign-in (a saved password, Tailscale SSH or a different key). It installs the key through that host.</li>
+          </ul>
+          <p>Otherwise run the command once on the server from a session that already works, your provider's web console, or cloud-init. The command the app shows appends your public key to the file:</p>
+<pre><code>mkdir -p ~/.ssh &amp;&amp; chmod 700 ~/.ssh
+printf '\n%s\n' 'ssh-ed25519 AAAA...your-public-key... meshterm' &gt;&gt; ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys</code></pre>
+          <p>Then choose that key in <strong>Edit Host</strong> and tap <strong>Reconnect</strong>. Run it once: running this by hand twice adds the key twice (<strong>Install on Host</strong> in the app does not).</p>
+        </div>
+      </article>
+
+      <article class="issue" id="c-keyrejected">
+        <h3>"HOST rejected the SSH key for USER. Add its public key to ~/.ssh/authorized_keys for that user, or choose another key in Edit Host."</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>The server does not recognise the key. The public key is not in that user's <code>authorized_keys</code>, the key in Edit Host is a different one, or the file or folder has permissions sshd refuses to trust.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <ul>
+            <li>Use <strong>Copy Public Key</strong> and <strong>Show Install Command</strong> as above, and check that Edit Host uses the key you installed.</li>
+            <li>Check the server side. sshd silently ignores keys when the folder or file is too open:</li>
+          </ul>
+<pre><code>chmod 700 ~/.ssh &amp;&amp; chmod 600 ~/.ssh/authorized_keys
+chmod go-w ~          # the home folder must not be writable by others
+sudo grep -i pubkeyauthentication /etc/ssh/sshd_config   # should not say "no"</code></pre>
+          <ul>
+            <li>"didn't accept key sign-in for USER on its own": either key sign-in is off for this user, or the server also wants a password after the key (<code>AuthenticationMethods</code>), which meshTerm does not support yet. Switch to password sign-in in Edit Host, or allow key-only sign-in on the server.</li>
+            <li><strong>Alpine:</strong> an account created with <code>adduser -D</code> is locked, and sshd refuses even key sign-in ("account is locked"). Set a password once with <code>passwd USER</code> (as root); that unlocks it.</li>
+            <li>Check that the key type is supported: see <a href="#c-rsa">RSA keys can't be used</a>.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="issue" id="c-rsa">
+        <h3>"RSA keys can't be used in this app yet. Generate an Ed25519 key instead." / "Unsupported key type"</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>meshTerm signs in with Ed25519 and ECDSA (P-256, P-384, P-521) keys. RSA user keys are not supported, so an imported RSA private key is refused.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <ol>
+            <li>On the import error, tap <strong>Generate an Ed25519 Key Instead</strong>. It makes the key (named after your import) and moves to <strong>Add the Key to the Server</strong>.</li>
+            <li>That step shows the one-line <code>authorized_keys</code> command with <strong>Copy</strong> and <strong>Copy Public Key</strong>. Run it on the server. It adds the new key next to your RSA key, which keeps working for your other apps.</li>
+            <li>Add Host has the same shortcut: <strong>Generate a New Key</strong> beside Import. Existing keys: <strong>SSH Keys</strong>, open a key, <strong>Add It Yourself</strong>.</li>
+          </ol>
+          <p>From a computer that can already sign in, the classic way also works:</p>
+<pre><code>ssh-keygen -t ed25519
+ssh-copy-id -i ~/.ssh/id_ed25519.pub USER@HOST</code></pre>
+          <p>Then import that key into meshTerm. See <a href="meshterm.html#ssh-keys">SSH keys</a> in the guide.</p>
+        </div>
+      </article>
+
+      <article class="issue" id="c-rsahostkey">
+        <h3>"Couldn't set up a secure connection with HOST: it most likely only offers an RSA host key, which meshTerm can't use yet."</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>The server proves who it is with a <em>host key</em>. meshTerm understands Ed25519 and ECDSA host keys, not RSA. A server that offers only an RSA host key (an old install, or a <code>HostKey</code> line that lists only the RSA file) cannot complete the handshake. The app cannot tell this apart from other handshake problems, so it names the likeliest cause.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <p>On the server, create the missing host keys, including Ed25519, then reload sshd:</p>
+<pre><code>sudo ssh-keygen -A
+grep -i '^HostKey' /etc/ssh/sshd_config      # if present, make sure an ed25519 line is listed
+
+# reload sshd
+sudo systemctl reload ssh      # Debian, Ubuntu
+sudo systemctl reload sshd     # Fedora
+sudo rc-service sshd reload    # Alpine</code></pre>
+          <p>After this, meshTerm shows the unknown host key prompt as for any new host (see the next entry).</p>
+        </div>
+      </article>
+
+      <article class="issue" id="c-hostkey">
+        <h3>"Unknown Host Key" and "Host Key Changed"</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>The first time you connect, meshTerm shows the server's key fingerprint and asks you to trust it. If a server later presents a different key, you see <strong>Host Key Changed</strong>: "the host was reinstalled or its address changed. Trust the new key only if you expected this." It can also mean someone is intercepting the connection, which is why the prompt never trusts by default.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <p>Compare the fingerprint on screen with the server's own, from the server's console (not over the connection you are checking):</p>
+<pre><code>ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub
+# the file follows the key type the prompt shows, for example:
+ssh-keygen -lf /etc/ssh/ssh_host_ecdsa_key.pub</code></pre>
+          <p>If the fingerprints match, tap <strong>Trust Host</strong>. For a changed key: if you rebuilt or re-imaged the server, trust the new key; if you did not, do not connect and look at the server first. You can also see and remove saved keys in Settings &gt; Hosts &amp; Network &gt; <strong>Trusted servers</strong>: remove one to be asked again at the next connect. Cloud consoles often print the host key fingerprints at first boot, which is another way to check.</p>
+          <p>"Host key not trusted yet" on some screens (the Containers Fleet, the Sessions list, system usage) means you have not trusted the host yet: open the host once from the Sessions tab, review the key, then try again.</p>
+        </div>
+      </article>
+
+      <article class="issue" id="c-kbdint">
+        <h3>"HOST only allows keyboard-interactive sign-in for USER, which meshTerm doesn't support."</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>Some servers ask questions at sign-in instead of taking a plain password: a one-time code from an authenticator app, a hardware key prompt, or a PAM password prompt on a server with <code>PasswordAuthentication no</code>. That is "keyboard-interactive", and meshTerm cannot answer it. This is also what two-factor authentication on SSH usually looks like, so 2FA accounts cannot sign in this way.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <ul>
+            <li>Add an SSH key for this user (the safer fix): <strong>Show Install Command</strong>, as in <a href="#c-keyonly">server only accepts SSH keys</a>. This works when the server accepts a key alone.</li>
+            <li>A server that requires a key <em>and</em> a code (<code>AuthenticationMethods publickey,keyboard-interactive</code>) cannot be used. Use Tailscale SSH for that machine, or give meshTerm its own account that allows a key alone.</li>
+            <li>Or turn on <code>PasswordAuthentication yes</code> in <code>/etc/ssh/sshd_config</code> and reload sshd. This lets <strong>anyone</strong> try passwords on that server, so use it only if you accept that, and ideally with fail2ban or a firewall in front.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="issue" id="c-fail2ban">
+        <h3>"HOST closed the connection during sign-in, often a block after too many attempts (fail2ban)."</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>Tools such as fail2ban ban an IP address after several failed sign-ins. Your phone's address is then dropped or reset until the ban ends.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <p>Wait a few minutes, fix the password or key that was failing, then reconnect. If you have console access you can lift the ban:</p>
+<pre><code>sudo fail2ban-client status sshd
+sudo fail2ban-client set sshd unbanip YOUR.IP.ADDRESS</code></pre>
+          <p>To stop it happening again, sign in with a key (a wrong saved password is the usual trigger) or add your tailnet or home network to fail2ban's <code>ignoreip</code>.</p>
+        </div>
+      </article>
+
+      <article class="issue" id="c-tailscale-ssh">
+        <h3>"Tailscale SSH on HOST didn't accept USER."</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>The host was added as a Tailscale SSH host (no password or key), but either your tailnet's SSH rule does not allow that user, or the server is not running Tailscale SSH.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <p>Check your tailnet's SSH rule in the Tailscale admin console. On the host, turn Tailscale SSH on:</p>
+<pre><code>sudo tailscale up --ssh</code></pre>
+          <p>Or switch the host to key or password sign-in in <strong>Edit Host</strong>; a Tailscale-connected host still accepts those over your tailnet. Details are in the <a href="meshterm-tailscale-integration.html">Tailscale Setup Guide</a>.</p>
+        </div>
+      </article>
+
+      <article class="issue" id="c-address">
+        <h3>Pasting <code>user@host:port</code>, <code>ssh://...</code> or an IPv6 address</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>People paste whatever they copied from a terminal or provider page. meshTerm sorts it out for you.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <p>Paste it into <strong>Hostname</strong> and move on. meshTerm trims it, removes <code>ssh://</code> and any path, puts the part before the last <code>@</code> into an empty Username field, and puts <code>:2222</code> into the Port field if it is empty or still 22. <code>[2001:db8::1]:2222</code> works for IPv6; a bare IPv6 address is left alone. A password inside the URL (<code>ssh://user:secret@host</code>) is dropped, never saved.</p>
+          <p>"The hostname can't contain spaces or symbols. Enter just the name or IP address." means something is left over after that, such as a space or URL punctuation. If the pasted port and the Port field disagree, the form asks you to choose one.</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============================================ -->
+    <section id="s-terminal">
+      <h2>2. Terminal and persistence</h2>
+      <p>Persistence is chosen per host: tmux, mtRoam or None. See <a href="meshterm.html#roam">Persistent sessions</a> and <a href="meshterm.html#check-persistence">Check persistence</a> in the guide.</p>
+
+      <article class="issue" id="t-tmux">
+        <h3>"No session persistence": "tmux isn't installed on HOST, so this session won't persist."</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>The host is set to tmux but has no tmux, so you got a plain shell that ends with the connection. Fresh servers rarely have tmux.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <p>Tap <strong>Install tmux</strong> on the banner. meshTerm pastes the install command for your system at the prompt; you read it and press Return, and it never runs by itself. In the Sessions list, "tmux wasn't found" offers <strong>Install tmux in Terminal</strong>, which opens a terminal that runs the command shown above it. Which command you get depends on who you are on the server:</p>
+          <ul>
+            <li><strong>root:</strong> no <code>sudo</code>.</li>
+            <li><strong>A user with sudo:</strong> the <code>sudo</code> form. sudo asks for your password in the terminal.</li>
+            <li><strong>A host with no sudo</strong> (fresh Debian, Ubuntu, Alpine): <code>su -c '...'</code>, with "Needs the root password."</li>
+            <li><strong>An account that cannot use sudo</strong> (not in the sudo, wheel or admin group): the sudo form still shows, with "If your account can't use sudo, ask the server's admin to run this." If it fails, sign in as root or an admin account, or ask the server's admin.</li>
+          </ul>
+<pre><code># Debian, Ubuntu
+sudo apt-get update &amp;&amp; sudo apt-get install -y tmux
+# no sudo on the host
+su -c 'apt-get update &amp;&amp; apt-get install -y tmux'
+# as root
+apt-get update &amp;&amp; apt-get install -y tmux
+
+# Fedora, RHEL, Rocky, Alma         sudo dnf install -y tmux
+# Amazon Linux 2, CentOS 7          sudo yum install -y tmux
+# Alpine (as root)                  apk add tmux
+# openSUSE                          sudo zypper install -y tmux
+# Arch                              sudo pacman -S --noconfirm tmux</code></pre>
+          <p>Prefer not to install it? Set the host's <strong>Persistence</strong> to <strong>None</strong> to stop the banner. The mtRoam alternative is in the <a href="meshterm.html#roam-install">guide</a>.</p>
+        </div>
+      </article>
+
+      <article class="issue" id="t-brew">
+        <h3>"tmux wasn't found on HOST. ... If it's already installed, add its folder to PATH in ~/.bashrc or ~/.zshenv."</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>A tool installed with Homebrew on a Mac lives in <code>/opt/homebrew/bin</code> (Apple silicon) or <code>/usr/local/bin</code>, and the PATH an SSH command gets on macOS is only <code>/usr/bin:/bin:/usr/sbin:/sbin</code>. meshTerm looks in <code>/usr/bin</code>, <code>/usr/local/bin</code>, <code>/opt/homebrew/bin</code> and <code>/opt/local/bin</code> as well, so a Homebrew tmux is normally found. If yours still is not, it is installed somewhere else or not at all.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <p>No tmux yet? The command is <code>brew install tmux</code> (never with sudo). "No Homebrew on this Mac? Install it first from brew.sh, then run the command." If tmux is installed in an unusual place, add its folder to your PATH in a file that non-interactive SSH reads. <code>~/.profile</code> is <strong>not</strong> read by SSH commands, so use <code>~/.zshenv</code> (zsh, the Mac default) or the top of <code>~/.bashrc</code>:</p>
+<pre><code>brew install tmux
+echo 'export PATH="/opt/homebrew/bin:$PATH"' &gt;&gt; ~/.zshenv</code></pre>
+        </div>
+      </article>
+
+      <article class="issue" id="t-old">
+        <h3>"tmux 3.1 is too old (3.2 or newer needed)." / "Using classic tmux"</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>Native panes and the tmux palette page use tmux control mode, which needs tmux 3.2. With an older tmux, meshTerm falls back to the classic tmux attach by itself, so the session still persists, just without native panes. Some long-term-support distros still ship older versions (Ubuntu 20.04 and Debian 11, for example).</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+<pre><code>tmux -V</code></pre>
+          <p>A newer tmux usually comes from your distro's backports or EPEL, a newer distro release, or a static build. After upgrading, tap <strong>Check persistence</strong> on the host's Details so meshTerm tries control mode on the next connect. Nothing is broken if you leave it: sessions persist either way.</p>
+        </div>
+      </article>
+
+      <article class="issue" id="t-control">
+        <h3>"Couldn't start tmux control mode on HOST." / control mode misbehaves on one host</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>Control mode is the default way meshTerm talks to tmux 3.2 or newer. Unusual shell start-up files, wrappers around <code>tmux</code>, or restricted shells can interfere.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <p>Reconnect to try again, or use classic tmux for that host: <strong>Edit Host &gt; Session &gt; tmux attach &gt; Legacy</strong>. Other hosts keep control mode, and you can switch back any time. See <a href="meshterm.html#tmux-attach">Control mode or Legacy</a>.</p>
+        </div>
+      </article>
+
+      <article class="issue" id="t-mtroam">
+        <h3>"mtRoam isn't installed on this host. Using tmux."</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>The host's Persistence is mtRoam, but the <code>mtroamd</code> daemon is not on the host. meshTerm cannot install it for you from the app, so it carries the session through tmux instead.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <p>Tap <strong>Switch to tmux</strong> to make tmux the host's setting for good, or <strong>Install guide</strong> to install mtroamd (see <a href="meshterm.html#roam-install">Installing mtroamd</a>). If tmux is missing too, the first banner is "No session persistence" with <strong>Install tmux</strong>; after you dismiss it, the mtRoam notice offers <strong>Install tmux</strong> as well. After installing mtroamd, tap <strong>Check persistence</strong> on the host's Details to use it straight away. For "Connection Failed" on an mtRoam host and the other mtRoam messages, see the <a href="meshterm.html#troubleshooting">guide's troubleshooting</a>.</p>
+        </div>
+      </article>
+
+      <article class="issue" id="t-locale">
+        <h3>Garbled accents, boxes or odd characters in some programs (locale)</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>An SSH command without a login does not always get a UTF-8 locale. Measured on fresh images: Debian 12 and Ubuntu 22.04 give the plain POSIX locale, Ubuntu 24.04 and Fedora give <code>C.UTF-8</code>, a Mac gives <code>C</code>, and Alpine has no <code>locale</code> tool. Many servers do not accept the client's language setting either (Fedora and Alpine's sshd have no <code>AcceptEnv</code>), so it is dropped. UTF-8 text itself passes through fine; only programs that check the locale can misbehave.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+<pre><code>locale                                   # what does this session have?
+echo 'export LANG=C.UTF-8' &gt;&gt; ~/.bashrc       # Linux (use ~/.zshenv for zsh)
+echo 'export LANG=en_US.UTF-8' &gt;&gt; ~/.zshenv   # macOS</code></pre>
+          <p>Put it in <code>~/.bashrc</code> or <code>~/.zshenv</code>, not <code>~/.profile</code>, so that non-interactive SSH commands see it. Inside tmux, <code>tmux -u</code> forces UTF-8 for a client.</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============================================ -->
+    <section id="s-files">
+      <h2>3. Files (SFTP)</h2>
+
+      <article class="issue" id="f-sftp">
+        <h3>"The file service isn't available on HOST: its SSH server has no SFTP."</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>meshTerm's file browser, attachments and uploads use SFTP, an SSH subsystem. The server answered "no" to it, or the <code>Subsystem</code> line points at a program that does not exist. On Debian and Ubuntu the SFTP package comes with <code>openssh-server</code> and Alpine's <code>openssh</code> includes it, so the realistic cause is a <code>sshd_config</code> that was edited. There is no Try Again button because retrying cannot help. (Older versions of the app waited forever instead of saying so.)</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <p>Add this line to <code>/etc/ssh/sshd_config</code> (remove any other <code>Subsystem sftp</code> line first), then reload sshd:</p>
+<pre><code>Subsystem sftp internal-sftp
+
+sudo sshd -t                    # check the file first
+sudo systemctl reload ssh       # Debian, Ubuntu
+sudo systemctl reload sshd      # Fedora
+sudo rc-service sshd reload     # Alpine</code></pre>
+          <p>If you would rather keep the external program, make sure its package is there (Debian or Ubuntu):</p>
+<pre><code>sudo apt-get update &amp;&amp; sudo apt-get install -y openssh-sftp-server</code></pre>
+          <p>The same message appears for a terminal attachment on that host, with the same commands. See <a href="meshterm.html#sftp">SFTP file browser</a>.</p>
+        </div>
+      </article>
+
+      <article class="issue" id="f-slow">
+        <h3>"HOST's file service didn't answer in time. Try again."</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>The SSH connection worked, but the SFTP server did not start answering within about 15 seconds. The host may be overloaded, very low on memory, or the link is slow or lossy.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <p>Tap <strong>Try Again</strong>. If it keeps happening, look at the server: <code>uptime</code> (load), <code>free -h</code> (memory) and <code>df -h</code> (a full disk slows everything). A closer or wired route, or connecting over Tailscale, helps on a poor link. If the problem is only in huge folders, work in a subfolder.</p>
+        </div>
+      </article>
+
+      <article class="issue" id="f-perms">
+        <h3>"refused the rename", "refused to create the folder", "refused to delete this item", "refused the upload"</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>The server's permissions say no. Your account needs write permission on the folder. Other causes: the name already exists, a folder has to be empty before deleting, the disk is full, or the file is in use. Some SFTP servers also reject renames across filesystems.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+<pre><code>ls -ld /path/to/folder        # who owns it, and who can write
+df -h /path/to/folder         # is the disk full?
+sudo chown -R $USER: /path/to/folder   # only if the folder should be yours</code></pre>
+          <p>Keep a rename target in the same folder. Avoid signing in as root just to fix permissions; change the ownership or group instead.</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============================================ -->
+    <section id="s-forwarding">
+      <h2>4. Port forwarding</h2>
+
+      <article class="issue" id="p-forward">
+        <h3>"HOST doesn't allow port forwarding. Set AllowTcpForwarding yes in /etc/ssh/sshd_config, then reload sshd."</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>The server's sshd refused the forward ("administratively prohibited"). The same cause shows up as "This host's SSH server blocks port forwarding" on a tunnel row and "Port Forwarding Is Off" when Containers opens a web page through a forward.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <p>The row has the line to copy. On the server:</p>
+<pre><code>AllowTcpForwarding yes       # in /etc/ssh/sshd_config
+
+sudo sshd -t
+sudo systemctl reload ssh    # Debian, Ubuntu (sshd on Fedora; rc-service sshd reload on Alpine)</code></pre>
+          <p>meshTerm only needs local (-L) and dynamic (-D) forwards, so <code>AllowTcpForwarding local</code> is enough and is the narrower choice. Check for a <code>Match</code> block or a per-user <code>PermitOpen</code> that overrides it. See <a href="meshterm.html#tunnels">Port forwarding &amp; Tunnels</a>.</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============================================ -->
+    <section id="s-agents">
+      <h2>5. Agents</h2>
+      <p>Claude, Codex and Gemini run on your host, not on the phone. The host needs each tool's CLI installed and signed in. They install into your home folder, so once the host has <code>curl</code> (or npm or Homebrew), no root access is needed. See <a href="meshterm.html#agents">Agent Mode</a>.</p>
+
+      <article class="issue" id="a-prepare">
+        <h3>"Prepare This Host" in Set Up Agents</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>The official installers are scripts that download the CLI, so the host needs <code>curl</code> and <code>bash</code> (Claude's and Antigravity's installers are bash scripts; Codex's is plain <code>sh</code>). A bare server may have neither: a fresh Debian 12 has no <code>curl</code>; Ubuntu has none either; Alpine has neither <code>curl</code> nor <code>bash</code>. When no curl, npm or Homebrew is found and an agent is missing, Set Up Agents shows <strong>Prepare This Host</strong>. Alpine hosts without bash say "no bash" up front.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <p>Tap <strong>Run in Terminal</strong> on the line shown for your system (it opens a terminal on the host and types the command; sudo or su asks for its password there), then <strong>Check Again</strong>. Same commands by hand:</p>
+<pre><code># Debian, Ubuntu
+sudo apt-get update &amp;&amp; sudo apt-get install -y curl ca-certificates
+# Fedora
+sudo dnf install -y curl ca-certificates
+# Alpine (as root; also gets bash)
+apk add curl bash ca-certificates
+# no sudo on the host:  su -c 'apt-get update &amp;&amp; apt-get install -y curl ca-certificates'
+# root:                 leave out sudo</code></pre>
+          <p>A Mac already has <code>curl</code> and <code>bash</code>. Gemini goes through Antigravity's <code>agy</code> CLI.</p>
+        </div>
+      </article>
+
+      <article class="issue" id="a-signin">
+        <h3>Sign-in fails or spins: "Codex said: ..." / "Starting sign-in..."</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>Codex signs in with a device code. Some ChatGPT accounts need that turned on first. When the sign-in ends with an error before a link or code appears, meshTerm shows the last line Codex printed. Under "Starting sign-in..." the host's own output appears after about ten seconds if nothing else does.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <ul>
+            <li>Codex: in ChatGPT, open <strong>Settings &gt; Security</strong> and turn on device code sign-in. Then <strong>Try Again</strong>. <strong>Open Terminal</strong> runs <code>codex login</code> on the host yourself; <code>codex login status</code> shows where you stand.</li>
+            <li>Claude: the failure quotes Claude's last line. <code>claude auth status</code> shows which account is signed in and <code>claude auth login</code> signs in.</li>
+            <li>Gemini: open Set Up Agents on that host, follow Google's link and paste the code back within about a minute. <code>agy</code> cannot always report whether it is signed in, so if an agent fails to start, sign in again there.</li>
+            <li>If the sign-in cannot find <code>node</code>, see <a href="#a-path">the CLI isn't on the SSH PATH</a>.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="issue" id="a-path">
+        <h3>"NAME needs node on the SSH PATH." / the CLI is installed but "not found"</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>Agents start through a non-interactive SSH command, which does not read your interactive shell set-up. A CLI installed with npm is a <code>#!/usr/bin/env node</code> script, and <strong>nvm</strong> only puts node on the PATH in interactive shells. Homebrew's folder (<code>/opt/homebrew/bin</code> on a Mac) is not on the SSH PATH either. meshTerm adds the usual places for you (<code>~/.local/bin</code>, <code>~/.npm-global/bin</code>, <code>/usr/local/bin</code>, <code>/opt/homebrew/bin</code>, Linuxbrew, volta, mise and asdf shims, fnm's default), but nvm has no fixed folder.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <p>Run this in a terminal on the host (where node works), then tap <strong>Check Again</strong>. The app shows the same line:</p>
+<pre><code>mkdir -p ~/.local/bin &amp;&amp; ln -s "$(command -v node)" ~/.local/bin/node</code></pre>
+          <p>For a CLI itself that cannot be found, link it the same way, for example <code>ln -s "$(command -v codex)" ~/.local/bin/codex</code>. Putting an <code>export PATH=...</code> line in <code>~/.profile</code> does not help, because SSH commands do not read it; use <code>~/.bashrc</code> (near the top) or <code>~/.zshenv</code>.</p>
+        </div>
+      </article>
+
+      <article class="issue" id="a-folder">
+        <h3>"Folder Not Found" when starting an agent</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>The working folder you chose (for example <code>~/new-project</code>) does not exist on the host. A <code>~</code> is expanded to the host's home folder.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <p>Tap <strong>Create Folder</strong> (it runs <code>mkdir -p</code> and starts the agent there; if it fails, an alert says why), or <strong>Use Home Folder</strong> for an agent that has not run yet. Claude files its conversations per folder, so Use Home Folder is not offered for an agent that already has history.</p>
+        </div>
+      </article>
+
+      <article class="issue" id="a-apikey">
+        <h3>Using an API key instead of signing in (<strong>Use an API Key Instead</strong>)</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>Sign-in is the default. An API key is the alternative when browser sign-in is not possible or you pay per use.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <p>The setup sheet explains it per agent:</p>
+<pre><code># Claude: near the top of ~/.bashrc, or in ~/.zshenv (NOT ~/.profile)
+export ANTHROPIC_API_KEY=your-key
+
+# Codex: set OPENAI_API_KEY in a terminal on the host, then
+printenv OPENAI_API_KEY | codex login --with-api-key</code></pre>
+          <p><code>~/.profile</code> does not work because an SSH command runs <code>$SHELL -c</code> and never reads it. Codex keeps the key with its own sign-in, which every SSH command sees. Keep files that hold keys readable by you only (<code>chmod 600</code>). With Pro, <a href="meshterm.html#secret-profiles">Secret Profiles</a> can hold keys on the phone instead. Gemini has no API-key option in the app.</p>
+        </div>
+      </article>
+
+      <article class="issue" id="a-mac">
+        <h3>Agents on a Mac host</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>A stock Mac differs from Linux: no <code>setsid</code> or <code>timeout</code>, <code>sleep infinity</code> is rejected, <code>/usr/bin/python3</code> and <code>/usr/bin/git</code> are stubs that ask to install Apple's Command Line Tools, and the SSH PATH is only <code>/usr/bin:/bin:/usr/sbin:/sbin</code>. meshTerm works around the first ones itself (it starts agents with <code>setsid</code> or else <code>nohup</code>, and time-limits checks with <code>timeout</code>, <code>gtimeout</code> or perl).</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+<pre><code>xcode-select --install     # real python3 and git (notifications and live status need python3)
+brew install coreutils     # optional: gives gtimeout</code></pre>
+          <p>Make sure <strong>Remote Login</strong> is on, and see <a href="#t-brew">Homebrew on a Mac</a> and <a href="#a-path">PATH</a> for tools that are installed but not found. "python3 needs Apple's command line tools" in herdr or notifications means the stub, not a real python3.</p>
+        </div>
+      </article>
+
+      <article class="issue" id="a-sandbox">
+        <h3>"This host blocks unprivileged user namespaces and has no bubblewrap, so Codex's sandbox can't start and it will ask approval for every command."</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>Codex isolates commands with <em>bubblewrap</em>, which needs the package and a kernel that lets ordinary users create namespaces. Related messages: "Harden with Bubblewrap is on, but bubblewrap isn't installed", and "bubblewrap is installed but can't start a sandbox, usually because unprivileged user namespaces are turned off".</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <p>Install it (Set Up Agents shows the line for your system, with Copy):</p>
+<pre><code># Debian, Ubuntu
+sudo apt-get update &amp;&amp; sudo apt-get install -y bubblewrap
+# Fedora
+sudo dnf install -y bubblewrap
+# Alpine (as root)
+apk add bubblewrap</code></pre>
+          <p>If it is installed but cannot start, namespaces are off. Check with <code>sysctl user.max_user_namespaces</code> (0 means off). Ubuntu 24.04 also restricts them with AppArmor (<code>kernel.apparmor_restrict_unprivileged_userns</code>); loosening that setting weakens a protection for the whole machine, so decide deliberately. Or turn off <strong>Harden with Bubblewrap</strong> in the agent's settings. Without a working sandbox, Codex simply asks for approval for each command.</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============================================ -->
+    <section id="s-notifications">
+      <h2>6. Notifications</h2>
+      <p>Agent notifications use a small hook on the host and Apple's push service through the relay. See <a href="meshterm.html#agent-notifications">Notifications</a> in the guide.</p>
+
+      <article class="issue" id="n-tools">
+        <h3>"Notifications need python3 and curl on HOST. Missing: curl. Install them, then Try Again."</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>The hook on the host is a short Python 3 script that sends the alert with <code>curl</code>. Fresh images differ: Debian 12 has neither; Ubuntu has python3 but no curl; Fedora has curl but no python3; Alpine has neither. On a Mac, <code>python3</code> may be the stub (see <a href="#a-mac">Mac hosts</a>). If only python3 is there, the hook is not installed.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <p>In the host's editor the line is copyable, followed by <strong>Try Again</strong>. In the agent chat banner you also get <strong>Run in Terminal</strong>.</p>
+<pre><code># Debian, Ubuntu
+sudo apt-get update &amp;&amp; sudo apt-get install -y python3 curl ca-certificates
+# Fedora
+sudo dnf install -y python3 curl
+# Alpine (as root)
+apk add python3 curl ca-certificates
+# Mac
+xcode-select --install</code></pre>
+          <p>An agent that was already running when the hook was installed starts sending alerts only after you relaunch it (exit and run it again); the session itself stays open. Gemini's permission hook also needs python3, so "python3 may be missing" can appear on a Gemini message.</p>
+        </div>
+      </article>
+
+      <article class="issue" id="n-permission">
+        <h3>"Notifications are turned off for meshTerm in iOS Settings."</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>The host side may be fine, but iOS itself is not allowed to show meshTerm's alerts.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <p>Tap <strong>Open Settings</strong> where it is offered, or go to iOS Settings &gt; Notifications &gt; meshTerm and turn on Allow Notifications. Check that no Focus mode is silencing it.</p>
+        </div>
+      </article>
+
+      <article class="issue" id="n-live">
+        <h3>"Live Activities are off for meshTerm in iOS Settings."</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>The lock-screen and Dynamic Island status for running agents needs the Live Activities permission for the app.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <p>In iOS Settings, open meshTerm's settings and turn on Live Activities. Alerts still arrive without them.</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============================================ -->
+    <section id="s-herdr">
+      <h2>7. herdr</h2>
+      <p>herdr keeps Claude, Codex and Gemini running on your host, each in its own pane. See <a href="meshterm.html#herdr">herdr</a> in the guide.</p>
+
+      <article class="issue" id="h-prereq">
+        <h3>"Set Up herdr", "herdr X is too old", "herdr has no build for HOST"</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>herdr runs on your host, so the host needs <strong>herdr 0.9.2 or later</strong> in your home folder, plus <code>python3</code> for live status (without it status updates only every few seconds, shown as "No python3: updates every few seconds"). <strong>Set Up herdr</strong> checks the host and installs herdr's official build in one tap, with no admin rights. Its installer needs <code>curl</code>, <code>awk</code> and a SHA-256 tool. Windows hosts are not supported.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <ul>
+            <li>Missing tools: the sheet shows the install line for your system. Run it, then <strong>Check Again</strong>. For Debian and Ubuntu that is, for example, <code>sudo apt-get update &amp;&amp; sudo apt-get install -y curl ca-certificates python3</code> (drop <code>sudo</code> as root).</li>
+            <li>"herdr is installed but doesn't run on this host. Its standard build may not suit this system (Alpine, for example)": the standard build is not for every system. Use the install guide's other ways.</li>
+            <li>"herdr X is in ~/.local/bin, but your login shell finds an older herdr first": update or remove the older one, then <strong>Check Again</strong>. If Homebrew installed it, <code>brew upgrade herdr</code> updates it.</li>
+            <li>"The installer finished, but HOST can't find herdr on this host": wait a moment and <strong>Check Again</strong>.</li>
+            <li><strong>Update herdr</strong> appears when a host's herdr is older than the app needs.</li>
+          </ul>
+          <p>The notification plugin also needs Python 3 on the host: "The plugin needs Python 3 on this host. Install python3 there, then try again."</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============================================ -->
+    <section id="s-containers">
+      <h2>8. Containers</h2>
+      <p>The Containers tab (Pro) finds Docker, Podman, nerdctl and Apple's container tool on your hosts, shows them in a Fleet, and lets you start, stop and deploy. If you are new to containers, read <a href="docker-101.html">Docker 101</a> first. When something stops a host, its Fleet card shows the failure (not a spinner) with the fix. Where a command is needed, <strong>Run in Terminal</strong> opens a terminal on the host and types it for you, and <strong>Copy</strong> copies it. After you fix it, tap <strong>Check Again</strong> or <strong>Try Again</strong>. Commands that need root show "Needs an administrator", and become <code>su -c '...'</code> ("Needs the root password.") on hosts without sudo; as root they have no <code>sudo</code>. Linux hosts are covered throughout; Mac hosts (Docker Desktop, OrbStack, Colima, Podman machine and Apple's container tool) need meshTerm 2.3.</p>
+
+      <article class="issue" id="k-noengine">
+        <h3>"No Container Engine Found" / "Couldn't find a container engine on HOST. Install Docker or Podman on the host, then check again."</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>Nothing on that host looks like a container engine. The Fleet lists such hosts as "N hosts have no container engine" with <strong>Show</strong>; each opens its host screen with the install lines for its system.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <p>Install one engine, then <strong>Check Again</strong>. The full walkthrough, with the choice between Docker and Podman, is in <a href="docker-101.html#install">Docker 101</a>. The short version:</p>
+<pre><code># Debian, Ubuntu: the distro package
+sudo apt-get update &amp;&amp; sudo apt-get install -y docker.io
+# ...or Docker's official convenience script (any of Ubuntu, Debian, Fedora, RHEL, CentOS)
+curl -fsSL https://get.docker.com | sh
+# let your user talk to Docker (read the security note first), then sign in again
+sudo usermod -aG docker $USER
+# ...or Podman, which needs no group and can run rootless
+sudo apt-get update &amp;&amp; sudo apt-get install -y podman
+
+# Fedora
+sudo dnf install -y podman
+
+# Alpine (as root)
+apk add docker docker-cli-compose &amp;&amp; rc-update add docker default &amp;&amp; rc-service docker start &amp;&amp; addgroup $USER docker
+
+# macOS
+brew install --cask docker-desktop      # or: brew install --cask orbstack</code></pre>
+          <p>Fresh Debian, Ubuntu and Alpine images have no sudo. Either sign the host in as root (every line then has no sudo and no group step), or set sudo up once as root:</p>
+<pre><code>su -c 'apt-get update &amp;&amp; apt-get install -y sudo &amp;&amp; usermod -aG sudo USER'      # Debian, Ubuntu
+su -c 'dnf install -y sudo &amp;&amp; usermod -aG wheel USER'                         # Fedora
+su -c 'apk add sudo &amp;&amp; addgroup USER wheel &amp;&amp; echo "%wheel ALL=(ALL:ALL) ALL" &gt; /etc/sudoers.d/wheel'   # Alpine</code></pre>
+          <p>Replace USER with your SSH username, and sign in again. If your account is not allowed to install software at all, the app says "Your account can't install software on this host. Sign in as root or an admin account, or ask the server's admin." and keeps the command for the admin.</p>
+        </div>
+      </article>
+
+      <article class="issue" id="k-notrunning">
+        <h3>"Container Engine Not Running": "The container engine on HOST isn't running. Start it on the host, then try again."</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>The engine is installed but its service is stopped or not enabled. Related lines: "Docker is installed, but its system service isn't running and rootless Docker isn't set up", "The system Docker service is installed but turned off", and "Needs Setup" with "The engine is installed, but nothing answered. Its service may be installed but stopped."</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <p>Use the start command for your engine and init system. <strong>Run in Terminal</strong> on the card types it; <strong>Check Again</strong> afterwards.</p>
+<pre><code># systemd (most Linux): system engines
+sudo systemctl enable --now docker
+sudo systemctl enable --now podman.socket
+sudo systemctl enable --now containerd        # nerdctl
+
+# systemd: rootless engines (your own user's service, no sudo)
+systemctl --user enable --now docker
+systemctl --user enable --now podman.socket
+
+# OpenRC (Alpine)
+sudo rc-service docker start &amp;&amp; sudo rc-update add docker default
+sudo rc-service podman start &amp;&amp; sudo rc-update add podman default
+sudo rc-service containerd start &amp;&amp; sudo rc-update add containerd default
+
+# macOS
+open -a Docker              # Docker Desktop
+open -a OrbStack
+colima start
+podman machine start
+container system start      # Apple's container tool</code></pre>
+          <p><strong>Debian 12 with <code>docker.io</code>:</strong> the <code>dockerd</code> program lives in <code>/usr/sbin</code>, which is not on the PATH an SSH command gets on Debian, so the app cannot see it and says the service "may be installed but stopped". Starting the service works: <code>sudo systemctl enable --now docker</code>. If a command such as <code>dockerd</code> or <code>sshd</code> is "not found" in your own terminal, add the folders: <code>export PATH="$PATH:/usr/sbin:/sbin"</code>.</p>
+        </div>
+      </article>
+
+      <article class="issue" id="k-permission">
+        <h3>"No Permission for the Container Engine": "The SSH user on HOST can't reach the Docker socket. Add the user to the docker group ..."</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>The engine's socket belongs to root and the <code>docker</code> group, and your SSH user is in neither. Rootful Podman's and containerd's sockets are root-only too ("The SSH user on HOST can't reach rootful Podman's socket" or "containerd's socket, which nerdctl uses"). <strong>Read this first:</strong> membership of the <code>docker</code> group is equivalent to root on that host, and anything that can use rootful Docker can read and change the whole machine. That is how Docker works, not a flaw, and for a personal server where you are already the administrator it is a common and reasonable choice. See <a href="docker-101.html#security">Docker 101: security</a>.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+<pre><code>sudo usermod -aG docker $USER        # then sign out of the SSH session and in again
+id                                   # check that "docker" is listed</code></pre>
+          <p>meshTerm opens a new SSH connection, so tap <strong>Try Again</strong> after you have fixed it (the group applies to new connections). Other options: set the engine up with sudo (see <a href="#k-sudo">sudo needs a password</a>), add the host as root, or use <strong>rootless Docker or rootless Podman</strong>, which need no group and keep containers away from the host's root. A rootless engine that cannot be reached ("can't reach their own rootless engine") has a stopped user service: start it and keep it running with <a href="#k-linger">lingering</a>.</p>
+        </div>
+      </article>
+
+      <article class="issue" id="k-sudo">
+        <h3>Sudo needs a password: "Not Allowed to Use Sudo", "Sudo Check Didn't Pass", "sudo on HOST couldn't run the container engine"</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>Some engines run as root, so meshTerm runs their commands with <code>sudo -n</code>, which cannot ask for a password. If sudo wants a password, says "sorry, try again", "a password is required", "is not in the sudoers file", or "sudo: command not found", the engine cannot be used that way. A sudo password grants nothing on the host by itself; passwordless sudo for the engine is the same as root access to the host, which the app tells you before you choose it.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <ul>
+            <li><strong>Use a Sudo Password</strong> (or <strong>Use My SSH Password</strong> when it is the same). meshTerm tests it first, before saving anything. If the test fails you see "Sudo Check Didn't Pass" and nothing is added. The password stays on this device in the Keychain and is removed with the host.</li>
+            <li><strong>Passwordless sudo, narrowly.</strong> If you want no password, allow only the engine program, never everything:</li>
+          </ul>
+<pre><code>command -v docker                                    # the full path, for example /usr/bin/docker
+sudo visudo -f /etc/sudoers.d/meshterm-docker        # then add one line:
+USER ALL=(root) NOPASSWD: /usr/bin/docker</code></pre>
+          <ul>
+            <li><strong>Not a sudoer, or no sudo installed:</strong> the app shows the set-up line to run as root (see <a href="#k-noengine">No container engine found</a>), or add the host as root in Edit Host. Making an account a sudoer is copy-only, for root or another admin: <code>sudo usermod -aG sudo USER</code> (Debian, Ubuntu) or <code>sudo usermod -aG wheel USER</code> (Fedora).</li>
+            <li><strong>Use Rootless Docker/Podman Instead</strong> is offered where it can work, and avoids sudo altogether.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="issue" id="k-notchecked">
+        <h3>Hosts under "Not Checked" in the Fleet</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>The Fleet lists every SSH host it could not check, with the reason and one way out, instead of hiding it. Windows hosts and hidden hosts are never listed.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <table>
+            <thead><tr><th>Reason on the row</th><th>What to do</th></tr></thead>
+            <tbody>
+              <tr><td>Host key not trusted</td><td><strong>Trust Host</strong>. It shows the fingerprint prompt (see <a href="#c-hostkey">host keys</a>), then the host is checked.</td></tr>
+              <tr><td>No password or key on this device, so it couldn't sign in</td><td><strong>Edit Host</strong>, add the password or key.</td></tr>
+              <tr><td>Tailscale isn't connected</td><td><strong>Open Tailscale Settings</strong>, bring Tailscale up.</td></tr>
+              <tr><td>Not reachable, refused, no answer, not checked yet</td><td><strong>Check Again</strong> checks that host alone. For the cause, see <a href="#c-refused">refused</a> and <a href="#c-timeout">timeouts</a>.</td></tr>
+            </tbody>
+          </table>
+          <p>"Couldn't Check Your Hosts" means every host was skipped; "No Containers Found Yet" has <strong>Check Again</strong> too. Pull down on the Fleet to check everything again. If <strong>Find Container Hosts Automatically</strong> is off in Settings &gt; Containers, a new host is checked only when you pull to refresh. Without Pro, the Containers tab shows a read-only preview of your hosts and engines, and pulling down checks names only.</p>
+        </div>
+      </article>
+
+      <article class="issue" id="k-compose">
+        <h3>"Compose Not Installed", "Compose on this host is too old: found 1.29.2, need 2.x or newer", git missing</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>Stacks and templates need <strong>Docker Compose v2</strong> (the <code>docker compose</code> command). Compose v1 (<code>docker-compose</code> with a hyphen) is too old. Debian's own Compose package is the old v1. Deploying from a Git repository also needs <code>git</code> on the host. "Stacks and templates need Compose v2, so Templates shows in the + menu once it's installed."</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+<pre><code># Ubuntu
+sudo apt-get update &amp;&amp; sudo apt-get install -y docker-compose-v2
+# Debian: Docker's script installs the Compose plugin (the Debian package is v1)
+curl -fsSL https://get.docker.com | sh
+# Fedora
+sudo dnf install -y docker-compose
+# Alpine
+sudo apk add docker-cli-compose
+# macOS
+brew install docker-compose
+
+# Any Linux: the official Compose v2 binary, as Docker's CLI plugin
+sudo mkdir -p /usr/local/lib/docker/cli-plugins &amp;&amp; sudo curl -fsSL "https://github.com/docker/compose/releases/latest/download/docker-compose-linux-$(uname -m)" -o /usr/local/lib/docker/cli-plugins/docker-compose &amp;&amp; sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
+# Podman: it looks for a docker-compose program on the PATH
+sudo curl -fsSL "https://github.com/docker/compose/releases/latest/download/docker-compose-linux-$(uname -m)" -o /usr/local/bin/docker-compose &amp;&amp; sudo chmod +x /usr/local/bin/docker-compose
+
+# git
+sudo apt-get update &amp;&amp; sudo apt-get install -y git        # Debian, Ubuntu
+sudo dnf install -y git                                  # Fedora
+sudo apk add git                                         # Alpine
+xcode-select --install                                   # macOS</code></pre>
+          <p>Then tap <strong>Check Again</strong> on New Stack or the host's Stacks section; meshTerm reconnects to the host so it notices the change. The standalone <code>curl</code> lines need <code>curl</code> (see <a href="#s-fresh">fresh-server notes</a>).</p>
+        </div>
+      </article>
+
+      <article class="issue" id="k-port">
+        <h3>"Port Already in Use": "Port 8080 is already used on HOST. Choose another host port."</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>Another container or program on the host already listens on that port, so the new container cannot publish it.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <p>Tap <strong>Edit</strong> to go back to the form and pick a free host port (only the left number in <code>8080:80</code> changes). To find what holds it:</p>
+<pre><code>sudo ss -tlnp | grep ':8080 '
+{% raw %}docker ps --format '{{.Names}}  {{.Ports}}'{% endraw %}</code></pre>
+        </div>
+      </article>
+
+      <article class="issue" id="k-lowport">
+        <h3>"Rootless engines can't publish port 80 or any other port below 1024."</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>On Linux an ordinary (non-root) user cannot listen on ports below 1024, and a rootless engine runs as an ordinary user. New Container warns about it and offers <strong>Use 8080</strong> (8000 plus the port, or the next free one).</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <p>Use a port of 1024 or higher, such as 8080, and reach the service on that port (or through meshTerm's web forwarding). If you truly need port 80 or 443, you can lower the host's limit, but the caveat matters: <strong>it lets every user on the host bind those ports</strong>, not just this engine.</p>
+<pre><code>sudo sysctl -w net.ipv4.ip_unprivileged_port_start=80
+echo 'net.ipv4.ip_unprivileged_port_start=80' | sudo tee /etc/sysctl.d/99-unprivileged-ports.conf</code></pre>
+          <p>A reverse proxy that runs as root (or with a system engine) on 80 and 443, forwarding to your container on a high port, is the other common choice. A Mac's engine never gets this warning.</p>
+        </div>
+      </article>
+
+      <article class="issue" id="k-disk">
+        <h3>"Host Out of Disk Space": "HOST is out of disk space. Free some space (Disk Usage can remove unused images), then try again."</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>Images, stopped containers, build cache and logs add up, and a pull or create needs room. Also a stack whose file could not be written ("can't write") usually means the disk is full there.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <p>Tap <strong>Open Disk Usage</strong> and remove unused images, or on the host:</p>
+<pre><code>df -h                       # which filesystem is full?
+docker system df            # what the engine is using
+docker image prune          # dangling images only
+docker image prune -a       # every image no container uses (they can be pulled again)</code></pre>
+          <p>Be careful with <code>docker system prune --volumes</code>: volumes hold your data, and it deletes unused ones. Check first.</p>
+        </div>
+      </article>
+
+      <article class="issue" id="k-arch">
+        <h3>"Image Not Built for This Host": "This image has no build for this host's processor (arm64). Pick a tag that's built for several processors."</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>Images are built for a processor type. A common case is an <code>amd64</code>-only image on an Arm server (arm64, such as Oracle's or AWS Graviton's Arm instances, or an Apple silicon Mac), or the reverse.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+<pre><code>uname -m        # x86_64 means amd64; aarch64 or arm64 means arm64</code></pre>
+          <p>Choose a tag or an image that publishes both (most official images do; look for "Architectures" on the registry page). If an image only exists for the other processor, run it somewhere that matches, or build it for your host.</p>
+        </div>
+      </article>
+
+      <article class="issue" id="k-registry">
+        <h3>"Couldn't Reach the Registry", "Registry Login Needed", "Registry Certificate Not Trusted", "Registry Is Limiting Requests"</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>The <em>host</em> (not your phone) downloads images, so the host needs internet, DNS and CA certificates, and some images need a login.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <ul>
+            <li><strong>"can't reach the image registry. Check the host's internet connection, DNS or proxy"</strong>: test from the host. A <code>401</code> answer from the first line below still means the registry is reachable.
+<pre><code>curl -sI https://registry-1.docker.io/v2/ | head -1
+getent hosts registry-1.docker.io</code></pre></li>
+            <li><strong>"This image needs a registry login."</strong> Sign in to the registry on the host, in a terminal (the app pre-fills the image's registry; use <code>sudo</code> where that engine runs under sudo):
+<pre><code>docker login                          # Docker Hub
+docker login ghcr.io                  # another registry
+podman login ghcr.io                  # or: nerdctl login, container registry login</code></pre></li>
+            <li><strong>"The registry has no image by that name, or it's private."</strong> Check the name and tag, or log in.</li>
+            <li><strong>"Registry Is Limiting Requests"</strong> (Docker Hub's anonymous pull limit): try again in a few minutes, or log in.</li>
+            <li><strong>"Registry Certificate Not Trusted"</strong> ("usually because the host's CA certificates aren't installed"): minimal Debian images do not include them. A fresh server shows <code>x509: certificate signed by unknown authority</code>.
+<pre><code>sudo apt-get update &amp;&amp; sudo apt-get install -y ca-certificates      # Debian, Ubuntu
+sudo dnf install -y ca-certificates                                # Fedora
+sudo apk add ca-certificates                                       # Alpine</code></pre>
+              If your network intercepts HTTPS with its own certificate, add that CA to the host's trust store and run <code>sudo update-ca-certificates</code> (Debian, Ubuntu).</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="issue" id="k-podman-names">
+        <h3>"Image Name Needs a Registry" (Podman: "short-name ... did not resolve")</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>Docker assumes Docker Hub for a bare name like <code>nginx</code>. Podman does not: on Debian 12 and Ubuntu 24.04 it fails with "short-name &quot;nginx&quot; did not resolve to an alias and no unqualified-search registries are defined in /etc/containers/registries.conf"; on Fedora some names work and others say "short-name resolution enforced but cannot prompt without a TTY". Fully qualified names work everywhere.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <p>meshTerm writes a bare name as <code>docker.io/library/NAME</code> (or <code>docker.io/USER/NAME</code>) for Podman in New Container's form, preview and review, and never picks a registry by searching. When you run Podman yourself, type the full name:</p>
+<pre><code>podman pull docker.io/library/nginx</code></pre>
+          <p>To make bare names work for your user, add <code>unqualified-search-registries = ["docker.io"]</code> to <code>~/.config/containers/registries.conf</code> (or the system file <code>/etc/containers/registries.conf</code>). Check the registry's trust before you do; bare names can resolve to a different image than you expect.</p>
+        </div>
+      </article>
+
+      <article class="issue" id="k-linger">
+        <h3>"Rootless Docker stops when USER signs out. Keep it running with lingering."</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>A rootless engine is a service of your user, and systemd stops a user's services when their last session ends, which includes your SSH session. The containers go with it. "Lingering" keeps the user's services running without a session. The Fleet and the host screen show this as an advisory line for a ready rootless engine.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+<pre><code>sudo loginctl enable-linger $USER
+loginctl show-user $USER -p Linger      # Linger=yes</code></pre>
+          <p>Tap <strong>Run in Terminal</strong> on the line, then <strong>Check Again</strong>.</p>
+        </div>
+      </article>
+
+      <article class="issue" id="k-portainer">
+        <h3>Portainer: "Certificate Not Trusted Yet", "Portainer Environment Gone", "HTTPS Required", token errors</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>Portainer servers are reached over HTTPS with an access token. Portainer makes its own certificate when it is installed, so "presented a certificate this device doesn't trust yet" is expected the first time.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <ul>
+            <li><strong>Certificate Not Trusted Yet:</strong> compare the fingerprint with the one your Portainer server shows before you trust it. <strong>Certificate Changed</strong> ("different from the one you trusted") can mean the server was reinstalled, or that someone is intercepting the connection; do not trust until you know which.</li>
+            <li><strong>"Portainer must use HTTPS (usually port 9443)."</strong> Use the <code>https://</code> address and Portainer's HTTPS port.</li>
+            <li><strong>"Portainer didn't accept this access token."</strong> Create a new one in Portainer under My account, then Access tokens, and replace it. A user with access to only the environments you want here is safest.</li>
+            <li><strong>Portainer Environment Gone / no Docker environment:</strong> the environment was removed on the server, or the token cannot use any Docker environment. Add one in Portainer under Environments, Add environment, then check again. Kubernetes environments are not supported, and neither is Portainer behind a URL path.</li>
+            <li>Shell and Open in Terminal need a host added over SSH; a Portainer environment alone cannot open a terminal.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="issue" id="k-web">
+        <h3>"Couldn't Reach the Web Page" / "The SSH server on HOST doesn't allow port forwarding (AllowTcpForwarding), so the web page can't be opened."</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>meshTerm opens a container's web page through an SSH port forward, so the server must allow forwarding. A container that publishes its port only on the host's own address (127.0.0.1) is reached the same way: "Reach them with port forwarding."</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <p>Allow forwarding as in <a href="#p-forward">Port forwarding is blocked</a>, and reload sshd for your system (the app's fix adds the right reload line):</p>
+<pre><code>sudo systemctl reload ssh      # Debian, Ubuntu
+sudo systemctl reload sshd     # Fedora
+sudo rc-service sshd reload    # Alpine (OpenRC)</code></pre>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============================================ -->
+    <section id="s-fresh">
+      <h2>9. Fresh-server notes</h2>
+      <p>These come from real tests on brand-new minimal images (Debian 11 and 12, Ubuntu 22.04 and 24.04, Fedora, Alpine 3.20, and macOS 15 and 26). Cloud provider images are usually a little fuller, but a minimal image or a new VM can look like this, and it explains many of the messages above.</p>
+      <ul>
+        <li><strong>Debian and Ubuntu package lists are empty</strong> until you run <code>apt-get update</code>. <code>apt-get install</code> alone fails with "Unable to locate package". Fedora (<code>dnf</code>) and Alpine (<code>apk add</code>) do not need a refresh first.</li>
+        <li><strong>Many images have no <code>sudo</code></strong>: Debian, Ubuntu and Alpine minimal images have none; Fedora has it. As root, drop <code>sudo</code>. Otherwise use <code>su -c '...'</code>, or set up sudo once as root (see <a href="#k-noengine">No container engine found</a>).</li>
+        <li><strong>Common tools are missing.</strong> After <code>openssh-server</code> alone: Debian 12 has no <code>curl</code>, <code>python3</code>, <code>git</code> or <code>sudo</code>; Ubuntu has <code>python3</code> but no <code>curl</code>, <code>git</code> or <code>sudo</code>; Fedora has <code>curl</code> and <code>sudo</code> but no <code>python3</code> or <code>git</code>; Alpine has no <code>curl</code>, <code>python3</code>, <code>bash</code> or <code>sudo</code> (busybox supplies <code>setsid</code> and <code>timeout</code>). None has <code>tmux</code>. This is why agents, notifications and Containers sometimes ask you to install a package first.</li>
+        <li><strong>Debian's PATH lacks <code>/usr/sbin</code></strong> for SSH sessions (<code>/usr/local/bin:/usr/bin:/bin:/usr/games</code>), so tools such as <code>dockerd</code> from <code>docker.io</code> are invisible to non-root SSH commands. Ubuntu, Fedora and macOS include the sbin folders.</li>
+        <li><strong>The sshd service is <code>ssh</code> on Debian and Ubuntu, <code>sshd</code> on Fedora</strong> and, on Alpine, run with OpenRC (<code>rc-service sshd ...</code>).</li>
+        <li><strong>Alpine's <code>adduser -D</code> makes a locked account</strong> that sshd refuses, even with a key. Set a password once with <code>passwd USER</code>.</li>
+        <li><strong>Debian 11 is end of life.</strong> Its security repository can return 404, so installs may fail outright. Use a supported release.</li>
+        <li><strong>The locale may not be UTF-8</strong> for non-login SSH commands (see <a href="#t-locale">locale</a>).</li>
+        <li><strong>Packages differ by distro.</strong> Fedora has no <code>uidmap</code> package: <code>newuidmap</code> and <code>newgidmap</code> come from <code>shadow-utils</code>, already in the base image. <code>passt</code> (rootless Podman networking) exists on Ubuntu 24.04 and newer and on Fedora, not on Ubuntu 22.04 or Debian 11. See <a href="docker-101.html#rootless">rootless in Docker 101</a>.</li>
+        <li><strong>macOS</strong>: password sign-in works on a stock Mac once Remote Login is on. <code>python3</code> and <code>git</code> are Apple stubs until the Command Line Tools are installed; Homebrew's folder is not on the SSH PATH; there is no <code>setsid</code> or <code>timeout</code>.</li>
+      </ul>
+    </section>
+
+    <!-- ============================================ -->
+    <section id="s-help">
+      <h2>Still stuck?</h2>
+      <p>Ask in our <a href="https://github.com/AG-Studio-Apps/meshterm-feedback/discussions">GitHub Discussions</a>, or report a bug from Settings &gt; <strong>Feedback and Feature Requests</strong> (see <a href="meshterm.html#feedback">Feedback and feature requests</a>). <strong>Copy Details</strong> there copies your app version, device and feature counts, never hostnames, usernames, IP addresses, keys or logs. The repo is public, so leave those out of anything you write. For anything private, email <a href="mailto:meshterm@gmail.com">meshterm@gmail.com</a>.</p>
+    </section>
+
+  </main>
+
+</div><!-- /.page-body -->

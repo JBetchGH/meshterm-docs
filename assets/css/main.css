@@ -233,6 +233,20 @@ html:not(.js) .nav__links { position: static; display: flex; flex-direction: row
 .prose .info-card li { margin: 0 0 4px; line-height: 1.5; }
 @media (max-width: 620px) { .two-col { grid-template-columns: 1fr; } }
 
+/* ── Troubleshooting and Docker 101 (symptom, why, fix) ── */
+.ts-index { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin: 0 0 44px; }
+.ts-index > div { background: var(--bg-elev); border: 1px solid var(--line); border-radius: 12px; padding: 14px 18px; }
+.ts-index h2 { font: 600 .74rem/1.4 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin: 0 0 8px; }
+.prose .ts-index ul { list-style: none; padding: 0; margin: 0; }
+.prose .ts-index li { margin: 0 0 4px; font-size: .9rem; line-height: 1.45; }
+.sidebar a.sub { padding-left: 22px; font-size: 13px; }
+.issue { margin: 0 0 2.2em; padding: 2px 0 2px 18px; border-left: 2px solid var(--line); scroll-margin-top: calc(var(--nav-h) + 20px); }
+.issue:target { border-left-color: var(--accent); }
+.prose .issue > h3 { margin: 0 0 .6em; }
+.issue__label { display: block; font: 600 .68rem/1.5 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin: 0 0 2px; }
+.issue .issue__why { margin-bottom: .9em; }
+.issue .issue__fix > :last-child { margin-bottom: 0; }
+
 /* ── Legal pages (privacy, EULA; EN + ES) ── */
 .page { padding-bottom: 60px; }
 .legal main { padding: 0; }
