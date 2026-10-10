@@ -1,0 +1,318 @@
+---
+layout: guide
+title: "Docker 101: containers on your own server | meshTerm"
+description: "A plain introduction to Docker, Podman, nerdctl and Apple container on your own server: images, containers and stacks, ports and volumes, installing on Ubuntu, Debian, Fedora, Alpine and macOS, rootless engines, and running them safely."
+lang: en
+permalink: /docker-101.html
+footer: |
+    <p>meshTerm is developed by James Betchley.</p>
+    <p style="margin-top: 8px;">
+      <a href="mailto:meshterm@gmail.com">meshterm@gmail.com</a>
+    </p>
+    <p style="margin-top: 16px; font-size: 12px; opacity: 0.8;">
+      meshTerm is not affiliated with, endorsed by, or in partnership with Tailscale Inc.
+    </p>
+---
+<header class="site-header">
+  <div class="app-name">meshTerm 2.3</div>
+  <h1>Docker 101</h1>
+  <div class="sub">Containers on your own server, for people who have not used them yet: what the tools are, how images, containers and stacks fit together, how to install an engine, and how to run it safely.</div>
+</header>
+
+
+<div class="page-body">
+
+  <aside class="sidebar">
+    <div class="sidebar-title">Contents</div>
+    <ul>
+      <li><a href="#why">1. Why containers</a></li>
+      <li><a href="#tools">2. Docker, Podman and friends</a></li>
+      <li><a href="#concepts">3. Images, containers and stacks</a></li>
+      <li><a href="#ports-volumes">4. Ports and volumes</a></li>
+      <li><a href="#install">5. Installing an engine</a></li>
+      <li><a href="#install-ubuntu" class="sub">Ubuntu</a></li>
+      <li><a href="#install-debian" class="sub">Debian</a></li>
+      <li><a href="#install-fedora" class="sub">Fedora</a></li>
+      <li><a href="#install-alpine" class="sub">Alpine</a></li>
+      <li><a href="#install-macos" class="sub">macOS</a></li>
+      <li><a href="#rootless">6. Rootful and rootless</a></li>
+      <li><a href="#security">7. Security</a></li>
+      <li><a href="#next">8. Next steps</a></li>
+    </ul>
+  </aside>
+
+  <main>
+    <div class="page-title">meshTerm 2.3 - Docker 101</div>
+    <div class="page-subtitle">Containers on a server you run yourself.</div>
+
+    <section id="why">
+      <h2>1. Why containers</h2>
+      <p>A <strong>container</strong> is a program running in its own small, isolated environment on your server, packaged with everything it needs. You get a web app, a database, a media server or a home-automation hub running with a couple of commands, without installing its dependencies on the host and without one app's libraries breaking another's. Remove the container and the host is as clean as before.</p>
+      <p>meshTerm's <strong>Containers</strong> tab (a Pro feature) finds the engines on your hosts and shows their containers, stacks, images, volumes and networks on your phone, so you can start, stop, read logs and deploy. This page is the background: what you are looking at, and how to set a server up well. When something does not work, <a href="troubleshooting.html#s-containers">Troubleshooting: Containers</a> maps each message to a fix.</p>
+    </section>
+
+    <section id="tools">
+      <h2>2. Docker, Podman and friends</h2>
+      <p>The program that actually runs containers is called an <strong>engine</strong>. They are all built on the same open container standards, so an image that works with one usually works with the others, and their command lines look alike.</p>
+      <table>
+        <thead><tr><th>Engine</th><th>What it is</th><th>Good to know</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Docker</strong></td><td>The original and the most widely documented. A background service (<code>dockerd</code>) plus the <code>docker</code> command.</td><td>Most guides and ready-made compose files assume it. On a Mac you use <em>Docker Desktop</em>, or a lighter alternative such as OrbStack or Colima, which run Linux in a small virtual machine.</td></tr>
+          <tr><td><strong>Podman</strong></td><td>A Docker-compatible engine with no always-running daemon. Containers are ordinary processes of the user who started them.</td><td>Runs rootless by default, which is a security advantage. The <code>podman</code> command accepts the same options as <code>docker</code>. Common on Fedora and Red Hat family systems. On a Mac it uses <code>podman machine</code>.</td></tr>
+          <tr><td><strong>nerdctl</strong></td><td>A Docker-like command for <em>containerd</em>, the engine underneath Docker and Kubernetes.</td><td>Useful on hosts that already run containerd. Its compose support needs the compose file named <code>compose.yaml</code> (or one of the other standard names) at the top of the project.</td></tr>
+          <tr><td><strong>Apple container</strong></td><td>Apple's own tool, <code>container</code>, for running Linux containers on a Mac with Apple silicon, each in a lightweight virtual machine.</td><td>Mac only. Start its service with <code>container system start</code>.</td></tr>
+        </tbody>
+      </table>
+      <p>If you are not sure which to pick for a Linux server: <strong>Docker</strong> if you want to follow the widest range of tutorials, <strong>Podman</strong> if you prefer the safer rootless default. meshTerm supports all of them.</p>
+    </section>
+
+    <section id="concepts">
+      <h2>3. Images, containers and stacks</h2>
+      <ul>
+        <li>An <strong>image</strong> is a read-only template: an application and its files, downloaded from a <em>registry</em> such as Docker Hub (<code>nginx</code>, <code>postgres:16</code>). Think of it as the installer.</li>
+        <li>A <strong>container</strong> is a running (or stopped) instance made from an image. You can run several containers from one image. Think of it as the installed, running program. A container's own files are thrown away when it is removed, which is why data goes in <a href="#ports-volumes">volumes</a>.</li>
+        <li>A <strong>stack</strong> (Docker Compose calls it a <em>project</em>) is a group of containers that belong together, described in one file, usually <code>compose.yaml</code>. A typical stack is a web app plus its database. meshTerm shows these as Stacks and can deploy one from a template or a Git repository.</li>
+      </ul>
+      <p>The basic commands (use <code>podman</code> in place of <code>docker</code> for Podman; add <code>sudo</code> if your user is not allowed to use the engine):</p>
+<pre><code>docker pull nginx                              # download an image
+docker run -d --name web -p 8080:80 nginx      # start a container from it
+docker ps                                      # what is running
+docker logs web                                # what it printed
+docker stop web &amp;&amp; docker rm web               # stop it and remove the container</code></pre>
+      <p>And a minimal stack. Save it as <code>compose.yaml</code>, then run <code>docker compose up -d</code> in that folder (<code>docker compose down</code> stops and removes it):</p>
+<pre><code>services:
+  web:
+    image: nginx
+    ports:
+      - "127.0.0.1:8080:80"
+    volumes:
+      - site:/usr/share/nginx/html
+    restart: unless-stopped
+volumes:
+  site:</code></pre>
+      <p>This uses <strong>Compose v2</strong>, the <code>docker compose</code> command (with a space). The old Compose v1 was a separate <code>docker-compose</code> command (with a hyphen); it is no longer maintained, and meshTerm's stacks need v2.</p>
+    </section>
+
+    <section id="ports-volumes">
+      <h2>4. Ports and volumes</h2>
+      <h3>Ports</h3>
+      <p>A container has its own network. To reach a service inside it, you <strong>publish</strong> a port: <code>-p 8080:80</code> means "connect to port <strong>8080 on the host</strong> and land on port <strong>80 in the container</strong>". The left number is the one you choose and the one that must be free on the host; the right number is what the application listens on.</p>
+      <ul>
+        <li><code>-p 8080:80</code> publishes on <em>every</em> network address of the host, including the public one. See <a href="#security">security</a>.</li>
+        <li><code>-p 127.0.0.1:8080:80</code> publishes only on the host itself. Reach it from the phone with an SSH port forward, which is what meshTerm's in-app web forwarding does, or over Tailscale.</li>
+        <li>Rootless engines cannot publish ports below 1024 (see <a href="#rootless">rootless</a>).</li>
+      </ul>
+      <h3>Volumes</h3>
+      <p>A container's own storage disappears with it. A <strong>volume</strong> keeps data outside the container, so you can update or recreate the container without losing it.</p>
+      <ul>
+        <li>A <strong>named volume</strong> is managed by the engine: <code>-v pgdata:/var/lib/postgresql/data</code>. Simplest, and the engine sets the permissions.</li>
+        <li>A <strong>bind mount</strong> maps a host folder in: <code>-v /srv/site:/usr/share/nginx/html</code>. You see the files directly on the host, but the owner and permissions of that folder must suit the user inside the container.</li>
+      </ul>
+      <p>Back up important volumes before you remove them. Removing a container never removes its named volumes unless you ask; deleting a volume (or <code>docker system prune --volumes</code>) deletes the data for good.</p>
+    </section>
+
+    <section id="install">
+      <h2>5. Installing an engine</h2>
+      <p>You need a server you can sign in to, and an account that can install software: <strong>root</strong>, or a user with <code>sudo</code>. The commands use <code>sudo</code>; as root, leave it out. On a host with no sudo, wrap a command in <code>su -c '...'</code>. Fresh Debian and Ubuntu servers need <code>apt-get update</code> before any install (the commands below include it), and fresh servers often have no <code>curl</code>, which the convenience script needs.</p>
+
+      <div class="callout info">
+        <div class="callout-title">Distro package or Docker's script?</div>
+        <p>The <strong>distro package</strong> comes from your operating system's own repository: simple, updated with the rest of the system, and often a little behind Docker's newest release. <strong>Docker's convenience script</strong> (<code>get.docker.com</code>) adds Docker's own repository and installs the current Docker Engine, the CLI and the Compose plugin. It works on Ubuntu, Debian, Raspberry Pi OS, Fedora, RHEL and CentOS, not on Alpine or macOS. Docker describes it as a convenience for getting going quickly; for a server you depend on, installing from Docker's repository by hand is their recommendation. You can read the script before running it: <code>curl -fsSL https://get.docker.com -o get-docker.sh</code>, then <code>sh get-docker.sh --dry-run</code> shows what it would do.</p>
+      </div>
+
+      <h3 id="install-ubuntu">Ubuntu</h3>
+<pre><code># Distro package, with Compose v2
+sudo apt-get update &amp;&amp; sudo apt-get install -y docker.io docker-compose-v2
+
+# Or Docker's convenience script (install curl first on a fresh server)
+sudo apt-get update &amp;&amp; sudo apt-get install -y curl
+curl -fsSL https://get.docker.com | sh
+
+# Or Podman, no daemon
+sudo apt-get update &amp;&amp; sudo apt-get install -y podman</code></pre>
+
+      <h3 id="install-debian">Debian</h3>
+<pre><code># Distro package
+sudo apt-get update &amp;&amp; sudo apt-get install -y docker.io
+
+# Or Docker's convenience script (install curl first on a fresh server)
+sudo apt-get update &amp;&amp; sudo apt-get install -y curl ca-certificates
+curl -fsSL https://get.docker.com | sh
+
+# Or Podman
+sudo apt-get update &amp;&amp; sudo apt-get install -y podman</code></pre>
+      <p>Debian's own Compose package is the old v1, so for stacks use Docker's script (it installs the Compose v2 plugin) or Docker's repository. On Debian 12 the <code>dockerd</code> program lives in <code>/usr/sbin</code>, which is not on the PATH of an SSH command, so a tool that looks for it by name may not find it even though the service is running. Debian 11 is end of life and its repositories can fail, so use a supported release.</p>
+
+      <h3 id="install-fedora">Fedora</h3>
+<pre><code># Podman is Fedora's usual choice
+sudo dnf install -y podman
+
+# Docker Engine from Fedora's own packages, with Compose
+sudo dnf install -y moby-engine docker-compose
+sudo systemctl enable --now docker
+
+# Or Docker's convenience script
+curl -fsSL https://get.docker.com | sh</code></pre>
+
+      <h3 id="install-alpine">Alpine</h3>
+<pre><code># As root (a fresh Alpine has no sudo, curl or bash)
+apk add docker docker-cli-compose
+rc-update add docker default
+rc-service docker start
+addgroup $USER docker       # optional: lets that user run docker (read the security section first)</code></pre>
+      <p>Alpine uses OpenRC rather than systemd, so services start with <code>rc-service</code>. The convenience script does not support Alpine. For Podman: <code>apk add podman</code>.</p>
+
+      <h3 id="install-macos">macOS</h3>
+<pre><code># Docker Desktop
+brew install --cask docker-desktop
+open -a Docker
+
+# Or OrbStack (lighter, fast)
+brew install --cask orbstack
+open -a OrbStack
+
+# Or Colima, a command-line Docker host
+brew install colima docker docker-compose
+colima start
+
+# Or Podman
+brew install podman
+podman machine init &amp;&amp; podman machine start
+
+# Or Apple container (Apple silicon): install from Apple's releases, then
+container system start</code></pre>
+      <p>If you do not have Homebrew, install it from <a href="https://brew.sh">brew.sh</a> first. There is no convenience script on a Mac. Docker Desktop has its own licence terms for larger companies; the others are alternatives. meshTerm 2.3 lists engines on Mac hosts too.</p>
+
+      <h3 id="install-check">Check it works</h3>
+<pre><code>sudo docker run --rm hello-world                       # Docker
+podman run --rm docker.io/library/hello-world          # Podman (full name; see below)
+sudo docker compose version                            # should say v2.x</code></pre>
+      <p>Podman needs the registry in the image name (<code>docker.io/library/hello-world</code>) because it does not assume Docker Hub the way Docker does; see <a href="troubleshooting.html#k-podman-names">Image Name Needs a Registry</a>. When it works, add the host in meshTerm if you have not already, and open the Containers tab. If the host shows up under "Not Checked" or "no container engine", <a href="troubleshooting.html#s-containers">Troubleshooting: Containers</a> explains why.</p>
+    </section>
+
+    <section id="rootless">
+      <h2>6. Rootful and rootless</h2>
+      <p>This is the most useful idea for running containers safely.</p>
+      <ul>
+        <li><strong>Rootful</strong> (the usual Docker setup): the engine runs as <code>root</code>. Starting a container needs root's power, so your user must be in the <code>docker</code> group or use <code>sudo</code>. Containers can use any port, and the service starts at boot.</li>
+        <li><strong>Rootless</strong>: the engine and its containers run as <em>your own, ordinary user</em>. "Root" inside a container is mapped to an unprivileged range of IDs, so a container that is compromised does not hold root on the host. You need no <code>docker</code> group and no sudo. Podman works this way by default; Docker has a rootless mode too.</li>
+      </ul>
+      <p>meshTerm labels an engine "(rootless)" or "(rootful)", and offers <strong>Use Rootless Docker Instead</strong> or <strong>Use Rootless Podman Instead</strong> where that can work.</p>
+      <h3>What rootless costs</h3>
+      <ul>
+        <li><strong>No ports below 1024</strong> for an unprivileged user. Use 8080 instead of 80, or see the caveat under <a href="#security">low ports</a>.</li>
+        <li><strong>Setup:</strong> it needs subordinate user and group IDs (<code>/etc/subuid</code> and <code>/etc/subgid</code>) and the <code>newuidmap</code> and <code>newgidmap</code> helpers. A few images expect real root-owned files and need adjusting.</li>
+        <li><strong>It stops when you sign out</strong>, unless you turn on <em>lingering</em> (below). The Fleet shows an advisory line for this.</li>
+        <li>Networking goes through a user-space helper (<code>pasta</code> or <code>slirp4netns</code>), a little slower than the rootful bridge.</li>
+      </ul>
+      <h3>Rootless Podman</h3>
+<pre><code># Debian, Ubuntu: uidmap supplies newuidmap and newgidmap
+sudo apt-get update &amp;&amp; sudo apt-get install -y podman uidmap
+# Ubuntu 24.04 and newer only: passt gives faster rootless networking
+sudo apt-get install -y passt
+
+# Fedora: no uidmap package. newuidmap and newgidmap come from shadow-utils (already installed)
+sudo dnf install -y podman passt
+
+# every system: check your user has subordinate ID ranges, and add them if empty
+grep "^$USER:" /etc/subuid /etc/subgid
+sudo usermod --add-subuids 100000-165535 --add-subgids 100000-165535 $USER
+
+# let meshTerm and Compose talk to it, and keep it running after you sign out
+systemctl --user enable --now podman.socket
+sudo loginctl enable-linger $USER</code></pre>
+      <p><code>passt</code> is packaged only for Ubuntu 24.04 and newer and for Fedora. On Ubuntu 22.04 or Debian 11, <code>apt</code> will say "Unable to locate package passt"; leave it out and Podman uses <code>slirp4netns</code> for networking.</p>
+      <h3>Rootless Docker</h3>
+<pre><code># Debian, Ubuntu prerequisites
+sudo apt-get update &amp;&amp; sudo apt-get install -y uidmap dbus-user-session curl
+# Fedora: shadow-utils already provides the helpers
+
+# Run as the normal user, not root. Docker's installer for rootless mode:
+curl -fsSL https://get.docker.com/rootless | sh
+
+# It prints the lines to add to ~/.bashrc, for example:
+export PATH=$HOME/bin:$PATH
+export DOCKER_HOST=unix:///run/user/$(id -u)/docker.sock
+
+systemctl --user enable --now docker
+sudo loginctl enable-linger $USER      # keep it running after you sign out</code></pre>
+      <p>If a system-wide (rootful) Docker is also installed, stop it first so the two do not collide: <code>sudo systemctl disable --now docker.service docker.socket</code>. Docker's own guide, "Run the Docker daemon as a non-root user (Rootless mode)", has the details for other systems.</p>
+    </section>
+
+    <section id="security">
+      <h2>7. Security</h2>
+      <p>None of this is a reason to avoid containers. These are the handful of facts that decide how safe your server is. meshTerm's own messages are short on purpose and point here for the detail.</p>
+
+      <h3>The docker group is root</h3>
+      <p>Being a member of the <code>docker</code> group is <strong>equivalent to being root on that host</strong>. The Docker daemon runs as root and will start whatever container a group member asks for, including one that mounts the host's whole filesystem. So adding a user to the group gives them everything <code>sudo</code> would, without sudo's password prompt and without its log of who ran what. The same is true of <code>sudo docker</code> and of rootful Podman's socket.</p>
+      <p>That is how Docker is designed, not a bug. On a personal server where your one account is already the administrator, it is a normal and reasonable trade. It matters when the account is shared, when a service or an agent (including the one meshTerm signs in as) is not meant to hold full control of the machine, or when you run images you did not build. In those cases prefer <a href="#rootless">rootless</a>, or require a sudo password.</p>
+
+      <h3>When rootless makes sense</h3>
+      <ul>
+        <li>The SSH account is not meant to be an administrator.</li>
+        <li>You run third-party images or experiments and want a compromised container to stop at your user's own files.</li>
+        <li>The host has more than one user.</li>
+        <li>You are happy to give up ports below 1024 and to enable lingering.</li>
+      </ul>
+      <p>If you need ports 80 and 443 and the full feature set, a rootful engine with a carefully limited account is also a fine setup. The point is to choose on purpose.</p>
+
+      <h3>Passwordless sudo: keep the rule narrow</h3>
+      <p>meshTerm can use a sudo password that stays on your device in the Keychain. That grants nothing on the host by itself, so it is the safer choice. If you would rather have no password, allow <strong>only the engine program</strong> for <strong>only that user</strong>, never <code>ALL</code>, and edit with <code>visudo</code> so a typo cannot lock you out. Remember that passwordless access to a rootful engine is still root access, as the app tells you.</p>
+<pre><code>command -v docker                                      # note the full path
+sudo visudo -f /etc/sudoers.d/meshterm-docker
+# one line, your username, one command:
+alice ALL=(root) NOPASSWD: /usr/bin/docker</code></pre>
+
+      <h3>Do not expose the Docker socket or daemon over TCP</h3>
+      <ul>
+        <li>The Docker socket (<code>/var/run/docker.sock</code>) is full control of the host. Do not mount it into a container unless that container is trusted as much as root. meshTerm warns: "Mounts the container engine's socket. It can control every container on this host, the same as root."</li>
+        <li>Never start the daemon listening on <code>tcp://0.0.0.0:2375</code>. That port has <strong>no authentication</strong>: anyone who can reach it is root on your server, and exposed Docker ports are found and abused quickly. If you must have a remote API, use TLS with client certificates (port 2376), or just use SSH. meshTerm reaches the engine over your SSH connection and does not need the daemon on the network.</li>
+      </ul>
+
+      <h3>Published ports are reachable from the network (and Docker can bypass ufw)</h3>
+      <p><code>-p 8080:80</code> opens port 8080 on <em>every</em> address of the host, usually including the internet-facing one. On a host with <strong>ufw</strong>, this surprises people: Docker adds its own firewall rules that run before ufw's, so <code>sudo ufw deny 8080</code> does <em>not</em> hide a published port. Rootless engines publish through a normal user-space listener, so the firewall applies to them as usual.</p>
+      <ul>
+        <li><strong>Bind to the host only.</strong> Publish as <code>-p 127.0.0.1:8080:80</code> (in Compose: <code>"127.0.0.1:8080:80"</code>). Then nothing outside the host can connect.</li>
+        <li><strong>Reach it safely.</strong> Use meshTerm's web forwarding (it opens a local port forward over SSH and shows the page in the app), an SSH tunnel, or Tailscale. You can also publish on the host's tailnet address only, for example <code>-p 100.64.0.5:8080:80</code>.</li>
+        <li><strong>Only publish what must be public</strong>, and put a reverse proxy with HTTPS in front of it. To filter published ports with a firewall, put rules in Docker's <code>DOCKER-USER</code> chain, which Docker runs first.</li>
+        <li>In your cloud provider's firewall or security group, open only the ports you mean to.</li>
+      </ul>
+
+      <h3>Keep images updated, and prefer official ones</h3>
+      <ul>
+        <li>An image is software with its own bugs. Pull fresh versions and recreate the containers: <code>docker compose pull &amp;&amp; docker compose up -d</code> (meshTerm can pull the latest image and recreate a container).</li>
+        <li>Prefer <strong>Docker Official Images</strong> and <strong>Verified Publisher</strong> images on Docker Hub, or the project's own registry. Be careful with an image from an unknown account, and check what it needs mounted.</li>
+        <li>Pin a version tag (<code>postgres:16</code>) instead of relying on <code>latest</code>, so an update is a decision, then update on purpose.</li>
+        <li>Keep the host patched too (<code>unattended-upgrades</code> on Debian and Ubuntu, <code>dnf-automatic</code> on Fedora), and remove images you no longer use.</li>
+        <li>Where an image allows it, run it as a non-root user and give it only the volumes it needs.</li>
+      </ul>
+
+      <h3>Secrets: use the Vault, and keep .env files out of git</h3>
+      <ul>
+        <li>In meshTerm's container and stack forms, turn on <strong>Keep in Vault</strong> for a password or token. It stores the value on your device and sends it only when the container is created. Be aware of where it goes next: a value that becomes an environment variable is visible to anyone who can inspect the container, and a value for a stack is written to the stack's <code>.env</code> file on the host. The app says so before you deploy. The app also flags passwords written into a compose file ("Move it to Environment to keep it out of the compose file").</li>
+        <li>Never commit secrets. Keep <code>.env</code> out of git, commit an <code>.env.example</code> with empty values, and restrict the real file:
+<pre><code>echo ".env" &gt;&gt; .gitignore
+chmod 600 .env
+git rm --cached .env      # if it was already committed (it stays in history: rotate the secrets)</code></pre></li>
+        <li>If a secret did reach a repository, treat it as exposed and replace it. Deleting the file does not remove it from history.</li>
+      </ul>
+
+      <h3>Low ports and <code>ip_unprivileged_port_start</code></h3>
+      <p>Rootless engines cannot publish ports below 1024 because Linux reserves them for root. You can lower the limit, but the setting is <strong>host-wide</strong>: once it is, say, 80, <em>every</em> user and program on the machine can listen on ports from 80 up, not only your containers. On a single-user server that may be fine; on a shared one it is not. Prefer a port of 1024 or higher (8080), or a reverse proxy on 80 and 443.</p>
+<pre><code>sudo sysctl -w net.ipv4.ip_unprivileged_port_start=80
+echo 'net.ipv4.ip_unprivileged_port_start=80' | sudo tee /etc/sysctl.d/99-unprivileged-ports.conf</code></pre>
+    </section>
+
+    <section id="next">
+      <h2>8. Next steps</h2>
+      <ul>
+        <li><a href="troubleshooting.html#s-containers">Troubleshooting: Containers</a>: every message in the Containers tab, with fixes per system.</li>
+        <li><a href="troubleshooting.html#s-fresh">Fresh-server notes</a>: why a new server lacks sudo, curl or python3, and what to run.</li>
+        <li><a href="meshterm.html">User Guide</a>: hosts, persistent sessions, agents, SFTP, port forwarding and more.</li>
+        <li><a href="meshterm-tailscale-integration.html">Tailscale Setup Guide</a>: reach services on your server without opening any port.</li>
+      </ul>
+    </section>
+
+  </main>
+
+</div><!-- /.page-body -->
