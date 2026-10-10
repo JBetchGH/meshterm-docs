@@ -15,8 +15,12 @@ Checked, and required IDENTICAL:
   - every href, every id, every img src (in document order)
   - the full element/attribute sequence (stricter than the above)
   - the page footer text and links (old <footer> vs built [data-footer-content])
-  - the <title>, meta description and hreflang alternates
-Then: every href="#x" and "page.html#x" in the built site resolves.
+  - the <title>, meta description and hreflang alternates (hreflang hrefs are now
+    absolute and carry an x-default; they are compared after stripping the site URL;
+    descriptions were added to pages that had none, and the two home pages were reworded)
+Then: every href="#x" and "page.html#x" in the built site resolves (the new pages are
+checked too), and the SEO check: one <title>, one absolute canonical, absolute hreflang with
+x-default and a self reference, a sitemap that lists every page and none of the internal notes.
 
 Usage:  python3 scripts/check-content.py [--ref docs/v2.2] [--site _site]
 Build first:  bundle exec jekyll build
@@ -27,6 +31,13 @@ from html.parser import HTMLParser
 PAGES = ["index.html", "index.es.html", "meshterm.html",
          "meshterm-tailscale-integration.html", "privacy.html",
          "privacy.es.html", "eula.html", "eula.es.html"]
+# Pages added after the restyle: no original to compare with, but they get the anchor and SEO checks.
+NEW_PAGES = ["troubleshooting.html", "docker-101.html"]
+SITE_URL = "https://docs.meshterm.com"
+# Pages whose meta description was reworded on purpose (the others either match or gained one).
+REWORDED_DESCRIPTION = {"index.html", "index.es.html"}
+# Internal working notes that must stay out of the build and the sitemap.
+INTERNAL_NOTES = ["MISSING-IMAGES", "SHOT-LIST", "v202-images", "SEO-CHECKLIST"]
 VOID = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link",
         "meta", "param", "source", "track", "wbr"}
 
@@ -127,6 +138,18 @@ def head_meta(root):
     return {"title": title.strip(), "description": desc, "alternates": alts}
 
 
+def relative_alternates(alts):
+    """Absolute hreflang hrefs back to the original relative form; x-default dropped (it repeats en)."""
+    out = []
+    for lang, href in alts:
+        if lang == "x-default":
+            continue
+        if href and href.startswith(SITE_URL + "/"):
+            href = href[len(SITE_URL) + 1:] or "index.html"
+        out.append((lang, href))
+    return out
+
+
 def original_regions(root):
     body = find_all(root, lambda n: n.tag == "body")[0]
     skip_orig = lambda n: has_class(n, "nav-links") or n.tag == "footer"
@@ -187,7 +210,14 @@ def main():
             if o_f[key] != b_f[key]:
                 failures.append(("footer " + key, o_f[key], b_f[key]))
         o_m, b_m = head_meta(o_root), head_meta(b_root)
-        for key in o_m:
+        b_m["alternates"] = relative_alternates(b_m["alternates"])
+        if o_m["description"] and page not in REWORDED_DESCRIPTION:
+            keys = ("title", "description", "alternates")
+        else:
+            keys = ("title", "alternates")
+            if len(b_m["description"]) != 1 or not (b_m["description"][0] or "").strip():
+                failures.append(("head description (needs exactly one, non-empty)", o_m["description"], b_m["description"]))
+        for key in keys:
             if o_m[key] != b_m[key]:
                 failures.append(("head " + key, o_m[key], b_m[key]))
         status = "PASS" if not failures else "FAIL"
@@ -197,6 +227,15 @@ def main():
         for label, a, b in failures:
             print(f"    mismatch in {label}:")
             show_diff(a, b, label)
+
+    for page in NEW_PAGES:
+        path = os.path.join(args.site, page)
+        if not os.path.exists(path):
+            print(f"FAIL  {page}: not built at /{page}")
+            ok = False
+            continue
+        built_trees[page] = parse(open(path, encoding="utf-8").read())
+        print(f"NEW   {page:38s} built")
 
     # Anchor check across the built site (content + chrome).
     print("\nAnchor check (every #x and page.html#x in the built pages):")
@@ -221,6 +260,48 @@ def main():
                 bad += 1
     print(f"  {total} internal links checked, {bad} broken" + ("  PASS" if not bad else "  FAIL"))
     ok &= not bad
+
+    # SEO: titles, canonical, hreflang, sitemap.
+    print("\nSEO check (title, canonical, hreflang, sitemap, internal notes):")
+    seo_bad = 0
+    for p, t in built_trees.items():
+        heads = find_all(t, lambda n: n.tag == "head")
+        titles = find_all(t, lambda n: n.tag == "title")
+        canon = [attr(n, "href") for n in find_all(t, lambda n: n.tag == "link" and attr(n, "rel") == "canonical")]
+        alts = [(attr(n, "hreflang"), attr(n, "href")) for n in find_all(t, lambda n: n.tag == "link" and attr(n, "rel") == "alternate")]
+        want = SITE_URL + ("/" if p == "index.html" else "/" + p)
+        problems = []
+        if len(titles) != 1:
+            problems.append(f"{len(titles)} <title> tags")
+        if canon != [want]:
+            problems.append(f"canonical {canon}, wanted {[want]}")
+        if any(not (h or "").startswith(SITE_URL + "/") for _, h in alts):
+            problems.append(f"relative hreflang href in {alts}")
+        if alts:
+            langs = [l for l, _ in alts]
+            if "x-default" not in langs:
+                problems.append("no x-default")
+            if (attr(t, "lang") or "") and not any(h == want for _, h in alts):
+                problems.append("no self-referencing hreflang")
+        for pr in problems:
+            print(f"  BAD  {p}: {pr}")
+        seo_bad += len(problems)
+    sm_path = os.path.join(args.site, "sitemap.xml")
+    sitemap = open(sm_path, encoding="utf-8").read() if os.path.exists(sm_path) else ""
+    if not sitemap:
+        print("  BAD  sitemap.xml missing")
+        seo_bad += 1
+    for p in list(built_trees):
+        loc = SITE_URL + ("/" if p == "index.html" else "/" + p)
+        if f"<loc>{loc}</loc>" not in sitemap:
+            print(f"  BAD  {p} is not in sitemap.xml")
+            seo_bad += 1
+    for note in INTERNAL_NOTES:
+        if note in sitemap or any(f.startswith(note) for f in os.listdir(args.site)):
+            print(f"  BAD  internal note {note} is in the built site or sitemap")
+            seo_bad += 1
+    print(f"  {len(built_trees)} pages checked, {seo_bad} problems" + ("  PASS" if not seo_bad else "  FAIL"))
+    ok &= not seo_bad
 
     # Old ids present on the built pages.
     print("\nOriginal ids present on the built pages:")

@@ -1,6 +1,7 @@
 # meshTerm docs: Jekyll on GitHub Pages (legacy build from main /), plain CSS, no build step of our own.
 # Every page keeps its historic .html path through an explicit permalink in its front matter.
 title: meshTerm
+description: "meshTerm is an SSH client for iPhone and iPad with persistent sessions (tmux and mtRoam), Containers, and AI agents on your own servers. User guide, troubleshooting and Docker 101."
 lang: en
 url: "https://docs.meshterm.com"
 baseurl: ""
@@ -9,9 +10,14 @@ markdown: kramdown
 plugins:
   - jekyll-sitemap
 
+# Internal working notes stay out of the public site and the sitemap (the files stay in the repo).
 exclude:
   - Gemfile
   - Gemfile.lock
   - vendor
   - node_modules
   - scripts
+  - MISSING-IMAGES.md
+  - SHOT-LIST.md
+  - v202-images.md
+  - SEO-CHECKLIST.md
