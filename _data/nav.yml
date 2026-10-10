@@ -2,12 +2,16 @@
 en:
   - { href: "index.html", label: "Home" }
   - { href: "meshterm.html", label: "User Guide" }
+  - { href: "troubleshooting.html", label: "Troubleshooting" }
+  - { href: "docker-101.html", label: "Docker 101" }
   - { href: "meshterm-tailscale-integration.html", label: "Tailscale Setup" }
   - { href: "privacy.html", label: "Privacy" }
   - { href: "eula.html", label: "EULA" }
 es:
   - { href: "index.es.html", label: "Inicio" }
   - { href: "meshterm.html", label: "Guía del usuario (EN)" }
+  - { href: "troubleshooting.html", label: "Solución de problemas (EN)" }
+  - { href: "docker-101.html", label: "Docker 101 (EN)" }
   - { href: "meshterm-tailscale-integration.html", label: "Configuración de Tailscale (EN)" }
   - { href: "privacy.es.html", label: "Privacidad" }
   - { href: "eula.es.html", label: "EULA" }
