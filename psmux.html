@@ -46,7 +46,7 @@ footer: |
       <p>psmux runs on your Windows machine, so it has to be installed there. meshTerm doesn't install it for you. It installs for your account only and needs no admin rights.</p>
       <ul>
         <li>You need <strong>meshTerm 2.3.1 or later</strong> and <strong>psmux 3.4.0 or later</strong>.</li>
-        <li>The host is a Windows PC or server you connect to through its built-in OpenSSH server (see <a href="meshterm.html#windows">Windows hosts</a>). Shells such as MSYS2, MinGW or Cygwin don't count as Windows for this: psmux is offered only for a native Windows host.</li>
+        <li>The host is a Windows PC or server you connect to through its built-in OpenSSH server (see <a href="meshterm.html#windows">Windows hosts</a>). Shells such as MSYS2, MinGW or Cygwin don't count as Windows for this: psmux is offered only for a native Windows host. If <strong>Check for psmux</strong> finds that the host's SSH shell is one of them, meshTerm stops offering psmux for that host.</li>
         <li>Sessions belong to the Windows account you sign in with. They keep running until you end them, the last shell in them exits, or the machine restarts.</li>
       </ul>
     </section>
@@ -102,8 +102,9 @@ Get-FileHash "$env:TEMP\psmux-setup.exe" -Algorithm SHA256</code></pre>
       <p>psmux is a per-host choice, and every Windows host starts at <strong>None</strong>.</p>
       <ol>
         <li>Open the host's <strong>Edit Host &gt; Session</strong>.</li>
-        <li>Under <strong>Persistence</strong>, choose <strong>psmux</strong>. A Windows host offers <strong>psmux</strong> and <strong>None</strong> (tmux and mtRoam need Linux or macOS).</li>
-        <li>Optionally set a <strong>Session name</strong>, as for tmux. Letters, digits, <code>-</code> and <code>_</code> work everywhere; a name Windows can't use for a session (such as <code>CON</code> or <code>NUL</code>) is adjusted, and meshTerm shows the name it will use.</li>
+        <li>Under <strong>Persistence</strong>, choose <strong>psmux</strong>. A Windows host offers <strong>psmux</strong> and <strong>None</strong> (tmux and mtRoam need Linux or macOS). You can also choose psmux when you add a Windows host.</li>
+        <li>Optionally set a <strong>Session name</strong>, as for tmux. Letters, digits, <code>-</code> and <code>_</code> are kept; any other character becomes <code>-</code>, and a name Windows reserves (such as <code>CON</code> or <code>NUL</code>) gets <code>-session</code> added. When the name changes, meshTerm shows the one psmux will use under the field.</li>
+        <li>Tap <strong>Check for psmux</strong> to see whether meshTerm finds psmux on the host, and which version. If it isn't found, the result links to this page.</li>
         <li>Save, and open the host. The terminal attaches to your psmux session, creating it the first time.</li>
       </ol>
       <p>Choosing <strong>None</strong> again goes back to a plain SSH shell that ends with the connection.</p>
@@ -136,7 +137,7 @@ Get-FileHash "$env:TEMP\psmux-setup.exe" -Algorithm SHA256</code></pre>
     <section id="trouble">
       <h2>6. Troubleshooting</h2>
       <ul>
-        <li><strong>"psmux isn't installed" right after installing it</strong>: tap <strong>Reconnect</strong> (or <strong>Try Again</strong> in Sessions). If it still says so, check that it installed for the same Windows account meshTerm signs in with, and that <code>psmux -V</code> in a new SSH session prints a line <code>psmux 3.4.0</code> or later. (Its first line says <code>tmux 3.4.0</code>, for compatibility with tmux tools; the <code>psmux</code> line is the one that counts.)</li>
+        <li><strong>"psmux isn't installed" right after installing it</strong>: tap <strong>Reconnect</strong> (or <strong>Try Again</strong> in Sessions, or <strong>Check for psmux</strong> in Edit Host &gt; Session). If it still says so, check that it installed for the same Windows account meshTerm signs in with, and that <code>psmux -V</code> in a new SSH session prints a line <code>psmux 3.4.0</code> or later. (Its first line says <code>tmux 3.4.0</code>, for compatibility with tmux tools; the <code>psmux</code> line is the one that counts.)</li>
         <li><strong>All my sessions ended at once</strong>: installing, updating or uninstalling psmux stops every psmux server (see <a href="#install-setup">the warning above</a>), and a restart of the machine ends them too.</li>
         <li><strong>"Couldn't start psmux on &lt;host&gt;"</strong>: psmux was found but the session didn't start. Tap <strong>Reconnect</strong>. If it keeps happening, update psmux to the latest release.</li>
         <li><strong>Uninstalling</strong>: use Windows' Installed apps list (or <code>uninstall.exe</code> in <code>%LOCALAPPDATA%\psmux</code>), or your package manager. Then set the host's Persistence back to <strong>None</strong>.</li>
