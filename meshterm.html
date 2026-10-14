@@ -945,6 +945,8 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
         <li><strong>Generic TUI</strong> - blue pill. Sends Ctrl+End, which works in most alt-screen TUIs and pagers.</li>
       </ul>
 
+      <p>Inside tmux (or psmux, on a Windows host), scrolling up puts the session in copy mode, and the pill then takes you out of copy mode and back to the live prompt. It is green, or wears the agent's colours when Claude Code, Codex or Antigravity is running underneath.</p>
+
       <p>Over a Roam (mtRoam) connection the daemon reports the real foreground process running on the host, so detection is exact. For plain SSH hosts, meshTerm falls back to a lightweight heuristic based on the terminal title.</p>
 
       <h3>Per-host override</h3>
