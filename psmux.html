@@ -103,8 +103,8 @@ Get-FileHash "$env:TEMP\psmux-setup.exe" -Algorithm SHA256</code></pre>
       <ol>
         <li>Open the host's <strong>Edit Host &gt; Session</strong>.</li>
         <li>Under <strong>Persistence</strong>, choose <strong>psmux</strong>. A Windows host offers <strong>psmux</strong> and <strong>None</strong> (tmux and mtRoam need Linux or macOS). You can also choose psmux when you add a Windows host.</li>
-        <li>Optionally set a <strong>Session name</strong>, as for tmux. Letters, digits, <code>-</code> and <code>_</code> are kept; any other character becomes <code>-</code>, and a name Windows reserves (such as <code>CON</code> or <code>NUL</code>) gets <code>-session</code> added. When the name changes, meshTerm shows the one psmux will use under the field.</li>
-        <li>Tap <strong>Check for psmux</strong> to see whether meshTerm finds psmux on the host, and which version. If it isn't found, the result links to this page.</li>
+        <li>Optionally set a <strong>Session name</strong>, as for tmux. Letters, digits, <code>-</code> and <code>_</code> are kept and other characters become <code>-</code>, and a name that's too long (over 64 characters) or that Windows reserves (such as <code>CON</code> or <code>NUL</code>) is adjusted. When the name changes, meshTerm shows the one psmux will use under the field.</li>
+        <li>Tap <strong>Check for psmux</strong>, then tap <strong>Check for psmux</strong> again on the screen that opens, to see whether meshTerm finds psmux on the host, and which version. If it isn't found, the result links to this page.</li>
         <li>Save, and open the host. The terminal attaches to your psmux session, creating it the first time.</li>
       </ol>
       <p>Choosing <strong>None</strong> again goes back to a plain SSH shell that ends with the connection.</p>
