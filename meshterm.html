@@ -30,6 +30,7 @@ footer: |
       <li><a href="#getting-started">3. Getting started</a></li>
       <li><a href="#hosts">4. Managing hosts</a></li>
       <li><a href="#connecting">5. Connecting to a host</a></li>
+      <li><a href="#windows" style="padding-left: 22px; font-size: 13px;">↳ Windows hosts</a></li>
       <li><a href="#roam">6. Persistent sessions</a></li>
       <li><a href="#tmux" style="padding-left: 22px; font-size: 13px;">↳ tmux sessions</a></li>
       <li><a href="#roam-install" style="padding-left: 22px; font-size: 13px;">↳ Installing mtroamd</a></li>
@@ -85,6 +86,12 @@ footer: |
     <section id="whats-new">
       <h2>2. What's new</h2>
       <p>meshTerm is currently at version <strong>2.2.0</strong>. The headline additions since 2.1.2:</p>
+
+      <h3>2.3 <span class="new-badge">2.3</span></h3>
+      <ul>
+        <li><strong>Windows hosts</strong>: connect to a Windows PC or server through its built-in OpenSSH server. meshTerm finds the right file for <strong>Install Key</strong>, tells you plainly what works differently on Windows, and handles Tailscale devices that run Windows. See <a href="#windows">Windows hosts</a>.</li>
+        <li><strong>herdr on Windows</strong>: with herdr 0.9.4 or later, a Windows host can keep sessions running after you disconnect. <strong>Set Up herdr</strong> installs it with one tap, with no admin rights. See <a href="#herdr-windows">herdr on Windows</a>.</li>
+      </ul>
 
       <h3>2.2</h3>
       <ul>
@@ -223,6 +230,39 @@ footer: |
 
       <h3>Sessions on a host</h3>
       <p>For a host that uses tmux or mtRoam, long-press it and choose <strong>Sessions…</strong> to see the sessions living on the server. Tap one to attach, tap <strong>+</strong> to start a new one, or swipe a row to the left and tap <strong>End session</strong> to close it on the host (meshTerm asks first). Inside a tmux session, windows and panes are managed from the palette's tmux page: see <a href="#tmux">tmux sessions</a>.</p>
+
+      <h3 id="windows">Windows hosts <span class="new-badge">2.3</span></h3>
+      <p>meshTerm connects to the OpenSSH server that comes with Windows. It is built into Windows 10 and 11 and Windows Server 2019 and later. If it isn't running yet, install <strong>OpenSSH Server</strong> from Settings &gt; Optional Features, then start the <code>sshd</code> service. meshTerm detects a Windows host the first time you connect. You can also choose Windows yourself in <strong>Edit Host &gt; Connection &gt; Operating System</strong>.</p>
+
+      <h4>Signing in</h4>
+      <p>Windows decides who may sign in, not meshTerm. Many servers only allow members of <strong>Administrators</strong> or the <strong>OpenSSH Users</strong> group (the <code>AllowGroups</code> line in the server's config). If a standard account is refused, ask an administrator to add it to OpenSSH Users.</p>
+      <div class="callout info">
+        <strong>Tip:</strong> an account must have signed in to Windows at least once before it can use SSH. That first sign-in creates the account's profile folder.
+      </div>
+
+      <h4>Keys on a Windows host</h4>
+      <p><strong>Install Key</strong> writes your public key to the file the Windows SSH server really reads:</p>
+      <ul>
+        <li>A standard account: usually <code>C:\Users\&lt;you&gt;\.ssh\authorized_keys</code>.</li>
+        <li>An administrator: <code>C:\ProgramData\ssh\administrators_authorized_keys</code>, locked to Administrators and SYSTEM.</li>
+      </ul>
+      <p>If the server's config keeps keys somewhere a standard account can't write to (for example <code>C:\ProgramData\ssh\keys\...</code>), meshTerm tells you which file it is and that an administrator needs to add the key. If the server's config is unusual, meshTerm adds the key but tells you to check that it works. The key help in Getting Connected shows a command for Windows that works in both Command Prompt and PowerShell.</p>
+
+      <h4>What works differently</h4>
+      <ul>
+        <li><strong>Working Directory</strong>, environment variables and <a href="#secret-profiles">Secret Profiles</a> aren't applied to Windows hosts. The host editor says so.</li>
+        <li>The <a href="#sftp">file browser</a> opens in your home folder. Old compatibility folders such as "My Documents", and folders you don't have access to, can't be opened. meshTerm tells you so.</li>
+        <li>Attachments can't be sent to Windows hosts yet.</li>
+        <li>One-tap fixes in the app are for Linux and macOS hosts.</li>
+        <li>tmux and mtRoam need Linux or macOS. For sessions that survive a disconnect on Windows, use <a href="#herdr-windows">herdr</a>.</li>
+      </ul>
+
+      <h4>Tailscale and Windows</h4>
+      <p>A Windows machine on your tailnet works like any other host. Connect to its tailnet name or <code>100.x</code> address and sign in with a key or a password. <a href="#tailscale">Tailscale SSH</a> (Tailscale's own SSH server, with tailnet sign-in) isn't available on Windows, so meshTerm doesn't offer it for Windows hosts. A device that Tailscale reports as Windows starts on password sign-in.</p>
+
+      <h4>Checking the host key</h4>
+      <p>To compare the fingerprint meshTerm shows, run this in an administrator PowerShell on the Windows machine:</p>
+      <pre><code>ssh-keygen -lf $env:ProgramData\ssh\ssh_host_ed25519_key.pub</code></pre>
     </section>
 
     <!-- ============================================ -->
@@ -240,7 +280,7 @@ footer: |
       <ul>
         <li>With <strong>tmux</strong> chosen you can also set a <strong>Session name (optional)</strong>; leave it blank to use a name derived from your device. The <strong>tmux attach</strong> setting is described in <a href="#tmux-attach">Control mode or Legacy</a>.</li>
         <li>With <strong>mtRoam</strong> chosen the picker reminds you that it "Needs the mtRoam service (mtroamd) on the host." and links the <strong>Install guide</strong>. The mtRoam settings (Keep alive, Session name, and so on) appear below it.</li>
-        <li>A host marked as Windows always connects over plain SSH: tmux and mtRoam need a Linux or macOS host.</li>
+        <li>A host marked as Windows connects over plain SSH: tmux and mtRoam need a Linux or macOS host. To keep a session running on Windows after you disconnect, use <a href="#herdr-windows">herdr</a> <span class="new-badge">2.3</span>. See <a href="#windows">Windows hosts</a>.</li>
       </ul>
       <p>New hosts start with the choice in <strong>Settings &gt; Sessions &gt; Persistence for new hosts</strong> (<strong>tmux</strong> or <strong>None</strong>). mtRoam is always chosen per host. If a host's choice differs from that default, Edit Host &gt; Session offers <strong>Reset to app default</strong>.</p>
 
@@ -534,9 +574,9 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
       </div>
 
       <h4>Set Up herdr</h4>
-      <p>Open <strong>Set Up herdr</strong> from the Agents tab (the onboarding card, or <strong>+</strong> on the herdr side) or from <strong>Settings &gt; herdr</strong>. Pick a host and meshTerm checks it: whether herdr is installed and which version, whether <code>python3</code> is there for live status, and whether alerts are on. If herdr is missing or older than 0.9.2, <strong>Install</strong> runs herdr's official installer on the host and shows you its output as it goes. The exact command is shown before it runs:</p>
+      <p>Open <strong>Set Up herdr</strong> from the Agents tab (the onboarding card, or <strong>+</strong> on the herdr side) or from <strong>Settings &gt; herdr</strong>. Pick a host and meshTerm checks it: whether herdr is installed and which version, whether <code>python3</code> is there for live status (Linux and macOS), and whether alerts are on. If herdr is missing or older than 0.9.2 (0.9.4 on Windows), <strong>Install</strong> runs herdr's official installer on the host and shows you its output as it goes. The exact command is shown before it runs:</p>
       <pre><code>curl -fsSL https://herdr.dev/install.sh -o ~/.mt-install-herdr.sh &amp;&amp; sh ~/.mt-install-herdr.sh &amp;&amp; rm -f ~/.mt-install-herdr.sh</code></pre>
-      <p>It downloads first so a failed download can't look like a success, puts one program in <code>~/.local/bin</code>, needs no admin rights and changes nothing else. Prefer Homebrew, mise or Nix? Follow <a href="https://herdr.dev/docs/install/">herdr's install guide</a> instead. The last step turns on alerts for the host and starts your first herdr session.</p>
+      <p>It downloads first so a failed download can't look like a success, puts one program in <code>~/.local/bin</code>, needs no admin rights and changes nothing else. Prefer Homebrew, mise or Nix? Follow <a href="https://herdr.dev/docs/install/">herdr's install guide</a> instead. These steps are for Linux and macOS hosts; for Windows see <a href="#herdr-windows">herdr on Windows</a>. The last step turns on alerts for the host and starts your first herdr session.</p>
 
       <h4>The Agents tab: Chats and herdr</h4>
       <p>Once herdr is found on a host, the Agents tab has two sides. <strong>Chats</strong> are the agents meshTerm runs for you in its native chat. <strong>herdr</strong> is an overview of every herdr session on every host: what needs you first, then each host's sessions as cards with their agents and status. A slim banner tells you when the other side has something waiting, and the tab's badge counts both. Pull down to check your hosts again.</p>
@@ -550,10 +590,25 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
 
       <h4>Background checks</h4>
       <p>meshTerm checks each host for herdr once, then once a day on hosts that have it, when you open Agents or <strong>Settings &gt; herdr</strong>. It only checks hosts whose host key you've already trusted, at most three at a time, and backs off for a week after a sign-in failure. Turn <strong>Look for herdr on my hosts</strong> off in Settings &gt; herdr to stop all background checks; pull-to-refresh and Set Up herdr still check when you ask.</p>
+
+      <h4 id="herdr-windows">herdr on Windows <span class="new-badge">2.3</span></h4>
+      <p>herdr 0.9.4 or later runs on Windows hosts (x86_64; ARM isn't covered yet). It is the way to keep sessions running on Windows after you disconnect, since tmux and mtRoam need Linux or macOS.</p>
+      <ul>
+        <li><strong>Set Up herdr</strong> works on Windows. It checks the host and installs herdr's official Windows build with one tap. It needs no admin rights and installs for your account only, into <code>%LOCALAPPDATA%\Programs\Herdr</code>. It needs <code>curl.exe</code>, which current Windows includes. The exact command is shown in the app before it runs.</li>
+        <li><strong>Keep meshTerm open while herdr installs.</strong> On Windows the install runs over your connection and stops if the connection drops. Tap <strong>Try Again</strong>; running it again is safe.</li>
+        <li><strong>Sessions</strong>: list, open, end and delete herdr sessions on a Windows host as you do on Linux. meshTerm starts the session's herdr server for you so it keeps running after you disconnect (a standard Windows account can't do that over SSH otherwise). Opening a stopped session from its row starts it.</li>
+        <li><strong>Live status and the dashboard</strong> work on Windows. They update every few seconds and need no <code>python3</code>. Dashboard actions work too: tabs, panes, rename, close, and a new tab or workspace.</li>
+        <li><strong>Not on Windows yet</strong>: herdr alerts, and answering approvals from your phone. On a Windows host, meshTerm opens the terminal at that pane so you answer there.</li>
+        <li><strong>Restricted PowerShell</strong>: some company policies set PowerShell to Constrained Language Mode. herdr support can't run on such a host, and meshTerm says so. An administrator can allow it, or you can use herdr in a plain terminal.</li>
+        <li><strong>Administrator accounts</strong>: a herdr session started from an administrator account only accepts administrator connections (herdr 0.9.4's own rule). Connect with the same kind of account.</li>
+      </ul>
       <div class="callout info">
-        herdr is made by a third party and is free and open source. Every herdr feature in meshTerm is free. Windows hosts aren't supported by herdr.
+        <strong>Tip:</strong> when you sign in with a key, Windows doesn't give the session your saved credentials. Tools that need the Windows Credential Manager, such as git's credential manager or <code>gh</code>, may fail in that session. Signing in with a password avoids it.
       </div>
-      <p>Verified with Claude Code, Codex, Gemini (Antigravity) and OpenCode 1.18.34 on herdr 0.9.3.</p>
+      <div class="callout info">
+        herdr is made by a third party and is free and open source. Every herdr feature in meshTerm is free.
+      </div>
+      <p>Verified with Claude Code, Codex, Gemini (Antigravity) and OpenCode 1.18.34 on herdr 0.9.3. Windows support was verified with herdr 0.9.4 on Windows Server 2025.</p>
 
       <div class="callout info">
         Agents run on your own hardware using your own credentials on the host. meshTerm is the interface; the model, its API key, and its access all live on your server.
@@ -602,6 +657,8 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
         <strong>Install on a Host uses strict host-key verification.</strong> If you haven't already trusted the target host, the section asks you to connect via the terminal first to accept the fingerprint, then return and install.
       </div>
 
+      <p>On a Windows host, Install Key writes to the file the Windows SSH server reads, which is different for administrators. See <a href="#windows">Windows hosts</a>.</p>
+
       <h3>Importing an existing key</h3>
       <ol>
         <li>Settings → Hosts &amp; Network → <strong>Add Key</strong> → <strong>Import</strong>.</li>
@@ -647,7 +704,7 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
 
 
       <h3>Tailscale SSH</h3>
-      <p>Devices on your Tailnet with <a href="meshterm-tailscale-integration.html">Tailscale SSH enabled</a> connect without passwords or keys - Tailscale authenticates the connection at the network layer using your device's identity. Set the host's authentication method to <strong>Tailscale SSH</strong> in the host editor.</p>
+      <p>Devices on your Tailnet with <a href="meshterm-tailscale-integration.html">Tailscale SSH enabled</a> connect without passwords or keys - Tailscale authenticates the connection at the network layer using your device's identity. Set the host's authentication method to <strong>Tailscale SSH</strong> in the host editor. Tailscale SSH isn't available on Windows hosts: see <a href="#windows">Windows hosts</a>.</p>
 
 
       <h3 id="tailscale-auth-keys">Auth keys (alternative to sign-in)</h3>

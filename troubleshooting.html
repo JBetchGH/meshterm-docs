@@ -73,6 +73,9 @@ footer: |
             <li><a href="#c-fail2ban">Closed during sign-in (fail2ban)</a></li>
             <li><a href="#c-tailscale-ssh">Tailscale SSH not accepted</a></li>
             <li><a href="#c-address">Pasting user@host:port</a></li>
+            <li><a href="#c-win-key">Windows: key installed, still asks for a password</a></li>
+            <li><a href="#c-win-denied">Windows: permission denied</a></li>
+            <li><a href="#c-win-tsssh">Windows: no Tailscale SSH</a></li>
           </ul>
         </div>
         <div>
@@ -107,6 +110,8 @@ footer: |
             <li><a href="#n-permission">Notifications are off in iOS</a></li>
             <li><a href="#n-live">Live Activities are off</a></li>
             <li><a href="#h-prereq">herdr prerequisites</a></li>
+            <li><a href="#h-win-install">herdr install stopped on Windows</a></li>
+            <li><a href="#h-win-clm">herdr: host restricts PowerShell</a></li>
           </ul>
         </div>
         <div>
@@ -310,6 +315,38 @@ sudo fail2ban-client set sshd unbanip YOUR.IP.ADDRESS</code></pre>
         <div class="issue__fix"><span class="issue__label">Fix</span>
           <p>Paste it into <strong>Hostname</strong> and move on. meshTerm trims it, removes <code>ssh://</code> and any path, puts the part before the last <code>@</code> into an empty Username field, and puts <code>:2222</code> into the Port field if it is empty or still 22. <code>[2001:db8::1]:2222</code> works for IPv6; a bare IPv6 address is left alone. A password inside the URL (<code>ssh://user:secret@host</code>) is dropped, never saved.</p>
           <p>"The hostname can't contain spaces or symbols. Enter just the name or IP address." means something is left over after that, such as a space or URL punctuation. If the pasted port and the Port field disagree, the form asks you to choose one.</p>
+        </div>
+      </article>
+
+      <article class="issue" id="c-win-key">
+        <h3>Key installed but Windows still asks for a password</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>The Windows SSH server reads a different file depending on the account. A standard account uses <code>C:\Users\&lt;you&gt;\.ssh\authorized_keys</code>. An administrator uses <code>C:\ProgramData\ssh\administrators_authorized_keys</code>, and Windows ignores that file unless it is locked to Administrators and SYSTEM. A server can also point <code>AuthorizedKeysFile</code> somewhere else, such as <code>C:\ProgramData\ssh\keys\...</code>, where a standard account can't write. Wrong permissions on the file have the same effect.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <ul>
+            <li>Use <strong>Install Key</strong> on the host. meshTerm picks the right file for the account. If it says an administrator needs to add the key, send that person the public key and the file name it shows.</li>
+            <li>If meshTerm says it added the key but you should check, look at <code>AuthorizedKeysFile</code> in <code>C:\ProgramData\ssh\sshd_config</code> and make sure the key is in the file it names.</li>
+            <li>Administrator accounts: the file must be locked to Administrators and SYSTEM only. In an administrator PowerShell:</li>
+          </ul>
+<pre><code>icacls.exe $env:ProgramData\ssh\administrators_authorized_keys /inheritance:r /grant "Administrators:F" /grant "SYSTEM:F"</code></pre>
+          <p>Then try again. Details are in <a href="meshterm.html#windows">Windows hosts</a>.</p>
+        </div>
+      </article>
+
+      <article class="issue" id="c-win-denied">
+        <h3>Permission denied signing in to a Windows host</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>The Windows SSH server decides who may sign in. Many servers allow only members of <strong>Administrators</strong> or the <strong>OpenSSH Users</strong> group (an <code>AllowGroups</code> line in <code>C:\ProgramData\ssh\sshd_config</code>). A standard account that is in neither is refused, even with the right password or key. An account that has never signed in to Windows also has no profile yet.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <p>Ask an administrator to add the account to OpenSSH Users. In an administrator PowerShell:</p>
+<pre><code>net localgroup "OpenSSH Users" USER /add</code></pre>
+          <p>If the group doesn't exist, check <code>AllowGroups</code> in the config for the group the server uses. Make sure the account has signed in to Windows once, then try again.</p>
+        </div>
+      </article>
+
+      <article class="issue" id="c-win-tsssh">
+        <h3>Tailscale SSH is missing for a Windows host</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>Tailscale SSH (Tailscale's own SSH server with tailnet sign-in) isn't available on Windows, so meshTerm doesn't offer it for Windows hosts. A device that Tailscale reports as Windows starts on password sign-in.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <p>Connect to the machine's tailnet name or <code>100.x</code> address with a key or a password, like any other host. The Windows OpenSSH server must be running on it. See <a href="meshterm.html#windows">Windows hosts</a>.</p>
         </div>
       </article>
     </section>
@@ -591,7 +628,7 @@ xcode-select --install</code></pre>
 
       <article class="issue" id="h-prereq">
         <h3>"Set Up herdr", "herdr X is too old", "herdr has no build for HOST"</h3>
-        <p class="issue__why"><span class="issue__label">Why</span>herdr runs on your host, so the host needs <strong>herdr 0.9.2 or later</strong> in your home folder, plus <code>python3</code> for live status (without it status updates only every few seconds, shown as "No python3: updates every few seconds"). <strong>Set Up herdr</strong> checks the host and installs herdr's official build in one tap, with no admin rights. Its installer needs <code>curl</code>, <code>awk</code> and a SHA-256 tool. Windows hosts are not supported.</p>
+        <p class="issue__why"><span class="issue__label">Why</span>herdr runs on your host, so the host needs <strong>herdr 0.9.2 or later</strong> in your home folder, plus <code>python3</code> for live status (without it status updates only every few seconds, shown as "No python3: updates every few seconds"). <strong>Set Up herdr</strong> checks the host and installs herdr's official build in one tap, with no admin rights. Its installer needs <code>curl</code>, <code>awk</code> and a SHA-256 tool. Windows hosts need herdr 0.9.4 or later: see <a href="#h-win-install">herdr install stopped on Windows</a>.</p>
         <div class="issue__fix"><span class="issue__label">Fix</span>
           <ul>
             <li>Missing tools: the sheet shows the install line for your system. Run it, then <strong>Check Again</strong>. For Debian and Ubuntu that is, for example, <code>sudo apt-get update &amp;&amp; sudo apt-get install -y curl ca-certificates python3</code> (drop <code>sudo</code> as root).</li>
@@ -601,6 +638,22 @@ xcode-select --install</code></pre>
             <li><strong>Update herdr</strong> appears when a host's herdr is older than the app needs.</li>
           </ul>
           <p>The notification plugin also needs Python 3 on the host: "The plugin needs Python 3 on this host. Install python3 there, then try again."</p>
+        </div>
+      </article>
+
+      <article class="issue" id="h-win-install">
+        <h3>herdr install stopped on Windows</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>On a Windows host the herdr install runs over your connection. If the connection drops, or you leave meshTerm, the install stops part way.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <p>Keep meshTerm open and tap <strong>Try Again</strong>. Running the install again is safe. If it keeps stopping, check that the host is reachable and that <code>curl.exe</code> works there (current Windows includes it). herdr 0.9.4 or later on x86_64 is needed; ARM isn't covered yet. See <a href="meshterm.html#herdr-windows">herdr on Windows</a>.</p>
+        </div>
+      </article>
+
+      <article class="issue" id="h-win-clm">
+        <h3>herdr says this host restricts PowerShell</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>Some company policies put PowerShell in Constrained Language Mode. herdr support on Windows needs full PowerShell, so it can't run on that host.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <p>Ask an administrator to allow it for your account, then <strong>Check Again</strong>. Or use herdr in a plain terminal on the host.</p>
         </div>
       </article>
     </section>
