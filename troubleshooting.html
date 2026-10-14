@@ -327,7 +327,7 @@ sudo fail2ban-client set sshd unbanip YOUR.IP.ADDRESS</code></pre>
             <li>If meshTerm says it added the key but you should check, look at <code>AuthorizedKeysFile</code> in <code>C:\ProgramData\ssh\sshd_config</code> and make sure the key is in the file it names.</li>
             <li>Administrator accounts: the file must be locked to Administrators and SYSTEM only. In an administrator PowerShell:</li>
           </ul>
-<pre><code>icacls.exe $env:ProgramData\ssh\administrators_authorized_keys /inheritance:r /grant "Administrators:F" /grant "SYSTEM:F"</code></pre>
+<pre><code>icacls.exe $env:ProgramData\ssh\administrators_authorized_keys /inheritance:r /grant *S-1-5-32-544:F /grant *S-1-5-18:F</code></pre>
           <p>Then try again. Details are in <a href="meshterm.html#windows">Windows hosts</a>.</p>
         </div>
       </article>
