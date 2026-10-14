@@ -126,7 +126,7 @@ Get-FileHash "$env:TEMP\psmux-setup.exe" -Algorithm SHA256</code></pre>
       <ul>
         <li><strong>Disconnecting</strong>: leave the app, lose the network or close the tab, and the session keeps running on the host. Reconnect, or open the host again, to pick it up where you left it.</li>
         <li><strong>The shell</strong> inside a psmux session is the same shell your SSH server opens (Command Prompt unless the server's default shell was changed). Run <code>powershell</code> or <code>pwsh</code> in it if you prefer. Ctrl-C stops a running program as usual.</li>
-        <li><strong>Scrolling back</strong>: swiping or scrolling the terminal scrolls psmux's history (its copy mode). Press <code>q</code> to return to the prompt.</li>
+        <li><strong>Scrolling back</strong>: swiping or scrolling the terminal scrolls psmux's history (its copy mode). Tap the <a href="meshterm.html#tui-pill">return-to-prompt pill</a> that appears to go back to the prompt, or press <code>q</code>.</li>
         <li><strong>Sessions</strong>: long-press the host and choose <strong>Sessions…</strong> to see its psmux sessions. Tap one to open it, tap <strong>+</strong> for a new one, or swipe a row and tap <strong>End Session</strong> to close it on the host. Session names on Windows ignore case: <code>Work</code> and <code>work</code> are the same session.</li>
         <li><strong>Ending a session</strong>: type <code>exit</code> in its last shell. The tab says "The psmux session ended." and doesn't reconnect by itself; <strong>Reconnect</strong> starts a new session with the same name.</li>
         <li><strong>Detaching on purpose</strong> with psmux's own keys (Ctrl-B then D) disconnects the tab and leaves the session running.</li>
