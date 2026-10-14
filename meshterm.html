@@ -1,7 +1,7 @@
 ---
 layout: guide
-title: "meshTerm 2.2 - User Guide"
-description: "The meshTerm 2.2 user guide: adding hosts, tmux and mtRoam persistent sessions, agents, SSH keys, Tailscale, port forwarding, SFTP, the keyboard palette, snippets and settings."
+title: "meshTerm 2.3 - User Guide"
+description: "The meshTerm 2.3 user guide: adding hosts, Windows hosts, tmux and mtRoam persistent sessions, Containers, agents, SSH keys, Tailscale, port forwarding, SFTP, the keyboard palette, snippets and settings."
 lang: en
 permalink: /meshterm.html
 footer: |
@@ -14,7 +14,7 @@ footer: |
     </p>
 ---
 <header class="site-header">
-  <div class="app-name">meshTerm 2.2</div>
+  <div class="app-name">meshTerm 2.3</div>
   <h1>User Guide</h1>
   <div class="sub">Connecting, tmux and mtRoam persistent sessions, named sessions, AI agents, the keyboard palette, snippets, SFTP, and everything in between.</div>
 </header>
@@ -39,30 +39,31 @@ footer: |
       <li><a href="#roam-attach" style="padding-left: 22px; font-size: 13px;">↳ Attach modes</a></li>
       <li><a href="#mtroam" style="padding-left: 22px; font-size: 13px;">↳ Desktop CLI (mtroam)</a></li>
       <li><a href="#agents">7. Agent Mode</a></li>
-      <li><a href="#auth">8. Authentication</a></li>
-      <li><a href="#ssh-keys">9. SSH keys</a></li>
-      <li><a href="#tailscale">10. Tailscale</a></li>
-      <li><a href="#tunnels">11. Port forwarding &amp; Tunnels</a></li>
-      <li><a href="#keyboard">12. Keyboard</a></li>
-      <li><a href="#predictions">13. Predictions &amp; history</a></li>
-      <li><a href="#tui-pill">14. TUI return-to-prompt pill</a></li>
-      <li><a href="#snippets">15. Snippet Vault</a></li>
-      <li><a href="#secret-profiles">16. Secret Profiles</a></li>
-      <li><a href="#macros">17. Macro bar</a></li>
-      <li><a href="#sftp">18. SFTP file browser</a></li>
-      <li><a href="#search">19. Scrollback search</a></li>
-      <li><a href="#themes">20. Color modes</a></li>
-      <li><a href="#security">21. Security &amp; App Lock</a></li>
-      <li><a href="#sync">22. iCloud Sync</a></li>
-      <li><a href="#settings">23. Settings reference</a></li>
-      <li><a href="#pro">24. meshTerm Pro</a></li>
-      <li><a href="#troubleshooting">25. Troubleshooting</a></li>
-      <li><a href="#feedback">26. Feedback</a></li>
+      <li><a href="#containers">8. Containers</a></li>
+      <li><a href="#auth">9. Authentication</a></li>
+      <li><a href="#ssh-keys">10. SSH keys</a></li>
+      <li><a href="#tailscale">11. Tailscale</a></li>
+      <li><a href="#tunnels">12. Port forwarding &amp; Tunnels</a></li>
+      <li><a href="#keyboard">13. Keyboard</a></li>
+      <li><a href="#predictions">14. Predictions &amp; history</a></li>
+      <li><a href="#tui-pill">15. TUI return-to-prompt pill</a></li>
+      <li><a href="#snippets">16. Snippet Vault</a></li>
+      <li><a href="#secret-profiles">17. Secret Profiles</a></li>
+      <li><a href="#macros">18. Macro bar</a></li>
+      <li><a href="#sftp">19. SFTP file browser</a></li>
+      <li><a href="#search">20. Scrollback search</a></li>
+      <li><a href="#themes">21. Color modes</a></li>
+      <li><a href="#security">22. Security &amp; App Lock</a></li>
+      <li><a href="#sync">23. iCloud Sync</a></li>
+      <li><a href="#settings">24. Settings reference</a></li>
+      <li><a href="#pro">25. meshTerm Pro</a></li>
+      <li><a href="#troubleshooting">26. Troubleshooting</a></li>
+      <li><a href="#feedback">27. Feedback</a></li>
     </ul>
   </aside>
 
   <main>
-    <div class="page-title">meshTerm 2.2 - User Guide</div>
+    <div class="page-title">meshTerm 2.3 - User Guide</div>
     <div class="page-subtitle">For iPhone and iPad.</div>
 
     <!-- ============================================ -->
@@ -78,6 +79,7 @@ footer: |
         <li>An SFTP file browser that integrates with the iOS Files app.</li>
         <li>A customisable macro bar and a searchable Snippet Vault.</li>
         <li>Native Tailscale integration for keyless SSH on your Tailnet.</li>
+        <li>A Containers tab for Docker, Podman and Portainer on your own servers, and support for Windows hosts.</li>
       </ul>
 
     </section>
@@ -85,12 +87,38 @@ footer: |
     <!-- ============================================ -->
     <section id="whats-new">
       <h2>2. What's new</h2>
-      <p>meshTerm is currently at version <strong>2.2.0</strong>. The headline additions since 2.1.2:</p>
+      <p>meshTerm is currently at version <strong>2.3.0</strong>. The headline additions since 2.1.2:</p>
 
       <h3>2.3 <span class="new-badge">2.3</span></h3>
       <ul>
+        <li><strong>Containers</strong>: a new tab for the Docker, Podman, nerdctl and Apple <code>container</code> workloads on your own servers, over the SSH connections you already have. A Fleet of every host with an engine, a screen for each host and container with status, CPU and memory charts, logs and a Shell, and start, stop, restart and recreate with a confirmation first. Containers is part of Pro, with a free preview. See <a href="#containers">Containers</a>.
+          <ul>
+            <li><strong>New Container and New Stack</strong>: an image browser with Docker Hub search, a command preview, a Compose editor with checks, a Review screen and deploy progress that survives leaving the screen. See <a href="#containers-deploy">Deploying</a>.</li>
+            <li><strong>Templates</strong>: ready-made stacks, including Super Stacks, from a signed list. See <a href="#containers-templates">Templates</a>.</li>
+            <li><strong>The Vault</strong>: container secrets kept in this device's Keychain and sent to the host only when you deploy. See <a href="#containers-vault">The Vault</a>.</li>
+            <li><strong>Topology</strong>: a map of how a host's containers, networks and volumes connect, with a list version for VoiceOver. See <a href="#containers-topology">Topology</a>.</li>
+            <li><strong>Ask an Agent</strong>: ask Claude on your host, or your own API key, why a container is failing, after you agree to what is sent. See <a href="#containers-ask">Ask an Agent</a>.</li>
+            <li><strong>Portainer</strong>: add a Portainer server beside your own hosts. See <a href="#containers-portainer">Portainer servers</a>.</li>
+            <li><strong>iPad</strong>: the Containers tab becomes a split view with the Fleet in the sidebar. See <a href="#containers-ipad">iPad</a>.</li>
+          </ul></li>
         <li><strong>Windows hosts</strong>: connect to a Windows PC or server through its built-in OpenSSH server. meshTerm finds the right file for <strong>Install Key</strong>, tells you plainly what works differently on Windows, and handles Tailscale devices that run Windows. See <a href="#windows">Windows hosts</a>.</li>
         <li><strong>herdr on Windows</strong>: with herdr 0.9.4 or later, a Windows host can keep sessions running after you disconnect. <strong>Set Up herdr</strong> installs it with one tap, with no admin rights. See <a href="#herdr-windows">herdr on Windows</a>.</li>
+        <li><strong>Links that wrap in herdr and tmux splits</strong>: when herdr, or a tmux split, draws a long link across several rows (such as a sign-in URL), tapping any row now opens the whole link. meshTerm asks first and shows the site in bold, so you can check it before you open it. The palette's <strong>Links</strong> list shows the whole link too. See <a href="#herdr-links">Tapping links in herdr and tmux</a>.</li>
+        <li><strong>A brand-new server, step by step</strong>: the common first-connection problems now say what happened in one line and offer a fix that can work.
+          <ul>
+            <li>A rejected key offers <strong>Copy Public Key</strong>, the line to add it on the server, and <strong>Install Key</strong> where that can work. RSA keys can't be used, so the import error offers <strong>Generate an Ed25519 Key Instead</strong>, and Add Host can generate a key.</li>
+            <li>When SSH is refused or times out, <strong>Server Setup Help</strong> shows how to turn on SSH and open the port for your system.</li>
+            <li>Add Host accepts <code>user@host:port</code>, <code>ssh://</code> addresses and IPv6 in brackets, and says plainly when a hostname isn't valid.</li>
+            <li>A host with no SFTP server fails at once with the fix, instead of hanging. A tunnel that sshd blocks says to set <code>AllowTcpForwarding</code>.</li>
+            <li>The Sessions list offers <strong>Install tmux in Terminal</strong> when tmux is missing, and finds a tmux installed by Homebrew.</li>
+            <li><strong>Run in Terminal</strong> now types a long fix into a terminal on the host, and brings you back to where you started when it finishes. Install lines match the host's system and your account (root, sudo, or <code>su</code>), and say so when your account can't install software.</li>
+            <li>Agents: sign-in fails fast with the CLI's own reason; a missing working folder offers <strong>Create Folder</strong> or <strong>Use Home Folder</strong>; notifications check that <code>python3</code> and <code>curl</code> are on the host; Claude and Codex launch on macOS hosts, and Codex works on hosts without <code>procps</code>.</li>
+            <li><strong>Keep Tools on PATH</strong>: after you install a tool into <code>~/.local/bin</code>, one tap makes new terminals and new tmux panes find it. See <a href="#keep-path">Keep Tools on PATH</a>.</li>
+            <li>A host with no tmux or mtRoam sessions shows a prominent <strong>New Session</strong>.</li>
+          </ul>
+          The commands are collected in <a href="troubleshooting.html">Troubleshooting</a>.</li>
+        <li><strong>Install and fix commands stay current</strong>: the lines meshTerm shows for installing tmux, Docker, Podman, agents and herdr, and for the common fixes, come from a signed list that the app refreshes from github.com, with a copy built in. A broken command for one Linux distribution can be corrected without an app update.</li>
+        <li><strong>Spanish and accessibility for Containers</strong>: Containers has a Spanish translation, and works with Dynamic Type up to the largest accessibility sizes, VoiceOver, Reduce Motion, Light mode and High Contrast.</li>
       </ul>
 
       <h3>2.2</h3>
@@ -196,6 +224,7 @@ footer: |
         <li><strong>Tunnels</strong>: port forwarding rules.</li>
       </ul>
       <p>Below them, <strong>Changes on this host</strong> lists what meshTerm leaves on the server, such as agent notification hooks, and lets you turn them off or remove them where that is possible.</p>
+      <p id="keep-path"><strong>Keep Tools on PATH</strong> <span class="new-badge">2.3</span>: a tool installed into a new <code>~/.local/bin</code> (Claude Code's installer does this on Debian) is not found by terminals and tmux panes that were already open. After such an install, meshTerm offers <strong>Turn On Keep Tools on PATH</strong>. It adds a marked block to the host's <code>~/.bashrc</code> or <code>~/.zshrc</code> (other shells are skipped, and meshTerm says so), and tmux sessions get <code>~/.local/bin</code> on their PATH when you attach. It is listed under <strong>Changes on this host</strong>, backed up once, and turning it off removes exactly that block.</p>
       <p><strong>Save</strong> is available on every screen, so you can save where you made the change. When Save is disabled, a note at the bottom says why (a host needs a label, hostname and username). A password host with no password saved on this device can still be saved; a reminder asks you to enter the password in Connection before you connect.</p>
 
       <h3>Deleting a host</h3>
@@ -588,6 +617,9 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
       <h4>herdr in the terminal</h4>
       <p>In a herdr terminal the keyboard palette has a <strong>herdr</strong> page that sends herdr's own keys under your host's prefix: new and next tab, splits, zoom, focus moves, workspaces and detach. <strong>Settings &gt; herdr &gt; herdr Shortcuts</strong> lists them all.</p>
 
+      <h4 id="herdr-links">Tapping links in herdr and tmux <span class="new-badge">2.3</span></h4>
+      <p>herdr redraws a long link, such as an agent's sign-in URL, across several rows of its pane, so a tap used to open only the first row. Now a tap on any row of such a link shows a sheet with the whole link: the site in bold, <strong>Open</strong> and <strong>Copy</strong>. Check the site and how the link ends before you open it, because meshTerm has put the link together from the rows. The same works for links drawn across rows in a tmux split. A link that wraps normally in a plain terminal still opens with one tap, as before. The palette's <strong>Links</strong> list shows the whole link, and the site of each rebuilt link in bold.</p>
+
       <h4>Background checks</h4>
       <p>meshTerm checks each host for herdr once, then once a day on hosts that have it, when you open Agents or <strong>Settings &gt; herdr</strong>. It only checks hosts whose host key you've already trusted, at most three at a time, and backs off for a week after a sign-in failure. Turn <strong>Look for herdr on my hosts</strong> off in Settings &gt; herdr to stop all background checks; pull-to-refresh and Set Up herdr still check when you ask.</p>
 
@@ -620,8 +652,83 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
     </section>
 
     <!-- ============================================ -->
+    <section id="containers">
+      <h2>8. Containers <span class="new-badge">2.3</span></h2>
+      <p>The <strong>Containers</strong> tab shows and manages the containers on your own servers. It works with Docker, Podman, nerdctl and Apple's <code>container</code> tool (in beta), over the SSH connections you already have. Nothing is installed on the server except the engine itself: meshTerm runs the engine's own commands. If you are new to containers, read <a href="docker-101.html">Docker 101</a> first.</p>
+      <p>Containers is part of <a href="#pro">meshTerm Pro</a>. Without Pro the tab is a preview: it lists the hosts where an engine was found, by name, and offers the free trial. The hosts need to run Linux or macOS. Windows hosts aren't checked for containers; a fleet of only Windows hosts says it needs a Linux or Mac host.</p>
+
+      <h3 id="containers-fleet">The Fleet</h3>
+      <p>The tab opens on the <strong>Fleet</strong>: one card for every host that has a container engine. meshTerm checks your saved hosts in the background, and a pull-down checks them again. Each card shows the engine and how many containers run, and says "All containers healthy" or how many need you. <strong>Needs Attention</strong> lists the containers that need you. A host with no engine says so, and its host screen shows the install lines for its system (see <a href="docker-101.html#install">Docker 101</a>).</p>
+      <ul>
+        <li><strong>Hide a host</strong> from the Fleet by long-pressing its card (<strong>Hide from Containers</strong>), or turn off <strong>Show in Containers</strong> in Edit Host &gt; Containers. Hidden hosts are never checked or connected for containers. Show them again from <strong>Settings &gt; Containers &gt; Hidden Hosts</strong>.</li>
+        <li><strong>Hosts on another Tailscale profile</strong> are grouped apart. Tapping one switches to that profile first, and asks before it would disconnect your live sessions.</li>
+        <li>The <strong>Activity</strong> tab has a Containers card with the number of hosts, running, stopped and needing attention, from the last check. Tap it to open the tab.</li>
+        <li>In a terminal, <strong>Containers</strong> in the keyboard palette opens that host's screen.</li>
+      </ul>
+
+      <h3 id="containers-host">A host's screen</h3>
+      <p>Tap a card to open the host. At the top are pills for its engines (and, on a Portainer server, its environments), a summary of the host, and tiles for <strong>Containers</strong>, <strong>Images</strong>, <strong>Volumes</strong>, <strong>Networks</strong> and <strong>Disk Usage</strong>, with their sizes. Under them are the host's <strong>Stacks</strong> (Compose projects) and its containers, running first. A <strong>Containers | Topology</strong> switch changes what the host shows (see <a href="#containers-topology">Topology</a>). <strong>Compact Rows</strong> in Settings lists containers as plain rows without the CPU graph.</p>
+      <p>The <strong>+</strong> menu has <strong>New Container</strong>, <strong>New Stack</strong>, <strong>Templates</strong> and <strong>Add Host</strong>. Lists of images, volumes and networks show what uses each one, and removing something that is in use is refused. Prune actions say what they delete before you confirm.</p>
+
+      <h3 id="containers-container">A container</h3>
+      <p>A container's screen shows its status, CPU and memory charts, recent logs and events, and a grid of actions: <strong>Shell</strong>, <strong>Logs</strong>, <strong>Web UI</strong>, start, stop and restart. The <strong>More</strong> menu adds pause, kill, remove, <strong>Pull and Recreate</strong>, <strong>Recreate</strong>, <strong>Edit Environment</strong> and rename. Every action that changes something asks first, and says what will happen.</p>
+      <ul>
+        <li><strong>Logs</strong> open in a native viewer: follow, filter, errors only, jump to live, share. <strong>Open in Terminal</strong> runs the engine's own log command in a normal meshTerm session instead. <strong>Log Lines</strong> in Settings sets how many lines open.</li>
+        <li><strong>Shell</strong> opens a terminal session on the host and enters the container.</li>
+        <li><strong>Web UI</strong> opens a container's web page in the in-app browser through your SSH connection (the host's SSH server must allow port forwarding; the app offers the fix if it doesn't). A saved login for a container appears after you confirm with Face ID.</li>
+        <li><strong>Pull and Recreate</strong> pulls a newer image and recreates the container with the same settings. The old container is kept until the new one runs, and put back if the new one can't be created.</li>
+      </ul>
+
+      <h3 id="containers-setup">When a host needs setting up</h3>
+      <p>If an engine is installed but meshTerm can't use it yet (not running, or your SSH user can't reach its socket), the host shows <strong>Needs Setup</strong> with the reason and the steps. Where the fix can work, one tap does it: <strong>Run in Terminal</strong> opens a terminal on the host, types the command and returns you to the app when it finishes; <strong>Copy</strong> copies it. meshTerm never runs a root step on its own. For hosts where the SSH user needs sudo, <strong>Edit Host &gt; Containers</strong> sets the sudo choice (off, passwordless sudo, a saved sudo password, or the SSH password) and tests it before saving. The commands for each problem are in <a href="troubleshooting.html#s-containers">Troubleshooting</a>.</p>
+
+      <h3 id="containers-deploy">Deploying</h3>
+      <ul>
+        <li><strong>New Container</strong>: pick an image (on the host, popular images, or a Docker Hub search with tags), then ports, volumes, environment variables, restart policy and, where the engine supports it, always-pull. The exact command is previewed before anything runs. <strong>Create and Start</strong> makes it natively with progress; <strong>Run in Terminal</strong> types the same command into a terminal on the host.</li>
+        <li><strong>New Stack</strong>: write or paste a Compose file in an editor with syntax colours and checks, or point at a git repository. <strong>Review</strong> shows the file and the host's check before <strong>Deploy</strong>, and the progress stays on screen if you leave and come back.</li>
+        <li><strong>Stack screen</strong>: start, stop, restart, update images, edit the Compose file and environment (with saved versions to restore), view logs, and remove. <strong>Remove</strong> keeps volumes unless you choose <strong>Remove with Volumes</strong>. Stacks made by other tools can be viewed but not changed.</li>
+      </ul>
+
+      <h3 id="containers-templates">Templates</h3>
+      <p>From the <strong>+</strong> menu, <strong>Templates</strong> (or <strong>Browse Templates</strong> on an empty Stacks list) lists ready-made stacks, with <strong>Featured</strong>, categories, search and <strong>Super Stacks</strong> that combine several apps. A template is a Compose file plus a settings form. You fill in the form, review the Compose file exactly as it will be written, and deploy. Passwords the template needs are generated when you deploy and kept in the <a href="#containers-vault">Vault</a>, and the template tells you which one to use at first sign-in. The template list comes from meshdeck.ag-applications.com, is checked against a signature built into the app before use, and a copy is built in, so the list works offline. A deployed stack keeps the version of the template it came from. Deploying runs on your own server.</p>
+
+      <h3 id="containers-vault">The Vault</h3>
+      <p>The Vault keeps container secrets on this device. Turn on <strong>Keep in Vault</strong> for an environment variable (it is on by default for names that look like secrets) and meshTerm stores the value in this device's Keychain, never synced, and sends it to the host only when the container is created or the stack is deployed. <strong>Settings &gt; Containers &gt; Vault</strong> lists each secret with where it is used. <strong>Reveal</strong> and <strong>Copy</strong> are behind Face ID, and a copied value clears from the clipboard after two minutes. You can add, rename, replace and delete secrets, and <strong>Copy from a Secret Profile</strong> makes copies of a profile's values. Replacing a value takes effect on a container's next redeploy. Container secrets are for stacks you deploy; <a href="#secret-profiles">Secret Profiles</a> are for shells and agents.</p>
+      <div class="callout info">
+        <strong>Note:</strong> a container's environment is visible to anyone who can inspect the container on the host. A value from the Vault becomes an ordinary environment variable there, and meshTerm says so on the review screen.
+      </div>
+
+      <h3 id="containers-topology">Topology</h3>
+      <p>Switch a host to <strong>Topology</strong> for a living map of how its containers, networks and volumes connect, grouped by <strong>Stack</strong>, <strong>Network</strong> or <strong>Volumes</strong> (<strong>Group By</strong>), with a glow on unhealthy containers and a callout for broken dependencies. <strong>Show As</strong> switches between <strong>Map</strong> and <strong>List</strong>; the list tells you every relationship the map draws, and is the one VoiceOver reads.</p>
+
+      <h3 id="containers-ask">Ask an Agent</h3>
+      <p>Open a container and tap <strong>Ask Agent</strong> to get likely causes, with the evidence for each, and up to three suggested actions (restart, start, pull and recreate, recreate, open logs, open the topology, or edit a setting). Each action opens its normal confirmation; nothing runs by itself.</p>
+      <ul>
+        <li><strong>Who answers.</strong> By default, Claude Code on that host, started with its tools off, so it can only read the summary and reply. It sends the summary to Anthropic under the Claude account signed in on that host. Or use your own API key in <strong>Settings &gt; Containers &gt; Ask an Agent</strong>: Anthropic, Google Gemini or any OpenAI-compatible server. The key stays in this device's Keychain, never syncs, and is sent only to the address you saved it for. Plain <code>http</code> works only for an address on your own network or tailnet.</li>
+        <li><strong>What is sent.</strong> A consent screen names the agent, the host and the company that runs the model, and lists what goes: the container's state and settings, up to 200 recent log lines, recent events, CPU and memory, its links to other containers, and the host's name. Secrets are masked and a Vault value is replaced by its Vault name. Logs can contain personal data. Nothing is sent until you tap <strong>Ask</strong>, and <strong>Stop Sending to Claude</strong> withdraws consent.</li>
+        <li><strong>Dig Deeper</strong> starts a chat in <a href="#agents">Agent Mode</a> with the container's name, image, status and settings, its dependencies and recent events (never its logs or environment). That agent asks before it changes anything.</li>
+        <li>It needs SSH to the host, so it isn't offered for Portainer environments.</li>
+      </ul>
+
+      <h3 id="containers-portainer">Portainer servers</h3>
+      <p>If you already run <a href="https://www.portainer.io">Portainer</a>, add the server with <strong>Add Host</strong> in Containers or <strong>Settings &gt; Containers &gt; Portainer Servers</strong>, using an access token you create in Portainer (My account, then Access tokens). Portainer must use HTTPS (usually port 9443); if its certificate isn't from a public authority, meshTerm shows it and asks you to trust it. Each server gets a card, with its Docker environments as pills, its containers and stacks, and the Web UI. Shell, Open in Terminal and Ask Agent need SSH, so they aren't offered there. Portainer holds a stack's values, Vault values included, on its server, and the app says so.</p>
+
+      <h3 id="containers-ipad">iPad</h3>
+      <p>On a regular-width iPad the tab is a split view: the Fleet in the sidebar and the chosen host in the detail. Opening a container, its logs or a stack stays in the detail, and wide screens (the web page, a Compose file) hide the sidebar until you go back. On iPhone, and on an iPad in a narrow window, it is the same screens in a stack.</p>
+
+      <h3 id="containers-settings">Settings &gt; Containers</h3>
+      <ul>
+        <li><strong>Find Container Hosts Automatically</strong>: when off, a host is checked only when you pull to refresh or tap <strong>Check This Host</strong>.</li>
+        <li><strong>Hidden Hosts</strong>, <strong>Portainer Servers</strong>, <strong>Vault</strong> and <strong>Ask an Agent</strong>, as above.</li>
+        <li><strong>Display</strong>: <strong>Log Lines</strong>, <strong>Compact Rows</strong>, <strong>Popular Images</strong> (refresh the list) and <strong>Templates</strong> (refresh the list).</li>
+        <li><strong>Forget Sudo Password</strong>, for saved sudo passwords, works without Pro. You can also delete the Vault's secrets without Pro.</li>
+      </ul>
+      <p>Container data is removed by <strong>Erase This Device</strong>, which reports anything it could not remove. The Containers tab contacts Docker Hub only while you browse images, and the template list only when you open Templates.</p>
+    </section>
+
+    <!-- ============================================ -->
     <section id="auth">
-      <h2>8. Authentication</h2>
+      <h2>9. Authentication</h2>
 
       <h3>Password</h3>
       <p>Enter the password when adding or editing the host. Passwords are stored in the iOS Keychain.</p>
@@ -635,7 +742,7 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
 
     <!-- ============================================ -->
     <section id="ssh-keys">
-      <h2>9. SSH keys</h2>
+      <h2>10. SSH keys</h2>
       <p>Manage keys in Settings → Hosts &amp; Network → SSH Keys.</p>
 
       <h3>Supported key types</h3>
@@ -683,7 +790,7 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
 
     <!-- ============================================ -->
     <section id="tailscale">
-      <h2>10. Tailscale</h2>
+      <h2>11. Tailscale</h2>
       <p>meshTerm has a built-in Tailscale networking stack, so no separate Tailscale app is required. Add your Tailnet credentials and meshTerm connects to your devices directly over WireGuard. SSH, SFTP, Roam, and all auxiliary connections route through the encrypted Tailscale tunnel natively.</p>
 
       <h3 id="tailscale-routing">Routing modes</h3>
@@ -730,7 +837,7 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
 
     <!-- ============================================ -->
     <section id="tunnels">
-      <h2>11. Port forwarding &amp; Tunnels</h2>
+      <h2>12. Port forwarding &amp; Tunnels</h2>
       <p>meshTerm can forward network ports over an SSH connection, the same way <code>ssh -L</code> and <code>ssh -D</code> do on a desktop. Rules are configured per host and managed from the <strong>Tunnels</strong> screen.</p>
 
       <h3>Rule types</h3>
@@ -753,7 +860,7 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
 
     <!-- ============================================ -->
     <section id="keyboard">
-      <h2>12. Keyboard <span class="new-badge">2.1</span></h2>
+      <h2>13. Keyboard <span class="new-badge">2.1</span></h2>
       <p>The on-screen accessory above the keyboard is a <strong>three-page palette</strong> (four pages in a tmux session). Swipe left and right to move between the pages, or tap the page control. Each page keeps a different set of tools within thumb reach.</p>
 
       <h3>The pages</h3>
@@ -809,7 +916,7 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
 
     <!-- ============================================ -->
     <section id="predictions">
-      <h2>13. Predictions &amp; history <span class="new-badge">2.0</span></h2>
+      <h2>14. Predictions &amp; history <span class="new-badge">2.0</span></h2>
 
       <h3>Predictive echo overlay</h3>
       <p>When you're typing at a shell prompt, meshTerm mirrors your keystrokes on screen immediately and then reconciles them with the echo that comes back from the server. On a slow link, typing feels native - you see the letters appear as you type, not after a 200 ms round-trip.</p>
@@ -828,7 +935,7 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
 
     <!-- ============================================ -->
     <section id="tui-pill">
-      <h2>14. TUI return-to-prompt pill <span class="new-badge">2.0</span></h2>
+      <h2>15. TUI return-to-prompt pill <span class="new-badge">2.0</span></h2>
       <p>When a full-screen terminal app (TUI) like Claude Code or Codex CLI is running, scrolling up to look at earlier output normally means the prompt scrolls off the bottom of the screen. The TUI return-to-prompt pill is a small floating button that surfaces in those situations and jumps you straight back to the live prompt with one tap.</p>
 
       <p>Three styles, picked automatically by what's running:</p>
@@ -858,7 +965,7 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
 
     <!-- ============================================ -->
     <section id="snippets">
-      <h2>15. Snippet Vault</h2>
+      <h2>16. Snippet Vault</h2>
       <p>The Snippet Vault is a searchable library of terminal commands you can send to the active session in one tap. Open it from the terminal toolbar.</p>
 
       <h3>Default snippets</h3>
@@ -889,7 +996,7 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
 
     <!-- ============================================ -->
     <section id="secret-profiles">
-      <h2>16. Secret Profiles <span class="new-badge">2.1</span></h2>
+      <h2>17. Secret Profiles <span class="new-badge">2.1</span></h2>
       <p><strong>Secret Profiles are a meshTerm Pro feature.</strong> Creating and using them requires an active Pro subscription.</p>
       <p>A <strong>Secret Profile</strong> bundles a set of environment variables and keys under one name, so you can hand a whole environment to a session at once. Tap to inject a profile into the session you are already in: its variables and keys reach the running shell <strong>invisibly</strong>, with nothing typed into the terminal and nothing left on screen afterward. Injection works over plain SSH, mtRoam, and tmux.</p>
       <h3>When injected values take effect</h3>
@@ -901,7 +1008,7 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
 
     <!-- ============================================ -->
     <section id="macros">
-      <h2>17. Macro bar</h2>
+      <h2>18. Macro bar</h2>
       <p>The macro bar is a scrollable row of one-tap commands above the keyboard, available in every session. Tap a macro to send its command followed by Return.</p>
 
       <h3>Editing macros</h3>
@@ -924,7 +1031,7 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
 
     <!-- ============================================ -->
     <section id="sftp">
-      <h2>18. SFTP file browser</h2>
+      <h2>19. SFTP file browser</h2>
       <p>The SFTP browser moves files on and off your servers without leaving meshTerm. It runs over the same SSH transport as your terminal sessions - no additional credentials, no third-party cloud.</p>
 
       <h3>Opening the browser</h3>
@@ -972,7 +1079,7 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
 
     <!-- ============================================ -->
     <section id="search">
-      <h2>19. Scrollback search <span class="new-badge">2.0</span></h2>
+      <h2>20. Scrollback search <span class="new-badge">2.0</span></h2>
       <p>Press <strong>⌘ F</strong> (or tap the magnifier in the terminal toolbar) to open the search bar at the bottom of the terminal. Type to find matches in the visible scrollback; a running match count shows how many hits.</p>
       <ul>
         <li><strong>Up / Down arrows</strong> - step between matches.</li>
@@ -985,7 +1092,7 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
 
     <!-- ============================================ -->
     <section id="themes">
-      <h2>20. Color modes</h2>
+      <h2>21. Color modes</h2>
       <p>Settings → Terminal → <strong>Color Mode</strong> sets the terminal's look. Alongside full <strong>True Color</strong>, meshTerm offers retro single-hue modes for a calmer, CRT-style view:</p>
       <ul>
         <li><strong>True Color</strong> - full 24-bit color.</li>
@@ -998,7 +1105,7 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
 
     <!-- ============================================ -->
     <section id="security">
-      <h2>21. Security &amp; App Lock</h2>
+      <h2>22. Security &amp; App Lock</h2>
 
       <h3>Trusted servers (TOFU)</h3>
       <p>meshTerm uses <strong>Trust On First Use</strong> for host-key verification. The first time you connect to a host, the app shows the server's host-key fingerprint and asks you to confirm. Subsequent connects check the fingerprint silently. If it changes (server rebuilt, key rotated, or something more sinister), the connection is blocked with a warning.</p>
@@ -1030,7 +1137,7 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
 
     <!-- ============================================ -->
     <section id="sync">
-      <h2>22. iCloud Sync</h2>
+      <h2>23. iCloud Sync</h2>
       <p>iCloud Sync keeps meshTerm consistent across your iPhone and iPad. It is <strong>opt-in and off by default</strong> - turn it on in Settings &rarr; iCloud Sync - and it is a <a href="#pro">Pro</a> feature.</p>
 
       <h3>What syncs</h3>
@@ -1049,7 +1156,7 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
 
     <!-- ============================================ -->
     <section id="settings">
-      <h2>23. Settings reference</h2>
+      <h2>24. Settings reference</h2>
       <p>A quick map of the Settings tab. Since 2.2, Settings is grouped into panes <span class="new-badge">2.2</span>. Not sure where something lives? Type into the <strong>Search</strong> field at the top of Settings: a result opens the pane, scrolls to the row and highlights it for a moment. Search also matches the English name of a row when the app is in Spanish.</p>
 
       <ul>
@@ -1060,7 +1167,7 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
         <li><strong>Keyboard</strong>: Customize Keyboard, <strong>Left-handed layout</strong>, <strong>Keyboard when a session opens</strong>, Tap-for-Keyboard Reminder, Hardware Buttons, Button Size, Show Macros, Macros, Double-Tap Action.</li>
         <li><strong>Agents</strong>: edit diffs, typing (autocorrect and smart punctuation), Claude session age and size warnings, <a href="#agent-notifications">Notifications</a>, and <strong>Stop All Agents</strong>.</li>
         <li><strong>herdr</strong> <span class="new-badge">2.2</span>: each host's herdr state (tap one to check it or set it up), <strong>Look for herdr on my hosts</strong>, <strong>herdr first in session lists</strong>, <strong>Menu tips</strong> and <strong>Show Menu Tips Again</strong>, and Learn: <strong>What is herdr?</strong>, <strong>herdr Shortcuts</strong> and herdr.dev. See <a href="#herdr">herdr</a>.</li>
-        <li><strong>Containers</strong>: defaults for <strong>Log Lines</strong> and for the view the containers screen opens on (<strong>Open On</strong>). Containers needs a Linux host (macOS from 2.3); Windows hosts aren't checked for containers. New to containers? See <a href="docker-101.html">Docker 101</a>.</li>
+        <li><strong>Containers</strong> <span class="new-badge">2.3</span>: <strong>Find Container Hosts Automatically</strong>, <strong>Hidden Hosts</strong>, <strong>Portainer Servers</strong>, the <strong>Vault</strong>, <strong>Ask an Agent</strong> and <strong>Display</strong> (<strong>Log Lines</strong>, <strong>Compact Rows</strong>, <strong>Popular Images</strong>, <strong>Templates</strong>). Containers needs a Linux host (macOS from 2.3); Windows hosts aren't checked for containers. See <a href="#containers-settings">Containers</a>. New to containers? See <a href="docker-101.html">Docker 101</a>.</li>
         <li><strong>iCloud Sync</strong>: <a href="#sync">Sync with iCloud</a>, Sync secrets, Sync preferences.</li>
         <li><strong>Privacy &amp; Security</strong>: <a href="#security">App Lock</a>, Delete from Keychain, Erase This Device, Clear Connection History.</li>
         <li><strong>General</strong>: Appearance, onboarding (Hide Onboarding Cards, <strong>Show Welcome Tour</strong>), and About (version, Privacy Policy, Terms of Use, Keyboard Guide, Open-Source Licenses, Reset All Settings).</li>
@@ -1072,7 +1179,7 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
 
     <!-- ============================================ -->
     <section id="pro">
-      <h2>24. meshTerm Pro</h2>
+      <h2>25. meshTerm Pro</h2>
       <p>One host, one live session plus one herdr session, and one agent are free. Pro lifts those limits and adds Containers, Secret Profiles, iCloud Sync and agent Resume. Everything else is free. In detail:</p>
 
       <table>
@@ -1111,7 +1218,7 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
 
     <!-- ============================================ -->
     <section id="troubleshooting">
-      <h2>25. Troubleshooting</h2>
+      <h2>26. Troubleshooting</h2>
 
       <p>This section covers the most common problems in brief. For a detailed, symptom-by-symptom guide to getting connected, keys and host keys, tmux, SFTP, agents, notifications, herdr and Containers, with commands for each system, see the <a href="troubleshooting.html">Troubleshooting page</a>. New to containers? Start with <a href="docker-101.html">Docker 101</a>.</p>
 
@@ -1239,7 +1346,7 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
 
     <!-- ============================================ -->
     <section id="feedback">
-      <h2>26. Feedback and feature requests <span class="new-badge">2.2</span></h2>
+      <h2>27. Feedback and feature requests <span class="new-badge">2.2</span></h2>
       <p>Settings &gt; <strong>Feedback and Feature Requests</strong> gathers every way to reach us. The bug, feature and question rows open our public <a href="https://github.com/AG-Studio-Apps/meshterm-feedback">meshterm-feedback</a> repo on GitHub.</p>
       <ul>
         <li><strong>Share This App</strong> and <strong>Rate on the App Store</strong>.</li>
