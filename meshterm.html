@@ -79,7 +79,7 @@ footer: |
         <li>An SFTP file browser that integrates with the iOS Files app.</li>
         <li>A customisable macro bar and a searchable Snippet Vault.</li>
         <li>Native Tailscale integration for keyless SSH on your Tailnet.</li>
-        <li>A Containers tab for Docker, Podman and Portainer on your own servers, and support for Windows hosts.</li>
+        <li>A Containers tab for Docker, Podman and Portainer on your own servers, and Install Key and herdr sessions for Windows hosts.</li>
       </ul>
 
     </section>
@@ -91,7 +91,7 @@ footer: |
 
       <h3>2.3 <span class="new-badge">2.3</span></h3>
       <ul>
-        <li><strong>Containers</strong>: a new tab for the Docker, Podman, nerdctl and Apple <code>container</code> workloads on your own servers, over the SSH connections you already have. A Fleet of every host with an engine, a screen for each host and container with status, CPU and memory charts, logs and a Shell, and start, stop, restart and recreate with a confirmation first. Containers is part of Pro, with a free preview. See <a href="#containers">Containers</a>.
+        <li><strong>Containers</strong>: a new tab for the Docker, Podman, nerdctl and Apple <code>container</code> workloads on your own servers, over the SSH connections you already have. An overview of every host with an engine, a screen for each host and container with status, CPU and memory charts, logs and a Shell, and start, stop, restart and recreate with a confirmation first. Containers is part of Pro, with a free preview. See <a href="#containers">Containers</a>.
           <ul>
             <li><strong>New Container and New Stack</strong>: an image browser with Docker Hub search, a command preview, a Compose editor with checks, a Review screen and deploy progress that survives leaving the screen. See <a href="#containers-deploy">Deploying</a>.</li>
             <li><strong>Templates</strong>: ready-made stacks, including Super Stacks, from a signed list. See <a href="#containers-templates">Templates</a>.</li>
@@ -99,9 +99,9 @@ footer: |
             <li><strong>Topology</strong>: a map of how a host's containers, networks and volumes connect, with a list version for VoiceOver. See <a href="#containers-topology">Topology</a>.</li>
             <li><strong>Ask an Agent</strong>: ask Claude on your host, or your own API key, why a container is failing, after you agree to what is sent. See <a href="#containers-ask">Ask an Agent</a>.</li>
             <li><strong>Portainer</strong>: add a Portainer server beside your own hosts. See <a href="#containers-portainer">Portainer servers</a>.</li>
-            <li><strong>iPad</strong>: the Containers tab becomes a split view with the Fleet in the sidebar. See <a href="#containers-ipad">iPad</a>.</li>
+            <li><strong>iPad</strong>: the Containers tab becomes a split view with the host list in the sidebar. See <a href="#containers-ipad">iPad</a>.</li>
           </ul></li>
-        <li><strong>Windows hosts</strong>: connect to a Windows PC or server through its built-in OpenSSH server. meshTerm finds the right file for <strong>Install Key</strong>, tells you plainly what works differently on Windows, and handles Tailscale devices that run Windows. See <a href="#windows">Windows hosts</a>.</li>
+        <li><strong>Windows hosts</strong>: <strong>Install Key</strong> now writes to the file Windows' SSH server reads, and with herdr 0.9.4 or later a Windows host can keep sessions running after you disconnect. See <a href="#windows">Windows hosts</a>.</li>
         <li><strong>herdr on Windows</strong>: with herdr 0.9.4 or later, a Windows host can keep sessions running after you disconnect. <strong>Set Up herdr</strong> installs it with one tap, with no admin rights. See <a href="#herdr-windows">herdr on Windows</a>.</li>
         <li><strong>Links that wrap in herdr and tmux splits</strong>: when herdr, or a tmux split, draws a long link across several rows (such as a sign-in URL), tapping any row now opens the whole link. meshTerm asks first and shows the site in bold, so you can check it before you open it. The palette's <strong>Links</strong> list shows the whole link too. See <a href="#herdr-links">Tapping links in herdr and tmux</a>.</li>
         <li><strong>A brand-new server, step by step</strong>: the common first-connection problems now say what happened in one line and offer a fix that can work.
@@ -112,7 +112,7 @@ footer: |
             <li>A host with no SFTP server fails at once with the fix, instead of hanging. A tunnel that sshd blocks says to set <code>AllowTcpForwarding</code>.</li>
             <li>The Sessions list offers <strong>Install tmux in Terminal</strong> when tmux is missing, and finds a tmux installed by Homebrew.</li>
             <li><strong>Run in Terminal</strong> now types a long fix into a terminal on the host, and brings you back to where you started when it finishes. Install lines match the host's system and your account (root, sudo, or <code>su</code>), and say so when your account can't install software.</li>
-            <li>Agents: sign-in fails fast with the CLI's own reason; a missing working folder offers <strong>Create Folder</strong> or <strong>Use Home Folder</strong>; notifications check that <code>python3</code> and <code>curl</code> are on the host; Claude and Codex launch on macOS hosts, and Codex works on hosts without <code>procps</code>.</li>
+            <li>Agents: sign-in fails fast with the CLI's own reason; a missing working folder offers <strong>Create Folder</strong> or <strong>Use Home Folder</strong>; notifications check that <code>python3</code> and <code>curl</code> are on the host; Claude and Codex launch on macOS hosts, and on a host without <code>procps</code> Codex says so and offers <strong>Install procps</strong>.</li>
             <li><strong>Keep Tools on PATH</strong>: after you install a tool into <code>~/.local/bin</code>, one tap makes new terminals and new tmux panes find it. See <a href="#keep-path">Keep Tools on PATH</a>.</li>
             <li>A host with no tmux or mtRoam sessions shows a prominent <strong>New Session</strong>.</li>
           </ul>
@@ -655,12 +655,12 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
     <section id="containers">
       <h2>8. Containers <span class="new-badge">2.3</span></h2>
       <p>The <strong>Containers</strong> tab shows and manages the containers on your own servers. It works with Docker, Podman, nerdctl and Apple's <code>container</code> tool (in beta), over the SSH connections you already have. Nothing is installed on the server except the engine itself: meshTerm runs the engine's own commands. If you are new to containers, read <a href="docker-101.html">Docker 101</a> first.</p>
-      <p>Containers is part of <a href="#pro">meshTerm Pro</a>. Without Pro the tab is a preview: it lists the hosts where an engine was found, by name, and offers the free trial. The hosts need to run Linux or macOS. Windows hosts aren't checked for containers; a fleet of only Windows hosts says it needs a Linux or Mac host.</p>
+      <p>Containers is part of <a href="#pro">meshTerm Pro</a>. Without Pro the tab is a preview: it lists the hosts where an engine was found, by name, and offers the free trial. The hosts need to run Linux or macOS. Windows hosts aren't checked for containers; a list of only Windows hosts says it needs a Linux or Mac host.</p>
 
-      <h3 id="containers-fleet">The Fleet</h3>
-      <p>The tab opens on the <strong>Fleet</strong>: one card for every host that has a container engine. meshTerm checks your saved hosts in the background, and a pull-down checks them again. Each card shows the engine and how many containers run, and says "All containers healthy" or how many need you. <strong>Needs Attention</strong> lists the containers that need you. A host with no engine says so, and its host screen shows the install lines for its system (see <a href="docker-101.html#install">Docker 101</a>).</p>
+      <h3 id="containers-fleet">The host overview</h3>
+      <p>The tab opens on <strong>Containers</strong>, an overview with one card for every host that has a container engine. meshTerm checks your saved hosts in the background, and a pull-down checks them again. Each card shows the engine and how many containers run, and says "All containers healthy" or how many need you. <strong>Needs Attention</strong> lists the containers that need you. A host with no engine says so, and its host screen shows the install lines for its system (see <a href="docker-101.html#install">Docker 101</a>).</p>
       <ul>
-        <li><strong>Hide a host</strong> from the Fleet by long-pressing its card (<strong>Hide from Containers</strong>), or turn off <strong>Show in Containers</strong> in Edit Host &gt; Containers. Hidden hosts are never checked or connected for containers. Show them again from <strong>Settings &gt; Containers &gt; Hidden Hosts</strong>.</li>
+        <li><strong>Hide a host</strong> from the overview by long-pressing its card (<strong>Hide from Containers</strong>), or turn off <strong>Show in Containers</strong> in Edit Host &gt; Containers. Hidden hosts are never checked or connected for containers. Show them again from <strong>Settings &gt; Containers &gt; Hidden Hosts</strong>.</li>
         <li><strong>Hosts on another Tailscale profile</strong> are grouped apart. Tapping one switches to that profile first, and asks before it would disconnect your live sessions.</li>
         <li>The <strong>Activity</strong> tab has a Containers card with the number of hosts, running, stopped and needing attention, from the last check. Tap it to open the tab.</li>
         <li>In a terminal, <strong>Containers</strong> in the keyboard palette opens that host's screen.</li>
@@ -671,12 +671,12 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
       <p>The <strong>+</strong> menu has <strong>New Container</strong>, <strong>New Stack</strong>, <strong>Templates</strong> and <strong>Add Host</strong>. Lists of images, volumes and networks show what uses each one, and removing something that is in use is refused. Prune actions say what they delete before you confirm.</p>
 
       <h3 id="containers-container">A container</h3>
-      <p>A container's screen shows its status, CPU and memory charts, recent logs and events, and a grid of actions: <strong>Shell</strong>, <strong>Logs</strong>, <strong>Web UI</strong>, start, stop and restart. The <strong>More</strong> menu adds pause, kill, remove, <strong>Pull and Recreate</strong>, <strong>Recreate</strong>, <strong>Edit Environment</strong> and rename. Every action that changes something asks first, and says what will happen.</p>
+      <p>A container's screen shows its status, CPU and memory charts, recent logs and events, and a grid of actions: <strong>Logs</strong>, start, stop and restart, <strong>Shell</strong>, <strong>Web UI</strong>, <strong>Redeploy</strong> (<strong>Pull Latest and Recreate</strong>, <strong>Recreate</strong>, <strong>Edit Environment</strong>) and <strong>Ask Agent</strong>. The <strong>More</strong> menu adds pause, kill, remove and rename. Every action that changes something asks first, and says what will happen.</p>
       <ul>
         <li><strong>Logs</strong> open in a native viewer: follow, filter, errors only, jump to live, share. <strong>Open in Terminal</strong> runs the engine's own log command in a normal meshTerm session instead. <strong>Log Lines</strong> in Settings sets how many lines open.</li>
         <li><strong>Shell</strong> opens a terminal session on the host and enters the container.</li>
         <li><strong>Web UI</strong> opens a container's web page in the in-app browser through your SSH connection (the host's SSH server must allow port forwarding; the app offers the fix if it doesn't). A saved login for a container appears after you confirm with Face ID.</li>
-        <li><strong>Pull and Recreate</strong> pulls a newer image and recreates the container with the same settings. The old container is kept until the new one runs, and put back if the new one can't be created.</li>
+        <li><strong>Pull Latest and Recreate</strong> pulls a newer image and recreates the container with the same settings. The old container is kept until the new one runs, and put back if the new one can't be created.</li>
       </ul>
 
       <h3 id="containers-setup">When a host needs setting up</h3>
@@ -686,7 +686,7 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
       <ul>
         <li><strong>New Container</strong>: pick an image (on the host, popular images, or a Docker Hub search with tags), then ports, volumes, environment variables, restart policy and, where the engine supports it, always-pull. The exact command is previewed before anything runs. <strong>Create and Start</strong> makes it natively with progress; <strong>Run in Terminal</strong> types the same command into a terminal on the host.</li>
         <li><strong>New Stack</strong>: write or paste a Compose file in an editor with syntax colours and checks, or point at a git repository. <strong>Review</strong> shows the file and the host's check before <strong>Deploy</strong>, and the progress stays on screen if you leave and come back.</li>
-        <li><strong>Stack screen</strong>: start, stop, restart, update images, edit the Compose file and environment (with saved versions to restore), view logs, and remove. <strong>Remove</strong> keeps volumes unless you choose <strong>Remove with Volumes</strong>. Stacks made by other tools can be viewed but not changed.</li>
+        <li><strong>Stack screen</strong>: start, stop, restart, update images, edit the Compose file and environment (with saved versions to restore), view logs, and remove. <strong>Remove</strong> keeps volumes unless you choose <strong>Remove with Volumes</strong>. A stack created outside meshTerm can be started, stopped and removed here; updates run in a terminal, and its files are not changed.</li>
       </ul>
 
       <h3 id="containers-templates">Templates</h3>
@@ -704,26 +704,26 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
       <h3 id="containers-ask">Ask an Agent</h3>
       <p>Open a container and tap <strong>Ask Agent</strong> to get likely causes, with the evidence for each, and up to three suggested actions (restart, start, pull and recreate, recreate, open logs, open the topology, or edit a setting). Each action opens its normal confirmation; nothing runs by itself.</p>
       <ul>
-        <li><strong>Who answers.</strong> By default, Claude Code on that host, started with its tools off, so it can only read the summary and reply. It sends the summary to Anthropic under the Claude account signed in on that host. Or use your own API key in <strong>Settings &gt; Containers &gt; Ask an Agent</strong>: Anthropic, Google Gemini or any OpenAI-compatible server. The key stays in this device's Keychain, never syncs, and is sent only to the address you saved it for. Plain <code>http</code> works only for an address on your own network or tailnet.</li>
+        <li><strong>Who answers.</strong> By default, Claude Code on that host, started with its tools off, so it can only read the summary and reply. It sends the summary to Anthropic under the Claude account signed in on that host. Or use your own API key in <strong>Settings &gt; Containers &gt; Ask an Agent</strong>: Anthropic, OpenAI, Google Gemini or another OpenAI-compatible server. The key stays in this device's Keychain, never syncs, and is sent only to the address you saved it for. Plain <code>http</code> works only for an address on your own network or tailnet.</li>
         <li><strong>What is sent.</strong> A consent screen names the agent, the host and the company that runs the model, and lists what goes: the container's state and settings, up to 200 recent log lines, recent events, CPU and memory, its links to other containers, and the host's name. Secrets are masked and a Vault value is replaced by its Vault name. Logs can contain personal data. Nothing is sent until you tap <strong>Ask</strong>, and <strong>Stop Sending to Claude</strong> withdraws consent.</li>
         <li><strong>Dig Deeper</strong> starts a chat in <a href="#agents">Agent Mode</a> with the container's name, image, status and settings, its dependencies and recent events (never its logs or environment). That agent asks before it changes anything.</li>
         <li>It needs SSH to the host, so it isn't offered for Portainer environments.</li>
       </ul>
 
       <h3 id="containers-portainer">Portainer servers</h3>
-      <p>If you already run <a href="https://www.portainer.io">Portainer</a>, add the server with <strong>Add Host</strong> in Containers or <strong>Settings &gt; Containers &gt; Portainer Servers</strong>, using an access token you create in Portainer (My account, then Access tokens). Portainer must use HTTPS (usually port 9443); if its certificate isn't from a public authority, meshTerm shows it and asks you to trust it. Each server gets a card, with its Docker environments as pills, its containers and stacks, and the Web UI. Shell, Open in Terminal and Ask Agent need SSH, so they aren't offered there. Portainer holds a stack's values, Vault values included, on its server, and the app says so.</p>
+      <p>If you already run <a href="https://www.portainer.io">Portainer</a>, add the server with <strong>Add Host</strong> in Containers or <strong>Settings &gt; Containers &gt; Portainer Servers</strong>, using an access token you create in Portainer (My account, then Access tokens). Portainer must use HTTPS (usually port 9443); if its certificate isn't from a public authority, meshTerm shows it and asks you to trust it. Each server gets a card, with its Docker environments as pills, its containers and stacks, and the Web UI for the server's own Docker environment. Shell, Open in Terminal and Ask Agent need SSH, so they aren't offered there. Portainer holds a stack's values, Vault values included, on its server, and the app says so.</p>
 
       <h3 id="containers-ipad">iPad</h3>
-      <p>On a regular-width iPad the tab is a split view: the Fleet in the sidebar and the chosen host in the detail. Opening a container, its logs or a stack stays in the detail, and wide screens (the web page, a Compose file) hide the sidebar until you go back. On iPhone, and on an iPad in a narrow window, it is the same screens in a stack.</p>
+      <p>On a regular-width iPad the tab is a split view: the host list in the sidebar and the chosen host in the detail. Opening a container, its logs or a stack stays in the detail, and wide screens (the web page, a Compose file) hide the sidebar until you go back. On iPhone, and on an iPad in a narrow window, it is the same screens in a stack.</p>
 
       <h3 id="containers-settings">Settings &gt; Containers</h3>
       <ul>
         <li><strong>Find Container Hosts Automatically</strong>: when off, a host is checked only when you pull to refresh or tap <strong>Check This Host</strong>.</li>
         <li><strong>Hidden Hosts</strong>, <strong>Portainer Servers</strong>, <strong>Vault</strong> and <strong>Ask an Agent</strong>, as above.</li>
         <li><strong>Display</strong>: <strong>Log Lines</strong>, <strong>Compact Rows</strong>, <strong>Popular Images</strong> (refresh the list) and <strong>Templates</strong> (refresh the list).</li>
-        <li><strong>Forget Sudo Password</strong>, for saved sudo passwords, works without Pro. You can also delete the Vault's secrets without Pro.</li>
+        <li><strong>Forget Sudo Password</strong> lives in <strong>Edit Host &gt; Containers</strong>, not here, and works without Pro. Vault secrets can be deleted without Pro too.</li>
       </ul>
-      <p>Container data is removed by <strong>Erase This Device</strong>, which reports anything it could not remove. The Containers tab contacts Docker Hub only while you browse images, and the template list only when you open Templates.</p>
+      <p>Container data is removed by <strong>Erase This Device</strong>, which reports anything it could not remove. The Containers tab contacts Docker Hub only while you browse images or tap Refresh in Settings (Settings &gt; Containers &gt; Display, Popular Images), and the template list only when you open Templates or tap Refresh there.</p>
     </section>
 
     <!-- ============================================ -->
@@ -1167,7 +1167,7 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
         <li><strong>Keyboard</strong>: Customize Keyboard, <strong>Left-handed layout</strong>, <strong>Keyboard when a session opens</strong>, Tap-for-Keyboard Reminder, Hardware Buttons, Button Size, Show Macros, Macros, Double-Tap Action.</li>
         <li><strong>Agents</strong>: edit diffs, typing (autocorrect and smart punctuation), Claude session age and size warnings, <a href="#agent-notifications">Notifications</a>, and <strong>Stop All Agents</strong>.</li>
         <li><strong>herdr</strong> <span class="new-badge">2.2</span>: each host's herdr state (tap one to check it or set it up), <strong>Look for herdr on my hosts</strong>, <strong>herdr first in session lists</strong>, <strong>Menu tips</strong> and <strong>Show Menu Tips Again</strong>, and Learn: <strong>What is herdr?</strong>, <strong>herdr Shortcuts</strong> and herdr.dev. See <a href="#herdr">herdr</a>.</li>
-        <li><strong>Containers</strong> <span class="new-badge">2.3</span>: <strong>Find Container Hosts Automatically</strong>, <strong>Hidden Hosts</strong>, <strong>Portainer Servers</strong>, the <strong>Vault</strong>, <strong>Ask an Agent</strong> and <strong>Display</strong> (<strong>Log Lines</strong>, <strong>Compact Rows</strong>, <strong>Popular Images</strong>, <strong>Templates</strong>). Containers needs a Linux host (macOS from 2.3); Windows hosts aren't checked for containers. See <a href="#containers-settings">Containers</a>. New to containers? See <a href="docker-101.html">Docker 101</a>.</li>
+        <li><strong>Containers</strong> <span class="new-badge">2.3</span>: <strong>Find Container Hosts Automatically</strong>, <strong>Hidden Hosts</strong>, <strong>Portainer Servers</strong>, the <strong>Vault</strong>, <strong>Ask an Agent</strong> and <strong>Display</strong> (<strong>Log Lines</strong>, <strong>Compact Rows</strong>, <strong>Popular Images</strong>, <strong>Templates</strong>). Containers needs a Linux or macOS host; Windows hosts aren't checked for containers. See <a href="#containers-settings">Containers</a>. New to containers? See <a href="docker-101.html">Docker 101</a>.</li>
         <li><strong>iCloud Sync</strong>: <a href="#sync">Sync with iCloud</a>, Sync secrets, Sync preferences.</li>
         <li><strong>Privacy &amp; Security</strong>: <a href="#security">App Lock</a>, Delete from Keychain, Erase This Device, Clear Connection History.</li>
         <li><strong>General</strong>: Appearance, onboarding (Hide Onboarding Cards, <strong>Show Welcome Tour</strong>), and About (version, Privacy Policy, Terms of Use, Keyboard Guide, Open-Source Licenses, Reset All Settings).</li>
