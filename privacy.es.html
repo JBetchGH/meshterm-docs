@@ -1,6 +1,7 @@
 ---
 layout: legal
 title: "Política de Privacidad de meshTerm"
+description: "Política de privacidad de meshTerm: qué no recopila la aplicación, qué permanece en su dispositivo y qué se guarda en sus propios servidores."
 lang: es
 permalink: /privacy.es.html
 alternates:
@@ -8,7 +9,7 @@ alternates:
   - { hreflang: es, href: "privacy.es.html" }
 lang_switch: { href: "privacy.html", hreflang: en, label: "English" }
 footer: |
-    <p>Política de Privacidad de meshTerm &nbsp;·&nbsp; Versión 2.2 &nbsp;·&nbsp; En vigor desde octubre de 2026</p>
+    <p>Política de Privacidad de meshTerm &nbsp;·&nbsp; Versión 2.3 &nbsp;·&nbsp; En vigor desde octubre de 2026</p>
     <p style="margin-top: 6px;">
       <a href="mailto:meshterm@gmail.com">meshterm@gmail.com</a>
     </p>
@@ -16,7 +17,7 @@ footer: |
 <header>
   <div class="app-name">meshTerm · Cliente SSH para iOS</div>
   <h1>Política de Privacidad</h1>
-  <div class="meta">James Betchley &nbsp;·&nbsp; En vigor desde octubre de 2026 &nbsp;·&nbsp; Versión 2.2</div>
+  <div class="meta">James Betchley &nbsp;·&nbsp; En vigor desde octubre de 2026 &nbsp;·&nbsp; Versión 2.3</div>
 </header>
 
 
@@ -70,6 +71,9 @@ footer: |
       <li>Las credenciales de autenticación de Tailscale</li>
       <li>El contenido de cualquier archivo al que se acceda a través de la Aplicación</li>
     </ul>
+    <p>La única excepción es Preguntar a un agente en Contenedores: solo después de que usted lo
+    acepte, meshTerm envía un resumen de un contenedor, que puede incluir líneas recientes del registro, al
+    proveedor de IA que usted elija (consulte la sección 2.5).</p>
     <p>No utilizamos identificadores publicitarios (IDFA) ni ninguna tecnología equivalente de
     seguimiento. meshTerm no incluye SDK publicitarios ni SDK de analítica que transmitan
     datos personales a terceros.</p>
@@ -178,6 +182,11 @@ footer: |
       servicio de retransmisión lo elimina automáticamente cuando Apple indica que el token
       push no es válido (por ejemplo, tras eliminar la Aplicación).</li>
     </ul>
+
+    <h3>2.5 Contenedores</h3>
+    <p><strong>Preguntar a un agente.</strong> Si usa Preguntar a un agente en un contenedor, meshTerm envía un resumen de ese contenedor al agente de IA que usted elija, y solo después de que usted lo acepte en la aplicación. El resumen contiene el estado y la configuración del contenedor (incluidas sus variables de entorno, con los secretos ocultos y los valores del Vault sustituidos por los nombres de sus entradas), hasta 200 líneas recientes del registro, los eventos recientes, la CPU y la memoria, sus enlaces con otros contenedores y el nombre de su servidor. Hoy el agente es Claude ejecutándose en su propio servidor, que envía el resumen a Anthropic con la cuenta de Claude que tenga la sesión iniciada allí. meshTerm inicia Claude allí con sus herramientas y su configuración de Claude, como CLAUDE.md, los hooks y los servidores MCP, desactivadas, de modo que solo puede leer el resumen y responder: no puede ejecutar comandos ni leer o modificar archivos en su servidor. Claude no guarda ningún registro de la solicitud en su servidor (una versión antigua de Claude que no puede omitirlo guarda su propio registro de la solicitud allí, y la aplicación se lo indica). Si configura su propia clave de API, el resumen se envía en su lugar desde su dispositivo al proveedor de IA que usted configure. Su clave permanece en el Llavero de este dispositivo, nunca se sincroniza y solo se envía a la dirección para la que se guardó; http sin cifrar solo se permite hacia una dirección de su propia red o tailnet. meshTerm conserva el resumen y la respuesta solo en memoria mientras usted los usa y no los guarda en su dispositivo. Los registros pueden contener datos personales, como direcciones de correo electrónico, direcciones IP o nombres. "Profundizar" inicia un chat con un agente en su servidor y lo abre con el nombre del contenedor, la imagen, el motor de contenedores y su versión, el estado (con cualquier código de salida o cierre por falta de memoria), el número de reinicios y la política de reinicio, el estado de salud, el proyecto y el servicio de compose, los nombres de los contenedores de los que depende, los eventos recientes, los títulos de las causas y el nombre de su servidor, nunca sus registros ni su entorno. El Desarrollador no recibe ninguno de estos datos. Puede dejar de enviar en cualquier momento desde la pantalla Cambiar de Preguntar a un agente.</p>
+    <p><strong>Docker Hub.</strong> Cuando explora imágenes para ejecutar, meshTerm solicita a Docker Hub su lista de imágenes populares, el texto que usted busca y las etiquetas de la imagen que consulta, directamente desde su dispositivo. Estas solicitudes no llevan cookies, ni cuenta, ni nada que le identifique a usted, a sus servidores o a sus contenedores; se les aplica la política de privacidad de Docker. La descarga de una imagen la hace su propio servidor, no la aplicación. El Desarrollador no recibe ninguno de estos datos.</p>
+    <p><strong>Plantillas.</strong> Cuando abre Plantillas (Pro o la prueba gratuita), meshTerm descarga la lista de plantillas y su firma desde meshdeck.ag-applications.com, alojado en GitHub Pages, como máximo una vez al día salvo que usted la actualice. La solicitud no lleva cookies, ni cuenta, ni ningún identificador suyo, de su dispositivo, de sus servidores o de su configuración; GitHub ve su dirección IP y que se ha solicitado la lista, y se aplica la declaración de privacidad de GitHub. meshTerm comprueba la firma de la lista antes de usarla. Desplegar una plantilla envía el archivo compose de la plantilla y su configuración únicamente a su propio servidor.</p>
   </section>
 
   <section id="s3">
@@ -280,6 +289,12 @@ footer: |
       opcional (consulte la sección 6). El servicio de notificaciones push de Apple (APNs) entrega
       las notificaciones de agentes a su dispositivo, solo si las activa; la carga útil solo lleva
       una etiqueta anónima, el tipo de alerta y el nombre del agente.</li>
+      <li><strong>Docker Hub (hub.docker.com)</strong> - solo cuando explora o busca imágenes en
+      Contenedores, sin cookies ni cuenta (consulte la sección 2.5).</li>
+      <li><strong>meshdeck.ag-applications.com (GitHub Pages)</strong> - para descargar la lista
+      firmada de plantillas, solo cuando abre Plantillas (consulte la sección 2.5).</li>
+      <li><strong>Su propio proveedor o servidor de IA</strong> - solo si configura su propia clave de API para
+      Preguntar a un agente, y solo cuando usted lo pide (consulte la sección 2.5).</li>
     </ul>
   </section>
 

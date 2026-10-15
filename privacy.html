@@ -1,6 +1,7 @@
 ---
 layout: legal
 title: "meshTerm Privacy Policy"
+description: "The meshTerm privacy policy: what the app does not collect, what stays on your device, and what lives on your own servers."
 lang: en
 permalink: /privacy.html
 alternates:
@@ -8,7 +9,7 @@ alternates:
   - { hreflang: es, href: "privacy.es.html" }
 lang_switch: { href: "privacy.es.html", hreflang: es, label: "Español" }
 footer: |
-    <p>meshTerm Privacy Policy &nbsp;·&nbsp; Version 2.2 &nbsp;·&nbsp; Effective October 2026</p>
+    <p>meshTerm Privacy Policy &nbsp;·&nbsp; Version 2.3 &nbsp;·&nbsp; Effective October 2026</p>
     <p style="margin-top: 6px;">
       <a href="mailto:meshterm@gmail.com">meshterm@gmail.com</a>
     </p>
@@ -16,7 +17,7 @@ footer: |
 <header>
   <div class="app-name">meshTerm · iOS SSH Client</div>
   <h1>Privacy Policy</h1>
-  <div class="meta">James Betchley &nbsp;·&nbsp; Effective October 2026 &nbsp;·&nbsp; Version 2.2</div>
+  <div class="meta">James Betchley &nbsp;·&nbsp; Effective October 2026 &nbsp;·&nbsp; Version 2.3</div>
 </header>
 
 
@@ -66,6 +67,9 @@ footer: |
       <li>Tailscale authentication credentials</li>
       <li>Contents of any file accessed through the Application</li>
     </ul>
+    <p>The one exception is Ask an Agent in Containers: only after you agree, meshTerm sends a summary
+    of a container, which can include recent log lines, to the AI provider you choose (see
+    section 2.5).</p>
     <p>We do not use advertising identifiers (IDFA) or any equivalent tracking technologies.
     meshTerm does not contain advertising SDKs or analytics SDKs that transmit personal
     data to third parties.</p>
@@ -164,6 +168,11 @@ footer: |
       Security &rarr; Erase This Device), and the relay deletes it automatically when Apple
       reports the push token invalid (for example after you delete the Application).</li>
     </ul>
+
+    <h3>2.5 Containers</h3>
+    <p><strong>Ask an Agent.</strong> If you use Ask an Agent on a container, meshTerm sends a summary of that container to the AI agent you choose, and only after you agree in the app. The summary holds the container's state and settings (including its environment variables, with secrets masked and Vault values replaced by their entry names), up to 200 recent log lines, recent events, CPU and memory, its links to other containers, and your server's name. Today the agent is Claude running on your own server, which sends the summary to Anthropic under the Claude account signed in there. meshTerm starts Claude there with its tools, and your Claude settings such as CLAUDE.md, hooks and MCP servers, turned off, so it can only read the summary and answer: it cannot run commands or read or change files on your server. Claude keeps no record of the request on your server (an older version of Claude that cannot skip it keeps its own record of the request there, which the app tells you about). If you set up your own API key, the summary is sent from your device to the AI provider you configure instead. Your key stays in this device's Keychain, is never synced, and is sent only to the address it was saved for; plain http is allowed only to an address on your own network or tailnet. meshTerm keeps the summary and the answer in memory only while you use them and does not save them on your device. Logs can contain personal data, such as email addresses, IP addresses or names. "Dig Deeper" starts a chat with an agent on your server and opens it with the container's name, image, container engine and its version, status (with any exit code or out-of-memory kill), restart count and policy, health, compose project and service, the names of the containers it depends on, recent events, any cause titles and your server's name, never its logs or environment. The Developer receives none of this data. You can stop sending at any time from Ask an Agent's Change screen.</p>
+    <p><strong>Docker Hub.</strong> When you browse images to run, meshTerm asks Docker Hub for its list of popular images, your search text, and the tags of the image you look at, directly from your device. These requests carry no cookies, no account and nothing that identifies you, your servers or your containers; Docker's privacy policy applies to them. Pulling an image is done by your own server, not by the app. The Developer receives none of this data.</p>
+    <p><strong>Templates.</strong> When you open Templates (Pro or the free trial), meshTerm downloads the list of templates and its signature from meshdeck.ag-applications.com, which is hosted on GitHub Pages, at most once a day unless you refresh it. The request carries no cookies, no account, and no identifier for you, your device, your servers or your settings; GitHub sees your IP address and that the list was requested, and GitHub's privacy statement applies. meshTerm checks the list's signature before using it. Deploying a template sends its compose file and your settings to your own server only.</p>
   </section>
 
   <section id="s3">
@@ -260,6 +269,12 @@ footer: |
       subscription (see section 6). Apple's Push Notification service (APNs) delivers agent
       notifications to your device, only if you enable them; the payload carries only an anonymous
       tag, the kind of alert and the agent's name.</li>
+      <li><strong>Docker Hub (hub.docker.com)</strong> - only when you browse or search images in
+      Containers, with no cookies or account (see section 2.5).</li>
+      <li><strong>meshdeck.ag-applications.com (GitHub Pages)</strong> - to download the signed
+      template list, only when you open Templates (see section 2.5).</li>
+      <li><strong>Your own AI provider or server</strong> - only if you set up your own API key for Ask an
+      Agent, and only when you ask (see section 2.5).</li>
     </ul>
   </section>
 
