@@ -9,7 +9,7 @@ alternates:
   - { hreflang: es, href: "privacy.es.html" }
 lang_switch: { href: "privacy.html", hreflang: en, label: "English" }
 footer: |
-    <p>Política de Privacidad de meshTerm &nbsp;·&nbsp; Versión 2.3 &nbsp;·&nbsp; En vigor desde octubre de 2026</p>
+    <p>Política de Privacidad de meshTerm &nbsp;·&nbsp; Versión 2.3.1 &nbsp;·&nbsp; En vigor desde 2026-10-17</p>
     <p style="margin-top: 6px;">
       <a href="mailto:meshterm@gmail.com">meshterm@gmail.com</a>
     </p>
@@ -17,7 +17,7 @@ footer: |
 <header>
   <div class="app-name">meshTerm · Cliente SSH para iOS</div>
   <h1>Política de Privacidad</h1>
-  <div class="meta">James Betchley &nbsp;·&nbsp; En vigor desde octubre de 2026 &nbsp;·&nbsp; Versión 2.3</div>
+  <div class="meta">James Betchley &nbsp;·&nbsp; En vigor desde 2026-10-17 &nbsp;·&nbsp; Versión 2.3.1</div>
 </header>
 
 
@@ -122,65 +122,53 @@ footer: |
     dispositivo se ajusta en ese dispositivo y se queda en él.</p>
 
     <h3>2.4 Notificaciones de agentes</h3>
-    <p>Si activa las notificaciones para un host (desactivadas por defecto, opcionales por
-    host y por dispositivo), la Aplicación se registra para recibir notificaciones push a fin de avisarle cuando
-    un agente de código necesita su aprobación o termina un turno. Para ello:</p>
+    <p>Las notificaciones están desactivadas por defecto y se activan por host y por dispositivo.
+    Si las activas, la Aplicación registra tu teléfono para avisarte cuando un agente necesita
+    aprobación o termina un turno. Para prestar este servicio:</p>
     <ul>
-      <li>El sistema operativo de Apple emite un token push para su dispositivo, que la
-      Aplicación envía a un servicio de retransmisión operado por el Desarrollador y alojado en
-      el Reino Unido, junto con un identificador de dispositivo opaco y sus preferencias de
-      notificación por tipo de evento. No se adjunta ninguna cuenta, correo
-      electrónico ni ningún otro dato personal.</li>
-      <li>Las alertas llegan a través del servicio de notificaciones push de Apple (APNs)
-      mediante nuestro servicio de retransmisión, con conexiones cifradas. No llevan información
-      que le identifique a usted, a sus hosts ni su trabajo: ni prompts, comandos, código,
-      nombres de archivo ni nombres de host o de sesión, solo una etiqueta anónima, el tipo de
-      alerta (requiere aprobación o terminado) y el nombre del agente (por ejemplo, "Claude").
-      Su dispositivo añade el nombre de la sesión por su cuenta. El servicio de retransmisión
-      nunca recibe el contenido de su sesión, la salida ni sus credenciales.</li>
-      <li>Su host envía cada alerta al servicio de retransmisión por HTTPS, y este la pasa a
-      APNs por HTTPS. APNs la entrega a su dispositivo, sujeto a la propia política de
-      privacidad de Apple.</li>
-      <li>Para que el Desarrollador pueda detectar entregas fallidas, el servicio de
-      retransmisión guarda, por cada registro, recuentos de alertas aceptadas por APNs,
-      silenciadas por sus ajustes, limitadas o fallidas, con marcas de tiempo redondeadas a la hora y el
-      último código de error de APNs. Estos recuentos
-      no contienen etiquetas, contenido de alertas, direcciones IP ni datos de hosts, y se
-      eliminan junto con el registro. El servicio de retransmisión no guarda ni registra
-      direcciones IP; solo las usa brevemente, en memoria, para limitar abusos.</li>
-      <li>Activar las notificaciones para un host también instala un pequeño hook de
-      notificación en la configuración del propio agente en ese host, para que el host pueda
-      contactar el servicio de retransmisión en su nombre. El hook no contiene ningún token de
-      retransmisión. En su lugar, cada dispositivo en el que active las notificaciones guarda su
-      token de retransmisión en su propio archivo privado, en una carpeta de su directorio
-      personal en ese host que solo su cuenta de usuario puede leer. Esto se ejecuta en su propio
-      servidor (consulte la sección 3b).</li>
-      <li>Para que cada alerta llegue al dispositivo que está usando, el host registra, por cada
-      sesión de terminal, un identificador aleatorio del dispositivo que la usó por última vez, y
-      envía las alertas de esa sesión solo a ese dispositivo. Las alertas de un chat de agente
-      llegan al dispositivo que envió el mensaje, identificado de la misma forma. Las alertas de
-      herdr llegan a cada dispositivo que tenga activados los avisos de herdr para ese host. Estos
-      identificadores se quedan en su host; no se envía nada nuevo al servicio de retransmisión
-      ni al Desarrollador, y las alertas no cambian.</li>
-      <li>Desactivar las notificaciones de un host en un dispositivo elimina del host el archivo
-      y los registros de sesión de ese dispositivo (la próxima vez que el host esté accesible, si
-      no lo está en ese momento; mientras los avisos de herdr sigan activados en ese
-      dispositivo, su archivo y sus registros se quedan para ellos); un dispositivo con las notificaciones
-      desactivadas nunca cambia adónde llegan las alertas de sus otros dispositivos. Quitar los
-      hooks (Editar host &rarr; Cambios en este host) elimina del host los hooks y el archivo y
-      los registros de todos los dispositivos, y los interruptores de Ajustes &rarr; Agentes
-      &rarr; Notificaciones detienen las alertas en el servicio de retransmisión.</li>
-      <li>Cuando ya ningún host envía notificaciones a su dispositivo (las notificaciones
-      y los avisos de herdr están desactivados en ese dispositivo para todos los hosts), la
-      Aplicación elimina el registro de su dispositivo del servicio de
-      retransmisión, junto con sus recuentos de entrega, de modo que nada de lo que quede en un
-      host puede llegar ya a su dispositivo. Si su dispositivo no tiene
-      conexión en ese momento, la Aplicación lo reintenta cada vez que la abre hasta que el
-      servicio de retransmisión lo confirma. Volver a activar las notificaciones de un host
-      crea un registro nuevo. El registro también se elimina cuando borra los datos de la
-      Aplicación (Ajustes &rarr; Privacidad y seguridad &rarr; Borrar este dispositivo), y el
-      servicio de retransmisión lo elimina automáticamente cuando Apple indica que el token
-      push no es válido (por ejemplo, tras eliminar la Aplicación).</li>
+      <li>El relay del Desarrollador, alojado en el Reino Unido, guarda un identificador aleatorio
+      de dispositivo, un token de relay, el token push de Apple, los dos interruptores de avisos
+      (aprobación y turno terminado), los tipos de aviso que admite la app de este teléfono y
+      cuándo abriste la app por última vez en este teléfono, redondeado a la hora. No se añade
+      ninguna cuenta ni dirección de correo electrónico.</li>
+      <li>Los avisos viajan desde tu host al relay y después al servicio de notificaciones push
+      de Apple (APNs), por HTTPS. Solo llevan una etiqueta de sesión opaca, el tipo de aviso y
+      el nombre del agente. Tu teléfono identifica la sesión localmente y añade su nombre.
+      El relay nunca recibe texto de prompts, salida del agente, nombres de host, comandos,
+      código, nombres de archivo ni contenido de las sesiones. APNs entrega los avisos según
+      la política de privacidad de Apple.</li>
+      <li>Para detectar fallos de entrega, el relay guarda recuentos sin contenido de los avisos
+      aceptados por APNs, silenciados por tus interruptores, limitados o fallidos, con las horas
+      redondeadas y el último código de error de APNs. Los recuentos no contienen etiquetas de
+      sesión, contenido de avisos, direcciones IP ni datos de hosts, y se borran con el registro.
+      El relay no guarda ni registra direcciones IP; las usa brevemente en memoria para
+      limitar abusos.</li>
+      <li>Tu host guarda el identificador de dispositivo y el token de relay de este teléfono
+      en su propio archivo privado dentro de <code>~/.meshterm-agent-push</code> en Linux y
+      macOS, o <code>%USERPROFILE%\.meshterm-agent-push</code> en Windows, en la carpeta personal
+      de tu usuario. Solo tu cuenta de usuario puede leerlo. La instalación también añade
+      entradas de notificación a la configuración de los agentes en ese host. Esas entradas
+      no contienen ningún token de relay. El asistente de notificaciones se ejecuta en tu
+      propio servidor (consulta la sección 3b).</li>
+      <li>El host registra qué dispositivo usó cada sesión de terminal por última vez para
+      enviarle sus avisos. Los avisos de chats llegan al dispositivo que envió el mensaje;
+      los de herdr, a todos los dispositivos con sus avisos activados para ese host. Estos
+      registros se quedan en tu host; el relay no recibe nombres de sesión ni datos de hosts.</li>
+      <li>Al desactivar los avisos, se eliminan el archivo y los registros de sesión de este
+      teléfono cuando el host está accesible. Su archivo se conserva mientras los avisos de
+      herdr sigan activados. Antes de eliminar un host, desactiva sus notificaciones y los
+      avisos de herdr mientras esté accesible para que también se borren esos datos. Quitar
+      la instalación de notificaciones en Editar host &rarr; Cambios en este host elimina las
+      entradas de configuración de los agentes, el asistente y los archivos y registros de
+      notificaciones de todos los dispositivos. Los interruptores de Ajustes &rarr; Agentes
+      &rarr; Notificaciones detienen los tipos de aviso elegidos en el relay.</li>
+      <li>Cuando ningún host avisa ya a este teléfono (las notificaciones y los avisos de herdr
+      están desactivados en todos los hosts), la Aplicación borra su registro del relay y los
+      recuentos de entrega. Si el teléfono no tiene conexión, lo reintenta cuando abres la app
+      hasta que el relay lo confirma. Al activar los avisos de nuevo se crea otro registro.
+      Borrar este dispositivo, en Ajustes &rarr; Privacidad y seguridad, también elimina el
+      registro; el relay lo borra automáticamente cuando Apple indica que el token push no es
+      válido, por ejemplo después de eliminar la app.</li>
     </ul>
 
     <h3>2.5 Contenedores</h3>
@@ -348,12 +336,13 @@ footer: |
     eliminan todos los datos almacenados localmente. Puede gestionar los datos de iCloud
     desde los Ajustes de su dispositivo &rarr; Apple ID &rarr; iCloud &rarr; Gestionar
     almacenamiento.</p>
-    <p>Si activa las notificaciones de agentes, el registro push en el servicio de retransmisión
-    del Desarrollador (un token push de Apple, un identificador de dispositivo opaco y sus
-    preferencias de notificación) y sus recuentos de entrega se conservan solo mientras al
-    menos un host envíe notificaciones a su dispositivo. La Aplicación los elimina del
-    servicio de retransmisión cuando ya ningún host lo hace (consulte la sección 2.4), o
-    cuando borra los datos de la Aplicación (Ajustes &rarr; Privacidad y seguridad &rarr;
+    <p>Si activas las notificaciones de agentes, el registro push en el relay del Desarrollador
+    (el identificador de dispositivo, el token de relay, el token push de Apple, los dos
+    interruptores, los tipos de aviso admitidos y la hora de la última apertura de la app
+    descritos en la sección 2.4) y los recuentos de entrega se conservan solo mientras al
+    menos un host envíe notificaciones a tu dispositivo. La Aplicación los elimina del
+    servicio de retransmisión cuando ya ningún host lo hace (consulta la sección 2.4), o
+    cuando borras los datos de la Aplicación (Ajustes &rarr; Privacidad y seguridad &rarr;
     Borrar este dispositivo), y el servicio de retransmisión los elimina automáticamente
     cuando Apple indica que el token push no es válido (por ejemplo, tras eliminar la
     Aplicación).</p>

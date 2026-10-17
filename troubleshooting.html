@@ -14,7 +14,7 @@ footer: |
     </p>
 ---
 <header class="site-header">
-  <div class="app-name">meshTerm 2.3</div>
+  <div class="app-name">meshTerm 2.3.1</div>
   <h1>Troubleshooting</h1>
   <div class="sub">Find the message or symptom you see, learn why it happens, and fix it. Connecting, keys and host keys, tmux and mtRoam, files, agents, notifications, herdr and Containers.</div>
 </header>
@@ -40,12 +40,12 @@ footer: |
   </aside>
 
   <main>
-    <div class="page-title">meshTerm 2.3 - Troubleshooting</div>
+    <div class="page-title">meshTerm 2.3.1 - Troubleshooting</div>
     <div class="page-subtitle">By what you see: symptom, why, fix.</div>
 
     <section id="how-to-read">
       <h2>How to read this page</h2>
-      <p>Each entry starts with the message or symptom, in the words the app uses, then says <strong>why</strong> it happens and the <strong>fix</strong>. Bold names are buttons in meshTerm. Where the app can fix something with one tap, that button is the first thing listed; the commands are for when a tap cannot work (for example the server cannot be reached, so nothing can be run on it for you). Button names and messages follow meshTerm 2.3. On older versions the same causes and commands apply; you just run the commands yourself.</p>
+      <p>Each entry starts with the message or symptom, in the words the app uses, then says <strong>why</strong> it happens and the <strong>fix</strong>. Bold names are buttons in meshTerm. Where the app can fix something with one tap, that button is the first thing listed; the commands are for when a tap cannot work (for example the server cannot be reached, so nothing can be run on it for you). Button names and messages follow meshTerm 2.3.1. On older versions the same causes and commands apply; you just run the commands yourself.</p>
 
       <div class="callout info">
         <div class="callout-title">Commands</div>
@@ -106,6 +106,7 @@ footer: |
             <li><a href="#a-apikey">Using an API key</a></li>
             <li><a href="#a-mac">Mac hosts</a></li>
             <li><a href="#a-sandbox">Codex sandbox (bubblewrap)</a></li>
+            <li><a href="#n-arrival">Notifications don't arrive</a></li>
             <li><a href="#n-tools">Notifications need python3 and curl</a></li>
             <li><a href="#n-permission">Notifications are off in iOS</a></li>
             <li><a href="#n-live">Live Activities are off</a></li>
@@ -587,20 +588,53 @@ apk add bubblewrap</code></pre>
       <h2>6. Notifications</h2>
       <p>Agent notifications use a small hook on the host and Apple's push service through the relay. See <a href="meshterm.html#agent-notifications">Notifications</a> in the guide.</p>
 
-      <article class="issue" id="n-tools">
-        <h3>"Notifications need python3 and curl on HOST. Missing: curl. Install them, then Try Again."</h3>
-        <p class="issue__why"><span class="issue__label">Why</span>The hook on the host is a short Python 3 script that sends the alert with <code>curl</code>. Fresh images differ: Debian 12 has neither; Ubuntu has python3 but no curl; Fedora has curl but no python3; Alpine has neither. On a Mac, <code>python3</code> may be the stub (see <a href="#a-mac">Mac hosts</a>). If only python3 is there, the hook is not installed.</p>
+      <article class="issue" id="n-arrival">
+        <h3>Notifications don't arrive</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>The host setup, the agent's session or the phone's notification settings may be stopping delivery.</p>
         <div class="issue__fix"><span class="issue__label">Fix</span>
-          <p>In the host's editor the line is copyable, followed by <strong>Try Again</strong>. In the agent chat banner you also get <strong>Run in Terminal</strong>.</p>
+          <p>First open <strong>Edit Host</strong> and tap <strong>Send Test Alert</strong>. Turn on <strong>Notify this iPhone</strong> or <strong>Notify this iPad</strong> and save first if needed. The test checks this host's path to this phone; a successful test does not prove a running agent has loaded its hooks. <a href="index.es.html#n-arrival" lang="es">Ayuda en español</a>.</p>
+          <ul>
+            <li><strong>Not checked yet</strong>: there is no saved result. Use <strong>Send Test Alert</strong> to check, or <strong>Install Now</strong> to set up the host. <strong>Installed on this host</strong> means setup succeeded; test delivery next.</li>
+            <li>Not installed, or the test finds missing notification files: tap <strong>Install Now</strong>.</li>
+            <li>Missing Python or curl: run the install command shown on the host, then tap <strong>Try Again</strong>. See <a href="#n-tools">Host tools</a>.</li>
+            <li>"Couldn't install:" or a failed last check: correct the stated cause, then tap <strong>Try Again</strong>. Check SSH access; a folder that is not private to your user needs its ownership and permissions fixed, and shell startup files must not print text or read input during non-interactive SSH commands.</li>
+            <li>"This device's registration changed. Tap Reinstall to update this host." or "This device's registration on the host is out of date.": tap <strong>Reinstall</strong>.</li>
+            <li>"The relay no longer has this device's registration.": tap <strong>Register Again</strong> to register this phone again and refresh the host's details.</li>
+            <li>"Codex alerts start once Codex trusts the hook. Tap Try Again.": tap <strong>Try Again</strong>.</li>
+            <li>"The relay refused the test alert's format. Tap Reinstall.": tap <strong>Reinstall</strong>. If the host cannot reach the relay or does not confirm the test, tap <strong>Try Again</strong>; if the relay is busy, wait before retrying.</li>
+            <li>The relay accepted the test but it did not arrive: tap <strong>Open Settings</strong>, allow meshTerm notifications and check Focus. Also check the two switches in <strong>Settings &gt; Agents &gt; Notifications</strong>.</li>
+          </ul>
+          <p>If the test arrives but agent alerts do not, <strong>exit and restart the agent after hooks are installed</strong>. Run it in a meshTerm-managed tmux or mtRoam session, a herdr pane, or a chat in the Agents tab. A plain SSH tab or your own tmux session started outside meshTerm has no session record telling the host which phone should receive the alert. On Windows use psmux for Claude or agy (Gemini), and herdr for Codex; enable <strong>Notify for herdr Agents</strong> for herdr alerts.</p>
+          <p>On macOS, run terminal Codex as <code>codex --no-daemon</code>, including in herdr panes, or use the Agents tab. On Linux this option also helps when meshTerm cannot tell which session a background Codex turn belongs to.</p>
+        </div>
+      </article>
+
+      <article class="issue" id="n-tools">
+        <h3>Notifications need Python 3.5 or later and curl</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>Linux and macOS alerts need both tools. Python 2 alone, or Python older than 3.5, is not enough: the app says "Notifications need Python 3.5 or later on HOST. Its Python is older." A Mac's <code>/usr/bin/python3</code> may only be a placeholder until the Command Line Tools are installed.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <p>Run the command the host's status row shows, then tap <strong>Try Again</strong>. The agent chat banner also offers <strong>Run in Terminal</strong>. For example:</p>
 <pre><code># Debian, Ubuntu
 sudo apt-get update &amp;&amp; sudo apt-get install -y python3 curl ca-certificates
 # Fedora
 sudo dnf install -y python3 curl
 # Alpine (as root)
 apk add python3 curl ca-certificates
-# Mac
+# Mac: install the Command Line Tools
 xcode-select --install</code></pre>
-          <p>An agent that was already running when the hook was installed starts sending alerts only after you relaunch it (exit and run it again); the session itself stays open. Gemini's permission hook also needs python3, so "python3 may be missing" can appear on a Gemini message.</p>
+          <p>If Python was found but did not start, set a global Python version in pyenv or asdf and tap <strong>Try Again</strong>. meshTerm also searches Homebrew, conda and <code>~/.local/bin</code>; see <a href="meshterm.html#notification-requirements">Host requirements</a>. If the test says hooks cannot find or start Python, tap <strong>Reinstall</strong>. If it says agents started outside a login shell cannot find curl, install the system's curl so it is available in <code>/usr/bin</code> or <code>/bin</code>.</p>
+        </div>
+      </article>
+
+      <article class="issue" id="n-windows">
+        <h3>Windows: restricted PowerShell or old curl</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>Alerts use Windows PowerShell 5.1 and the built-in <code>curl.exe</code>, with no Python dependency. Constrained Language Mode blocks setup; older Windows versions may lack curl or send alerts more slowly.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <ul>
+            <li><strong>PowerShell Is Restricted</strong>: "PowerShell is restricted on HOST, so meshTerm can't turn on notifications there." Ask the host's administrator about the policy; retrying alone will not fix it.</li>
+            <li>Missing <code>curl.exe</code>: update Windows, then tap <strong>Try Again</strong>. Windows 10 version 1803 and later include it.</li>
+            <li>"This host's curl.exe is older than 7.68, so alerts go to your devices one at a time.": alerts still work, one phone at a time. Updating Windows or curl can speed delivery to multiple devices.</li>
+          </ul>
         </div>
       </article>
 
@@ -637,7 +671,7 @@ xcode-select --install</code></pre>
             <li>"The installer finished, but HOST can't find herdr on this host": wait a moment and <strong>Check Again</strong>.</li>
             <li><strong>Update herdr</strong> appears when a host's herdr is older than the app needs.</li>
           </ul>
-          <p>The notification plugin also needs Python 3 on the host: "The plugin needs Python 3 on this host. Install python3 there, then try again."</p>
+          <p>On Linux and macOS, the notification plugin needs Python 3.5 or later and curl; see <a href="#n-tools">Host tools</a>. Windows alerts use PowerShell and curl.exe instead; see <a href="#n-windows">Windows notification requirements</a>.</p>
         </div>
       </article>
 

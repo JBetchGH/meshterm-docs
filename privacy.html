@@ -9,7 +9,7 @@ alternates:
   - { hreflang: es, href: "privacy.es.html" }
 lang_switch: { href: "privacy.es.html", hreflang: es, label: "Español" }
 footer: |
-    <p>meshTerm Privacy Policy &nbsp;·&nbsp; Version 2.3 &nbsp;·&nbsp; Effective October 2026</p>
+    <p>meshTerm Privacy Policy &nbsp;·&nbsp; Version 2.3.1 &nbsp;·&nbsp; Effective 2026-10-17</p>
     <p style="margin-top: 6px;">
       <a href="mailto:meshterm@gmail.com">meshterm@gmail.com</a>
     </p>
@@ -17,7 +17,7 @@ footer: |
 <header>
   <div class="app-name">meshTerm · iOS SSH Client</div>
   <h1>Privacy Policy</h1>
-  <div class="meta">James Betchley &nbsp;·&nbsp; Effective October 2026 &nbsp;·&nbsp; Version 2.3</div>
+  <div class="meta">James Betchley &nbsp;·&nbsp; Effective 2026-10-17 &nbsp;·&nbsp; Version 2.3.1</div>
 </header>
 
 
@@ -118,55 +118,47 @@ footer: |
     that device and stays on it.</p>
 
     <h3>2.4 Agent Notifications</h3>
-    <p>If you turn on notifications for a host (off by default, opt-in per host and per device), the
-    Application registers to receive push notifications so it can alert you when a coding
-    agent needs your approval or finishes a turn. To do this:</p>
+    <p>Notifications are off by default and opt-in per host and per device. If you enable them,
+    the Application registers your phone to receive alerts when an agent needs approval or
+    finishes a turn. To provide this service:</p>
     <ul>
-      <li>Apple's operating system issues a push token for your device, which the
-      Application sends to a relay service operated by the Developer and hosted in the United
-      Kingdom, along with an opaque device identifier and your per-event notification
-      preferences. No account, email, or other personal detail is
-      attached.</li>
-      <li>Alerts come through Apple Push Notification service (APNs) via our relay, over
-      encrypted connections. They carry no information that identifies you, your hosts or your
-      work: no prompts, commands, code, file names, or host or session names, just an anonymous
-      tag, the kind of alert (needs approval or finished) and the agent's name (for example
-      "Claude"). Your device adds the session name itself. The relay never receives your session
-      content, output or credentials.</li>
-      <li>Your host sends each alert to the relay over HTTPS, and the relay passes it to APNs
-      over HTTPS. APNs delivers it to your device, subject to Apple's own privacy policy.</li>
-      <li>So that the Developer can notice broken delivery, the relay keeps, for each
-      registration, counts of alerts accepted by APNs, muted by your settings, rate-limited or
-      failed, with times rounded to the hour and the last error code from APNs. These counts hold no tags, alert content, IP addresses or host
-      details, and are deleted with the registration. The relay does not store or log IP
-      addresses; it uses them only briefly, in memory, to limit abuse.</li>
-      <li>Enabling notifications for a host also installs a small notify hook into the agent's
-      own configuration on that host, so the host can call the relay on your behalf. The hook
-      contains no relay token. Instead, each device you turn notifications on for keeps its relay
-      token in its own private file, in a folder in your home directory on that host that only
-      your user account can read. This runs on your own server (see section 3b).</li>
-      <li>So that an alert reaches the device you are using, the host records, for each terminal
-      session, a random identifier of the device that last used it, and sends that session's
-      alerts only to that device. An agent chat's alerts go to the device that sent the message,
-      identified the same way. Alerts from herdr go to each device that has herdr alerts turned
-      on for that host. These identifiers stay on your host; nothing new is sent to the relay or
-      to the Developer, and the alerts themselves are unchanged.</li>
-      <li>Turning notifications off for a host on a device deletes that device's file and
-      session records from the host (the next time the host is reachable, if it is not reachable
-      then; while herdr alerts are still on for that device, its file and records stay for them); a device
-      with notifications off never changes where your other devices' alerts go.
-      Removing the hooks (Edit Host &rarr; Changes on this host) deletes the hooks and every
-      device's file and records from the host, and the switches in Settings &rarr; Agents &rarr;
-      Notifications stop alerts at the relay.</li>
-      <li>When no host sends your device notifications any more (notifications and herdr alerts
-      are off on that device for every host), the Application
-      deletes your device's registration from the relay, together with its delivery counts, so
-      nothing left on a host can reach your device any more. If your device is offline
-      at that moment, the Application retries each time you open it until the relay confirms.
-      Turning notifications on for a host again creates a new registration. The registration
-      is also deleted when you erase the Application's data (Settings &rarr; Privacy &amp;
-      Security &rarr; Erase This Device), and the relay deletes it automatically when Apple
-      reports the push token invalid (for example after you delete the Application).</li>
+      <li>The Developer's relay, hosted in the United Kingdom, holds a random device ID, a relay
+      token, Apple's push token, the two alert switches (approval and turn-completion), which
+      alert kinds this phone's app supports, and when this phone last opened the app, rounded
+      to the hour. No account or email address is attached.</li>
+      <li>Alerts travel from your host to the relay and then to Apple Push Notification service
+      (APNs), over HTTPS. They carry only an opaque session tag, the alert kind and agent name.
+      Your phone maps the tag to a session locally and adds its name. The relay never receives
+      prompt text, agent output, host names, commands, code, file names or session content.
+      APNs delivers alerts under Apple's own privacy policy.</li>
+      <li>To help detect broken delivery, the relay keeps content-free counts of alerts accepted
+      by APNs, muted by your switches, rate-limited or failed, with times rounded to the hour
+      and the last APNs error code. Counts contain no session tags, alert content, IP addresses
+      or host details and are deleted with the registration. The relay does not store or log
+      IP addresses; it uses them briefly in memory to limit abuse.</li>
+      <li>Your host holds this phone's device ID and relay token in its own private file under
+      <code>~/.meshterm-agent-push</code> on Linux and macOS, or
+      <code>%USERPROFILE%\.meshterm-agent-push</code> on Windows, in your user's home folder.
+      Only your user account can read it. Setup also adds notification entries to the agents'
+      configuration on that host. Those entries contain no relay token. The notification
+      helper runs on your own server (see section 3b).</li>
+      <li>The host records which device last used each terminal session so its alerts reach
+      that device. Agent chat alerts go to the device that sent the message; herdr alerts go
+      to every device with herdr alerts on for the host. These routing records stay on your
+      host; the relay receives no session names or host details.</li>
+      <li>Turning alerts off removes this phone's file and session records when the host is
+      reachable. Its file stays while herdr alerts are still on. Before removing a host, turn
+      off both its notifications and herdr alerts while it is reachable so those details are
+      removed too. Removing the notification setup in Edit Host &rarr; Changes on this host
+      removes the agent config entries, helper and every device's notification files and
+      records. The switches in Settings &rarr; Agents &rarr; Notifications stop the selected
+      alert kinds at the relay.</li>
+      <li>When no host sends this phone notifications any more (both notifications and herdr
+      alerts are off for every host), the Application deletes its relay registration and
+      delivery counts. If the phone is offline, it retries when you open the app until the relay
+      confirms. Turning alerts on again creates a new registration. Erase This Device in
+      Settings &rarr; Privacy &amp; Security also deletes the registration; the relay deletes it
+      automatically when Apple reports the push token invalid, for example after app deletion.</li>
     </ul>
 
     <h3>2.5 Containers</h3>
@@ -326,8 +318,8 @@ footer: |
     removes all locally stored data. You can manage iCloud data through your device
     Settings &rarr; Apple ID &rarr; iCloud &rarr; Manage Storage.</p>
     <p>If you enable agent notifications, the push registration on the Developer's relay
-    (an Apple push token, an opaque device identifier, and your notification preferences)
-    and its delivery counts are kept only while at least one host sends your device
+    (the device ID, relay token, Apple push token, two alert switches, supported alert kinds
+    and last app-open hour described in section 2.4) and its delivery counts are kept only while at least one host sends your device
     notifications. The Application deletes them from the relay when no host does any more
     (see section 2.4), or when you erase the Application's data (Settings &rarr; Privacy &amp;
     Security &rarr; Erase This Device), and the relay deletes them automatically when Apple
