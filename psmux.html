@@ -130,7 +130,7 @@ Get-FileHash "$env:TEMP\psmux-setup.exe" -Algorithm SHA256</code></pre>
         <li><strong>Sessions</strong>: long-press the host and choose <strong>Sessions…</strong> to see its psmux sessions. Tap one to open it, tap <strong>+</strong> for a new one, or swipe a row and tap <strong>End Session</strong> to close it on the host. Session names on Windows ignore case: <code>Work</code> and <code>work</code> are the same session.</li>
         <li><strong>Ending a session</strong>: type <code>exit</code> in its last shell. The tab says "The psmux session ended." and doesn't reconnect by itself; <strong>Reconnect</strong> starts a new session with the same name.</li>
         <li><strong>Detaching on purpose</strong> with psmux's own keys (Ctrl-B then D) disconnects the tab and leaves the session running.</li>
-        <li>Environment variables and Secret Profiles aren't applied on Windows hosts (see <a href="meshterm.html#windows">Windows hosts</a>), and agent notifications aren't available there either.</li>
+        <li>Environment variables and Secret Profiles aren't applied on Windows hosts (see <a href="meshterm.html#windows">Windows hosts</a>). <a href="meshterm.html#agent-notifications">Agent notifications</a> work in psmux sessions for Claude Code, Codex and agy (Gemini); see the notification guide for setup and Codex's routing limits.</li>
       </ul>
     </section>
 

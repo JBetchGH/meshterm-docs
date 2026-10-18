@@ -604,8 +604,9 @@ apk add bubblewrap</code></pre>
             <li>"The relay refused the test alert's format. Tap Reinstall.": tap <strong>Reinstall</strong>. If the host cannot reach the relay or does not confirm the test, tap <strong>Try Again</strong>; if the relay is busy, wait before retrying.</li>
             <li>The relay accepted the test but it did not arrive: tap <strong>Open Settings</strong>, allow meshTerm notifications and check Focus. Also check the two switches in <strong>Settings &gt; Agents &gt; Notifications</strong>.</li>
           </ul>
-          <p>If the test arrives but agent alerts do not, <strong>exit and restart the agent after hooks are installed</strong>. Run it in a meshTerm-managed tmux or mtRoam session, a herdr pane, or a chat in the Agents tab. A plain SSH tab or your own tmux session started outside meshTerm has no session record telling the host which phone should receive the alert. On Windows use psmux for Claude or agy (Gemini), and herdr for Codex; enable <strong>Notify for herdr Agents</strong> for herdr alerts.</p>
-          <p>On macOS, run terminal Codex as <code>codex --no-daemon</code>, including in herdr panes, or use the Agents tab. On Linux this option also helps when meshTerm cannot tell which session a background Codex turn belongs to.</p>
+          <p>If the test arrives but agent alerts do not, <strong>exit and restart the agent after hooks are installed</strong>. Run it in a meshTerm-managed tmux or mtRoam session, a herdr pane, or a chat in the Agents tab. A plain SSH tab or your own tmux session started outside meshTerm has no session record telling the host which phone should receive the alert. On Windows use psmux for Claude, Codex or agy (Gemini). Codex in herdr panes alerts through herdr; enable <strong>Notify for herdr Agents</strong> for herdr alerts.</p>
+          <p>On Windows and Linux, when two Codex windows share a folder, meshTerm can identify only one and the other can miss alerts. <code>codex resume &lt;id&gt;</code> always identifies the session for routing. With more than one phone or tablet set up for alerts on the host, only windows launched with <code>codex resume &lt;id&gt;</code> send Codex's background alerts. Use separate folders or resume the specific session. On macOS, run terminal Codex as <code>codex --no-daemon</code>, including in herdr panes, or use the Agents tab.</p>
+          <p>For question alerts such as "Claude has questions.", turn on <strong>Agent needs approval</strong> in <strong>Settings &gt; Agents &gt; Notifications</strong>. It controls both questions and approvals. Tap a question alert to open the session, then answer in the terminal; the alert has no answer or approval action. See <a href="meshterm.html#agent-notifications">Notifications</a> for supported agents.</p>
         </div>
       </article>
 
@@ -659,6 +660,7 @@ xcode-select --install</code></pre>
     <section id="s-herdr">
       <h2>7. herdr</h2>
       <p>herdr keeps Claude, Codex and Gemini running on your host, each in its own pane. See <a href="meshterm.html#herdr">herdr</a> in the guide.</p>
+      <p>"meshTerm alerts aren't set up" / "Open this host in meshTerm" means the meshTerm plugin was installed outside the app and no device is set up for alerts. herdr attempts this notice at most once a week; its <strong>Set up meshTerm alerts</strong> action offers setup guidance on demand (a toast on Windows, if herdr's toast settings allow it). Open the host's herdr dashboard in meshTerm and tap <strong>Turn On</strong> in <strong>Turn on herdr alerts for this iPhone</strong> (or <strong>iPad</strong> / <strong>device</strong>).</p>
 
       <article class="issue" id="h-prereq">
         <h3>"Set Up herdr", "herdr X is too old", "herdr has no build for HOST"</h3>
