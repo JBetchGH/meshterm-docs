@@ -1,0 +1,147 @@
+---
+layout: guide
+title: "Start Shell: choose the shell a host starts in | meshTerm"
+description: "Choose the shell meshTerm starts on each host, such as zsh, fish or PowerShell 7, without changing anything on the server: the first-connect picker, the palette's Shell tile, Edit Host, tmux, psmux and Windows behaviour, and what happens when the shell is missing."
+lang: en
+permalink: /start-shell.html
+footer: |
+    <p>meshTerm is developed by James Betchley.</p>
+    <p style="margin-top: 8px;">
+      <a href="mailto:meshterm@gmail.com">meshterm@gmail.com</a>
+    </p>
+    <p style="margin-top: 16px; font-size: 12px; opacity: 0.8;">
+      meshTerm is not affiliated with, endorsed by, or in partnership with Tailscale Inc.
+    </p>
+---
+<header class="site-header">
+  <div class="app-name">meshTerm 2.3.2</div>
+  <h1>Start Shell</h1>
+  <div class="sub">Pick the shell your sessions on a host start in, such as zsh, fish or PowerShell 7, without changing anything on the server.</div>
+</header>
+
+
+<div class="page-body">
+
+  <aside class="sidebar">
+    <div class="sidebar-title">Contents</div>
+    <ul>
+      <li><a href="#what">1. What a start shell is</a></li>
+      <li><a href="#first-connect">2. Choosing on first connect</a></li>
+      <li><a href="#change">3. Changing it later</a></li>
+      <li><a href="#when">4. When it takes effect</a></li>
+      <li><a href="#per-type">5. tmux, psmux, Windows and mtRoam</a></li>
+      <li><a href="#login-only">6. Sessions that use the login shell</a></li>
+      <li><a href="#missing">7. If the shell is missing</a></li>
+      <li><a href="#environment">8. Environment and Secret Profiles</a></li>
+      <li><a href="#notes">9. Good to know</a></li>
+    </ul>
+  </aside>
+
+  <main>
+    <div class="page-title">meshTerm 2.3.2 - Start Shell</div>
+    <div class="page-subtitle">Your shell, on each host, without touching the server.</div>
+
+    <section id="what">
+      <h2>1. What a start shell is <span class="new-badge">2.3.2</span></h2>
+      <p>Every account on a server has a <strong>login shell</strong>, the shell SSH starts when you sign in. Often it is bash, while the shell you actually like on that host is zsh or fish. The <strong>start shell</strong> is a per-host setting in meshTerm: meshTerm connects with your login shell as usual, then starts the shell you chose.</p>
+      <ul>
+        <li><strong>Nothing on the server changes.</strong> meshTerm doesn't run <code>chsh</code>, doesn't edit <code>/etc/passwd</code>, and on Windows doesn't change OpenSSH's <code>DefaultShell</code>. Other SSH clients, scripts and <code>scp</code> keep using the login shell. Choose <strong>Login shell</strong> again and meshTerm goes back to starting nothing extra.</li>
+        <li><strong>Only shells found on the host are offered.</strong> On Linux and macOS, meshTerm reads <code>/etc/shells</code> and looks on your PATH for bash, zsh, fish, ksh, mksh, dash, tcsh, csh and nu. If a shell is installed twice (for example <code>/bin/zsh</code> and Homebrew's <code>/opt/homebrew/bin/zsh</code>), both are listed with their paths. On Windows the choices are <strong>Command Prompt</strong>, <strong>Windows PowerShell</strong> and <strong>PowerShell 7</strong>, when installed.</li>
+        <li>Checking a host's shells is one read-only command over the connection you already have. It installs nothing.</li>
+        <li>The login shell is always at the top of the list, marked <strong>Login shell</strong> (<strong>SSH default shell</strong> on Windows).</li>
+      </ul>
+    </section>
+
+    <section id="first-connect">
+      <h2>2. Choosing on first connect</h2>
+      <p>The first time you connect to a new host, meshTerm checks which shells it has. Your session starts in the login shell straight away, so you can type while it checks.</p>
+      <ul>
+        <li>The keyboard palette opens on the <strong>Start Shell</strong> list, showing "Checking shells…" and then the shells it found. <strong>Close</strong> works at any time, including while it is still checking.</li>
+        <li><strong>Pick a shell</strong> and it becomes the host's start shell (see <a href="#when">When it takes effect</a>). Picking <strong>Login shell</strong> keeps things as they are.</li>
+        <li><strong>Close</strong> (or the palette button while the list is up) keeps the login shell.</li>
+        <li>Either way the keyboard comes back, and meshTerm doesn't ask about that host again, on this device or, with <a href="meshterm.html#sync">iCloud Sync</a> on, on your other devices.</li>
+        <li>If the host only has its login shell, you see "Only bash found" (or the shell's name) for a moment, and nothing is asked.</li>
+      </ul>
+      <p>The list waits until it can be seen properly:</p>
+      <ul>
+        <li><strong>iPhone in landscape</strong>: the palette is portrait-only, so the list waits until you turn the phone to portrait. If you rotate to landscape while it is up, it goes away and comes back in portrait.</li>
+        <li><strong>Another screen open</strong> (for example Files): the list waits until you close it.</li>
+        <li><strong>Hardware keyboard</strong> (such as an iPad with a keyboard attached): a banner shows "Checking shells…", then "Other shells found on" your host with <strong>Choose</strong>, which opens the same list. The banner's close button keeps the login shell.</li>
+      </ul>
+      <p>The first-connect list is only shown for ordinary terminal sessions on a host you haven't connected to before, and not on hosts that use mtRoam (see <a href="#per-type">below</a>). For hosts you already use, choose a start shell from the palette or Edit Host.</p>
+    </section>
+
+    <section id="change">
+      <h2>3. Changing it later</h2>
+      <p>There are two ways in, and both open the same list:</p>
+      <ul>
+        <li><strong>The palette's Shell tile</strong>: on the keyboard palette's Features page, tap <strong>Shell</strong>. It opens the list for the host of the current session. The tile is dimmed when there is no live session.</li>
+        <li><strong>Edit Host &gt; Shell &amp; Environment</strong>: under <strong>Shell</strong>, tap <strong>Start Shell</strong>. The row shows the current choice, or <strong>Login shell</strong>.</li>
+      </ul>
+      <p>The current choice is ticked, and a pick is saved at once. <strong>Detect Again</strong> checks the host's shells again, for example after you install fish. A shell you chose earlier that the host no longer has stays in the list, marked "Not found on this host". For a host you have never connected to, the list says "Connect to this host once to see its shells."</p>
+      <p>To go back to the login shell, pick <strong>Login shell</strong>.</p>
+    </section>
+
+    <section id="when">
+      <h2>4. When it takes effect</h2>
+      <ul>
+        <li><strong>If you haven't typed anything yet</strong> in the session, meshTerm switches right away: you see "Switching to zsh" and the session restarts in the new shell.</li>
+        <li><strong>Otherwise</strong> the choice applies from your next connect, so nothing you are running is interrupted. A notice says "Start shell: zsh" and "Applies from your next connect." Tap <strong>Reconnect Now</strong> to switch now.</li>
+      </ul>
+      <p>With tmux or psmux, a running session keeps its shells, so the choice applies to <strong>new sessions and new windows</strong> (the notice says "Applies from your next connect, to new sessions and windows."). meshTerm restarts a pane in the new shell only when it created that session on this connect, you haven't typed in it yet, and no one else is attached to it. Otherwise it leaves the session as it is.</p>
+    </section>
+
+    <section id="per-type">
+      <h2>5. tmux, psmux, Windows and mtRoam</h2>
+      <p>How the start shell is used depends on the host's <a href="meshterm.html#persistence">Persistence</a> choice. The list's footer says which rule applies to the host.</p>
+      <table>
+        <thead>
+          <tr><th>Host</th><th>What happens</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Linux or macOS, Persistence <strong>None</strong></td><td>Each new connect starts in the chosen shell.</td></tr>
+          <tr><td>Linux or macOS, <strong>tmux</strong></td><td>tmux starts new sessions and new windows in the chosen shell. A tmux session that's already running keeps its shells.</td></tr>
+          <tr><td>Windows with <strong>psmux</strong></td><td>The same as tmux: new psmux sessions and new windows start in the chosen shell; a running session keeps its shells.</td></tr>
+          <tr><td>Windows without persistence</td><td>Each new connect starts in the chosen shell.</td></tr>
+          <tr><td><strong>mtRoam</strong></td><td>mtRoam sessions use the login shell, for now. The choice is kept, and applies if the host switches to tmux or no persistence. Edit Host says so under Shell.</td></tr>
+        </tbody>
+      </table>
+      <p>Windows and panes you create inside tmux or psmux yourself also start in the chosen shell. When you clear the start shell, meshTerm removes its setting from the tmux session on your next connect, and leaves alone any tmux setting you made yourself.</p>
+    </section>
+
+    <section id="login-only">
+      <h2>6. Sessions that use the login shell</h2>
+      <p>Agent, container and one-tap sessions always use the login shell, whatever the host's start shell. That covers Agent Mode and agent sign-in, a container's Shell, <strong>Run in Terminal</strong> and other one-tap commands, and herdr sessions. These run commands meshTerm has tested against the login shell, so they stay predictable.</p>
+    </section>
+
+    <section id="missing">
+      <h2>7. If the shell is missing</h2>
+      <p>meshTerm checks that the chosen shell still exists every time it starts it. If it has been removed, or can't start, you still get a working session in the login shell, and a notice:</p>
+      <ul>
+        <li>"fish isn't available on" your host, with "This session started in the login shell instead." (with tmux or psmux: "The new session or window started in the default shell instead.").</li>
+        <li>On psmux, a shell with a very long path can't be started by psmux: the notice says the shell "couldn't be used" and the session started in the default shell.</li>
+      </ul>
+      <p>Tap <strong>Change Shell</strong> in the notice to open the list and pick another shell, or <strong>Login shell</strong>.</p>
+    </section>
+
+    <section id="environment">
+      <h2>8. Environment and Secret Profiles</h2>
+      <p>Variables from <strong>Shell &amp; Environment</strong> and <a href="meshterm.html#secret-profiles">Secret Profiles</a> reach the start shell when a session starts, whichever shell you chose.</p>
+      <p>Sending values into a session that is already running works only in <strong>bash and zsh</strong>. With another start shell (fish, tcsh, nu and so on, or a Windows shell), Secret Profiles says the session's start shell can't receive values while it's running; the values still apply when a session starts.</p>
+    </section>
+
+    <section id="notes">
+      <h2>9. Good to know</h2>
+      <ul>
+        <li><strong>Login messages</strong>: on a host without persistence, a session that starts a start shell doesn't show the server's message of the day (MOTD) or the "Last login" line.</li>
+        <li><strong><a href="meshterm.html#keep-path">Keep Tools on PATH</a></strong>: when the start shell is bash or zsh, the block is added to that shell's <code>~/.bashrc</code> or <code>~/.zshrc</code> too, alongside the login shell's.</li>
+        <li><strong>Syncing</strong>: with iCloud Sync on, the host's start shell and the fact that you've answered the first-connect question sync with the host. Each device checks the host's shells itself.</li>
+        <li><strong>Hosts meshTerm can't check</strong>: if checking a host's shells can't work there (for example, PowerShell is restricted by policy), meshTerm stops asking on first connect. You can try <strong>Detect Again</strong> from the Shell tile or Edit Host later.</li>
+        <li>Windows hosts whose SSH shell is MSYS2, MinGW or Cygwin aren't asked.</li>
+      </ul>
+      <p>For hosts, persistence and the palette, see the <a href="meshterm.html">User Guide</a>.</p>
+    </section>
+
+  </main>
+
+</div><!-- /.page-body -->
