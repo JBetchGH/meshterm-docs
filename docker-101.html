@@ -222,6 +222,30 @@ sudo usermod --add-subuids 100000-165535 --add-subgids 100000-165535 $USER
 systemctl --user enable --now podman.socket
 sudo loginctl enable-linger $USER</code></pre>
       <p><code>passt</code> is packaged only for Ubuntu 24.04 and newer and for Fedora. On Ubuntu 22.04 or Debian 11, <code>apt</code> will say "Unable to locate package passt"; leave it out and Podman uses <code>slirp4netns</code> for networking.</p>
+      <h3 id="id-ranges">User ID ranges</h3>
+      <p>A rootless engine maps the users inside a container onto a range of user and group IDs that your user owns on the host. Those ranges live in <code>/etc/subuid</code> and <code>/etc/subgid</code>, one line per range in the form <code>name:start:count</code>. Most images need the full 65,536 IDs a Linux system uses.</p>
+      <ul>
+        <li><strong>No ranges</strong>: Podman can run almost no image. meshTerm offers one step that adds a free, non-overlapping range to both files and then runs <code>podman system migrate</code>. That stops the user's running containers, so start them again afterwards.</li>
+        <li><strong>Too small</strong>: the user has ranges, but they add up to fewer than 65,536 IDs, so images that use higher IDs fail to unpack. meshTerm never changes ranges that are already there; the server's admin enlarges them as below. You can hide this advisory for the host with <strong>Don't Show Again</strong>.</li>
+      </ul>
+      <p>To enlarge a user's ranges safely, as an administrator:</p>
+      <ol>
+        <li>List every range in use. A range covers <code>start</code> to <code>start + count - 1</code>, and no two may overlap, in either file.</li>
+        <li>Give the user 65,536 IDs in <strong>both</strong> files from a start above every range listed (one free block, or an extra block: the counts add up).</li>
+        <li>As that user, run <code>podman system migrate</code>. Their running containers stop; start them again.</li>
+      </ol>
+<pre><code># 1. every range in use (name:start:count)
+cat /etc/subuid /etc/subgid
+
+# 2. most systems (shadow's usermod): add a free block of 65,536 above every range listed
+sudo usermod --add-subuids 1000000-1065535 --add-subgids 1000000-1065535 alice
+
+# 2. Alpine and other BusyBox systems have no usermod --add-subuids:
+#    edit both files as root and give the user's line a free start and a count of 65536
+#    alice:1000000:65536
+
+# 3. as that user (stops their running containers)
+podman system migrate</code></pre>
       <h3>Rootless Docker</h3>
 <pre><code># Debian, Ubuntu prerequisites
 sudo apt-get update &amp;&amp; sudo apt-get install -y uidmap dbus-user-session curl
