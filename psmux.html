@@ -1,0 +1,151 @@
+---
+layout: guide
+title: "psmux on Windows hosts: keep sessions running | meshTerm"
+description: "Install psmux, a tmux for Windows, as a standard user so meshTerm sessions on a Windows host keep running after you disconnect: the signed installer, winget, Scoop and Chocolatey, turning it on in meshTerm, and what happens without it."
+lang: en
+permalink: /psmux.html
+footer: |
+    <p>meshTerm is developed by James Betchley.</p>
+    <p style="margin-top: 8px;">
+      <a href="mailto:meshterm@gmail.com">meshterm@gmail.com</a>
+    </p>
+    <p style="margin-top: 16px; font-size: 12px; opacity: 0.8;">
+      meshTerm is not affiliated with, endorsed by, or in partnership with Tailscale Inc.
+    </p>
+---
+<header class="site-header">
+  <div class="app-name">meshTerm 2.3.1</div>
+  <h1>psmux on Windows hosts</h1>
+  <div class="sub">Keep your sessions on a Windows host running after you disconnect: what psmux is, how to install it without admin rights, and how to turn it on in meshTerm.</div>
+</header>
+
+
+<div class="page-body">
+
+  <aside class="sidebar">
+    <div class="sidebar-title">Contents</div>
+    <ul>
+      <li><a href="#what">1. What psmux is</a></li>
+      <li><a href="#install">2. Installing psmux</a></li>
+      <li><a href="#install-setup" class="sub">Signed installer</a></li>
+      <li><a href="#install-other" class="sub">winget, Scoop, Chocolatey</a></li>
+      <li><a href="#turn-on">3. Turning it on in meshTerm</a></li>
+      <li><a href="#without">4. Without psmux</a></li>
+      <li><a href="#using">5. Using a psmux session</a></li>
+      <li><a href="#trouble">6. Troubleshooting</a></li>
+    </ul>
+  </aside>
+
+  <main>
+    <div class="page-title">meshTerm 2.3.1 - psmux on Windows hosts</div>
+    <div class="page-subtitle">Sessions that survive a disconnect, on Windows.</div>
+
+    <section id="what">
+      <h2>1. What psmux is</h2>
+      <p><a href="https://github.com/psmux/psmux">psmux</a> is a tmux for Windows: a free, open-source program (MIT licence) that runs natively on Windows, with no WSL. meshTerm can use it to keep your sessions on a Windows host running after you disconnect, the way tmux does on Linux and macOS. Close the app, lose the network or switch to another device, and the session is still there when you reconnect, with its programs and output.</p>
+      <p>psmux runs on your Windows machine, so it has to be installed there. meshTerm doesn't install it for you. It installs for your account only and needs no admin rights.</p>
+      <ul>
+        <li>You need <strong>meshTerm 2.3.1 or later</strong> and <strong>psmux 3.4.0 or later</strong>.</li>
+        <li>The host is a Windows PC or server you connect to through its built-in OpenSSH server (see <a href="meshterm.html#windows">Windows hosts</a>). Shells such as MSYS2, MinGW or Cygwin don't count as Windows for this: psmux is offered only for a native Windows host. If <strong>Check for psmux</strong> finds that the host's SSH shell is one of them, meshTerm stops offering psmux for that host.</li>
+        <li>Sessions belong to the Windows account you sign in with. They keep running until you end them, the last shell in them exits, or the machine restarts.</li>
+      </ul>
+    </section>
+
+    <section id="install">
+      <h2>2. Installing psmux</h2>
+      <p>Install psmux as the account you use with meshTerm. Every method below works for a standard account; only Chocolatey usually needs an administrator.</p>
+
+      <h3 id="install-setup">The signed installer (recommended)</h3>
+      <p>From 3.4.0, psmux publishes a signed installer with each release on its <a href="https://github.com/psmux/psmux/releases">GitHub releases page</a>. Take the latest release and pick the file for your machine:</p>
+      <table>
+        <thead><tr><th>Machine</th><th>File</th></tr></thead>
+        <tbody>
+          <tr><td>Most PCs and servers (64-bit Intel or AMD)</td><td><code>psmux-v&lt;version&gt;-x64-setup.exe</code></td></tr>
+          <tr><td>ARM (for example Snapdragon laptops)</td><td><code>psmux-v&lt;version&gt;-arm64-setup.exe</code></td></tr>
+          <tr><td>32-bit Windows</td><td><code>psmux-v&lt;version&gt;-x86-setup.exe</code></td></tr>
+        </tbody>
+      </table>
+      <p>Run it on the Windows machine. It installs for your account only, into <code>%LOCALAPPDATA%\psmux</code>, and adds that folder to your account's PATH. No admin rights are needed. The file is signed by <strong>Open Source Developer Godwin Josh</strong> (a Certum code-signing certificate), and GitHub lists a SHA-256 checksum next to every file.</p>
+      <p>You can also install it from an SSH session, for example from meshTerm's terminal on that host. In Command Prompt (replace 3.4.0 with the latest version, and <code>x64</code> with your machine's):</p>
+<pre><code>curl.exe -fL -o "%TEMP%\psmux-setup.exe" https://github.com/psmux/psmux/releases/download/v3.4.0/psmux-v3.4.0-x64-setup.exe
+start "" /wait "%TEMP%\psmux-setup.exe" /S</code></pre>
+      <p>In PowerShell:</p>
+<pre><code>curl.exe -fL -o "$env:TEMP\psmux-setup.exe" https://github.com/psmux/psmux/releases/download/v3.4.0/psmux-v3.4.0-x64-setup.exe
+(Start-Process "$env:TEMP\psmux-setup.exe" -ArgumentList '/S' -PassThru).WaitForExit()</code></pre>
+      <p><code>/S</code> installs silently, and the second line waits for the installer, which takes about 20 seconds. <strong>When the prompt comes back, tap Reconnect</strong> in meshTerm (see <a href="#without">Without psmux</a>). Don't reconnect or close the tab before then: that ends the SSH session, which can stop the installer half-way.</p>
+      <p>To check the file before you run the installer (after the <code>curl.exe</code> line), in PowerShell:</p>
+<pre><code>Get-AuthenticodeSignature "$env:TEMP\psmux-setup.exe" | Format-List Status, SignerCertificate
+Get-FileHash "$env:TEMP\psmux-setup.exe" -Algorithm SHA256</code></pre>
+      <p><code>Status</code> should be <code>Valid</code> and the certificate's subject should start <code>CN=Open Source Developer Godwin Josh</code>. Compare the hash with the SHA-256 that GitHub lists for the file (ignoring case). In Command Prompt, <code>certutil -hashfile "%TEMP%\psmux-setup.exe" SHA256</code> prints the same hash.</p>
+
+      <div class="callout warn">
+        <div class="callout-title">Before you install or update</div>
+        <p>The installer (and its uninstaller) <strong>stops every running psmux server</strong> on the machine first, so installing or updating psmux ends all your psmux sessions, including ones meshTerm started. It also closes any program named <code>tmux.exe</code> or <code>pmux.exe</code>. Install or update at a moment when nothing important is running in a session.</p>
+        <p>When it finishes, the installer leaves one spare psmux server running in the background. It is psmux's own standby server, which makes new sessions start faster, and it doesn't show in your session list. It is harmless; it uses some memory until the machine restarts. Sessions meshTerm starts don't keep a spare server running.</p>
+      </div>
+
+      <h3 id="install-other">winget, Scoop and Chocolatey</h3>
+      <p>If you already use one of these package managers, it can install psmux instead. Each one also installs <code>tmux.exe</code> and <code>pmux.exe</code> beside <code>psmux.exe</code>; meshTerm always runs <code>psmux.exe</code>.</p>
+      <table>
+        <thead><tr><th>Package manager</th><th>Install</th><th>Good to know</th></tr></thead>
+        <tbody>
+          <tr><td><strong>winget</strong></td><td><code>winget install --exact --id marlocarlo.psmux</code></td><td>Installs for your account. Use the exact id: the same publisher has another package, <code>psmux.TerminalMap</code> (a map viewer), that a plain <code>winget install psmux</code> can also match. winget isn't on every Windows: Windows Server often lacks it, and an account that only signs in over SSH may not have it either.</td></tr>
+          <tr><td><strong>Scoop</strong></td><td><code>scoop bucket add psmux https://github.com/psmux/scoop-psmux</code><br><code>scoop install psmux</code></td><td>Installs for your account, no admin rights.</td></tr>
+          <tr><td><strong>Chocolatey</strong></td><td><code>choco install psmux</code></td><td>Usually run from an administrator shell. The package has the 64-bit (x64) build only: on 32-bit Windows or an ARM machine, use the signed installer for your machine instead.</td></tr>
+        </tbody>
+      </table>
+      <p>After installing, reconnect so meshTerm opens a new SSH session, which sees the updated PATH. meshTerm also looks in each of these install folders itself.</p>
+    </section>
+
+    <section id="turn-on">
+      <h2>3. Turning it on in meshTerm</h2>
+      <p>psmux is a per-host choice, and every Windows host starts at <strong>None</strong>.</p>
+      <ol>
+        <li>Open the host's <strong>Edit Host &gt; Session</strong>.</li>
+        <li>Under <strong>Persistence</strong>, choose <strong>psmux</strong>. A Windows host offers <strong>psmux</strong> and <strong>None</strong> (tmux and mtRoam need Linux or macOS). You can also choose psmux when you add a Windows host.</li>
+        <li>Optionally set a <strong>Session name</strong>, as for tmux. Letters, digits, <code>-</code> and <code>_</code> are kept and other characters become <code>-</code>, and a name that's too long (over 64 characters) or that Windows reserves (such as <code>CON</code> or <code>NUL</code>) is adjusted. When the name changes, meshTerm shows the one psmux will use under the field.</li>
+        <li>Tap <strong>Check for psmux</strong>, then tap <strong>Check for psmux</strong> again on the screen that opens, to see whether meshTerm finds psmux on the host, and which version. If it isn't found, the result links to this page.</li>
+        <li>Save, and open the host. The terminal attaches to your psmux session, creating it the first time.</li>
+      </ol>
+      <p>Choosing <strong>None</strong> again goes back to a plain SSH shell that ends with the connection.</p>
+    </section>
+
+    <section id="without">
+      <h2>4. Without psmux</h2>
+      <p>If you choose psmux for a host where it isn't installed, nothing breaks: the terminal opens the host's plain shell, as it would with None, and shows <strong>No session persistence</strong>: "psmux isn't installed on &lt;host&gt;, so this session won't keep running when you disconnect." The notice has two buttons:</p>
+      <ul>
+        <li><strong>Install Guide</strong> opens this page.</li>
+        <li><strong>Reconnect</strong> connects again and looks for psmux. Once it is installed, the tab reopens inside your psmux session.</li>
+      </ul>
+      <p>meshTerm remembers for a day that psmux was missing, so automatic reconnects on that host open the plain shell straight away instead of trying psmux each time. Tapping <strong>Reconnect</strong> always looks again.</p>
+      <p>The <strong>Sessions</strong> list for the host says "psmux isn't installed on &lt;host&gt;." with <strong>Install Guide</strong> and <strong>Try Again</strong>.</p>
+    </section>
+
+    <section id="using">
+      <h2>5. Using a psmux session</h2>
+      <ul>
+        <li><strong>Disconnecting</strong>: leave the app, lose the network or close the tab, and the session keeps running on the host. Reconnect, or open the host again, to pick it up where you left it.</li>
+        <li><strong>The shell</strong> inside a psmux session is the same shell your SSH server opens (Command Prompt unless the server's default shell was changed). Run <code>powershell</code> or <code>pwsh</code> in it if you prefer. Ctrl-C normally stops a running program (see the <a href="#trouble-ctrl-c">known issue in psmux 3.4.0</a>).</li>
+        <li><strong>Scrolling back</strong>: swiping or scrolling the terminal scrolls psmux's history (its copy mode). Tap the <a href="meshterm.html#tui-pill">return-to-prompt pill</a> that appears to go back to the prompt, or press <code>q</code>.</li>
+        <li><strong>Sessions</strong>: long-press the host and choose <strong>Sessions…</strong> to see its psmux sessions. Tap one to open it, tap <strong>+</strong> for a new one, or swipe a row and tap <strong>End Session</strong> to close it on the host. Session names on Windows ignore case: <code>Work</code> and <code>work</code> are the same session.</li>
+        <li><strong>Ending a session</strong>: type <code>exit</code> in its last shell. The tab says "The psmux session ended." and doesn't reconnect by itself; <strong>Reconnect</strong> starts a new session with the same name.</li>
+        <li><strong>Detaching on purpose</strong> with psmux's own keys (Ctrl-B then D) disconnects the tab and leaves the session running.</li>
+        <li>Environment variables and Secret Profiles aren't applied on Windows hosts (see <a href="meshterm.html#windows">Windows hosts</a>). <a href="meshterm.html#agent-notifications">Agent notifications</a> work in psmux sessions for Claude Code, Codex and agy (Gemini); see the notification guide for setup and Codex's routing limits.</li>
+      </ul>
+    </section>
+
+    <section id="trouble">
+      <h2>6. Troubleshooting</h2>
+      <ul>
+        <li id="trouble-ctrl-c"><strong>Ctrl-C doesn't stop a program</strong>: in psmux 3.4.0, Ctrl-C may not stop a running program such as <code>ping -t</code> if the psmux server was first started from PowerShell over SSH. psmux has fixed this upstream; the fix will be in the next psmux release. Until then, close the program another way (for example, <code>q</code> if that is its quit key), or end and restart the psmux session so meshTerm starts its server again.</li>
+        <li><strong>"psmux isn't installed" right after installing it</strong>: tap <strong>Reconnect</strong> (or <strong>Try Again</strong> in Sessions, or <strong>Check for psmux</strong> in Edit Host &gt; Session). If it still says so, check that it installed for the same Windows account meshTerm signs in with, and that <code>psmux -V</code> in a new SSH session prints a line <code>psmux 3.4.0</code> or later. (Its first line says <code>tmux 3.4.0</code>, for compatibility with tmux tools; the <code>psmux</code> line is the one that counts.)</li>
+        <li><strong>All my sessions ended at once</strong>: installing, updating or uninstalling psmux stops every psmux server (see <a href="#install-setup">the warning above</a>), and a restart of the machine ends them too.</li>
+        <li><strong>"Couldn't start psmux on &lt;host&gt;"</strong>: psmux was found but the session didn't start. Tap <strong>Reconnect</strong>. If it keeps happening, update psmux to the latest release.</li>
+        <li><strong>Uninstalling</strong>: use Windows' Installed apps list (or <code>uninstall.exe</code> in <code>%LOCALAPPDATA%\psmux</code>), or your package manager. Then set the host's Persistence back to <strong>None</strong>.</li>
+        <li>More Windows help: <a href="troubleshooting.html#c-win-key">key installed, still asks for a password</a>, <a href="troubleshooting.html#c-win-denied">permission denied</a>, and <a href="meshterm.html#windows">Windows hosts</a> in the User Guide.</li>
+      </ul>
+    </section>
+
+  </main>
+
+</div><!-- /.page-body -->
