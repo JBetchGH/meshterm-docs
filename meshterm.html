@@ -1,7 +1,7 @@
 ---
 layout: guide
-title: "meshTerm 2.3.1 - User Guide"
-description: "The meshTerm 2.3.1 user guide: adding hosts, Windows hosts, tmux and mtRoam persistent sessions, Containers, agents, SSH keys, Tailscale, port forwarding, SFTP, the keyboard palette, snippets and settings."
+title: "meshTerm 2.3.4 - User Guide"
+description: "The meshTerm 2.3.4 user guide: adding hosts, Windows hosts, tmux and mtRoam persistent sessions, Containers, agents, SSH keys, Tailscale, port forwarding, SFTP, the keyboard palette, snippets and settings."
 lang: en
 permalink: /meshterm.html
 footer: |
@@ -14,7 +14,7 @@ footer: |
     </p>
 ---
 <header class="site-header">
-  <div class="app-name">meshTerm 2.3.1</div>
+  <div class="app-name">meshTerm 2.3.4</div>
   <h1>User Guide</h1>
   <div class="sub">Connecting, tmux and mtRoam persistent sessions, named sessions, AI agents, the keyboard palette, snippets, SFTP, and everything in between.</div>
 </header>
@@ -63,7 +63,7 @@ footer: |
   </aside>
 
   <main>
-    <div class="page-title">meshTerm 2.3.1 - User Guide</div>
+    <div class="page-title">meshTerm 2.3.4 - User Guide</div>
     <div class="page-subtitle">For iPhone and iPad.</div>
 
     <!-- ============================================ -->
@@ -87,17 +87,25 @@ footer: |
     <!-- ============================================ -->
     <section id="whats-new">
       <h2>2. What's new</h2>
-      <p>meshTerm is currently at version <strong>2.3.0</strong>. The headline additions since 2.1.2:</p>
+      <p>meshTerm is currently at version <strong>2.3.4</strong>. The headline additions since 2.1.2:</p>
+
+      <h3>2.3.4 <span class="new-badge">2.3.4</span></h3>
+      <ul>
+        <li><strong>Valid compose files deploy again</strong>: the compose check in <strong>New Stack</strong> and <strong>Edit Compose</strong> no longer blocks files that use YAML anchors and aliases, <code>extends</code>, block scalars (<code>|</code> and <code>&gt;</code>) or quoted strings over several lines. The host's own compose still checks the file before it deploys. See <a href="#containers-deploy">Deploying</a>.</li>
+        <li><strong>Smart punctuation is a warning</strong>: curly quotes or dashes pasted from the web inside a value now show as a warning instead of stopping the deploy. A curly quote that opens a value, such as <code>image: &ldquo;nginx&rdquo;</code>, still blocks, because compose would keep the quotes.</li>
+      </ul>
 
       <h3>2.3.3 <span class="new-badge">2.3.3</span></h3>
       <ul>
-        <li><strong>Switch one session's shell</strong>: the palette's <strong>Shell</strong> tile now switches only the session you are in. Without tmux or psmux, the tab reconnects in the shell you pick and keeps it until you close the tab, even after the app restarts. With tmux or psmux, it opens a new window in that shell. New sessions still start in the host's default shell. See <a href="start-shell.html#session">Switching one session</a>.</li>
-        <li><strong>Default Shell</strong>: the host setting is now called <strong>Default Shell</strong>, in <strong>Edit Host &gt; Shell &amp; Environment</strong>. See <a href="start-shell.html">Default shell</a>.</li>
-      </ul>
-
-      <h3>2.3.2 <span class="new-badge">2.3.2</span></h3>
-      <ul>
         <li><strong>Default shell</strong>: choose the shell each host starts in, such as zsh, fish or PowerShell 7, without changing anything on the server. meshTerm connects with your login shell, then starts the one you chose, from the shells it finds on the host. On a new host the palette offers the choice on first connect; change it later in <strong>Edit Host &gt; Shell &amp; Environment &gt; Default Shell</strong>. See <a href="start-shell.html">Default shell</a>.</li>
+        <li><strong>Switch one session's shell</strong>: the palette's <strong>Shell</strong> tile now switches only the session you are in. Without tmux or psmux, the tab reconnects in the shell you pick and keeps it until you close the tab, even after the app restarts. With tmux or psmux, it opens a new window in that shell. New sessions still start in the host's default shell. See <a href="start-shell.html#session">Switching one session</a>.</li>
+        <li><strong>psmux on Windows hosts</strong>: with psmux 3.4.0 or later, a tmux for Windows that installs for your account with no admin rights, sessions on a Windows host keep running after you disconnect. See <a href="psmux.html">psmux on Windows hosts</a>.</li>
+        <li><strong>Notifications you can check</strong>: in Edit Host, the notification status row shows whether alerts are installed on the host, or what is missing. <strong>Install Now</strong> sets the host up straight away, and <strong>Send Test Alert</strong> checks that alerts from that host reach this device. See <a href="#notification-setup">Set up and test a host</a>.</li>
+        <li><strong>"Has questions" alerts</strong>: when Claude asks a question or asks you to approve a plan, or Codex asks for input, the alert says so, for example "Claude has questions." Tap it and answer in the terminal. See <a href="#agent-notifications">Notifications</a>.</li>
+        <li><strong>Alerts from Windows hosts</strong>: Claude Code and Codex alert for questions, approvals and finished turns in psmux sessions, and agy (Gemini) for finished turns. Windows needs nothing extra installed. On Linux and macOS, alerts need Python 3.5 or later and <code>curl</code>, and meshTerm also looks for <code>python3</code> from Homebrew, pyenv, asdf and conda. See <a href="#notification-requirements">Host requirements</a>.</li>
+        <li><strong>herdr alerts setup card</strong>: a host's herdr dashboard offers <strong>Turn on herdr alerts for this iPhone</strong> (or iPad). If you installed the meshTerm herdr plugin yourself and no device is set up, herdr can remind you, at most once a week. See <a href="#herdr">herdr</a>.</li>
+        <li><strong>Rootless user ID ranges</strong>: when a rootless Podman user has no user ID ranges, meshTerm offers one step that adds a free range. When the ranges are too small, it says so, and Docker 101 shows an administrator how to enlarge them safely. See <a href="docker-101.html#id-ranges">User ID ranges</a>.</li>
+        <li><strong>Back to the prompt from copy mode</strong>: in tmux, or psmux on a Windows host, the return-to-prompt pill also leaves copy mode after you scroll up. See <a href="#tui-pill">TUI return-to-prompt pill</a>.</li>
       </ul>
 
       <h3>2.3 <span class="new-badge">2.3</span></h3>
@@ -231,7 +239,7 @@ footer: |
       <ul>
         <li><strong>Connection</strong>: address, authentication, tags, operating system, and (for an mtRoam host) the mtRoam transport.</li>
         <li><strong>Session</strong>: the Persistence picker and the settings of the chosen option (see <a href="#persistence">Choosing persistence</a>).</li>
-        <li><strong>Shell &amp; Environment</strong>: the <a href="start-shell.html">Default Shell</a> <span class="new-badge">2.3.2</span> (the shell every new session on the host starts in), working directory, the per-host <a href="#tui-pill">Back-to-prompt button</a> setting, and environment variables.</li>
+        <li><strong>Shell &amp; Environment</strong>: the <a href="start-shell.html">Default Shell</a> <span class="new-badge">2.3.3</span> (the shell every new session on the host starts in), working directory, the per-host <a href="#tui-pill">Back-to-prompt button</a> setting, and environment variables.</li>
         <li><strong>Tunnels</strong>: port forwarding rules.</li>
       </ul>
       <p>Below them, <strong>Changes on this host</strong> lists what meshTerm leaves on the server, such as agent notification hooks, and lets you turn them off or remove them where that is possible.</p>
@@ -599,7 +607,7 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
       <h3>Persistence and resume</h3>
       <p>Agent sessions are as durable as the rest of Roam. An agent keeps running through an app restart or a network drop and picks straight back up when you return. You can <strong>resume any previous conversation</strong>, including agent sessions you started from the terminal rather than the chat, so a session you kicked off in a plain shell is still yours to continue in the native chat later.</p>
 
-      <h3 id="agent-notifications">Notifications <span class="new-badge">2.3.1</span></h3>
+      <h3 id="agent-notifications">Notifications <span class="new-badge">2.3.3</span></h3>
       <p>Get an alert when an agent has questions, needs approval or finishes a turn, even with meshTerm in the background or closed. Tap it to open the session. <a href="index.es.html#agent-notifications" lang="es">Notificaciones en español</a>.</p>
       <p>Alerts work in meshTerm-managed <strong>tmux and mtRoam sessions, herdr panes, and chats in the Agents tab</strong> on Linux and macOS. On Windows hosts, they come from <strong>psmux sessions and herdr panes</strong>. A plain SSH tab or a tmux session you started outside meshTerm cannot route an alert to your phone because it has no meshTerm session record linking it to your device.</p>
       <ul>

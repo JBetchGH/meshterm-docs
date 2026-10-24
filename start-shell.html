@@ -14,7 +14,7 @@ footer: |
     </p>
 ---
 <header class="site-header">
-  <div class="app-name">meshTerm 2.3.3</div>
+  <div class="app-name">meshTerm 2.3.4</div>
   <h1>Default Shell</h1>
   <div class="sub">Pick the shell your sessions on a host start in, such as zsh, fish or PowerShell 7, and switch one session to another shell, without changing anything on the server.</div>
 </header>
@@ -39,18 +39,18 @@ footer: |
   </aside>
 
   <main>
-    <div class="page-title">meshTerm 2.3.3 - Default Shell</div>
+    <div class="page-title">meshTerm 2.3.4 - Default Shell</div>
     <div class="page-subtitle">Your shell, on each host and in each session, without touching the server.</div>
 
     <section id="what">
-      <h2>1. What the default shell is <span class="new-badge">2.3.2</span></h2>
+      <h2>1. What the default shell is <span class="new-badge">2.3.3</span></h2>
       <p>Every account on a server has a <strong>login shell</strong>, the shell SSH starts when you sign in. Often it is bash, while the shell you actually like on that host is zsh or fish. The <strong>default shell</strong> is a per-host setting in meshTerm: meshTerm connects with your login shell as usual, then starts the shell you chose. Every new session on that host starts in it.</p>
       <ul>
         <li><strong>Nothing on the server changes.</strong> meshTerm doesn't run <code>chsh</code>, doesn't edit <code>/etc/passwd</code>, and on Windows doesn't change OpenSSH's <code>DefaultShell</code>. Other SSH clients, scripts and <code>scp</code> keep using the login shell. Choose <strong>Login shell</strong> again and meshTerm goes back to starting nothing extra.</li>
         <li><strong>Only shells found on the host are offered.</strong> On Linux and macOS, meshTerm reads <code>/etc/shells</code> and looks on your PATH for bash, zsh, fish, ksh, mksh, dash, tcsh, csh and nu. If a shell is installed twice (for example <code>/bin/zsh</code> and Homebrew's <code>/opt/homebrew/bin/zsh</code>), both are listed with their paths. On Windows the choices are <strong>Command Prompt</strong>, <strong>Windows PowerShell</strong> and <strong>PowerShell 7</strong>, when installed.</li>
         <li>Checking a host's shells is one read-only command over the connection you already have. It installs nothing.</li>
         <li>The login shell is always at the top of the list, marked <strong>Login shell</strong> (<strong>SSH default shell</strong> on Windows).</li>
-        <li>From 2.3.3 you can also <a href="#session">switch one session</a> to another shell from the palette, without changing the host's default.</li>
+        <li>You can also <a href="#session">switch one session</a> to another shell from the palette, without changing the host's default.</li>
       </ul>
     </section>
 
