@@ -1,0 +1,194 @@
+---
+layout: guide
+title: "Default shell: choose the shell a host starts in | meshTerm"
+description: "Choose the shell meshTerm starts on each host, such as zsh, fish or PowerShell 7, without changing anything on the server, and switch the shell of one session from the palette: the first-connect picker, Edit Host's Default Shell, the Shell tile, tmux, psmux and Windows behaviour, and what happens when a shell is missing."
+lang: en
+permalink: /start-shell.html
+footer: |
+    <p>meshTerm is developed by James Betchley.</p>
+    <p style="margin-top: 8px;">
+      <a href="mailto:meshterm@gmail.com">meshterm@gmail.com</a>
+    </p>
+    <p style="margin-top: 16px; font-size: 12px; opacity: 0.8;">
+      meshTerm is not affiliated with, endorsed by, or in partnership with Tailscale Inc.
+    </p>
+---
+<header class="site-header">
+  <div class="app-name">meshTerm 2.3.3</div>
+  <h1>Default Shell</h1>
+  <div class="sub">Pick the shell your sessions on a host start in, such as zsh, fish or PowerShell 7, and switch one session to another shell, without changing anything on the server.</div>
+</header>
+
+
+<div class="page-body">
+
+  <aside class="sidebar">
+    <div class="sidebar-title">Contents</div>
+    <ul>
+      <li><a href="#what">1. What the default shell is</a></li>
+      <li><a href="#first-connect">2. Choosing on first connect</a></li>
+      <li><a href="#change">3. Changing the default</a></li>
+      <li><a href="#session">4. Switching one session</a></li>
+      <li><a href="#dimmed">5. When the Shell tile is dimmed</a></li>
+      <li><a href="#per-type">6. tmux, psmux, Windows and mtRoam</a></li>
+      <li><a href="#login-only">7. Sessions that use the login shell</a></li>
+      <li><a href="#missing">8. If a shell is missing</a></li>
+      <li><a href="#environment">9. Environment and Secret Profiles</a></li>
+      <li><a href="#notes">10. Good to know</a></li>
+    </ul>
+  </aside>
+
+  <main>
+    <div class="page-title">meshTerm 2.3.3 - Default Shell</div>
+    <div class="page-subtitle">Your shell, on each host and in each session, without touching the server.</div>
+
+    <section id="what">
+      <h2>1. What the default shell is <span class="new-badge">2.3.2</span></h2>
+      <p>Every account on a server has a <strong>login shell</strong>, the shell SSH starts when you sign in. Often it is bash, while the shell you actually like on that host is zsh or fish. The <strong>default shell</strong> is a per-host setting in meshTerm: meshTerm connects with your login shell as usual, then starts the shell you chose. Every new session on that host starts in it.</p>
+      <ul>
+        <li><strong>Nothing on the server changes.</strong> meshTerm doesn't run <code>chsh</code>, doesn't edit <code>/etc/passwd</code>, and on Windows doesn't change OpenSSH's <code>DefaultShell</code>. Other SSH clients, scripts and <code>scp</code> keep using the login shell. Choose <strong>Login shell</strong> again and meshTerm goes back to starting nothing extra.</li>
+        <li><strong>Only shells found on the host are offered.</strong> On Linux and macOS, meshTerm reads <code>/etc/shells</code> and looks on your PATH for bash, zsh, fish, ksh, mksh, dash, tcsh, csh and nu. If a shell is installed twice (for example <code>/bin/zsh</code> and Homebrew's <code>/opt/homebrew/bin/zsh</code>), both are listed with their paths. On Windows the choices are <strong>Command Prompt</strong>, <strong>Windows PowerShell</strong> and <strong>PowerShell 7</strong>, when installed.</li>
+        <li>Checking a host's shells is one read-only command over the connection you already have. It installs nothing.</li>
+        <li>The login shell is always at the top of the list, marked <strong>Login shell</strong> (<strong>SSH default shell</strong> on Windows).</li>
+        <li>From 2.3.3 you can also <a href="#session">switch one session</a> to another shell from the palette, without changing the host's default.</li>
+      </ul>
+    </section>
+
+    <section id="first-connect">
+      <h2>2. Choosing on first connect</h2>
+      <p>The first time you connect to a new host, meshTerm checks which shells it has. Your session starts in the login shell straight away, so you can type while it checks.</p>
+      <ul>
+        <li>The keyboard palette opens on the <strong>Default Shell for</strong> your host list, showing "Checking shells…" and then the shells it found. <strong>Close</strong> works at any time, including while it is still checking.</li>
+        <li><strong>Pick a shell</strong> and it becomes the host's default shell, and this session moves to it too (see <a href="#when">below</a>). Picking <strong>Login shell</strong> keeps things as they are.</li>
+        <li><strong>Close</strong> (or the palette button while the list is up) keeps the login shell.</li>
+        <li>Either way the keyboard comes back, and meshTerm doesn't ask about that host again, on this device or, with <a href="meshterm.html#sync">iCloud Sync</a> on, on your other devices.</li>
+        <li>If the host only has its login shell, you see "Only bash found" (or the shell's name) for a moment, and nothing is asked.</li>
+        <li>Until you answer, the palette's <strong>Shell</strong> tile opens this same list.</li>
+      </ul>
+      <p id="when">When the default changes from this list:</p>
+      <ul>
+        <li><strong>If you haven't typed anything yet</strong> in the session, meshTerm switches right away: you see "Switching to zsh" and the session restarts in the new shell.</li>
+        <li><strong>Otherwise</strong> nothing you are running is interrupted. A notice says "Default shell: zsh" and "Applies from your next connect." Tap <strong>Reconnect Now</strong> to switch now.</li>
+      </ul>
+      <p>The list waits until it can be seen properly:</p>
+      <ul>
+        <li><strong>iPhone in landscape</strong>: the palette is portrait-only, so the list waits until you turn the phone to portrait. If you rotate to landscape while it is up, it goes away and comes back in portrait.</li>
+        <li><strong>Another screen open</strong> (for example Files): the list waits until you close it.</li>
+        <li><strong>Hardware keyboard</strong> (such as an iPad with a keyboard attached): a banner shows "Checking shells…", then "Other shells found on" your host with <strong>Choose</strong>, which opens the same list. The banner's close button keeps the login shell.</li>
+      </ul>
+      <p>The first-connect list is only shown for ordinary terminal sessions on a host you haven't connected to before, and not on hosts that use mtRoam (see <a href="#per-type">below</a>).</p>
+    </section>
+
+    <section id="change">
+      <h2>3. Changing the default</h2>
+      <p>To change a host's default shell later, go to <strong>Edit Host &gt; Shell &amp; Environment</strong> and, under <strong>Shell</strong>, tap <strong>Default Shell</strong>. The row shows the current choice, or <strong>Login shell</strong>.</p>
+      <ul>
+        <li>The current choice is ticked, and a pick is saved at once. Every new session on the host starts in it.</li>
+        <li><strong>Detect Again</strong> checks the host's shells again, for example after you install fish.</li>
+        <li>A shell you chose earlier that the host no longer has stays in the list, marked "Not found on this host".</li>
+        <li>For a host you have never connected to, the list says "Connect to this host once to see its shells."</li>
+        <li>To go back to the login shell, pick <strong>Login shell</strong>.</li>
+      </ul>
+      <p>The palette's Shell tile doesn't change the default. It switches only the session you are in (next section).</p>
+    </section>
+
+    <section id="session">
+      <h2>4. Switching one session <span class="new-badge">2.3.3</span></h2>
+      <p>On the keyboard palette's Features page, tap <strong>Shell</strong>. The list shows the shells found on the host, with <strong>Detect Again</strong>. What a pick does depends on the session:</p>
+
+      <h3>Sessions without tmux or psmux</h3>
+      <ul>
+        <li>The list is headed <strong>Shell for This Session</strong>. Pick a shell and the tab reconnects in it.</li>
+        <li>If you've typed in the session, meshTerm asks first: "Reconnect in fish?", because the current shell and anything running in it will end. Tap <strong>Reconnect</strong>, or <strong>Cancel</strong> to keep things as they are.</li>
+        <li>The tab keeps that shell until you close it: through reconnects, resuming from Sessions, and after the app restarts. On Sessions, each of these tabs shows its shell and when it was opened, for example "fish, opened 2:32 PM".</li>
+        <li>New tabs, and new sessions on the host, use the default shell.</li>
+      </ul>
+
+      <h3>tmux and psmux sessions</h3>
+      <ul>
+        <li>The list is headed <strong>Open a Window In</strong>. Pick a shell and meshTerm opens a new window running it, and the window becomes the active one. A short note says "Opened a fish window".</li>
+        <li>Other devices and clients attached to the same session see the new window too.</li>
+        <li>Other new windows and splits, including ones you open with the tmux prefix keys, use the host's default shell. To get another window in the shell you picked, pick it again.</li>
+        <li>If the window can't be opened, a notice says "Couldn't open a fish window".</li>
+      </ul>
+
+      <h3>The tick, "Running now" and "Host default"</h3>
+      <ul>
+        <li>The host's default shell is labelled <strong>Host default</strong> in the list (the login shell, when the host has no default). Pick it to put a tab back on the default.</li>
+        <li>Without tmux or psmux, the tick marks the shell the tab starts in. If you've started another shell inside it (for example you typed <code>bash</code>), the list also shows "Running now: bash". Picking that shell makes it the one the tab starts in. Picking the ticked shell does nothing.</li>
+        <li>With tmux or psmux, the tick marks the shell running in the active pane. When that pane is running something else, such as an editor or an agent, nothing is ticked.</li>
+      </ul>
+    </section>
+
+    <section id="dimmed">
+      <h2>5. When the Shell tile is dimmed</h2>
+      <p>Some sessions can't switch shells. Their <strong>Shell</strong> tile is dimmed, and tapping it shows the reason for a moment instead of the list:</p>
+      <table>
+        <thead>
+          <tr><th>Session</th><th>What it says</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Agent, container, one-tap and herdr sessions, and others that run a command</td><td>"This session runs a command, so its shell can't be switched."</td></tr>
+          <tr><td>mtRoam sessions</td><td>"mtRoam sessions use the login shell."</td></tr>
+          <tr><td>A tmux or psmux host where tmux or psmux couldn't start this time, so the session runs without it</td><td>"Reconnect first: this session couldn't start tmux." (or psmux)</td></tr>
+          <tr><td>A first connect where meshTerm couldn't yet tell what kind of host it is</td><td>"Reconnect first to switch shells."</td></tr>
+          <tr><td>A session that isn't connected</td><td>"Connect first."</td></tr>
+        </tbody>
+      </table>
+      <p>For the "Reconnect first" cases, reconnect the session and the tile works again.</p>
+    </section>
+
+    <section id="per-type">
+      <h2>6. tmux, psmux, Windows and mtRoam</h2>
+      <p>How the default shell is used depends on the host's <a href="meshterm.html#persistence">Persistence</a> choice. The Default Shell list's footer says which rule applies to the host.</p>
+      <table>
+        <thead>
+          <tr><th>Host</th><th>Default shell</th><th>Shell tile</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Linux or macOS, Persistence <strong>None</strong></td><td>Each new connect starts in it.</td><td>Reconnects the tab in the shell you pick.</td></tr>
+          <tr><td>Linux or macOS, <strong>tmux</strong></td><td>tmux starts new sessions and new windows in it. A tmux session that's already running keeps its shells.</td><td>Opens a new window in the shell you pick.</td></tr>
+          <tr><td>Windows with <strong>psmux</strong></td><td>The same as tmux: new psmux sessions and new windows start in it; a running session keeps its shells.</td><td>Opens a new window in the shell you pick.</td></tr>
+          <tr><td>Windows without persistence</td><td>Each new connect starts in it.</td><td>Reconnects the tab in the shell you pick.</td></tr>
+          <tr><td><strong>mtRoam</strong></td><td>mtRoam sessions use the login shell, for now. The choice is kept, and applies if the host switches to tmux or no persistence. Edit Host says so under Shell.</td><td>Dimmed.</td></tr>
+        </tbody>
+      </table>
+      <p>Windows and panes you create inside tmux or psmux yourself also start in the default shell. When you go back to the login shell as the default, meshTerm removes its setting from the tmux session on your next connect, and leaves alone any tmux setting you made yourself.</p>
+    </section>
+
+    <section id="login-only">
+      <h2>7. Sessions that use the login shell</h2>
+      <p>Agent, container and one-tap sessions always use the login shell, whatever the host's default shell. That covers Agent Mode and agent sign-in, a container's Shell, <strong>Run in Terminal</strong> and other one-tap commands, and herdr sessions. These run commands meshTerm has tested against the login shell, so they stay predictable, and their Shell tile is <a href="#dimmed">dimmed</a>.</p>
+    </section>
+
+    <section id="missing">
+      <h2>8. If a shell is missing</h2>
+      <p>meshTerm checks that a shell still exists every time it starts it. If it has been removed, or can't start, you still get a working session, and a notice.</p>
+      <ul>
+        <li><strong>A shell you picked for one session</strong>: "fish isn't available on" your host, with "This tab started in the login shell instead." The tab drops that pick and goes back to the host's default shell. With tmux or psmux, the new window starts in another shell, or you see "Couldn't open a fish window".</li>
+        <li><strong>The host's default shell</strong>: "fish isn't available on" your host, with "This session started in the login shell instead." (with tmux or psmux: "The new session or window started in the default shell instead."). Tap <strong>Change Shell</strong> in the notice to open the Default Shell list for the host and pick another shell, or <strong>Login shell</strong>. This changes the host's default.</li>
+        <li>On psmux, a shell with a very long path can't be started by psmux: the notice says the shell "couldn't be used" and the session started in the default shell.</li>
+      </ul>
+    </section>
+
+    <section id="environment">
+      <h2>9. Environment and Secret Profiles</h2>
+      <p>Variables from <strong>Shell &amp; Environment</strong> and <a href="meshterm.html#secret-profiles">Secret Profiles</a> reach the shell when a session starts, whichever shell you chose. A window opened from the Shell tile gets them like any other window in the session.</p>
+      <p>Sending values into a session that is already running works only in <strong>bash and zsh</strong>. In another shell (fish, tcsh, nu and so on, or a Windows shell), Secret Profiles says the session's shell can't receive values while it's running; the values still apply when a session starts. To switch, use <strong>Shell</strong> in the terminal palette.</p>
+    </section>
+
+    <section id="notes">
+      <h2>10. Good to know</h2>
+      <ul>
+        <li><strong>Login messages</strong>: on a host without persistence, a session that starts a shell other than the login shell doesn't show the server's message of the day (MOTD) or the "Last login" line.</li>
+        <li><strong><a href="meshterm.html#keep-path">Keep Tools on PATH</a></strong>: when the default shell is bash or zsh, the block is added to that shell's <code>~/.bashrc</code> or <code>~/.zshrc</code> too, alongside the login shell's. The same happens when you switch a session to bash or zsh.</li>
+        <li><strong>Syncing</strong>: with iCloud Sync on, the host's default shell and the fact that you've answered the first-connect question sync with the host. A shell picked for one session stays on that device. Each device checks the host's shells itself.</li>
+        <li><strong>Hosts meshTerm can't check</strong>: if checking a host's shells can't work there (for example, PowerShell is restricted by policy), meshTerm stops asking on first connect. You can try <strong>Detect Again</strong> from Edit Host or the Shell tile later.</li>
+        <li>Windows hosts whose SSH shell is MSYS2, MinGW or Cygwin aren't asked.</li>
+      </ul>
+      <p>For hosts, persistence and the palette, see the <a href="meshterm.html">User Guide</a>.</p>
+    </section>
+
+  </main>
+
+</div><!-- /.page-body -->

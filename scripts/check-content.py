@@ -32,7 +32,7 @@ PAGES = ["index.html", "index.es.html", "meshterm.html",
          "meshterm-tailscale-integration.html", "privacy.html",
          "privacy.es.html", "eula.html", "eula.es.html"]
 # Pages added after the restyle: no original to compare with, but they get the anchor and SEO checks.
-NEW_PAGES = ["troubleshooting.html", "docker-101.html", "psmux.html"]
+NEW_PAGES = ["troubleshooting.html", "docker-101.html", "psmux.html", "start-shell.html"]
 SITE_URL = "https://docs.meshterm.com"
 # Pages whose meta description was reworded on purpose (the others either match or gained one).
 REWORDED_DESCRIPTION = {"index.html", "index.es.html"}

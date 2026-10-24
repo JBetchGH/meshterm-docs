@@ -89,6 +89,17 @@ footer: |
       <h2>2. What's new</h2>
       <p>meshTerm is currently at version <strong>2.3.0</strong>. The headline additions since 2.1.2:</p>
 
+      <h3>2.3.3 <span class="new-badge">2.3.3</span></h3>
+      <ul>
+        <li><strong>Switch one session's shell</strong>: the palette's <strong>Shell</strong> tile now switches only the session you are in. Without tmux or psmux, the tab reconnects in the shell you pick and keeps it until you close the tab, even after the app restarts. With tmux or psmux, it opens a new window in that shell. New sessions still start in the host's default shell. See <a href="start-shell.html#session">Switching one session</a>.</li>
+        <li><strong>Default Shell</strong>: the host setting is now called <strong>Default Shell</strong>, in <strong>Edit Host &gt; Shell &amp; Environment</strong>. See <a href="start-shell.html">Default shell</a>.</li>
+      </ul>
+
+      <h3>2.3.2 <span class="new-badge">2.3.2</span></h3>
+      <ul>
+        <li><strong>Default shell</strong>: choose the shell each host starts in, such as zsh, fish or PowerShell 7, without changing anything on the server. meshTerm connects with your login shell, then starts the one you chose, from the shells it finds on the host. On a new host the palette offers the choice on first connect; change it later in <strong>Edit Host &gt; Shell &amp; Environment &gt; Default Shell</strong>. See <a href="start-shell.html">Default shell</a>.</li>
+      </ul>
+
       <h3>2.3 <span class="new-badge">2.3</span></h3>
       <ul>
         <li><strong>Containers</strong>: a new tab for the Docker, Podman, nerdctl and Apple <code>container</code> workloads on your own servers, over the SSH connections you already have. An overview of every host with an engine, a screen for each host and container with status, CPU and memory charts, logs and a Shell, and start, stop, restart and recreate with a confirmation first. Containers is part of Pro, with a free preview. See <a href="#containers">Containers</a>.
@@ -220,7 +231,7 @@ footer: |
       <ul>
         <li><strong>Connection</strong>: address, authentication, tags, operating system, and (for an mtRoam host) the mtRoam transport.</li>
         <li><strong>Session</strong>: the Persistence picker and the settings of the chosen option (see <a href="#persistence">Choosing persistence</a>).</li>
-        <li><strong>Shell &amp; Environment</strong>: working directory, the per-host <a href="#tui-pill">Back-to-prompt button</a> setting, and environment variables.</li>
+        <li><strong>Shell &amp; Environment</strong>: the <a href="start-shell.html">Default Shell</a> <span class="new-badge">2.3.2</span> (the shell every new session on the host starts in), working directory, the per-host <a href="#tui-pill">Back-to-prompt button</a> setting, and environment variables.</li>
         <li><strong>Tunnels</strong>: port forwarding rules.</li>
       </ul>
       <p>Below them, <strong>Changes on this host</strong> lists what meshTerm leaves on the server, such as agent notification hooks, and lets you turn them off or remove them where that is possible.</p>
@@ -881,7 +892,7 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
 
       <h3>The pages</h3>
       <ul>
-        <li><strong>Features</strong> - one-tap access to the things you reach for mid-session: the SFTP file browser, buffer and history search, the Snippet Vault, Tunnels, and <a href="#agents">Agents</a>.</li>
+        <li><strong>Features</strong> - one-tap access to the things you reach for mid-session: the SFTP file browser, buffer and history search, the Snippet Vault, Tunnels, and <a href="#agents">Agents</a>. The <strong>Shell</strong> tile <span class="new-badge">2.3.3</span> switches the shell of the session you are in (the host's default stays as it is); see <a href="start-shell.html#session">Switching one session</a>.</li>
         <li><strong>Keys</strong> - a custom terminal keyboard built from your own key groups: F-keys, navigation, modifiers, and the keys you use most. This is where Ctrl, Esc, Tab, the arrows, and your top row live.</li>
         <li><strong>Sessions</strong> - your live and resumable sessions, for one-tap switching without leaving the terminal.</li>
         <li><strong>tmux</strong> <span class="new-badge">2.2</span>: a fourth page, marked with the tmux icon, that appears only while a tmux session is attached in control mode. It manages the session's windows and panes; see <a href="#tmux">tmux sessions</a>.</li>
