@@ -697,7 +697,7 @@ xcode-select --install</code></pre>
     <!-- ============================================ -->
     <section id="s-containers">
       <h2>8. Containers</h2>
-      <p>The Containers tab (Pro) finds Docker, Podman, nerdctl and Apple's container tool on your hosts, shows them in a Fleet, and lets you start, stop and deploy. If you are new to containers, read <a href="docker-101.html">Docker 101</a> first. When something stops a host, its Fleet card shows the failure (not a spinner) with the fix. Where a command is needed, <strong>Run in Terminal</strong> opens a terminal on the host and types it for you, and <strong>Copy</strong> copies it. After you fix it, tap <strong>Check Again</strong> or <strong>Try Again</strong>. Commands that need root show "Needs an administrator", and become <code>su -c '...'</code> ("Needs the root password.") on hosts without sudo; as root they have no <code>sudo</code>. Linux hosts are covered throughout; Mac hosts (Docker Desktop, OrbStack, Colima, Podman machine and Apple's container tool) need meshTerm 2.3.</p>
+      <p>The Containers tab (Pro) finds Docker, Podman, nerdctl and Apple's container tool on your hosts, shows them in a Fleet, and lets you start, stop and deploy. If you are new to containers, read <a href="docker-101.html">Docker 101</a> first. When something stops a host, its Fleet card shows the failure (not a spinner) with the fix. Where a command is needed, <strong>Run in Terminal</strong> opens a terminal on the host and types it for you, and <strong>Copy</strong> copies it. After you fix it, tap <strong>Check Again</strong> or <strong>Try Again</strong>. Commands that need root show "Needs an administrator", and become <code>su -c '...'</code> ("Needs the root password.") on hosts without sudo; as root they have no <code>sudo</code>. Linux hosts are covered throughout; Mac hosts (Docker Desktop, OrbStack, Colima, Podman machine and Apple's container tool) need meshTerm 2.3, and Windows hosts meshTerm 2.3.5 (see <a href="#k-windows">Docker on a Windows host</a>).</p>
 
       <article class="issue" id="k-noengine">
         <h3>"No Container Engine Found" / "Couldn't find a container engine on HOST. Install Docker or Podman on the host, then check again."</h3>
@@ -829,6 +829,32 @@ sudo dnf install -y git                                  # Fedora
 sudo apk add git                                         # Alpine
 xcode-select --install                                   # macOS</code></pre>
           <p>Then tap <strong>Check Again</strong> on New Stack or the host's Stacks section; meshTerm reconnects to the host so it notices the change. The standalone <code>curl</code> lines need <code>curl</code> (see <a href="#s-fresh">fresh-server notes</a>).</p>
+        </div>
+      </article>
+
+      <article class="issue" id="k-windows">
+        <h3>Docker on a Windows host <span class="new-badge">2.3.5</span>: "Docker isn't installed on this Windows host", "The Docker service is stopped", "Docker on this server refused this user"</h3>
+        <p class="issue__why"><span class="issue__label">Why</span>meshTerm 2.3.5 checks Windows hosts for Docker Engine on Windows Server, Docker inside a WSL distro, and Docker Desktop (see <a href="meshterm.html#containers-windows">Docker on Windows hosts</a>). The card names what stops it. Under Guided Setup Help, one tap runs the fix as a PowerShell step and shows its output. Steps marked "(an administrator)" run in one tap only when you are signed in as an administrator; otherwise copy the line for one. Replace USER with the Windows account, and Ubuntu with the distro's name.</p>
+        <div class="issue__fix"><span class="issue__label">Fix</span>
+          <p><strong>The Docker service is stopped</strong> (an administrator):</p>
+<pre><code>Start-Service docker          # PowerShell
+net start docker              # Command Prompt</code></pre>
+          <p><strong>"Docker on this server accepts administrators and the docker-users group"</strong>: add the user to the group (an administrator), then sign out and back in. The next SSH sign-in carries the group.</p>
+<pre><code>Add-LocalGroupMember -Group docker-users -Member USER     # PowerShell
+net localgroup docker-users USER /add                     # Command Prompt</code></pre>
+          <p><strong>"Docker on this server accepts administrators only"</strong>: Docker on Windows Server lets standard users in only when its configuration names a group. As an administrator, open the Windows host in Containers and use <strong>Let standard users use Docker</strong>, then <strong>Set Docker Group</strong>. It creates <code>docker-users</code>, writes it into <code>C:\ProgramData\docker\config\daemon.json</code> and restarts Docker. If Docker doesn't come back, it restores the previous file. Restarting Docker stops running containers unless their restart policy brings them back. By hand, in an administrator PowerShell:</p>
+<pre><code>if (-not (Get-LocalGroup -Name 'docker-users' -ErrorAction SilentlyContinue)) { New-LocalGroup -Name 'docker-users' }; $p = 'C:\ProgramData\docker\config\daemon.json'; $j = if (Test-Path $p) { Get-Content -Raw $p | ConvertFrom-Json } else { [pscustomobject]@{} }; $j | Add-Member -NotePropertyName group -NotePropertyValue 'docker-users' -Force; [IO.File]::WriteAllText($p, ($j | ConvertTo-Json -Depth 32), (New-Object Text.UTF8Encoding $false)); Restart-Service docker</code></pre>
+          <p><strong>Docker isn't installed</strong>: Windows Server takes Docker Engine, Windows 10 or 11 takes <a href="https://docs.docker.com/desktop/setup/install/windows-install/">Docker Desktop</a>. On Windows Server, <strong>Install Docker</strong> (an administrator) downloads Microsoft's Docker CE installer from a pinned copy, checks its hash, and installs it. It can take a few minutes. If it says "Reboot HOST, then tap Install Docker again.", do that. The installer replaces Docker's configuration file and keeps a copy beside it, so run <strong>Set Docker Group</strong> again if standard users had access. By hand, in an administrator PowerShell:</p>
+<pre><code>Invoke-WebRequest -UseBasicParsing 'https://raw.githubusercontent.com/microsoft/Windows-Containers/c5593a4e9c06818b757cc965fc50f88dd1e0e0de/helpful_tools/Install-DockerCE/install-docker-ce.ps1' -OutFile install-docker-ce.ps1
+.\install-docker-ce.ps1 -NoRestart -DockerVersion 29.9.2</code></pre>
+          <p>If the installer stops at once because of a Docker event-log entry from an earlier install, the output names the entry and the PowerShell line that removes it.</p>
+          <p><strong>Docker Desktop</strong>: "Docker Desktop is installed but not running" means it has to be started on the PC. "Docker Desktop was started by USER" means another Windows account owns it: sign in to SSH as that account, or run Docker Desktop as this one. For stacks, turn on <strong>WSL integration</strong> for a distro in Docker Desktop's settings, then <strong>Check Again</strong>.</p>
+          <p><strong>Docker inside a WSL distro</strong>: WSL distros belong to one Windows account, so sign in with the account that owns the distro. A stopped distro is never started in the background: tap <strong>Start and Check</strong>, or run <code>wsl -d Ubuntu</code>. Inside the distro, start Docker, add your Linux user to its <code>docker</code> group and install Compose for stacks:</p>
+<pre><code>sudo systemctl enable --now docker       # or: sudo service docker start
+sudo usermod -aG docker $USER            # then open a new session
+sudo apt-get install -y docker-compose-v2   # Ubuntu, Debian: Compose for stacks</code></pre>
+          <p><strong>"SSH sessions can't find it"</strong>: Docker is installed, but its folder isn't on the PATH an SSH session gets. Add Docker's folder to the system PATH (Docker Engine and a machine-wide Docker Desktop) or the user PATH (a per-user Docker Desktop), then sign in again.</p>
+          <p><strong>"PowerShell is restricted on this host, so it can't be checked"</strong>: Constrained Language Mode blocks the check, as for <a href="#h-win-clm">herdr</a>. Ask the host's administrator about its PowerShell policy.</p>
         </div>
       </article>
 

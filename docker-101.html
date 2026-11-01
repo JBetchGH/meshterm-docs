@@ -181,7 +181,17 @@ podman machine init &amp;&amp; podman machine start
 
 # Or Apple container (Apple silicon): install from Apple's releases, then
 container system start</code></pre>
-      <p>If you do not have Homebrew, install it from <a href="https://brew.sh">brew.sh</a> first. There is no convenience script on a Mac. Docker Desktop has its own licence terms for larger companies; the others are alternatives. meshTerm 2.3 lists engines on Mac hosts too.</p>
+      <p>If you do not have Homebrew, install it from <a href="https://brew.sh">brew.sh</a> first. There is no convenience script on a Mac. Docker Desktop has its own licence terms for larger companies; the others are alternatives. meshTerm 2.3 lists engines on Mac hosts too, and 2.3.5 on Windows hosts.</p>
+
+      <h3 id="install-windows">Windows <span class="new-badge">2.3.5</span></h3>
+      <p>meshTerm reaches a Windows host over its built-in OpenSSH server (see <a href="meshterm.html#windows">Windows hosts</a>). Pick one of these:</p>
+      <ul>
+        <li><strong>Windows Server</strong>: Docker Engine runs Windows containers. Install it as an administrator with Microsoft's installer. meshTerm's <strong>Install Docker</strong> runs the same installer for you; see <a href="troubleshooting.html#k-windows">Docker on a Windows host</a> for the lines. Docker Engine on Windows Server has no Compose, so stacks are not available there yet.</li>
+        <li><strong>Windows 10 or 11</strong>: install <a href="https://docs.docker.com/desktop/setup/install/windows-install/">Docker Desktop</a> and start it on the PC. Turn on WSL integration for a distro to use stacks.</li>
+        <li><strong>Docker inside WSL</strong>, without Docker Desktop: install Docker Engine in a WSL distro with that distro's own lines above (Ubuntu, Debian, Fedora, Alpine). Stacks work inside the distro.</li>
+      </ul>
+<pre><code># WSL with Ubuntu, in an administrator PowerShell (Windows 10 / 11 or a recent Windows Server)
+wsl --install -d Ubuntu</code></pre>
 
       <h3 id="install-check">Check it works</h3>
 <pre><code>sudo docker run --rm hello-world                       # Docker
