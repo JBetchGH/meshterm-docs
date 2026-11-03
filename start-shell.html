@@ -67,8 +67,8 @@ footer: |
       </ul>
       <p id="when">When the default changes from this list:</p>
       <ul>
-        <li><strong>If you haven't typed anything yet</strong> in the session, meshTerm switches right away: you see "Switching to zsh" and the session restarts in the new shell.</li>
-        <li><strong>Otherwise</strong> nothing you are running is interrupted. A notice says "Default shell: zsh" and "Applies from your next connect." Tap <strong>Reconnect Now</strong> to switch now.</li>
+        <li><strong>If this is a new session and you haven't typed anything yet</strong>, meshTerm switches right away: on tmux it opens a zsh window in the same session, moves you to it and closes the old one, so the session keeps its name.</li>
+        <li><strong>Otherwise</strong> nothing you are running is interrupted. On a tmux session, tap <strong>Switch to zsh</strong>: meshTerm opens a zsh window and moves you to it. If your old window has nothing running in it, you can close it with <strong>Close the bash window</strong>, after a confirmation. If something is still running there, the window stays open and the notice says why. On a plain SSH session, tap <strong>Reconnect Now</strong> to switch.</li>
       </ul>
       <p>The list waits until it can be seen properly:</p>
       <ul>
