@@ -9,7 +9,7 @@ alternates:
   - { hreflang: es, href: "privacy.es.html" }
 lang_switch: { href: "privacy.es.html", hreflang: es, label: "Español" }
 footer: |
-    <p>meshTerm Privacy Policy &nbsp;·&nbsp; Version 2.3.3 &nbsp;·&nbsp; Effective 2026-10-28</p>
+    <p>meshTerm Privacy Policy &nbsp;·&nbsp; Version 2.4.0 &nbsp;·&nbsp; Effective 2026-10-28 <!-- set effective date on 2.4 release day --></p>
     <p style="margin-top: 6px;">
       <a href="mailto:meshterm@gmail.com">meshterm@gmail.com</a>
     </p>
@@ -17,7 +17,7 @@ footer: |
 <header>
   <div class="app-name">meshTerm · iOS SSH Client</div>
   <h1>Privacy Policy</h1>
-  <div class="meta">James Betchley &nbsp;·&nbsp; Effective 2026-10-28 &nbsp;·&nbsp; Version 2.3.3</div>
+  <div class="meta">James Betchley &nbsp;·&nbsp; Effective 2026-10-28 <!-- set effective date on 2.4 release day --> &nbsp;·&nbsp; Version 2.4.0</div>
 </header>
 
 
@@ -67,9 +67,12 @@ footer: |
       <li>Tailscale authentication credentials</li>
       <li>Contents of any file accessed through the Application</li>
     </ul>
-    <p>The one exception is Ask an Agent in Containers: only after you agree, meshTerm sends a summary
+    <p>One exception is Ask an Agent in Containers: only after you agree, meshTerm sends a summary
     of a container, which can include recent log lines, to the AI provider you choose (see
-    section 2.5).</p>
+    section 2.5). The other is Security Updates with Pro: to download the security data for your
+    servers, meshTerm asks GitHub Pages for the files of the releases they run, so GitHub can tell which
+    releases those are, though never your servers' names, addresses or packages (see
+    section 2.6).</p>
     <p>We do not use advertising identifiers (IDFA) or any equivalent tracking technologies.
     meshTerm does not contain advertising SDKs or analytics SDKs that transmit personal
     data to third parties.</p>
@@ -165,6 +168,37 @@ footer: |
     <p><strong>Ask an Agent.</strong> If you use Ask an Agent on a container, meshTerm sends a summary of that container to the AI agent you choose, and only after you agree in the app. The summary holds the container's state and settings (including its environment variables, with secrets masked and Vault values replaced by their entry names), up to 200 recent log lines, recent events, CPU and memory, its links to other containers, and your server's name. Today the agent is Claude running on your own server, which sends the summary to Anthropic under the Claude account signed in there. meshTerm starts Claude there with its tools, and your Claude settings such as CLAUDE.md, hooks and MCP servers, turned off, so it can only read the summary and answer: it cannot run commands or read or change files on your server. Claude keeps no record of the request on your server (an older version of Claude that cannot skip it keeps its own record of the request there, which the app tells you about). If you set up your own API key, the summary is sent from your device to the AI provider you configure instead. Your key stays in this device's Keychain, is never synced, and is sent only to the address it was saved for; plain http is allowed only to an address on your own network or tailnet. meshTerm keeps the summary and the answer in memory only while you use them and does not save them on your device. Logs can contain personal data, such as email addresses, IP addresses or names. "Dig Deeper" starts a chat with an agent on your server and opens it with the container's name, image, container engine and its version, status (with any exit code or out-of-memory kill), restart count and policy, health, compose project and service, the names of the containers it depends on, recent events, any cause titles and your server's name, never its logs or environment. The Developer receives none of this data. You can stop sending at any time from Ask an Agent's Change screen.</p>
     <p><strong>Docker Hub.</strong> When you browse images to run, meshTerm asks Docker Hub for its list of popular images, your search text, and the tags of the image you look at, directly from your device. These requests carry no cookies, no account and nothing that identifies you, your servers or your containers; Docker's privacy policy applies to them. Pulling an image is done by your own server, not by the app. The Developer receives none of this data.</p>
     <p><strong>Templates.</strong> With Pro or the free trial, meshTerm downloads the list of templates and its signature from meshdeck.ag-applications.com, which is hosted on GitHub Pages: when you open Templates (at most once a day unless you refresh it), and quietly when you open or return to the Containers tab, at most once every 6 hours (sooner only to retry a check that failed), so updated templates reach you promptly. The request carries no cookies, no account, and no identifier for you, your device, your servers or your settings; GitHub sees your IP address and that the list was requested, and GitHub's privacy statement applies. meshTerm checks the list's signature before using it. Deploying a template sends its compose file and your settings to your own server only.</p>
+
+    <h3>2.6 Security Updates</h3>
+    <p><strong>What is checked.</strong> Once a day per host, when you connect to it (or sooner
+    when you tap Check Again), meshTerm runs a short read-only check on that server, over the
+    connection you already have open or a brief connection of its own for hosts you reach only
+    through Roam. It reads the system's name and release (for example "Ubuntu 24.04"), the
+    running kernel version, whether the server says it needs a restart, whether Ubuntu Pro or a
+    live kernel patch is in use, the two addresses of that connection (to tell whether it runs
+    over your tailnet), and the installed Tailscale version, if any. With Pro it also reads the
+    list of installed packages and their versions. It needs no administrator rights and changes
+    nothing on the server.</p>
+    <p><strong>Where it stays.</strong> Results are matched on your device. Package lists stay on
+    the device that made the check: they are not sent to the Developer or anyone else, not
+    synced to iCloud, and not included in device backups. Deleting a host, or Settings &rarr;
+    Privacy &amp; Security &rarr; Erase This Device, removes them. Without Pro, your servers'
+    package lists are never read.</p>
+    <p><strong>The security data.</strong> To know which versions are affected, meshTerm downloads
+    a signed list of security fixes from ag-studio-apps.github.io (GitHub Pages): its summary
+    when you open the Application, at most once every 12 hours (sooner only to retry a download
+    that failed, or when you tap Check Again while the data is out of date), and with Pro the
+    fix list for each release your servers run, such as Ubuntu 24.04. For an Ubuntu release
+    that has an Ubuntu Pro fix list, meshTerm downloads that list too, whether or not your
+    server has Ubuntu Pro, so the download does not reveal which servers have it. The requests
+    carry no cookies, no account, and no identifier for you, your device or your servers.
+    GitHub sees your IP address and which files were requested, and so which releases your
+    servers run, but never their names, addresses or packages; GitHub's privacy statement
+    applies. meshTerm checks the signature before using the data.</p>
+    <p><strong>Installing updates and restarting.</strong> Install Updates and Restart Server run
+    only when you tap them (Restart Server also asks you to confirm). They open a terminal on
+    that server showing the exact command; packages are downloaded by your server from its own
+    repositories, not by the Application.</p>
   </section>
 
   <section id="s3">
@@ -266,6 +300,9 @@ footer: |
       <li><strong>meshdeck.ag-applications.com (GitHub Pages)</strong> - to download the signed
       template list, only when you open Templates or the Containers tab, with Pro or the free trial
       (see section 2.5).</li>
+      <li><strong>ag-studio-apps.github.io (GitHub Pages)</strong> - to download the signed list of
+      security fixes, at most every 12 hours, and with Pro the fix lists for your servers' releases
+      (see section 2.6).</li>
       <li><strong>Your own AI provider or server</strong> - only if you set up your own API key for Ask an
       Agent, and only when you ask (see section 2.5).</li>
     </ul>

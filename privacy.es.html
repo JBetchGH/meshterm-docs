@@ -9,7 +9,7 @@ alternates:
   - { hreflang: es, href: "privacy.es.html" }
 lang_switch: { href: "privacy.html", hreflang: en, label: "English" }
 footer: |
-    <p>Política de Privacidad de meshTerm &nbsp;·&nbsp; Versión 2.3.3 &nbsp;·&nbsp; En vigor desde 2026-10-28</p>
+    <p>Política de Privacidad de meshTerm &nbsp;·&nbsp; Versión 2.4.0 &nbsp;·&nbsp; En vigor desde 2026-10-28 <!-- set effective date on 2.4 release day --></p>
     <p style="margin-top: 6px;">
       <a href="mailto:meshterm@gmail.com">meshterm@gmail.com</a>
     </p>
@@ -17,7 +17,7 @@ footer: |
 <header>
   <div class="app-name">meshTerm · Cliente SSH para iOS</div>
   <h1>Política de Privacidad</h1>
-  <div class="meta">James Betchley &nbsp;·&nbsp; En vigor desde 2026-10-28 &nbsp;·&nbsp; Versión 2.3.3</div>
+  <div class="meta">James Betchley &nbsp;·&nbsp; En vigor desde 2026-10-28 <!-- set effective date on 2.4 release day --> &nbsp;·&nbsp; Versión 2.4.0</div>
 </header>
 
 
@@ -71,9 +71,13 @@ footer: |
       <li>Las credenciales de autenticación de Tailscale</li>
       <li>El contenido de cualquier archivo al que se acceda a través de la Aplicación</li>
     </ul>
-    <p>La única excepción es Preguntar a un agente en Contenedores: solo después de que usted lo
+    <p>Una excepción es Preguntar a un agente en Contenedores: solo después de que usted lo
     acepte, meshTerm envía un resumen de un contenedor, que puede incluir líneas recientes del registro, al
-    proveedor de IA que usted elija (consulte la sección 2.5).</p>
+    proveedor de IA que usted elija (consulte la sección 2.5). La otra son las Actualizaciones de
+    seguridad con Pro: para descargar los datos de seguridad de sus servidores, meshTerm pide a GitHub
+    Pages los archivos de las versiones que ejecutan, de modo que GitHub puede saber qué versiones son,
+    aunque nunca los nombres, las direcciones ni los paquetes de sus servidores (consulte la
+    sección 2.6).</p>
     <p>No utilizamos identificadores publicitarios (IDFA) ni ninguna tecnología equivalente de
     seguimiento. meshTerm no incluye SDK publicitarios ni SDK de analítica que transmitan
     datos personales a terceros.</p>
@@ -175,6 +179,39 @@ footer: |
     <p><strong>Preguntar a un agente.</strong> Si usa Preguntar a un agente en un contenedor, meshTerm envía un resumen de ese contenedor al agente de IA que usted elija, y solo después de que usted lo acepte en la aplicación. El resumen contiene el estado y la configuración del contenedor (incluidas sus variables de entorno, con los secretos ocultos y los valores del Vault sustituidos por los nombres de sus entradas), hasta 200 líneas recientes del registro, los eventos recientes, la CPU y la memoria, sus enlaces con otros contenedores y el nombre de su servidor. Hoy el agente es Claude ejecutándose en su propio servidor, que envía el resumen a Anthropic con la cuenta de Claude que tenga la sesión iniciada allí. meshTerm inicia Claude allí con sus herramientas y su configuración de Claude, como CLAUDE.md, los hooks y los servidores MCP, desactivadas, de modo que solo puede leer el resumen y responder: no puede ejecutar comandos ni leer o modificar archivos en su servidor. Claude no guarda ningún registro de la solicitud en su servidor (una versión antigua de Claude que no puede omitirlo guarda su propio registro de la solicitud allí, y la aplicación se lo indica). Si configura su propia clave de API, el resumen se envía en su lugar desde su dispositivo al proveedor de IA que usted configure. Su clave permanece en el Llavero de este dispositivo, nunca se sincroniza y solo se envía a la dirección para la que se guardó; http sin cifrar solo se permite hacia una dirección de su propia red o tailnet. meshTerm conserva el resumen y la respuesta solo en memoria mientras usted los usa y no los guarda en su dispositivo. Los registros pueden contener datos personales, como direcciones de correo electrónico, direcciones IP o nombres. "Profundizar" inicia un chat con un agente en su servidor y lo abre con el nombre del contenedor, la imagen, el motor de contenedores y su versión, el estado (con cualquier código de salida o cierre por falta de memoria), el número de reinicios y la política de reinicio, el estado de salud, el proyecto y el servicio de compose, los nombres de los contenedores de los que depende, los eventos recientes, los títulos de las causas y el nombre de su servidor, nunca sus registros ni su entorno. El Desarrollador no recibe ninguno de estos datos. Puede dejar de enviar en cualquier momento desde la pantalla Cambiar de Preguntar a un agente.</p>
     <p><strong>Docker Hub.</strong> Cuando explora imágenes para ejecutar, meshTerm solicita a Docker Hub su lista de imágenes populares, el texto que usted busca y las etiquetas de la imagen que consulta, directamente desde su dispositivo. Estas solicitudes no llevan cookies, ni cuenta, ni nada que le identifique a usted, a sus servidores o a sus contenedores; se les aplica la política de privacidad de Docker. La descarga de una imagen la hace su propio servidor, no la aplicación. El Desarrollador no recibe ninguno de estos datos.</p>
     <p><strong>Plantillas.</strong> Con Pro o la prueba gratuita, meshTerm descarga la lista de plantillas y su firma desde meshdeck.ag-applications.com, alojado en GitHub Pages: cuando abre Plantillas (como máximo una vez al día salvo que usted la actualice) y, de forma discreta, cuando abre la pestaña Contenedores o vuelve a ella, como máximo una vez cada 6 horas (antes solo para reintentar una comprobación que ha fallado), para que las plantillas actualizadas le lleguen pronto. La solicitud no lleva cookies, ni cuenta, ni ningún identificador suyo, de su dispositivo, de sus servidores o de su configuración; GitHub ve su dirección IP y que se ha solicitado la lista, y se aplica la declaración de privacidad de GitHub. meshTerm comprueba la firma de la lista antes de usarla. Desplegar una plantilla envía el archivo compose de la plantilla y su configuración únicamente a su propio servidor.</p>
+
+    <h3>2.6 Actualizaciones de seguridad</h3>
+    <p><strong>Qué se comprueba.</strong> Una vez al día por host, cuando usted se conecta a él (o
+    antes, si toca Comprobar de nuevo), meshTerm ejecuta en ese servidor una breve comprobación de
+    solo lectura, a través de la conexión que ya tiene abierta o, en los hosts a los que solo
+    llega mediante Roam, de una breve conexión propia. Lee el nombre y la versión del sistema (por
+    ejemplo, "Ubuntu 24.04"), la versión del kernel en ejecución, si el servidor indica que
+    necesita reiniciarse, si usa Ubuntu Pro o un parche del kernel en vivo, las dos direcciones de
+    esa conexión (para saber si pasa por su tailnet) y la versión de Tailscale instalada, si la
+    hay. Con Pro, también lee la lista de paquetes instalados y sus versiones. No necesita
+    derechos de administrador y no cambia nada en el servidor.</p>
+    <p><strong>Dónde se queda.</strong> Los resultados se comparan en su dispositivo. Las listas de
+    paquetes se quedan en el dispositivo que hizo la comprobación: no se envían al Desarrollador
+    ni a nadie más, no se sincronizan con iCloud y no se incluyen en las copias de seguridad del
+    dispositivo. Eliminar un host, o Ajustes &rarr; Privacidad y seguridad &rarr; Borrar este
+    dispositivo, las elimina. Sin Pro, las listas de paquetes de sus servidores nunca se
+    leen.</p>
+    <p><strong>Los datos de seguridad.</strong> Para saber qué versiones están afectadas, meshTerm
+    descarga una lista firmada de correcciones de seguridad desde ag-studio-apps.github.io (GitHub
+    Pages): su resumen cuando abre la Aplicación, como máximo una vez cada 12 horas (antes solo
+    para reintentar una descarga que ha fallado, o cuando toca Comprobar de nuevo con los datos
+    desactualizados), y, con Pro, la lista de correcciones de cada versión que ejecutan sus
+    servidores, como Ubuntu 24.04. Si una versión de Ubuntu tiene una lista de correcciones de
+    Ubuntu Pro, meshTerm también descarga esa lista, tenga o no su servidor Ubuntu Pro, para que
+    la descarga no revele qué servidores lo tienen. Las solicitudes no llevan cookies, ni cuenta,
+    ni ningún identificador suyo, de su dispositivo o de sus servidores. GitHub ve su dirección IP
+    y qué archivos se han solicitado, y por tanto qué versiones ejecutan sus servidores, pero
+    nunca sus nombres, direcciones ni paquetes; se aplica la declaración de privacidad de GitHub.
+    meshTerm comprueba la firma antes de usar los datos.</p>
+    <p><strong>Instalar actualizaciones y reiniciar.</strong> Instalar actualizaciones y Reiniciar
+    servidor solo se ejecutan cuando usted los toca (Reiniciar servidor también le pide que lo
+    confirme). Abren un terminal en ese servidor que muestra el comando exacto; los paquetes los
+    descarga su servidor desde sus propios repositorios, no la Aplicación.</p>
   </section>
 
   <section id="s3">
@@ -282,6 +319,9 @@ footer: |
       <li><strong>meshdeck.ag-applications.com (GitHub Pages)</strong> - para descargar la lista
       firmada de plantillas, solo cuando abre Plantillas o la pestaña Contenedores, con Pro o la
       prueba gratuita (consulte la sección 2.5).</li>
+      <li><strong>ag-studio-apps.github.io (GitHub Pages)</strong> - para descargar la lista firmada
+      de correcciones de seguridad, como máximo cada 12 horas, y, con Pro, las listas de correcciones
+      de las versiones de sus servidores (consulte la sección 2.6).</li>
       <li><strong>Su propio proveedor o servidor de IA</strong> - solo si configura su propia clave de API para
       Preguntar a un agente, y solo cuando usted lo pide (consulte la sección 2.5).</li>
     </ul>
