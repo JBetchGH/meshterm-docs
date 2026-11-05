@@ -1,0 +1,187 @@
+---
+layout: guide
+title: "Security updates for your hosts | meshTerm"
+description: "How meshTerm checks your servers for available security updates: the free Tailscale check, the Pro package check against High and Critical CVEs fixed in your distro's own repositories, what stays on your phone, installing updates, restarting, and the systems it supports."
+lang: en
+permalink: /security-updates.html
+footer: |
+    <p>meshTerm is developed by James Betchley.</p>
+    <p style="margin-top: 8px;">
+      <a href="mailto:meshterm@gmail.com">meshterm@gmail.com</a>
+    </p>
+    <p style="margin-top: 16px; font-size: 12px; opacity: 0.8;">
+      meshTerm is not affiliated with, endorsed by, or in partnership with Tailscale Inc.
+    </p>
+---
+<header class="site-header">
+  <div class="app-name">meshTerm 2.3.5</div>
+  <h1>Security updates</h1>
+  <div class="sub">When you connect, meshTerm checks whether the host has security updates waiting: for Tailscale, and (with Pro) for its installed packages. What it checks, where it shows, what stays on your phone, and how to install the updates.</div>
+</header>
+
+
+<div class="page-body">
+
+  <aside class="sidebar">
+    <div class="sidebar-title">Contents</div>
+    <ul>
+      <li><a href="#what">1. What meshTerm checks</a></li>
+      <li><a href="#what-tailscale" class="sub">Tailscale</a></li>
+      <li><a href="#what-packages" class="sub">Installed packages</a></li>
+      <li><a href="#what-kernel" class="sub">The kernel</a></li>
+      <li><a href="#where">2. Where it shows</a></li>
+      <li><a href="#free-pro">3. Free and Pro</a></li>
+      <li><a href="#privacy">4. What stays on your phone</a></li>
+      <li><a href="#install">5. Installing updates</a></li>
+      <li><a href="#restart">6. Restarting the server</a></li>
+      <li><a href="#tailscale">7. Updating Tailscale</a></li>
+      <li><a href="#eol">8. End of life and Ubuntu Pro</a></li>
+      <li><a href="#systems">9. Supported systems</a></li>
+      <li><a href="#check-again">10. Checking again</a></li>
+    </ul>
+  </aside>
+
+  <main>
+    <div class="page-title">meshTerm 2.3.5 - Security updates</div>
+    <div class="page-subtitle">Know when a host has security fixes waiting, and install them in one step.</div>
+
+    <section id="what">
+      <h2>1. What meshTerm checks</h2>
+      <p>When you connect to a host, meshTerm checks it for available security updates, at most once a day per host. The check uses the SSH connection you already opened: nothing is installed on the host, and you don't need to do anything to turn it on.</p>
+      <p>meshTerm reports updates you can install, not whether a host is safe. It never calls a host "vulnerable": it tells you that a fix has been published for something installed there, and offers to install it.</p>
+
+      <h3 id="what-tailscale">Tailscale (free)</h3>
+      <p>If Tailscale is installed on the host, meshTerm compares its version with a set of rules that meshTerm curates and publishes in its signed security feed. If the host's Tailscale has a security fix in a newer version, the host shows it.</p>
+      <p>Some Tailscale fixes are marked <strong>Recommended</strong>: they matter only inside your tailnet. These are listed in the host's <strong>Security updates</strong> screen but are not counted on the host row.</p>
+
+      <h3 id="what-packages">Installed packages (Pro)</h3>
+      <p>With <a href="meshterm.html#pro">meshTerm Pro</a>, meshTerm also compares the host's installed packages with known CVEs (published security issues) rated <strong>High</strong> or <strong>Critical</strong>, where the fix is already published in the host's own distribution repositories. A CVE that has no fix in those repositories yet is not shown, because there is nothing to install. Medium and Low issues are not shown.</p>
+      <p>The result counts <strong>packages with an update</strong>, not CVEs: one package update often fixes several CVEs at once, and installing it clears them all.</p>
+
+      <h3 id="what-kernel">The kernel</h3>
+      <ul>
+        <li>A kernel fix that is available but not installed yet counts like any other package.</li>
+        <li>A kernel fix that is installed but waiting for a restart counts only once the fix is more than 7 days old. Most servers restart on their own schedule, so meshTerm doesn't ask for a restart the day a fix comes out.</li>
+        <li>Live kernel patching (Ubuntu Livepatch, kpatch) is not taken into account: a live patch doesn't change the result either way.</li>
+      </ul>
+    </section>
+
+    <section id="where">
+      <h2>2. Where it shows</h2>
+      <p><strong>On the host row</strong>: a small shield pill, such as <strong>3 updates</strong>, shows how many updates the host has waiting. There is no pill when there is nothing to install, when the host hasn't been checked yet, or when the security data is out of date (see <a href="#privacy">What stays on your phone</a>).</p>
+      <p><strong>In Host Details &gt; Security updates</strong>: the full list for the host.</p>
+      <ul>
+        <li>One row per package, with the installed version &rarr; the fixed version, and <strong>Critical</strong> or <strong>High</strong>.</li>
+        <li>Under each package, the CVEs it fixes, each one linking to its entry in the distribution's security tracker.</li>
+        <li>A kernel row, when a kernel fix is waiting to be installed or needs a restart.</li>
+        <li>The Tailscale result, including any <strong>Recommended</strong> rows.</li>
+        <li>A footer, "Checked &lt;time&gt; against data from &lt;date&gt;", so you can see how recent the check and the data are.</li>
+      </ul>
+      <p>From this screen you can <a href="#install">install the updates</a>, <a href="#restart">restart the server</a> when it needs it, or <a href="#check-again">check again</a>.</p>
+    </section>
+
+    <section id="free-pro">
+      <h2>3. Free and Pro</h2>
+      <table>
+        <thead><tr><th></th><th>Free</th><th>Pro</th></tr></thead>
+        <tbody>
+          <tr><td>Tailscale check</td><td>Yes</td><td>Yes</td></tr>
+          <tr><td>Installed packages check</td><td>No</td><td>Yes</td></tr>
+        </tbody>
+      </table>
+      <p>Without Pro, the Security updates screen shows the Tailscale result and one row, <strong>Check installed packages</strong>, with <strong>See Pro</strong>. The packages of a host are never listed for a free user, and the pill on the host row counts only Tailscale.</p>
+    </section>
+
+    <section id="privacy">
+      <h2>4. What stays on your phone</h2>
+      <p>The comparison happens on your iPhone or iPad. Nothing about the host is sent anywhere.</p>
+      <ul>
+        <li><strong>The security data</strong>: the phone downloads meshTerm's signed security feed from its public site on GitHub Pages. The feed is a small manifest plus one data file per release, such as <code>debian-12</code>. The phone fetches only the files for the releases your hosts run. GitHub sees these requests and your phone's IP address, so it could tell, for example, that this IP address has a Debian 12 host. It doesn't learn the host's name, address or packages.</li>
+        <li><strong>The package list</strong>: meshTerm reads the host's installed packages over the existing SSH connection, with a read-only check that needs no root and installs nothing. The list is compared with the feed on the device and never leaves it.</li>
+        <li><strong>The feed carries data, not commands</strong>. It is signed, and meshTerm ignores it unless the signature checks out. The commands meshTerm offers to run come from elsewhere (see <a href="#install">Installing updates</a>).</li>
+        <li><strong>Old data is not used</strong>. If the security data on the phone is more than 7 days old, for example because the phone couldn't download a newer feed, meshTerm shows "Security data is out of date" with <strong>Check Again</strong>, instead of results that may be wrong.</li>
+      </ul>
+      <p>See also the <a href="privacy.html">Privacy Policy</a>.</p>
+    </section>
+
+    <section id="install">
+      <h2>5. Installing updates</h2>
+      <p><strong>Install Updates</strong> runs the update for you in a terminal tab on the host, so you can watch it and answer any prompt. meshTerm shows the exact command first, and nothing runs until you confirm. <strong>Copy Command</strong> copies it instead, if you'd rather run it yourself.</p>
+      <p>The command comes from meshTerm's signed host recipes (the same signed set of commands meshTerm uses for other setup steps), not from the security feed, and it names only packages that are installed on the host. It upgrades those packages and installs nothing new:</p>
+      <table>
+        <thead><tr><th>System</th><th>Command</th></tr></thead>
+        <tbody>
+          <tr><td>Debian, Ubuntu</td><td><code>sudo apt-get update &amp;&amp; sudo apt-get install --only-upgrade -y &lt;packages&gt;</code></td></tr>
+          <tr><td>Alpine</td><td><code>sudo apk -U upgrade &lt;packages&gt;</code></td></tr>
+          <tr><td>AlmaLinux, Rocky Linux, RHEL</td><td><code>sudo dnf --refresh upgrade -y &lt;packages&gt;</code></td></tr>
+        </tbody>
+      </table>
+      <ul>
+        <li>When you sign in as root, the command runs without <code>sudo</code>.</li>
+        <li>When your account can't use <code>sudo</code>, the command runs through <code>su</code> and asks for the root password in the terminal.</li>
+        <li>Installing updates never restarts the server. If a fix needs a restart, <a href="#restart">Restart Server</a> appears separately.</li>
+        <li>When the command finishes, meshTerm checks the host again and updates the list.</li>
+      </ul>
+      <div class="callout info">
+        <div class="callout-title">Rocky Linux and RHEL EUS</div>
+        <p>On Rocky Linux, and on RHEL with Extended Update Support (EUS), a fix that meshTerm lists may not be available from the vendor yet: Rocky Linux publishes Red Hat's fixes some time after Red Hat does. The update then installs nothing for that package. The row clears at the next check after the vendor ships the fix.</p>
+      </div>
+    </section>
+
+    <section id="restart">
+      <h2>6. Restarting the server</h2>
+      <p><strong>Restart Server</strong> is a separate button. It appears only when a newer kernel with the fix is installed but not running yet, or when the host itself reports that it needs a restart.</p>
+      <ul>
+        <li>meshTerm asks first: "Restart this server?"</li>
+        <li>It runs <code>systemctl reboot</code>, or <code>shutdown -r now</code> where that isn't available, and <code>reboot</code> on Alpine, with <code>sudo</code> when needed.</li>
+        <li>Every session on the server disconnects, including other people's and any tmux or mtRoam sessions: a restart ends the programs running in them. Save your work first.</li>
+        <li>When you reconnect, meshTerm checks the host again.</li>
+      </ul>
+    </section>
+
+    <section id="tailscale">
+      <h2>7. Updating Tailscale</h2>
+      <p>For Tailscale, meshTerm shows the update command to copy, with <strong>Open Terminal</strong> to run it on the host yourself.</p>
+      <div class="callout warn">
+        <div class="callout-title">Updating Tailscale can drop your connection</div>
+        <p>Updating Tailscale restarts it, which can drop connections that go through your tailnet, including the one you are using to run the update. Reconnect afterwards, and meshTerm checks the host again.</p>
+      </div>
+      <ul>
+        <li><strong>macOS, Tailscale from the App Store</strong>: update it from the App Store on the Mac.</li>
+        <li><strong>Windows</strong>: update from Tailscale's menu in the system tray, or run <code>tailscale update</code> in PowerShell as an administrator.</li>
+      </ul>
+    </section>
+
+    <section id="eol">
+      <h2>8. End of life and Ubuntu Pro</h2>
+      <p id="eol-release"><strong>End of life</strong>: when a host runs a release that no longer gets security fixes from its distribution (for example Alpine 3.20 and 3.21 today, Debian 11, or Ubuntu 20.04 without Ubuntu Pro), meshTerm shows "This release no longer gets security fixes" beside its results. New issues won't be fixed on that release, so they can't show up as updates: upgrading to a supported release is the way to keep getting fixes.</p>
+      <p id="ubuntu-pro"><strong>Ubuntu Pro (ESM)</strong>: some Ubuntu fixes are published only through Ubuntu Pro's Expanded Security Maintenance. meshTerm shows those fixes only on hosts that have Ubuntu Pro attached, because other hosts can't install them.</p>
+    </section>
+
+    <section id="systems">
+      <h2>9. Supported systems</h2>
+      <table>
+        <thead><tr><th>Check</th><th>Systems</th></tr></thead>
+        <tbody>
+          <tr><td>Installed packages (Pro)</td><td>Ubuntu 20.04, 22.04, 24.04, 26.04 and 26.10; Debian 11, 12 and 13; Alpine 3.20 to 3.24; AlmaLinux 8 to 10; RHEL 8 to 10; Rocky Linux 8 to 10 (checked against Red Hat's data)</td></tr>
+          <tr><td>Tailscale</td><td>Every host with Tailscale installed, including Windows and macOS</td></tr>
+        </tbody>
+      </table>
+      <p><strong>Not yet supported</strong> for the package check: Fedora, Amazon Linux, Arch and SUSE. On these, Pro shows "Package check isn't available for &lt;system&gt; yet". The Tailscale check still works on them.</p>
+      <p><strong>Not covered</strong> on any system:</p>
+      <ul>
+        <li>Language packages, such as pip, npm, gem or cargo packages.</li>
+        <li>Snaps and Flatpaks.</li>
+        <li>Containers and their images (see <a href="meshterm.html#containers">Containers</a> for the containers themselves).</li>
+        <li>Software installed outside the package manager, such as from a downloaded file or built from source.</li>
+      </ul>
+    </section>
+
+    <section id="check-again">
+      <h2>10. Checking again</h2>
+      <p>meshTerm checks each host at most once a day on its own. <strong>Check Again</strong> in Security updates checks now, over the open connection. If the host isn't connected, the check runs the next time you connect to it.</p>
+    </section>
+
+  </main>
+
+</div><!-- /.page-body -->

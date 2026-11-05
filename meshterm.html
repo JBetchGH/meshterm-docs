@@ -54,6 +54,7 @@ footer: |
       <li><a href="#search">20. Scrollback search</a></li>
       <li><a href="#themes">21. Color modes</a></li>
       <li><a href="#security">22. Security &amp; App Lock</a></li>
+      <li><a href="#security-updates" style="padding-left: 22px; font-size: 13px;">↳ Security updates</a></li>
       <li><a href="#sync">23. iCloud Sync</a></li>
       <li><a href="#settings">24. Settings reference</a></li>
       <li><a href="#pro">25. meshTerm Pro</a></li>
@@ -99,6 +100,7 @@ footer: |
         <li><strong>Pro Lifetime</strong>: Pro is also a one-time purchase that does not renew. Subscribers can switch with <strong>Buy Lifetime</strong> in Settings. See <a href="#pro">meshTerm Pro</a>.</li>
         <li><strong>Compose on a Mac</strong>: on a Mac Docker host (Docker Desktop, OrbStack, Colima or Homebrew), Stacks no longer say Compose isn't installed when it is.</li>
         <li><strong>Steadier deploys</strong>: <strong>Cancel</strong> during a stack deploy lets Compose finish its current step, then undoes what the deploy made and keeps volumes. A pull or deploy that goes quiet says it is still running instead of failing, and a command that can't be typed into a terminal says why.</li>
+        <li><strong>Security updates</strong>: when you connect, meshTerm checks the host for security updates, at most once a day. Free for everyone: whether the host's Tailscale has a security fix. With Pro: which installed packages have a High or Critical fix published in the host's own distro repositories. A shield pill on the host row shows how many, and <strong>Host Details &gt; Security updates</strong> lists them, with <strong>Install Updates</strong> to run the update in a terminal. The package list never leaves your phone. See <a href="security-updates.html">Security updates</a>.</li>
         <li><strong>Reconnecting</strong>: sessions reconnect promptly after you unlock the phone, a tmux session resumes faster and at the screen's own size, and a new tmux session no longer shows meshTerm's setup line at the top.</li>
       </ul>
 
@@ -1205,6 +1207,14 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
         <li>Secret snippets and secret macros.</li>
       </ul>
       <p>By default nothing sensitive is written to UserDefaults, the filesystem, or an iCloud device backup in plaintext. If you enable <a href="#sync">iCloud Sync</a>, secrets sync only through iCloud Keychain, which is end-to-end encrypted.</p>
+
+      <h3 id="security-updates">Security updates for your hosts <span class="new-badge">2.3.5</span></h3>
+      <p>When you connect to a host, meshTerm checks it for available security updates, at most once a day per host, over the SSH connection you already have. The check is read-only and installs nothing.</p>
+      <ul>
+        <li><strong>Tailscale</strong> (free): whether the host's Tailscale version has a security fix in a newer version.</li>
+        <li><strong>Installed packages</strong> (<a href="#pro">Pro</a>): which packages have a fix for a High or Critical CVE published in the host's own distribution repositories. Ubuntu, Debian, Alpine, AlmaLinux, RHEL and Rocky Linux are supported.</li>
+      </ul>
+      <p>A shield pill on the host row, such as <strong>3 updates</strong>, shows how many updates are waiting. <strong>Host Details &gt; Security updates</strong> lists each package with its installed and fixed versions and the CVEs it fixes, with <strong>Install Updates</strong> (the exact command is shown first, and runs in a terminal tab) and, when a fix needs one, <strong>Restart Server</strong>. The phone downloads only meshTerm's signed security data; the host's package list never leaves the phone. See <a href="security-updates.html">Security updates</a> for the details, the supported systems and what stays on your phone.</p>
     </section>
 
     <!-- ============================================ -->
@@ -1252,7 +1262,7 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
     <!-- ============================================ -->
     <section id="pro">
       <h2>25. meshTerm Pro</h2>
-      <p>One host, one live session plus one herdr session, and one agent are free. Pro lifts those limits and adds Containers, Secret Profiles, iCloud Sync and agent Resume. Everything else is free. In detail:</p>
+      <p>One host, one live session plus one herdr session, and one agent are free. Pro lifts those limits and adds Containers, Secret Profiles, iCloud Sync, agent Resume and the installed packages security check. Everything else is free. In detail:</p>
 
       <table>
         <thead><tr><th></th><th>Free</th><th>Pro</th></tr></thead>
@@ -1265,6 +1275,8 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
           <tr><td>Hosts running herdr</td><td>1</td><td>Unlimited</td></tr>
           <tr><td>herdr overview, dashboard, alerts, approvals, plugin, Set Up herdr, Live Activity count</td><td>Yes</td><td>Yes</td></tr>
           <tr><td>Containers, Secret Profiles, iCloud Sync, agent Resume</td><td>No</td><td>Yes</td></tr>
+          <tr><td><a href="security-updates.html">Security updates</a>: Tailscale check</td><td>Yes</td><td>Yes</td></tr>
+          <tr><td><a href="security-updates.html">Security updates</a>: installed packages check</td><td>No</td><td>Yes</td></tr>
           <tr><td>Roam, predictive echo, history browse, TUI pill, wedge recovery</td><td>Yes</td><td>Yes</td></tr>
           <tr><td>SSH key auth (Ed25519, ECDSA), key generation / import / install</td><td>Yes</td><td>Yes</td></tr>
           <tr><td>Tailscale SSH and Tailnet device browsing</td><td>Yes</td><td>Yes</td></tr>
