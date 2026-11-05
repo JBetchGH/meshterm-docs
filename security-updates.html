@@ -120,7 +120,7 @@ footer: |
         <li>When you sign in as root, the command runs without <code>sudo</code>.</li>
         <li>Only on a host that has no <code>sudo</code> at all does the command run through <code>su</code> instead: the screen says "It asks for the root password.", and the terminal asks for it.</li>
         <li>When the host has <code>sudo</code> but your account isn't in one of its administrator groups (such as <code>sudo</code>, <code>wheel</code> or <code>admin</code>), the command still uses <code>sudo</code>, since some servers grant it by name, and the screen adds "If your account can't use sudo, ask the server's admin to run this."</li>
-        <li>A package whose name is too long to include in the command is left out of it, and the screen says how many, for example "2 packages need updating by hand". Update those in a terminal with the system's own tools.</li>
+        <li>A package whose name is too long to include in the command is left out of it, and the screen says how many, for example "2 packages need updating by hand, in a terminal." Update those with the system's own tools.</li>
         <li>Installing updates never restarts the server. If a fix needs a restart, <a href="#restart">Restart Server</a> appears separately.</li>
         <li>When the command finishes, meshTerm checks the host again and updates the list.</li>
       </ul>
