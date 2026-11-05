@@ -90,6 +90,11 @@ footer: |
       <h2>2. What's new</h2>
       <p>meshTerm is currently at version <strong>2.3.5</strong>. The headline additions since 2.1.2:</p>
 
+      <h3>2.4 <span class="new-badge">2.4</span></h3>
+      <ul>
+        <li><strong>Security updates</strong>: when you connect, meshTerm checks the host for security updates, at most once a day. Free for everyone: whether the host's Tailscale has a security fix. With Pro: which installed packages have a High or Critical fix published in the host's own distro repositories. A shield pill on the host row shows how many, and <strong>Host Details &gt; Security updates</strong> lists them, with <strong>Install Updates</strong> to run the update in a terminal. The package list never leaves your phone. See <a href="security-updates.html">Security updates</a>.</li>
+      </ul>
+
       <h3>2.3.5 <span class="new-badge">2.3.5</span></h3>
       <ul>
         <li><strong>Docker on Windows hosts</strong>: the Containers tab now checks Windows hosts too. It finds Docker Engine on Windows Server (Windows containers), Docker inside a WSL distro, and Docker Desktop, and lists, starts, stops, inspects and opens a shell in their containers like on Linux. Each Docker gets its own pill, such as <strong>Docker &middot; WSL: Ubuntu</strong> or <strong>Docker &middot; Windows containers</strong>. See <a href="#containers-windows">Docker on Windows hosts</a>.</li>
@@ -100,7 +105,6 @@ footer: |
         <li><strong>Pro Lifetime</strong>: Pro is also a one-time purchase that does not renew. Subscribers can switch with <strong>Buy Lifetime</strong> in Settings. See <a href="#pro">meshTerm Pro</a>.</li>
         <li><strong>Compose on a Mac</strong>: on a Mac Docker host (Docker Desktop, OrbStack, Colima or Homebrew), Stacks no longer say Compose isn't installed when it is.</li>
         <li><strong>Steadier deploys</strong>: <strong>Cancel</strong> during a stack deploy lets Compose finish its current step, then undoes what the deploy made and keeps volumes. A pull or deploy that goes quiet says it is still running instead of failing, and a command that can't be typed into a terminal says why.</li>
-        <li><strong>Security updates</strong>: when you connect, meshTerm checks the host for security updates, at most once a day. Free for everyone: whether the host's Tailscale has a security fix. With Pro: which installed packages have a High or Critical fix published in the host's own distro repositories. A shield pill on the host row shows how many, and <strong>Host Details &gt; Security updates</strong> lists them, with <strong>Install Updates</strong> to run the update in a terminal. The package list never leaves your phone. See <a href="security-updates.html">Security updates</a>.</li>
         <li><strong>Reconnecting</strong>: sessions reconnect promptly after you unlock the phone, a tmux session resumes faster and at the screen's own size, and a new tmux session no longer shows meshTerm's setup line at the top.</li>
       </ul>
 
@@ -1208,13 +1212,13 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
       </ul>
       <p>By default nothing sensitive is written to UserDefaults, the filesystem, or an iCloud device backup in plaintext. If you enable <a href="#sync">iCloud Sync</a>, secrets sync only through iCloud Keychain, which is end-to-end encrypted.</p>
 
-      <h3 id="security-updates">Security updates for your hosts <span class="new-badge">2.3.5</span></h3>
-      <p>When you connect to a host, meshTerm checks it for available security updates, at most once a day per host, over the SSH connection you already have. The check is read-only and installs nothing.</p>
+      <h3 id="security-updates">Security updates for your hosts <span class="new-badge">2.4</span></h3>
+      <p>When you connect to a host, meshTerm checks it for available security updates, at most once a day per host, over the connection you already have (or a brief SSH connection of its own for a host you reach only through Roam). The check is read-only and installs nothing.</p>
       <ul>
         <li><strong>Tailscale</strong> (free): whether the host's Tailscale version has a security fix in a newer version.</li>
         <li><strong>Installed packages</strong> (<a href="#pro">Pro</a>): which packages have a fix for a High or Critical CVE published in the host's own distribution repositories. Ubuntu, Debian, Alpine, AlmaLinux, RHEL and Rocky Linux are supported.</li>
       </ul>
-      <p>A shield pill on the host row, such as <strong>3 updates</strong>, shows how many updates are waiting. <strong>Host Details &gt; Security updates</strong> lists each package with its installed and fixed versions and the CVEs it fixes, with <strong>Install Updates</strong> (the exact command is shown first, and runs in a terminal tab) and, when a fix needs one, <strong>Restart Server</strong>. The phone downloads only meshTerm's signed security data; the host's package list never leaves the phone. See <a href="security-updates.html">Security updates</a> for the details, the supported systems and what stays on your phone.</p>
+      <p>A shield pill on the host row, such as <strong>3 updates</strong>, shows how many updates are waiting. <strong>Host Details &gt; Security updates</strong> lists each package with its installed and fixed versions and the CVEs it fixes, with <strong>Install Updates</strong> (the exact command is shown, and runs in a terminal tab only when you tap it) and, when a fix needs one, <strong>Restart Server</strong>. The phone downloads only meshTerm's signed security data, from GitHub Pages, so GitHub can tell which releases your servers run; the host's package list never leaves the phone. See <a href="security-updates.html">Security updates</a> for the details, the supported systems and what stays on your phone.</p>
     </section>
 
     <!-- ============================================ -->

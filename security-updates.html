@@ -14,7 +14,7 @@ footer: |
     </p>
 ---
 <header class="site-header">
-  <div class="app-name">meshTerm 2.3.5</div>
+  <div class="app-name">meshTerm 2.4</div>
   <h1>Security updates</h1>
   <div class="sub">When you connect, meshTerm checks whether the host has security updates waiting: for Tailscale, and (with Pro) for its installed packages. What it checks, where it shows, what stays on your phone, and how to install the updates.</div>
 </header>
@@ -42,17 +42,17 @@ footer: |
   </aside>
 
   <main>
-    <div class="page-title">meshTerm 2.3.5 - Security updates</div>
+    <div class="page-title">meshTerm 2.4 - Security updates</div>
     <div class="page-subtitle">Know when a host has security fixes waiting, and install them in one step.</div>
 
     <section id="what">
       <h2>1. What meshTerm checks</h2>
-      <p>When you connect to a host, meshTerm checks it for available security updates, at most once a day per host. The check uses the SSH connection you already opened: nothing is installed on the host, and you don't need to do anything to turn it on.</p>
+      <p>When you connect to a host, meshTerm checks it for available security updates, at most once a day per host. The check uses the connection you already opened, or a brief SSH connection of its own for a host you reach only through Roam. It is read-only and needs no administrator rights: nothing is installed or changed on the host, and you don't need to do anything to turn it on.</p>
       <p>meshTerm reports updates you can install, not whether a host is safe. It never calls a host "vulnerable": it tells you that a fix has been published for something installed there, and offers to install it.</p>
 
       <h3 id="what-tailscale">Tailscale (free)</h3>
       <p>If Tailscale is installed on the host, meshTerm compares its version with a set of rules that meshTerm curates and publishes in its signed security feed. If the host's Tailscale has a security fix in a newer version, the host shows it.</p>
-      <p>Some Tailscale fixes are marked <strong>Recommended</strong>: they matter only inside your tailnet. These are listed in the host's <strong>Security updates</strong> screen but are not counted on the host row.</p>
+      <p><strong>Recommended</strong> updates aren't security fixes (for example a Tailscale SSH stall fix); some apply only when you reach the host over your tailnet. They're listed in the host's <strong>Security updates</strong> screen but not counted on the host row.</p>
 
       <h3 id="what-packages">Installed packages (Pro)</h3>
       <p>With <a href="meshterm.html#pro">meshTerm Pro</a>, meshTerm also compares the host's installed packages with known CVEs (published security issues) rated <strong>High</strong> or <strong>Critical</strong>, where the fix is already published in the host's own distribution repositories. A CVE that has no fix in those repositories yet is not shown, because there is nothing to install. Medium and Low issues are not shown.</p>
@@ -60,9 +60,9 @@ footer: |
 
       <h3 id="what-kernel">The kernel</h3>
       <ul>
-        <li>A kernel fix that is available but not installed yet counts like any other package.</li>
+        <li>A kernel fix that isn't installed yet counts straight away when <a href="#install">Install Updates</a> can install it: on Alpine, AlmaLinux, Rocky Linux and RHEL, and on Debian and Ubuntu when the kernel's meta package (such as <code>linux-image-generic</code>) is installed. Without that package, Install Updates can't bring in a newer kernel: the kernel row offers <strong>Open Terminal</strong> to install one with the system's own tools, and it counts only once the fix is more than 7 days old.</li>
         <li>A kernel fix that is installed but waiting for a restart counts only once the fix is more than 7 days old. Most servers restart on their own schedule, so meshTerm doesn't ask for a restart the day a fix comes out.</li>
-        <li>Live kernel patching (Ubuntu Livepatch, kpatch) is not taken into account: a live patch doesn't change the result either way.</li>
+        <li>When a live kernel patch is loaded (Ubuntu Livepatch, or kpatch on AlmaLinux, Rocky Linux and RHEL), the kernel row still shows, but it never counts on the host row's pill. On AlmaLinux, Rocky Linux and RHEL the row says "Live kernel patch loaded" and asks you to restart into the newer kernel when you can, because kpatch covers only selected CVEs; elsewhere it says "Covered by Livepatch until restart".</li>
       </ul>
     </section>
 
@@ -72,8 +72,8 @@ footer: |
       <p><strong>In Host Details &gt; Security updates</strong>: the full list for the host.</p>
       <ul>
         <li>One row per package, with the installed version &rarr; the fixed version, and <strong>Critical</strong> or <strong>High</strong>.</li>
-        <li>Under each package, the CVEs it fixes, each one linking to its entry in the distribution's security tracker.</li>
-        <li>A kernel row, when a kernel fix is waiting to be installed or needs a restart.</li>
+        <li>Under each package, the CVEs it fixes, each one linking to its entry in the distribution's security tracker (Ubuntu's, Debian's or Alpine's; for AlmaLinux, Rocky Linux and RHEL, Red Hat's CVE pages).</li>
+        <li>A kernel row, when a kernel fix is waiting to be installed or needs a restart, or a live kernel patch is covering it.</li>
         <li>The Tailscale result, including any <strong>Recommended</strong> rows.</li>
         <li>A footer, "Checked &lt;time&gt; against data from &lt;date&gt;", so you can see how recent the check and the data are.</li>
       </ul>
@@ -94,10 +94,10 @@ footer: |
 
     <section id="privacy">
       <h2>4. What stays on your phone</h2>
-      <p>The comparison happens on your iPhone or iPad. Nothing about the host is sent anywhere.</p>
+      <p>The comparison happens on your iPhone or iPad, and the package list stays there. What the downloads tell GitHub, which hosts meshTerm's security data, is which releases your servers run.</p>
       <ul>
-        <li><strong>The security data</strong>: the phone downloads meshTerm's signed security feed from its public site on GitHub Pages. The feed is a small manifest plus one data file per release, such as <code>debian-12</code>. The phone fetches only the files for the releases your hosts run. GitHub sees these requests and your phone's IP address, so it could tell, for example, that this IP address has a Debian 12 host. It doesn't learn the host's name, address or packages.</li>
-        <li><strong>The package list</strong>: meshTerm reads the host's installed packages over the existing SSH connection, with a read-only check that needs no root and installs nothing. The list is compared with the feed on the device and never leaves it.</li>
+        <li><strong>The security data</strong>: the phone downloads meshTerm's signed security feed from its public site on GitHub Pages. The feed is a small manifest, fetched when you open the app at most once every 12 hours (sooner only to retry a download that failed, or when you tap <strong>Check Again</strong> on out-of-date data), plus, with Pro, one data file per release your hosts run, such as <code>debian-12</code>. For an Ubuntu release that has an Ubuntu Pro (ESM) fix list, the phone downloads that list too, whether or not the host has Ubuntu Pro attached, so GitHub can't tell which hosts have it; it is used only for hosts that do. GitHub sees these requests and your phone's IP address, so it learns which releases your servers run: for example, that this IP address has a Debian 12 host. It doesn't learn the hosts' names, addresses or packages. The requests carry no cookies, account or identifier.</li>
+        <li><strong>The package list</strong> (Pro): meshTerm reads the host's installed packages with the read-only check, which needs no root and installs nothing. The list is compared with the feed on the device and never leaves it: it isn't sent to anyone, synced to iCloud or included in device backups. Deleting the host, or <strong>Erase This Device</strong> in Settings, removes it. Without Pro, a host's packages are never read.</li>
         <li><strong>The feed carries data, not commands</strong>. It is signed, and meshTerm ignores it unless the signature checks out. The commands meshTerm offers to run come from elsewhere (see <a href="#install">Installing updates</a>).</li>
         <li><strong>Old data is not used</strong>. If the security data on the phone is more than 7 days old, for example because the phone couldn't download a newer feed, meshTerm shows "Security data is out of date" with <strong>Check Again</strong>, instead of results that may be wrong.</li>
       </ul>
@@ -106,8 +106,8 @@ footer: |
 
     <section id="install">
       <h2>5. Installing updates</h2>
-      <p><strong>Install Updates</strong> runs the update for you in a terminal tab on the host, so you can watch it and answer any prompt. meshTerm shows the exact command first, and nothing runs until you confirm. <strong>Copy Command</strong> copies it instead, if you'd rather run it yourself.</p>
-      <p>The command comes from meshTerm's signed host recipes (the same signed set of commands meshTerm uses for other setup steps), not from the security feed, and it names only packages that are installed on the host. It upgrades those packages and installs nothing new:</p>
+      <p><strong>Install Updates</strong> runs the update for you in a terminal tab on the host, so you can watch it and answer any prompt. The screen shows the exact command, and nothing runs until you tap <strong>Install Updates</strong>. <strong>Copy Command</strong> copies it instead, if you'd rather run it yourself.</p>
+      <p>The command comes from meshTerm's signed host recipes (the same signed set of commands meshTerm uses for other setup steps), not from the security feed, and it names only packages that are installed on the host. It upgrades those packages, from the host's own repositories. An upgrade can also install new packages that they now need, such as a newer kernel or a new dependency:</p>
       <table>
         <thead><tr><th>System</th><th>Command</th></tr></thead>
         <tbody>
@@ -118,23 +118,28 @@ footer: |
       </table>
       <ul>
         <li>When you sign in as root, the command runs without <code>sudo</code>.</li>
-        <li>When your account can't use <code>sudo</code>, the command runs through <code>su</code> and asks for the root password in the terminal.</li>
+        <li>Only on a host that has no <code>sudo</code> at all does the command run through <code>su</code> instead: the screen says "It asks for the root password.", and the terminal asks for it.</li>
+        <li>When the host has <code>sudo</code> but your account isn't in one of its administrator groups (such as <code>sudo</code>, <code>wheel</code> or <code>admin</code>), the command still uses <code>sudo</code>, since some servers grant it by name, and the screen adds "If your account can't use sudo, ask the server's admin to run this."</li>
+        <li>A package whose name is too long to include in the command is left out of it, and the screen says how many, for example "2 packages need updating by hand". Update those in a terminal with the system's own tools.</li>
         <li>Installing updates never restarts the server. If a fix needs a restart, <a href="#restart">Restart Server</a> appears separately.</li>
         <li>When the command finishes, meshTerm checks the host again and updates the list.</li>
       </ul>
       <div class="callout info">
         <div class="callout-title">Rocky Linux and RHEL EUS</div>
-        <p>On Rocky Linux, and on RHEL with Extended Update Support (EUS), a fix that meshTerm lists may not be available from the vendor yet: Rocky Linux publishes Red Hat's fixes some time after Red Hat does. The update then installs nothing for that package. The row clears at the next check after the vendor ships the fix.</p>
+        <p>Rocky Linux and RHEL hosts are checked against Red Hat's fixes, so on them the screen adds "Some fixes may not be available from your vendor yet."</p>
+        <ul>
+          <li><strong>Rocky Linux</strong> publishes Red Hat's fixes some time after Red Hat does. Until then the update installs nothing for that package, and the row clears at the next check after Rocky ships the fix.</li>
+          <li><strong>RHEL with Extended Update Support (EUS)</strong>: the host is matched against RHEL's main repositories, not the EUS ones, so it keeps showing the row until it leaves EUS.</li>
+        </ul>
       </div>
     </section>
 
     <section id="restart">
       <h2>6. Restarting the server</h2>
-      <p><strong>Restart Server</strong> is a separate button. It appears only when a newer kernel with the fix is installed but not running yet, or when the host itself reports that it needs a restart.</p>
+      <p><strong>Restart Server</strong> is a separate button, offered only on Linux servers (never on macOS, Windows or a system meshTerm doesn't know). It appears only when a newer kernel with the fix is installed but not running yet, or when the host itself reports that it needs a restart.</p>
       <ul>
-        <li>meshTerm asks first: "Restart this server?"</li>
-        <li>It runs <code>systemctl reboot</code>, or <code>shutdown -r now</code> where that isn't available, and <code>reboot</code> on Alpine, with <code>sudo</code> when needed.</li>
-        <li>Every session on the server disconnects, including other people's and any tmux or mtRoam sessions: a restart ends the programs running in them. Save your work first.</li>
+        <li>meshTerm asks first: "Restart this server? Every session and program on it ends, including tmux and mtRoam sessions, and anyone connected is disconnected. meshTerm checks it again when you reconnect." Save your work first.</li>
+        <li>It runs <code>systemctl reboot</code>, or <code>shutdown -r now</code> where that isn't available, and <code>reboot</code> on Alpine, with <code>sudo</code> (or <code>su</code>) as for <a href="#install">Install Updates</a>.</li>
         <li>When you reconnect, meshTerm checks the host again.</li>
       </ul>
     </section>
@@ -154,8 +159,8 @@ footer: |
 
     <section id="eol">
       <h2>8. End of life and Ubuntu Pro</h2>
-      <p id="eol-release"><strong>End of life</strong>: when a host runs a release that no longer gets security fixes from its distribution (for example Alpine 3.20 and 3.21 today, Debian 11, or Ubuntu 20.04 without Ubuntu Pro), meshTerm shows "This release no longer gets security fixes" beside its results. New issues won't be fixed on that release, so they can't show up as updates: upgrading to a supported release is the way to keep getting fixes.</p>
-      <p id="ubuntu-pro"><strong>Ubuntu Pro (ESM)</strong>: some Ubuntu fixes are published only through Ubuntu Pro's Expanded Security Maintenance. meshTerm shows those fixes only on hosts that have Ubuntu Pro attached, because other hosts can't install them.</p>
+      <p id="eol-release"><strong>End of life</strong>: meshTerm's signed security data carries the date each release stops getting security fixes from its distribution. When a host's release is past that date (for example Debian 11, or Ubuntu 20.04 without Ubuntu Pro), meshTerm shows "This release no longer gets security fixes" beside its results. Fixes published before then still show, but new issues won't be fixed on that release, so they can't show up as updates: upgrading to a supported release is the way to keep getting fixes. A release the data gives no date for never shows the note, and Ubuntu 20.04 with Ubuntu Pro attached is not past its end of life.</p>
+      <p id="ubuntu-pro"><strong>Ubuntu Pro (ESM)</strong>: some Ubuntu fixes are published only through Ubuntu Pro's Expanded Security Maintenance. meshTerm shows those fixes only on hosts that have Ubuntu Pro attached, because other hosts can't install them. With Pro, the phone downloads the Ubuntu Pro fix list for every Ubuntu release that has one, whether or not the host has Ubuntu Pro attached, so the download doesn't tell GitHub which hosts have it.</p>
     </section>
 
     <section id="systems">
@@ -167,7 +172,7 @@ footer: |
           <tr><td>Tailscale</td><td>Every host with Tailscale installed, including Windows and macOS</td></tr>
         </tbody>
       </table>
-      <p><strong>Not yet supported</strong> for the package check: Fedora, Amazon Linux, Arch and SUSE. On these, Pro shows "Package check isn't available for &lt;system&gt; yet". The Tailscale check still works on them.</p>
+      <p><strong>Not yet supported</strong> for the package check: Fedora, CentOS Stream, Oracle Linux, Amazon Linux, Arch, SUSE, Linux Mint and the 32-bit Raspberry Pi OS. On these, Pro shows "Package check isn't available for &lt;system&gt; yet". The Tailscale check still works on them.</p>
       <p><strong>Not covered</strong> on any system:</p>
       <ul>
         <li>Language packages, such as pip, npm, gem or cargo packages.</li>
@@ -179,7 +184,7 @@ footer: |
 
     <section id="check-again">
       <h2>10. Checking again</h2>
-      <p>meshTerm checks each host at most once a day on its own. <strong>Check Again</strong> in Security updates checks now, over the open connection. If the host isn't connected, the check runs the next time you connect to it.</p>
+      <p>meshTerm checks each host at most once a day on its own. <strong>Check Again</strong> in Security updates checks now, over the open connection. If the host isn't connected, the check runs the next time you connect to it. When the security data is out of date, Check Again also downloads newer data.</p>
     </section>
 
   </main>
