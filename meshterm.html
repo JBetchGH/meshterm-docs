@@ -1,7 +1,7 @@
 ---
 layout: guide
-title: "meshTerm 2.3.5 - User Guide"
-description: "The meshTerm 2.3.5 user guide: adding hosts, Windows hosts, tmux and mtRoam persistent sessions, Containers, agents, SSH keys, Tailscale, port forwarding, SFTP, the keyboard palette, snippets and settings."
+title: "meshTerm 2.4 - User Guide"
+description: "The meshTerm 2.4 user guide: adding hosts, Windows hosts, tmux and mtRoam persistent sessions, Containers, agents, SSH keys, Tailscale, port forwarding, SFTP, the keyboard palette, snippets and settings."
 lang: en
 permalink: /meshterm.html
 footer: |
@@ -14,7 +14,7 @@ footer: |
     </p>
 ---
 <header class="site-header">
-  <div class="app-name">meshTerm 2.3.5</div>
+  <div class="app-name">meshTerm 2.4</div>
   <h1>User Guide</h1>
   <div class="sub">Connecting, tmux and mtRoam persistent sessions, named sessions, AI agents, the keyboard palette, snippets, SFTP, and everything in between.</div>
 </header>
@@ -64,7 +64,7 @@ footer: |
   </aside>
 
   <main>
-    <div class="page-title">meshTerm 2.3.5 - User Guide</div>
+    <div class="page-title">meshTerm 2.4 - User Guide</div>
     <div class="page-subtitle">For iPhone and iPad.</div>
 
     <!-- ============================================ -->
@@ -88,15 +88,11 @@ footer: |
     <!-- ============================================ -->
     <section id="whats-new">
       <h2>2. What's new</h2>
-      <p>meshTerm is currently at version <strong>2.3.5</strong>. The headline additions since 2.1.2:</p>
+      <p>meshTerm is currently at version <strong>2.4</strong>. The headline additions since 2.1.2:</p>
 
       <h3>2.4 <span class="new-badge">2.4</span></h3>
       <ul>
         <li><strong>Security updates</strong>: when you connect, meshTerm checks the host for security updates, at most once a day. Free for everyone: whether the host's Tailscale has a security fix. With Pro: which installed packages have a High or Critical fix published in the host's own distro repositories. A shield pill on the host row shows how many, and <strong>Host Details &gt; Security updates</strong> lists them, with <strong>Install Updates</strong> to run the update in a terminal. The package list never leaves your phone. See <a href="security-updates.html">Security updates</a>.</li>
-      </ul>
-
-      <h3>2.3.5 <span class="new-badge">2.3.5</span></h3>
-      <ul>
         <li><strong>Docker on Windows hosts</strong>: the Containers tab now checks Windows hosts too. It finds Docker Engine on Windows Server (Windows containers), Docker inside a WSL distro, and Docker Desktop, and lists, starts, stops, inspects and opens a shell in their containers like on Linux. Each Docker gets its own pill, such as <strong>Docker &middot; WSL: Ubuntu</strong> or <strong>Docker &middot; Windows containers</strong>. See <a href="#containers-windows">Docker on Windows hosts</a>.</li>
         <li><strong>Stacks inside WSL</strong>: with Docker in a WSL distro, Stacks deploy, update and remove Compose projects inside the distro. <strong>Redeploy</strong> and the prune actions work on every Windows Docker, and a recreated Windows container keeps its isolation and its CPU, memory and storage limits.</li>
         <li><strong>One-tap Docker fixes on Windows</strong>: start the Docker service, add a user to Docker's group, start a stopped WSL distro, install Compose inside a distro and, on Windows Server, install Docker Engine with Microsoft's installer. An administrator can also let standard users use Docker. Each step runs in PowerShell over SSH and shows its output. See <a href="troubleshooting.html#k-windows">Troubleshooting: Docker on Windows</a>.</li>
@@ -638,7 +634,7 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
       <h4 id="notification-setup">Set up and test a host</h4>
       <p>In <strong>Edit Host</strong>, turn on <strong>Notify this iPhone</strong> (<strong>Notify this iPad</strong> on an iPad) and save. This is opt-in for each host on each device; it does not sync. The status row shows <strong>Installed on this host</strong>, <strong>Not checked yet</strong>, or what is missing, with the last check when available. <strong>Not checked yet</strong> means there is no saved result, not that installation failed.</p>
       <p>Tap <strong>Install Now</strong> to set up the host immediately, or let meshTerm do it on your next managed session connection or agent launch from the Agents tab. Tap <strong>Send Test Alert</strong> to check delivery from that host to this phone. It is also available before the first check. Save any edits first. If something is missing, the row explains it and offers the appropriate repair; see <a href="troubleshooting.html#n-arrival">Notifications don't arrive</a>.</p>
-      <p>Setup adds notification hooks to the agents' own configuration. <strong>Exit and restart any agent that was already running</strong> so it loads the hooks; you can leave its terminal session open. For herdr, also enable <strong>Notify for herdr Agents</strong>. In <strong>Settings &gt; Agents &gt; Notifications</strong>, <strong>Agent needs approval</strong> controls both approval and question alerts; <strong>Turn finished</strong> controls turn-completion alerts. <strong>Claude turns</strong> <span class="new-badge">2.3.5</span> sets when a Claude turn alert comes: <strong>Right away</strong>, or <strong>When Claude is idle</strong>, about a minute after Claude stops and only if nobody typed or scrolled in the session since. Approvals and questions always alert right away, and so do Agents-tab chats, Codex and Gemini. A change reaches each host the next time this device connects to it.</p>
+      <p>Setup adds notification hooks to the agents' own configuration. <strong>Exit and restart any agent that was already running</strong> so it loads the hooks; you can leave its terminal session open. For herdr, also enable <strong>Notify for herdr Agents</strong>. In <strong>Settings &gt; Agents &gt; Notifications</strong>, <strong>Agent needs approval</strong> controls both approval and question alerts; <strong>Turn finished</strong> controls turn-completion alerts. <strong>Claude turns</strong> <span class="new-badge">2.4</span> sets when a Claude turn alert comes: <strong>Right away</strong>, or <strong>When Claude is idle</strong>, about a minute after Claude stops and only if nobody typed or scrolled in the session since. Approvals and questions always alert right away, and so do Agents-tab chats, Codex and Gemini. A change reaches each host the next time this device connects to it.</p>
       <h4 id="notification-requirements">Host requirements</h4>
       <ul>
         <li><strong>Linux and macOS:</strong> Python 3.5 or later and <code>curl</code>. meshTerm looks for <code>python3</code> on PATH and in <code>/usr/bin</code>, Homebrew's <code>/opt/homebrew/bin</code> and <code>/usr/local/bin</code>, <code>~/.local/bin</code>, pyenv's <code>~/.pyenv/shims</code>, asdf's <code>~/.asdf/shims</code>, and conda's <code>~/miniconda3/bin</code>, <code>~/anaconda3/bin</code>, <code>~/miniforge3/bin</code> and <code>/opt/conda/bin</code>. Hooks reuse the Python checked at installation. If the only Python on a Mac is <code>/usr/bin/python3</code>, install Apple's Command Line Tools with <code>xcode-select --install</code>; without them that path is only a placeholder.</li>
@@ -709,7 +705,7 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
     <section id="containers">
       <h2>8. Containers <span class="new-badge">2.3</span></h2>
       <p>The <strong>Containers</strong> tab shows and manages the containers on your own servers. It works with Docker, Podman, nerdctl and Apple's <code>container</code> tool (in beta), over the SSH connections you already have. Nothing is installed on the server except the engine itself: meshTerm runs the engine's own commands. If you are new to containers, read <a href="docker-101.html">Docker 101</a> first.</p>
-      <p>Containers is part of <a href="#pro">meshTerm Pro</a>. Without Pro the tab is a preview: it lists the hosts where an engine was found, by name, and offers the free trial. The hosts can run Linux, macOS or, from 2.3.5, Windows (see <a href="#containers-windows">Docker on Windows hosts</a>).</p>
+      <p>Containers is part of <a href="#pro">meshTerm Pro</a>. Without Pro the tab is a preview: it lists the hosts where an engine was found, by name, and offers the free trial. The hosts can run Linux, macOS or, from 2.4, Windows (see <a href="#containers-windows">Docker on Windows hosts</a>).</p>
 
       <h3 id="containers-fleet">The host overview</h3>
       <p>The tab opens on <strong>Containers</strong>, an overview with one card for every host that has a container engine. meshTerm checks your saved hosts in the background, and a pull-down checks them again. Each card shows the engine and how many containers run, and says "All containers healthy" or how many need you. <strong>Needs Attention</strong> lists the containers that need you. A host with no engine says so, and its host screen shows the install lines for its system (see <a href="docker-101.html#install">Docker 101</a>).</p>
@@ -735,7 +731,7 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
 
       <h3 id="containers-setup">When a host needs setting up</h3>
       <p>If an engine is installed but meshTerm can't use it yet (not running, or your SSH user can't reach its socket), the host shows <strong>Needs Setup</strong> with the reason and the steps. Where the fix can work, one tap does it: <strong>Run in Terminal</strong> opens a terminal on the host, types the command and returns you to the app when it finishes; <strong>Copy</strong> copies it. meshTerm never runs a root step on its own. For hosts where the SSH user needs sudo, <strong>Edit Host &gt; Containers</strong> sets the sudo choice (off, passwordless sudo, a saved sudo password, or the SSH password) and tests it before saving. The commands for each problem are in <a href="troubleshooting.html#s-containers">Troubleshooting</a>.</p>
-      <p><strong>Setup Help</strong> <span class="new-badge">2.3.5</span>: the first time a host needs Docker or Podman set up, meshTerm asks "How should meshTerm help with Docker and Podman?" <strong>Set It Up for Me</strong> (Guided) offers to install, start and fix the engine for you, in a terminal you can watch. <strong>I'll Manage It Myself</strong> (Manual) shows what's wrong and the command, and leaves the changes to you: <strong>Show Command</strong> has the command to copy, and nothing runs on its own. Change the choice in <strong>Settings &gt; Containers &gt; Setup Help</strong>.</p>
+      <p><strong>Setup Help</strong> <span class="new-badge">2.4</span>: the first time a host needs Docker or Podman set up, meshTerm asks "How should meshTerm help with Docker and Podman?" <strong>Set It Up for Me</strong> (Guided) offers to install, start and fix the engine for you, in a terminal you can watch. <strong>I'll Manage It Myself</strong> (Manual) shows what's wrong and the command, and leaves the changes to you: <strong>Show Command</strong> has the command to copy, and nothing runs on its own. Change the choice in <strong>Settings &gt; Containers &gt; Setup Help</strong>.</p>
 
       <h3 id="containers-deploy">Deploying</h3>
       <ul>
@@ -765,7 +761,7 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
         <li>It needs SSH to the host, so it isn't offered for Portainer environments. On a Windows host, Claude on the host isn't offered: "Ask an Agent needs a Linux or macOS host. On Windows, answer with your own API key."</li>
       </ul>
 
-      <h3 id="containers-windows">Docker on Windows hosts <span class="new-badge">2.3.5</span></h3>
+      <h3 id="containers-windows">Docker on Windows hosts <span class="new-badge">2.4</span></h3>
       <p>meshTerm checks a <a href="#windows">Windows host</a> for Docker over the same SSH connection, with nothing extra installed. It finds three kinds of Docker. A host can have more than one, and each gets its own pill with a name that says which it is:</p>
       <table>
         <thead><tr><th>Docker</th><th>Pill</th><th>Containers</th><th>Stacks</th></tr></thead>
@@ -794,7 +790,7 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
       <h3 id="containers-settings">Settings &gt; Containers</h3>
       <ul>
         <li><strong>Find Container Hosts Automatically</strong>: when off, a host is checked only when you pull to refresh or tap <strong>Check This Host</strong>.</li>
-        <li><strong>Setup Help</strong> <span class="new-badge">2.3.5</span>: <strong>Guided</strong> or <strong>Manual</strong>, as in <a href="#containers-setup">When a host needs setting up</a>.</li>
+        <li><strong>Setup Help</strong> <span class="new-badge">2.4</span>: <strong>Guided</strong> or <strong>Manual</strong>, as in <a href="#containers-setup">When a host needs setting up</a>.</li>
         <li><strong>Hidden Hosts</strong>, <strong>Portainer Servers</strong>, <strong>Vault</strong> and <strong>Ask an Agent</strong>, as above.</li>
         <li><strong>Display</strong>: <strong>Log Lines</strong>, <strong>Compact Rows</strong>, <strong>Popular Images</strong> (refresh the list) and <strong>Templates</strong> (refresh the list).</li>
         <li><strong>Forget Sudo Password</strong> lives in <strong>Edit Host &gt; Containers</strong>, not here, and works without Pro. Vault secrets can be deleted without Pro too.</li>
@@ -1296,7 +1292,7 @@ services.mtroamd = { enable = true; users = [ "you" ]; };</pre>
 
       <h3>Subscribing</h3>
       <p>Tap <strong>Upgrade</strong> in Settings or on the host-limit / session-limit prompt. Pro is available as monthly or annual; the annual plan is the better value. Free trials, when offered, apply on the first qualifying purchase per Apple ID.</p>
-      <p><strong>Lifetime</strong> <span class="new-badge">2.3.5</span>: a one-time purchase for permanent Pro access, which does not renew. If you already subscribe, <strong>Buy Lifetime</strong> in Settings opens it. Buying Lifetime does not cancel or refund your subscription: cancel it yourself in <strong>Manage Subscription</strong>.</p>
+      <p><strong>Lifetime</strong> <span class="new-badge">2.4</span>: a one-time purchase for permanent Pro access, which does not renew. If you already subscribe, <strong>Buy Lifetime</strong> in Settings opens it. Buying Lifetime does not cancel or refund your subscription: cancel it yourself in <strong>Manage Subscription</strong>.</p>
       <p>If you cancel during a free trial, meshTerm shows a card before the trial ends with what stops working without Pro, and <strong>Keep Pro</strong> or <strong>Not now</strong>. Your hosts and settings stay saved either way.</p>
 
       <h3>Restoring purchases</h3>
